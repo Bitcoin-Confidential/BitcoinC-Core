@@ -1,12 +1,12 @@
 *.tar.gz
 
 *.exe
-src/particl
-src/particld
-src/particl-cli
-src/particl-tx
-src/test/test_particl
-src/qt/test/test_particl-qt
+src/bitcoinc
+src/bitcoincd
+src/bitcoinc-cli
+src/bitcoinc-tx
+src/test/test_bitcoinc
+src/qt/test/test_bitcoinc-qt
 
 # autoreconf
 src/Makefile.in
@@ -50,11 +50,11 @@ src/qt/bitcoin-qt.creator.user
 src/qt/bitcoin-qt.files
 src/qt/bitcoin-qt.includes
 
-src/qt/particl-qt.config
-src/qt/particl-qt.creator
-src/qt/particl-qt.creator.user
-src/qt/particl-qt.files
-src/qt/particl-qt.includes
+src/qt/bitcoinc-qt.config
+src/qt/bitcoinc-qt.creator
+src/qt/bitcoinc-qt.creator.user
+src/qt/bitcoinc-qt.files
+src/qt/bitcoinc-qt.includes
 
 .deps
 .dirstamp
@@ -86,13 +86,13 @@ src/qt/particl-qt.includes
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-particl-qt
-Particl-Qt.app
+bitcoinc-qt
+BitcoinC-Qt.app
 background.tiff*
 
 # Unit-tests
 Makefile.test
-particl-qt_test
+bitcoinc-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -105,7 +105,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_particl.coverage/
+test_bitcoinc.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -120,5 +120,5 @@ test/cache/*
 
 /doc/doxygen/
 
-libparticlconsensus.pc
+libbitcoincconsensus.pc
 contrib/devtools/split-debug.sh

@@ -166,7 +166,7 @@ public:
         return false;
     }
 
-    virtual bool IsParticlVersion() const
+    virtual bool IsBitcoinCVersion() const
     {
         return false;
     }
@@ -198,9 +198,9 @@ public:
         return txTo && txTo->IsCoinStake();
     }
 
-    bool IsParticlVersion() const override
+    bool IsBitcoinCVersion() const override
     {
-        return txTo && txTo->IsParticlVersion();
+        return txTo && txTo->IsBitcoinCVersion();
     }
 };
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 The Particl Core developers
+// Copyright (c) 2017-2018 The BitcoinC Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -148,7 +148,7 @@ bool ImportOutputs(CBlockTemplate *pblocktemplate, int nHeight)
         return error("%s - Can't open file, strerror: %s.", __func__, strerror(errno));
 
     CMutableTransaction txn;
-    txn.nVersion = PARTICL_TXN_VERSION;
+    txn.nVersion = BITCOINC_TXN_VERSION;
     txn.SetType(TXN_COINBASE);
     txn.nLockTime = 0;
     txn.vin.push_back(CTxIn()); // null prevout
@@ -238,7 +238,7 @@ void StartThreadStakeMiner()
             size_t nEnd = (i == nThreads-1) ? nWallets : nPerThread * (i+1);
             StakeThread *t = new StakeThread();
             vStakeThreads.push_back(t);
-            GetParticlWallet(vpwallets[i].get())->nStakeThread = i;
+            GetBitcoinCWallet(vpwallets[i].get())->nStakeThread = i;
             t->sName = strprintf("miner%d", i);
             t->thread = std::thread(&TraceThread<std::function<void()> >, t->sName.c_str(), std::function<void()>(std::bind(&ThreadStakeMiner, i, vpwallets, nStart, nEnd)));
         }
@@ -388,7 +388,7 @@ void ThreadStakeMiner(size_t nThreadID, std::vector<std::shared_ptr<CWallet>> &v
         size_t nWaitFor = 60000;
         for (size_t i = nStart; i < nEnd; ++i)
         {
-            auto pwallet = GetParticlWallet(vpwallets[i].get());
+            auto pwallet = GetBitcoinCWallet(vpwallets[i].get());
 
             if (!pwallet->fStakingEnabled)
             {

@@ -181,7 +181,7 @@ bool Solver(const CScript& scriptPubKeyIn, txnouttype& typeRet, std::vector<std:
         return true;
     }
 
-    if (!fParticlMode)
+    if (!fBitcoinCMode)
     {
         int witnessversion;
         std::vector<unsigned char> witnessprogram;

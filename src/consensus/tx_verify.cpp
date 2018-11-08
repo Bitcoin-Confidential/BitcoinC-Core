@@ -124,7 +124,7 @@ bool SequenceLocks(const CTransaction &tx, int flags, std::vector<int>* prevHeig
 unsigned int GetLegacySigOpCount(const CTransaction& tx)
 {
     unsigned int nSigOps = 0;
-    if (!tx.IsParticlVersion())
+    if (!tx.IsBitcoinCVersion())
     {
         for (const auto& txin : tx.vin)
         {
@@ -300,7 +300,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
     if (::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION | SERIALIZE_TRANSACTION_NO_WITNESS) * WITNESS_SCALE_FACTOR > MAX_BLOCK_WEIGHT)
         return state.DoS(100, false, REJECT_INVALID, "bad-txns-oversize");
 
-    if (tx.IsParticlVersion())
+    if (tx.IsBitcoinCVersion())
     {
         const Consensus::Params& consensusParams = Params().GetConsensus();
         if (tx.vpout.empty())
@@ -345,7 +345,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
             return state.DoS(100, false, REJECT_INVALID, "too-many-data-outputs");
     } else
     {
-        if (fParticlMode)
+        if (fBitcoinCMode)
             return state.DoS(100, false, REJECT_INVALID, "bad-txn-version");
 
         if (tx.vout.empty())
@@ -396,8 +396,8 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
     state.fHasAnonOutput = false;
     state.fHasAnonInput = false;
 
-    // early out for particl txns
-    if (tx.IsParticlVersion() && tx.vin.size() < 1) {
+    // early out for bitcoinc txns
+    if (tx.IsBitcoinCVersion() && tx.vin.size() < 1) {
         return state.DoS(100, false, REJECT_INVALID, "bad-txn-no-inputs", false,
                          strprintf("%s: no inputs", __func__));
     }
@@ -430,7 +430,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         {
             if (nSpendHeight - coin.nHeight < COINBASE_MATURITY)
             {
-                if (fParticlMode)
+                if (fBitcoinCMode)
                 {
                     // Scale in the depth restriction to start the chain
                     int nRequiredDepth = std::min(COINBASE_MATURITY, (int)(coin.nHeight / 2));
@@ -447,7 +447,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         }
 
         // Check for negative or overflow input values
-        if (fParticlMode)
+        if (fBitcoinCMode)
         {
             if (coin.nType == OUTPUT_STANDARD)
             {
@@ -481,7 +481,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
     state.fHasAnonOutput = nRingCT > nRingCTInputs;
 
     nTxFee = 0;
-    if (fParticlMode)
+    if (fBitcoinCMode)
     {
         if (!tx.IsCoinStake())
         {

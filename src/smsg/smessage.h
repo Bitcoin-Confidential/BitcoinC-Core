@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2016 The ShadowCoin developers
-// Copyright (c) 2017-2018 The Particl Core developers
+// Copyright (c) 2017-2018 The BitcoinC Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PARTICL_SMSG_SMESSAGE_H
-#define PARTICL_SMSG_SMESSAGE_H
+#ifndef BITCOINC_SMSG_SMESSAGE_H
+#define BITCOINC_SMSG_SMESSAGE_H
 
 #include <key_io.h>
 #include <net.h>
@@ -467,5 +467,5 @@ public:
 
 extern smsg::CSMSG smsgModule;
 
-#endif // PARTICL_SMSG_SMESSAGE_H
+#endif // BITCOINC_SMSG_SMESSAGE_H
 

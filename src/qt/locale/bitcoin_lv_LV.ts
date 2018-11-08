@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>Izvēlies adresi uz kuru sūtīt particl</translation>
+        <translation>Izvēlies adresi uz kuru sūtīt bitcoinc</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>Izvēlies adresi ar kuru saņemt particl</translation>
+        <translation>Izvēlies adresi ar kuru saņemt bitcoinc</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -214,8 +214,8 @@
         <translation>Bloku reindeksēšana no diska...</translation>
     </message>
     <message>
-        <source>Send coins to a Particl address</source>
-        <translation>Nosūtīt bitkoinus uz Particl adresi</translation>
+        <source>Send coins to a BitcoinC address</source>
+        <translation>Nosūtīt bitkoinus uz BitcoinC adresi</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -238,8 +238,8 @@
         <translation>&amp;Pārbaudīt ziņojumu...</translation>
     </message>
     <message>
-        <source>Particl</source>
-        <translation>Particl</translation>
+        <source>BitcoinC</source>
+        <translation>BitcoinC</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -266,12 +266,12 @@
         <translation>Šifrēt privātās atslēgas kuras pieder tavam maciņam</translation>
     </message>
     <message>
-        <source>Sign messages with your Particl addresses to prove you own them</source>
-        <translation>Parakstīt ziņojumus ar savām Particl adresēm lai pierādītu ka tās pieder tev</translation>
+        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
+        <translation>Parakstīt ziņojumus ar savām BitcoinC adresēm lai pierādītu ka tās pieder tev</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Particl addresses</source>
-        <translation>Pārbaudīt ziņojumus lai pārliecinātos, ka tie tika parakstīti ar norādītajām Particl adresēm</translation>
+        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
+        <translation>Pārbaudīt ziņojumus lai pārliecinātos, ka tie tika parakstīti ar norādītajām BitcoinC adresēm</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -290,12 +290,12 @@
         <translation>Ciļņu rīkjosla</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and particl: URIs)</source>
-        <translation>Pieprasīt maksājumus (izveido QR kodu un particl: URIs)</translation>
+        <source>Request payments (generates QR codes and bitcoinc: URIs)</source>
+        <translation>Pieprasīt maksājumus (izveido QR kodu un bitcoinc: URIs)</translation>
     </message>
     <message>
-        <source>Open a particl: URI or payment request</source>
-        <translation>Atvērt particl URI vai maksājuma pieprasījumu</translation>
+        <source>Open a bitcoinc: URI or payment request</source>
+        <translation>Atvērt bitcoinc URI vai maksājuma pieprasījumu</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -469,8 +469,8 @@
         <translation>Izmantot pielāgotu datu mapi:</translation>
     </message>
     <message>
-        <source>Particl</source>
-        <translation>Particl</translation>
+        <source>BitcoinC</source>
+        <translation>BitcoinC</translation>
     </message>
     <message>
         <source>Error</source>
@@ -563,15 +563,15 @@
     </message>
     <message>
         <source>Enable coin &amp;control features</source>
-        <translation>Ieslēgt particl &amp;kontroles funkcijas</translation>
+        <translation>Ieslēgt bitcoinc &amp;kontroles funkcijas</translation>
     </message>
     <message>
         <source>&amp;Spend unconfirmed change</source>
         <translation>&amp;Tērēt neapstiprinātu atlikumu</translation>
     </message>
     <message>
-        <source>Automatically open the Particl client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Uz rūtera automātiski atvērt Particl klienta portu. Tas strādā tikai tad, ja rūteris atbalsta UPnP un tas ir ieslēgts.</translation>
+        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Uz rūtera automātiski atvērt BitcoinC klienta portu. Tas strādā tikai tad, ja rūteris atbalsta UPnP un tas ir ieslēgts.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -623,7 +623,7 @@
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
-        <translation>Vai rādīt Particl kontroles funkcijas vai nē.</translation>
+        <translation>Vai rādīt BitcoinC kontroles funkcijas vai nē.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -661,8 +661,8 @@
         <translation>Forma</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Particl network after a connection is established, but this process has not completed yet.</source>
-        <translation>Attēlotā informācija var būt novecojusi. Jūsu maciņš pēc savienojuma izveides automātiski sinhronizējas ar Particl tīklu, taču šis process vēl nav beidzies.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
+        <translation>Attēlotā informācija var būt novecojusi. Jūsu maciņš pēc savienojuma izveides automātiski sinhronizējas ar BitcoinC tīklu, taču šis process vēl nav beidzies.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -928,7 +928,7 @@
     </message>
     <message>
         <source>Coin Control Features</source>
-        <translation>Particl Kontroles Funkcijas</translation>
+        <translation>BitcoinC Kontroles Funkcijas</translation>
     </message>
     <message>
         <source>Inputs...</source>
@@ -1111,8 +1111,8 @@
         <translation>Kopēt parakstu uz sistēmas starpliktuvi</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Particl address</source>
-        <translation>Parakstīt ziņojumu lai pierādītu, ka esi šīs Particl adreses īpašnieks.</translation>
+        <source>Sign the message to prove you own this BitcoinC address</source>
+        <translation>Parakstīt ziņojumu lai pierādītu, ka esi šīs BitcoinC adreses īpašnieks.</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1204,8 +1204,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Particl Core</source>
-        <translation>Particl Core</translation>
+        <source>BitcoinC Core</source>
+        <translation>BitcoinC Core</translation>
     </message>
     <message>
         <source>Error loading block database</source>

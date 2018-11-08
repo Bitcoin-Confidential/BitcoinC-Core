@@ -1,9 +1,9 @@
-// Copyright (c) 2017-2018 The Particl developers
+// Copyright (c) 2017-2018 The BitcoinC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file license.txt or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PARTICL_BLIND_H
-#define PARTICL_BLIND_H
+#ifndef BITCOINC_BLIND_H
+#define BITCOINC_BLIND_H
 
 #include <secp256k1.h>
 #include <inttypes.h>
@@ -20,4 +20,4 @@ int GetRangeProofInfo(const std::vector<uint8_t> &vRangeproof, int &rexp, int &r
 void ECC_Start_Blinding();
 void ECC_Stop_Blinding();
 
-#endif  // PARTICL_BLIND_H
+#endif  // BITCOINC_BLIND_H

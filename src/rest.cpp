@@ -23,7 +23,7 @@
 
 #include <univalue.h>
 
-extern bool fParticlMode;
+extern bool fBitcoinCMode;
 
 static const size_t MAX_GETUTXOS_OUTPOINTS = 15; //allow a max of 15 outpoints to be queried at once
 

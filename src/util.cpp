@@ -82,11 +82,11 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char * const BITCOIN_CONF_FILENAME = "particl.conf";
-const char * const BITCOIN_PID_FILENAME = "particld.pid";
+const char * const BITCOIN_CONF_FILENAME = "bitcoinc.conf";
+const char * const BITCOIN_PID_FILENAME = "bitcoincd.pid";
 
-bool fParticlMode = true;
-bool fParticlWallet = false;
+bool fBitcoinCMode = true;
+bool fBitcoinCWallet = false;
 ArgsManager gArgs;
 
 CTranslationInterface translationInterface;
@@ -855,7 +855,7 @@ std::string ArgsManager::GetHelpMessage() const
                 usage += HelpMessageGroup("SMSG Commands:");
                 break;
             case OptionsCategory::PART_WALLET:
-                usage += HelpMessageGroup("Particl wallet Commands:");
+                usage += HelpMessageGroup("BitcoinC wallet Commands:");
                 break;
             case OptionsCategory::PART_STAKING:
                 usage += HelpMessageGroup("Staking Commands:");
@@ -908,7 +908,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(nullptr, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "particl";
+    const char* pszModule = "bitcoinc";
 #endif
     if (pex)
         return strprintf(
@@ -927,13 +927,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Particl
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Particl
-    // Mac: ~/Library/Application Support/Particl
-    // Unix: ~/.particl
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\BitcoinC
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\BitcoinC
+    // Mac: ~/Library/Application Support/BitcoinC
+    // Unix: ~/.bitcoinc
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Particl";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "BitcoinC";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -943,10 +943,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Particl";
+    return pathRet / "Library/Application Support/BitcoinC";
 #else
     // Unix
-    return pathRet / ".particl";
+    return pathRet / ".bitcoinc";
 #endif
 #endif
 }

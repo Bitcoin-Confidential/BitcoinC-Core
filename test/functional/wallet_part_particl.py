@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017 The Particl Core developers
+# Copyright (c) 2017 The BitcoinC Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_particl import ParticlTestFramework
+from test_framework.test_bitcoinc import BitcoinCTestFramework
 from test_framework.util import *
 
 
@@ -29,7 +29,7 @@ def read_dump(file_name):
     return sJson, nLines
 
 
-class WalletParticlTest(ParticlTestFramework):
+class WalletBitcoinCTest(BitcoinCTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -296,7 +296,7 @@ class WalletParticlTest(ParticlTestFramework):
 
         Bitcoin Testnet
         Purpose: 44
-        Coin: 1 (Particl testnet)
+        Coin: 1 (BitcoinC testnet)
         Account: 0
         Ext/Internal: 0
 
@@ -648,5 +648,5 @@ class WalletParticlTest(ParticlTestFramework):
 
 
 if __name__ == '__main__':
-    WalletParticlTest().main()
+    WalletBitcoinCTest().main()
 

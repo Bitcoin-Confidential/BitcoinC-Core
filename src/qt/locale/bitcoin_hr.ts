@@ -66,12 +66,12 @@
         <translation>Adresa primatelja</translation>
     </message>
     <message>
-        <source>These are your Particl addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Ovo su vaše Particl adrese za slanje novca. Uvijek provjerite iznos i adresu primatelja prije slanja novca.</translation>
+        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Ovo su vaše BitcoinC adrese za slanje novca. Uvijek provjerite iznos i adresu primatelja prije slanja novca.</translation>
     </message>
     <message>
-        <source>These are your Particl addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Ovo su vaše Particl adrese za primanje novca. Preporučamo da koristite novu adresu za primanje za svaku transakciju.</translation>
+        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Ovo su vaše BitcoinC adrese za primanje novca. Preporučamo da koristite novu adresu za primanje za svaku transakciju.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -172,7 +172,7 @@
         <translation>Potvrdi šifriranje novčanika</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PARTICL&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOINC&lt;/b&gt;!</source>
         <translation>Upozorenje: Ako šifrirate vaš novčanik i izgubite lozinku, &lt;b&gt;IZGUBIT ĆETE SVE SVOJE BITCOINE!&lt;/b&gt;</translation>
     </message>
     <message>
@@ -306,8 +306,8 @@
         <translation>Re-indeksiranje blokova na disku...</translation>
     </message>
     <message>
-        <source>Send coins to a Particl address</source>
-        <translation>Slanje novca na particl adresu</translation>
+        <source>Send coins to a BitcoinC address</source>
+        <translation>Slanje novca na bitcoinc adresu</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -330,8 +330,8 @@
         <translation>&amp;Potvrdite poruku...</translation>
     </message>
     <message>
-        <source>Particl</source>
-        <translation>Particl</translation>
+        <source>BitcoinC</source>
+        <translation>BitcoinC</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -358,12 +358,12 @@
         <translation>Šifriranje privatnih ključeva koji u novčaniku</translation>
     </message>
     <message>
-        <source>Sign messages with your Particl addresses to prove you own them</source>
-        <translation>Poruku potpišemo s particl adresom, kako bi dokazali vlasništvo nad tom adresom</translation>
+        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
+        <translation>Poruku potpišemo s bitcoinc adresom, kako bi dokazali vlasništvo nad tom adresom</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Particl addresses</source>
-        <translation>Provjeravanje poruke, kao dokaz, da je potpisana navedenom particl adresom</translation>
+        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
+        <translation>Provjeravanje poruke, kao dokaz, da je potpisana navedenom bitcoinc adresom</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -382,8 +382,8 @@
         <translation>Traka kartica</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and particl: URIs)</source>
-        <translation>Zatraži uplatu (stvara QR kod i particl: URI adresu)</translation>
+        <source>Request payments (generates QR codes and bitcoinc: URIs)</source>
+        <translation>Zatraži uplatu (stvara QR kod i bitcoinc: URI adresu)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -394,16 +394,16 @@
         <translation>Prikaži popis korištenih adresa i oznaka za primanje novca</translation>
     </message>
     <message>
-        <source>Open a particl: URI or payment request</source>
-        <translation>Otvori particl: URI adresu ili zahtjev za uplatu</translation>
+        <source>Open a bitcoinc: URI or payment request</source>
+        <translation>Otvori bitcoinc: URI adresu ili zahtjev za uplatu</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Opcije &amp;naredbene linije</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Particl network</source>
-        <translation><numerusform>%n aktivna veza na Particl mrežu</numerusform><numerusform>%n aktivnih veza na Particl mrežu</numerusform><numerusform>%n aktivnih veza na Particl mrežu</numerusform></translation>
+        <source>%n active connection(s) to BitcoinC network</source>
+        <translation><numerusform>%n aktivna veza na BitcoinC mrežu</numerusform><numerusform>%n aktivnih veza na BitcoinC mrežu</numerusform><numerusform>%n aktivnih veza na BitcoinC mrežu</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -595,11 +595,11 @@
     </message>
     <message>
         <source>The label associated with this address list entry</source>
-        <translation>Oznaka particl adrese</translation>
+        <translation>Oznaka bitcoinc adrese</translation>
     </message>
     <message>
         <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
-        <translation>Particl adresa. Izmjene adrese su moguće samo za adrese za slanje.</translation>
+        <translation>BitcoinC adresa. Izmjene adrese su moguće samo za adrese za slanje.</translation>
     </message>
     <message>
         <source>&amp;Address</source>
@@ -618,8 +618,8 @@
         <translation>Uredi adresu za slanje</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Particl address.</source>
-        <translation>Upisana adresa "%1" nije valjana particl adresa.</translation>
+        <source>The entered address "%1" is not a valid BitcoinC address.</source>
+        <translation>Upisana adresa "%1" nije valjana bitcoinc adresa.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -667,8 +667,8 @@
         <translation>Dobrodošli</translation>
     </message>
     <message>
-        <source>Particl</source>
-        <translation>Particl</translation>
+        <source>BitcoinC</source>
+        <translation>BitcoinC</translation>
     </message>
     <message>
         <source>Error</source>
@@ -760,8 +760,8 @@
         <translation>&amp;Trošenje nepotvrđenih vraćenih iznosa</translation>
     </message>
     <message>
-        <source>Automatically open the Particl client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatski otvori port Particl klijenta na ruteru. To radi samo ako ruter podržava UPnP i ako je omogućen.</translation>
+        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatski otvori port BitcoinC klijenta na ruteru. To radi samo ako ruter podržava UPnP i ako je omogućen.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -809,7 +809,7 @@
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Izaberite željeni najmanji dio particla koji će biti prikazan u sučelju i koji će se koristiti za plaćanje.</translation>
+        <translation>Izaberite željeni najmanji dio bitcoinca koji će biti prikazan u sučelju i koji će se koristiti za plaćanje.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -839,8 +839,8 @@
         <translation>Oblik</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Particl network after a connection is established, but this process has not completed yet.</source>
-        <translation>Prikazani podatci mogu biti zastarjeli. Vaš novčanik se automatski sinkronizira s Particl mrežom kada je veza uspostavljena, ali taj proces još nije završen.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
+        <translation>Prikazani podatci mogu biti zastarjeli. Vaš novčanik se automatski sinkronizira s BitcoinC mrežom kada je veza uspostavljena, ali taj proces još nije završen.</translation>
     </message>
     <message>
         <source>Total:</source>
@@ -1630,8 +1630,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Particl Core</source>
-        <translation>Particl Core</translation>
+        <source>BitcoinC Core</source>
+        <translation>BitcoinC Core</translation>
     </message>
     <message>
         <source>Error: Disk space is low!</source>

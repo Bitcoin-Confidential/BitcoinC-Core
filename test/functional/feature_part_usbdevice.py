@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018 The Particl Core developers
+# Copyright (c) 2018 The BitcoinC Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import configparser
 
-from test_framework.test_particl import ParticlTestFramework
-from test_framework.test_particl import isclose, getIndexAtProperty
+from test_framework.test_bitcoinc import BitcoinCTestFramework
+from test_framework.test_bitcoinc import isclose, getIndexAtProperty
 from test_framework.test_framework import SkipTest
 from test_framework.util import *
 
-class USBDeviceTest(ParticlTestFramework):
+class USBDeviceTest(BitcoinCTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -28,14 +28,14 @@ class USBDeviceTest(ParticlTestFramework):
 
     def run_test(self):
 
-        # Check that particl has been built with USB device enabled
+        # Check that bitcoinc has been built with USB device enabled
         config = configparser.ConfigParser()
         if not self.options.configfile:
             self.options.configfile = os.path.dirname(__file__) + "/../config.ini"
         config.read_file(open(self.options.configfile))
 
         if not config["components"].getboolean("ENABLE_USBDEVICE"):
-            raise SkipTest("particld has not been built with usb device enabled.")
+            raise SkipTest("bitcoincd has not been built with usb device enabled.")
 
         nodes = self.nodes
 

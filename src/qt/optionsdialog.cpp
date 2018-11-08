@@ -173,7 +173,7 @@ void OptionsDialog::setModel(OptionsModel *_model)
     connect(ui->lang, SIGNAL(valueChanged()), this, SLOT(showRestartWarning()));
     connect(ui->thirdPartyTxUrls, SIGNAL(textChanged(const QString &)), this, SLOT(showRestartWarning()));
 
-    if (fParticlMode)
+    if (fBitcoinCMode)
         ui->prune->setEnabled(false);
 }
 

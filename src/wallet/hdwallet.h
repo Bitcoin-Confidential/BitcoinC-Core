@@ -1,9 +1,9 @@
-// Copyright (c) 2017-2018 The Particl Core developers
+// Copyright (c) 2017-2018 The BitcoinC Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PARTICL_WALLET_HDWALLET_H
-#define PARTICL_WALLET_HDWALLET_H
+#ifndef BITCOINC_WALLET_HDWALLET_H
+#define BITCOINC_WALLET_HDWALLET_H
 
 #include <wallet/wallet.h>
 #include <wallet/hdwalletdb.h>
@@ -815,10 +815,10 @@ int64_t CalculateMaximumSignedTxSize(const CTransaction &tx, const CHDWallet *wa
 
 void RestartStakingThreads();
 
-bool IsParticlWallet(const CKeyStore *win);
-CHDWallet *GetParticlWallet(CKeyStore *win);
-const CHDWallet *GetParticlWallet(const CKeyStore *win);
+bool IsBitcoinCWallet(const CKeyStore *win);
+CHDWallet *GetBitcoinCWallet(CKeyStore *win);
+const CHDWallet *GetBitcoinCWallet(const CKeyStore *win);
 
 
-#endif // PARTICL_WALLET_HDWALLET_H
+#endif // BITCOINC_WALLET_HDWALLET_H
 

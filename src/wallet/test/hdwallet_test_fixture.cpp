@@ -1,4 +1,4 @@
-// Copyright (c) 2017-2018 The Particl Core developers
+// Copyright (c) 2017-2018 The BitcoinC Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,12 +11,12 @@
 #include <util.h>
 
 HDWalletTestingSetup::HDWalletTestingSetup(const std::string &chainName):
-    TestingSetup(chainName, true) // fParticlMode = true
+    TestingSetup(chainName, true) // fBitcoinCMode = true
 {
     bool fFirstRun;
     pwalletMain = std::make_shared<CHDWallet>("mock_part", WalletDatabase::CreateMock());
     AddWallet(pwalletMain);
-    fParticlWallet = true;
+    fBitcoinCWallet = true;
     pwalletMain->LoadWallet(fFirstRun);
     RegisterValidationInterface(pwalletMain.get());
 

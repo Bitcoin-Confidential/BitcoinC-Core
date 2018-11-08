@@ -1,15 +1,15 @@
 ## (note: this is a temporary file, to be added-to by anybody, and moved to release-notes at release time)
 
-Particl Core version 0.16.0.1 is now available from:
+BitcoinC Core version 0.16.0.1 is now available from:
 
-  <https://particl.io/>
+  <https://bitcoinc.io/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/particl/particl-core/issues>
+  <https://github.com/bitcoinc/bitcoinc-core/issues>
 
 
 How to Upgrade
@@ -17,8 +17,8 @@ How to Upgrade
 
 If you are running an older version, shut it down. Wait until it has completely
 shut down (which might take a few minutes for older versions), then run the
-installer (on Windows) or just copy over `/Applications/Particl-Qt` (on Mac)
-or `particld`/`particl-qt` (on Linux).
+installer (on Windows) or just copy over `/Applications/BitcoinC-Qt` (on Mac)
+or `bitcoincd`/`bitcoinc-qt` (on Linux).
 
 The first time you run version 0.15.0 or newer, your chainstate database will need to be converted to a
 new format, start with the -reindex flag.
@@ -34,10 +34,10 @@ wallets that were created with older versions are not affected by this.
 Compatibility
 ==============
 
-Particl Core is extensively tested on multiple operating systems using
+BitcoinC Core is extensively tested on multiple operating systems using
 the Linux kernel, macOS 10.8+, and Windows Vista and later. Windows XP is not supported.
 
-Particl Core should also work on most other Unix-like systems but is not
+BitcoinC Core should also work on most other Unix-like systems but is not
 frequently tested on them.
 
 Notable changes

@@ -1,4 +1,4 @@
-// Copyright (c) 2018 The Particl Core developers
+// Copyright (c) 2018 The BitcoinC Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -196,7 +196,7 @@ static UniValue getdevicexpub(const JSONRPCRequest &request)
             "                           The full path is \"accountpath\"/\"path\".\n"
             "2. \"accountpath\"       (string, optional) Account path, set to empty string to ignore (default=\""+GetDefaultAccountPath()+"\").\n"
             "\nResult\n"
-            "\"address\"              (string) The particl extended public key\n"
+            "\"address\"              (string) The bitcoinc extended public key\n"
             "\nExamples\n"
             + HelpExampleCli("getdevicexpub", "\"0\"")
             + HelpExampleRpc("getdevicexpub", "\"0\""));
@@ -257,7 +257,7 @@ static UniValue devicesignrawtransaction(const JSONRPCRequest &request)
 {
     #ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetParticlWallet(wallet.get());
+    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
         return NullUniValue;
     }
@@ -556,7 +556,7 @@ static UniValue devicesignrawtransaction(const JSONRPCRequest &request)
 static UniValue initaccountfromdevice(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetParticlWallet(wallet.get());
+    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
         return NullUniValue;
 
@@ -801,7 +801,7 @@ static UniValue initaccountfromdevice(const JSONRPCRequest &request)
 static UniValue devicegetnewstealthaddress(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetParticlWallet(wallet.get());
+    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
         return NullUniValue;
     }
@@ -809,7 +809,7 @@ static UniValue devicegetnewstealthaddress(const JSONRPCRequest &request)
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "devicegetnewstealthaddress [label] [num_prefix_bits] [prefix_num] [bech32]\n"
-            "Returns a new Particl stealth address for receiving payments."
+            "Returns a new BitcoinC stealth address for receiving payments."
             + HelpRequiringPassphrase(pwallet) +
             "\nArguments:\n"
             "1. \"label\"             (string, optional) If specified the key is added to the address book.\n"
@@ -821,7 +821,7 @@ static UniValue devicegetnewstealthaddress(const JSONRPCRequest &request)
             "           Stealth addresses with prefixes will scan only incoming stealth transactions with a matching prefix.\n"
             "4. bech32              (bool, optional) Use Bech32 encoding, default true.\n"
             "\nResult:\n"
-            "\"address\"              (string) The new particl stealth address\n"
+            "\"address\"              (string) The new bitcoinc stealth address\n"
             "\nExamples:\n"
             + HelpExampleCli("devicegetnewstealthaddress", "\"lblTestSxAddrPrefix\" 3 \"0b101\"")
             + HelpExampleRpc("devicegetnewstealthaddress", "\"lblTestSxAddrPrefix\", 3, \"0b101\""));

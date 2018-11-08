@@ -138,7 +138,7 @@
         <translation>Повторно индексирање на блокови од дискот...</translation>
     </message>
     <message>
-        <source>Send coins to a Particl address</source>
+        <source>Send coins to a BitcoinC address</source>
         <translation>Испрати биткоини на Биткоин адреса</translation>
     </message>
     <message>
@@ -146,7 +146,7 @@
         <translation>&amp;Потврди порака...</translation>
     </message>
     <message>
-        <source>Particl</source>
+        <source>BitcoinC</source>
         <translation>Биткоин</translation>
     </message>
     <message>
@@ -299,7 +299,7 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>Particl</source>
+        <source>BitcoinC</source>
         <translation>Биткоин</translation>
     </message>
     <message>
@@ -590,7 +590,7 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Particl Core</source>
+        <source>BitcoinC Core</source>
         <translation>Биткоин Core</translation>
     </message>
     <message>

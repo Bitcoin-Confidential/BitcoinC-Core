@@ -111,9 +111,9 @@ bool TransactionCanBeBumped(const CWallet* wallet, const uint256& txid)
 {
     LOCK2(cs_main, wallet->cs_wallet);
 
-    if (fParticlMode)
+    if (fBitcoinCMode)
     {
-        const CHDWallet *pw = GetParticlWallet(wallet);
+        const CHDWallet *pw = GetBitcoinCWallet(wallet);
         if (!pw)
             return false;
 
@@ -149,8 +149,8 @@ Result CreateTransaction(const CWallet* wallet, const uint256& txid, const CCoin
     errors.clear();
 
 
-    if (IsParticlWallet(wallet)) {
-        const CHDWallet *pw = GetParticlWallet(wallet);
+    if (IsBitcoinCWallet(wallet)) {
+        const CHDWallet *pw = GetBitcoinCWallet(wallet);
         auto it = wallet->mapWallet.find(txid);
         if (it != wallet->mapWallet.end()) {
             const CWalletTx& wtx = it->second;

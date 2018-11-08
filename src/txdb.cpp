@@ -456,7 +456,7 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                     && pindexNew->GetBlockHash() != Params().GetConsensus().hashGenesisBlock)
                     return error("LoadBlockIndex(): Genesis block hash incorrect: %s", pindexNew->ToString());
 
-                if (fParticlMode)
+                if (fBitcoinCMode)
                 {
                     // only CheckProofOfWork for genesis blocks
                     if (diskindex.hashPrev.IsNull() && !CheckProofOfWork(pindexNew->GetBlockHash(),

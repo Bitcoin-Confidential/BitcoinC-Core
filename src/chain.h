@@ -457,7 +457,7 @@ public:
         READWRITE(hashPrev);
         READWRITE(hashMerkleRoot);
         // NOTE: Careful matching the version, qa tests use different versions
-        if (this->nVersion == PARTICL_BLOCK_VERSION)
+        if (this->nVersion == BITCOINC_BLOCK_VERSION)
             READWRITE(hashWitnessMerkleRoot);
         READWRITE(nTime);
         READWRITE(nBits);

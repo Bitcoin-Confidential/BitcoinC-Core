@@ -54,7 +54,7 @@ static CTxIn MineBlock(const CScript& coinbase_scriptPubKey)
 
 static void AssembleBlock(benchmark::State& state)
 {
-    fParticlMode = false;
+    fBitcoinCMode = false;
     const std::vector<unsigned char> op_true{OP_TRUE};
     CScriptWitness witness;
     witness.stack.push_back(op_true);

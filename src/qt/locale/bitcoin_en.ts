@@ -85,12 +85,12 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>These are your Particl addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>These are your Particl addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -221,7 +221,7 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PARTICL&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOINC&lt;/b&gt;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -237,7 +237,7 @@
     </message>
     <message>
         <location line="-56"/>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your particl from being stolen by malware infecting your computer.</source>
+        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your bitcoinc from being stolen by malware infecting your computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -450,8 +450,8 @@
     </message>
     <message>
         <location line="-511"/>
-        <source>Send coins to a Particl address</source>
-        <translation>Send coins to a Particl address</translation>
+        <source>Send coins to a BitcoinC address</source>
+        <translation>Send coins to a BitcoinC address</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -480,8 +480,8 @@
     </message>
     <message>
         <location line="+517"/>
-        <source>Particl</source>
-        <translation>Particl</translation>
+        <source>BitcoinC</source>
+        <translation>BitcoinC</translation>
     </message>
     <message>
         <location line="-792"/>
@@ -515,13 +515,13 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Sign messages with your Particl addresses to prove you own them</source>
-        <translation>Sign messages with your Particl addresses to prove you own them</translation>
+        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
+        <translation>Sign messages with your BitcoinC addresses to prove you own them</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Verify messages to ensure they were signed with specified Particl addresses</source>
-        <translation>Verify messages to ensure they were signed with specified Particl addresses</translation>
+        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
+        <translation>Verify messages to ensure they were signed with specified BitcoinC addresses</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -545,7 +545,7 @@
     </message>
     <message>
         <location line="-158"/>
-        <source>Request payments (generates QR codes and particl: URIs)</source>
+        <source>Request payments (generates QR codes and bitcoinc: URIs)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -560,7 +560,7 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Open a particl: URI or payment request</source>
+        <source>Open a bitcoinc: URI or payment request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -570,10 +570,10 @@
     </message>
     <message numerus="yes">
         <location line="+357"/>
-        <source>%n active connection(s) to Particl network</source>
+        <source>%n active connection(s) to BitcoinC network</source>
         <translation>
-            <numerusform>%n active connection to Particl network</numerusform>
-            <numerusform>%n active connections to Particl network</numerusform>
+            <numerusform>%n active connection to BitcoinC network</numerusform>
+            <numerusform>%n active connections to BitcoinC network</numerusform>
         </translation>
     </message>
     <message>
@@ -631,7 +631,7 @@
     </message>
     <message>
         <location line="-441"/>
-        <source>Show the %1 help message to get a list with possible Particl command-line options</source>
+        <source>Show the %1 help message to get a list with possible BitcoinC command-line options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -717,7 +717,7 @@
     </message>
     <message>
         <location filename="../bitcoin.cpp" line="+534"/>
-        <source>A fatal error occurred. Particl can no longer continue safely and will quit.</source>
+        <source>A fatal error occurred. BitcoinC can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -955,7 +955,7 @@
     </message>
     <message>
         <location line="+75"/>
-        <source>The entered address &quot;%1&quot; is not a valid Particl address.</source>
+        <source>The entered address &quot;%1&quot; is not a valid BitcoinC address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1075,8 +1075,8 @@
     </message>
     <message>
         <location filename="../intro.cpp" line="+20"/>
-        <source>Particl</source>
-        <translation type="unfinished">Particl</translation>
+        <source>BitcoinC</source>
+        <translation type="unfinished">BitcoinC</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1090,7 +1090,7 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>%1 will download and store a copy of the Particl block chain.</source>
+        <source>%1 will download and store a copy of the BitcoinC block chain.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1134,12 +1134,12 @@
     </message>
     <message>
         <location line="+119"/>
-        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the particl network, as detailed below.</source>
+        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoinc network, as detailed below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+19"/>
-        <source>Attempting to spend particl that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <source>Attempting to spend bitcoinc that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1377,8 +1377,8 @@
     </message>
     <message>
         <location line="+30"/>
-        <source>Automatically open the Particl client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatically open the Particl client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
+        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1397,7 +1397,7 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Connect to the Particl network through a SOCKS5 proxy.</source>
+        <source>Connect to the BitcoinC network through a SOCKS5 proxy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1445,7 +1445,7 @@
     </message>
     <message>
         <location line="+25"/>
-        <source>Connect to the Particl network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <source>Connect to the BitcoinC network through a separate SOCKS5 proxy for Tor hidden services.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1580,8 +1580,8 @@
     <message>
         <location line="+62"/>
         <location line="+386"/>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Particl network after a connection is established, but this process has not completed yet.</source>
-        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the Particl network after a connection is established, but this process has not completed yet.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
+        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</translation>
     </message>
     <message>
         <location line="-139"/>
@@ -1678,7 +1678,7 @@
     </message>
     <message>
         <location line="-398"/>
-        <source>Cannot start particl: click-to-pay handler</source>
+        <source>Cannot start bitcoinc: click-to-pay handler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1691,7 +1691,7 @@
     </message>
     <message>
         <location line="-41"/>
-        <source>&apos;particl://&apos; is not a valid URI. Use &apos;particl:&apos; instead.</source>
+        <source>&apos;bitcoinc://&apos; is not a valid URI. Use &apos;bitcoinc:&apos; instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1706,7 +1706,7 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>URI cannot be parsed! This can be caused by an invalid Particl address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid BitcoinC address or malformed URI parameters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1838,7 +1838,7 @@
     </message>
     <message>
         <location filename="../guiutil.cpp" line="+115"/>
-        <source>Enter a Particl address (e.g. %1)</source>
+        <source>Enter a BitcoinC address (e.g. %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2454,7 +2454,7 @@
     <message>
         <location line="-3"/>
         <location line="+46"/>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Particl network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the BitcoinC network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2769,7 +2769,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     <message>
         <location line="+80"/>
         <location line="+13"/>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for particl transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoinc transactions than the network can process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3000,7 +3000,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="+101"/>
-        <source>Warning: Invalid Particl address</source>
+        <source>Warning: Invalid BitcoinC address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3055,7 +3055,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="+39"/>
-        <source>The Particl address to send the payment to</source>
+        <source>The BitcoinC address to send the payment to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3082,7 +3082,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="-1028"/>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less particl than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoinc than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3117,7 +3117,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="+54"/>
-        <source>A message that was attached to the particl: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Particl network.</source>
+        <source>A message that was attached to the bitcoinc: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the BitcoinC network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3174,12 +3174,12 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="+6"/>
-        <source>You can sign messages/agreements with your addresses to prove you can receive particl sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoinc sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
-        <source>The Particl address to sign the message with</source>
+        <source>The BitcoinC address to sign the message with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3221,8 +3221,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Particl address</source>
-        <translation>Sign the message to prove you own this Particl address</translation>
+        <source>Sign the message to prove you own this BitcoinC address</source>
+        <translation>Sign the message to prove you own this BitcoinC address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3252,13 +3252,13 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="+21"/>
-        <source>The Particl address the message was signed with</source>
+        <source>The BitcoinC address the message was signed with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+37"/>
-        <source>Verify the message to ensure it was signed with the specified Particl address</source>
-        <translation>Verify the message to ensure it was signed with the specified Particl address</translation>
+        <source>Verify the message to ensure it was signed with the specified BitcoinC address</source>
+        <translation>Verify the message to ensure it was signed with the specified BitcoinC address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4092,8 +4092,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="-184"/>
-        <source>Particl Core</source>
-        <translation type="unfinished">Particl Core</translation>
+        <source>BitcoinC Core</source>
+        <translation type="unfinished">BitcoinC Core</translation>
     </message>
     <message>
         <location line="+1"/>

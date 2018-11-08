@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The Particl Core developers
+// Copyright (c) 2018 The BitcoinC Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PARTICL_USBDEVICE_LEDGERDEVICE_H
-#define PARTICL_USBDEVICE_LEDGERDEVICE_H
+#ifndef BITCOINC_USBDEVICE_LEDGERDEVICE_H
+#define BITCOINC_USBDEVICE_LEDGERDEVICE_H
 
 #include <usbdevice/usbdevice.h>
 
@@ -35,4 +35,4 @@ public:
 
 } // usb_device
 
-#endif // PARTICL_USBDEVICE_LEDGERDEVICE_H
+#endif // BITCOINC_USBDEVICE_LEDGERDEVICE_H

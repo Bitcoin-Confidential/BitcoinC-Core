@@ -1532,7 +1532,7 @@ static void ThreadMapPort()
             }
         }
 
-        std::string strDesc = "Particl " + FormatFullVersion();
+        std::string strDesc = "BitcoinC " + FormatFullVersion();
 
         do {
 #ifndef UPNPDISCOVER_SUCCESS

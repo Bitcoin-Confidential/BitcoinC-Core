@@ -62,7 +62,7 @@ public:
     virtual ~BaseSignatureCreator() {}
     virtual const BaseSignatureChecker& Checker() const =0;
 
-    virtual bool IsParticlVersion() const { return false; }
+    virtual bool IsBitcoinCVersion() const { return false; }
     virtual bool IsCoinStake() const { return false; }
 
     /** Create a singular (non-script) signature. */
@@ -82,7 +82,7 @@ public:
     const BaseSignatureChecker& Checker() const override { return checker; }
     bool CreateSig(const SigningProvider& provider, std::vector<unsigned char>& vchSig, const CKeyID& keyid, const CScript& scriptCode, SigVersion sigversion) const override;
 
-    bool IsParticlVersion() const override { return txTo && txTo->IsParticlVersion(); }
+    bool IsBitcoinCVersion() const override { return txTo && txTo->IsBitcoinCVersion(); }
     bool IsCoinStake() const override { return txTo && txTo->IsCoinStake(); }
 };
 
@@ -90,7 +90,7 @@ public:
 extern const BaseSignatureCreator& DUMMY_SIGNATURE_CREATOR;
 /** A signature creator that just produces 72-byte empty signatures. */
 extern const BaseSignatureCreator& DUMMY_MAXIMUM_SIGNATURE_CREATOR;
-extern const BaseSignatureCreator& DUMMY_SIGNATURE_CREATOR_PARTICL;
+extern const BaseSignatureCreator& DUMMY_SIGNATURE_CREATOR_BITCOINC;
 
 typedef std::pair<CPubKey, std::vector<unsigned char>> SigPair;
 

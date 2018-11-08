@@ -42,7 +42,7 @@ public:
         READWRITE(nVersion);
         READWRITE(hashPrevBlock);
         READWRITE(hashMerkleRoot);
-        if (IsParticlVersion())
+        if (IsBitcoinCVersion())
             READWRITE(hashWitnessMerkleRoot);
         READWRITE(nTime);
         READWRITE(nBits);
@@ -67,9 +67,9 @@ public:
 
     uint256 GetHash() const;
 
-    bool IsParticlVersion() const
+    bool IsBitcoinCVersion() const
     {
-        return nVersion == PARTICL_BLOCK_VERSION;
+        return nVersion == BITCOINC_BLOCK_VERSION;
     }
 
     int64_t GetBlockTime() const
@@ -135,7 +135,7 @@ public:
         READWRITEAS(CBlockHeader, *this);
         READWRITE(vtx);
 
-        if (nVersion == PARTICL_BLOCK_VERSION)
+        if (nVersion == BITCOINC_BLOCK_VERSION)
             READWRITE(vchBlockSig);
     }
 

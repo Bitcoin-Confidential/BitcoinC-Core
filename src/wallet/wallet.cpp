@@ -1721,7 +1721,7 @@ void CWalletTx::GetAmounts(std::list<COutputEntry>& listReceived,
     }
 
     // Sent/received.
-    if (tx->IsParticlVersion()) {
+    if (tx->IsBitcoinCVersion()) {
         for (unsigned int i = 0; i < tx->vpout.size(); ++i) {
             const CTxOutBase *txout = tx->vpout[i].get();
             if (!txout->IsStandardOutput()) {
@@ -2109,7 +2109,7 @@ CAmount CWalletTx::GetAvailableCredit(bool fUseCache, const isminefilter& filter
     {
         if (!pwallet->IsSpent(GetHash(), i))
         {
-            nCredit += fParticlWallet ? pwallet->GetCredit(tx->vpout[i].get(), filter)
+            nCredit += fBitcoinCWallet ? pwallet->GetCredit(tx->vpout[i].get(), filter)
                                       : pwallet->GetCredit(tx->vout[i], filter);
             if (!MoneyRange(nCredit))
                 throw std::runtime_error(std::string(__func__) + " : value out of range");
@@ -2179,7 +2179,7 @@ bool CWalletTx::IsTrusted() const
         if (parent == nullptr)
             return false;
 
-        if (tx->IsParticlVersion()) {
+        if (tx->IsBitcoinCVersion()) {
             const CTxOutBase *parentOut = parent->tx->vpout[txin.prevout.n].get();
             if (!(pwallet->IsMine(parentOut) & ISMINE_SPENDABLE)) {
                 return false;
@@ -4192,7 +4192,7 @@ bool CWallet::Verify(std::string wallet_file, bool salvage_wallet, std::string& 
 std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(const std::string& name_, const fs::path& path, uint64_t wallet_creation_flags)
 {
     std::string name = name_;
-    if (fParticlMode && name == "") name = "wallet.dat";
+    if (fBitcoinCMode && name == "") name = "wallet.dat";
     const std::string& walletFile = name;
 
     // needed to restore wallet transaction meta data after -zapwallettxes
@@ -4213,7 +4213,7 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(const std::string& name_,
     int64_t nStart = GetTimeMillis();
     bool fFirstRun = true;
 
-    std::shared_ptr<CWallet> walletInstance(fParticlMode
+    std::shared_ptr<CWallet> walletInstance(fBitcoinCMode
         ? std::shared_ptr<CWallet>(new CHDWallet(name, WalletDatabase::Create(path)), ReleaseWallet)
         : std::shared_ptr<CWallet>(new CWallet(name, WalletDatabase::Create(path)), ReleaseWallet));
 
@@ -4266,7 +4266,7 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(const std::string& name_,
     }
 
     // Upgrade to HD if explicit upgrade
-    if (gArgs.GetBoolArg("-upgradewallet", false) && !fParticlMode) {
+    if (gArgs.GetBoolArg("-upgradewallet", false) && !fBitcoinCMode) {
         LOCK(walletInstance->cs_wallet);
 
         // Do not upgrade versions to any version between HD_SPLIT and FEATURE_PRE_SPLIT_KEYPOOL unless already supporting HD_SPLIT
@@ -4306,7 +4306,7 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(const std::string& name_,
         }
     }
 
-    if (fFirstRun && !fParticlMode)
+    if (fFirstRun && !fBitcoinCMode)
     {
         // ensure this wallet.dat can only be opened by clients supporting HD with chain split and expects no default key
         if (!gArgs.GetBoolArg("-usehd", true)) {
@@ -4440,7 +4440,7 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(const std::string& name_,
 
     walletInstance->m_last_block_processed = chainActive.Tip();
 
-    if (!fParticlMode) // Must rescan after hdwallet is loaded
+    if (!fBitcoinCMode) // Must rescan after hdwallet is loaded
     if (chainActive.Tip() && chainActive.Tip() != pindexRescan)
     {
         //We can't rescan beyond non-pruned blocks, stop and throw an error
@@ -4614,7 +4614,7 @@ int CMerkleTx::GetBlocksToMaturity(const int *pdepth) const
     int chain_depth = pdepth ? *pdepth : GetDepthInMainChain();
     //assert(chain_depth >= 0); // coinbase tx should not be conflicted
 
-    if (fParticlMode && (chainActive.Height() < COINBASE_MATURITY * 2)) {
+    if (fBitcoinCMode && (chainActive.Height() < COINBASE_MATURITY * 2)) {
         BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
         if (mi == mapBlockIndex.end()) {
             return COINBASE_MATURITY;
@@ -4648,7 +4648,7 @@ bool CWalletTx::AcceptToMemoryPool(const CAmount& nAbsurdFee, CValidationState& 
 
 void CWallet::LearnRelatedScripts(const CPubKey& key, OutputType type)
 {
-    if (fParticlMode)
+    if (fBitcoinCMode)
         return;
     if (key.IsCompressed() && (type == OutputType::P2SH_SEGWIT || type == OutputType::BECH32)) {
         CTxDestination witdest = WitnessV0KeyHash(key.GetID());

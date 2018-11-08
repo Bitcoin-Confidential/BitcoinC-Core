@@ -3,22 +3,22 @@ AC_PREREQ([2.60])
 define(_CLIENT_VERSION_MAJOR, 0)
 define(_CLIENT_VERSION_MINOR, 17)
 define(_CLIENT_VERSION_REVISION, 0)
-define(_CLIENT_VERSION_PARTICL, 3)
+define(_CLIENT_VERSION_BITCOINC, 3)
 define(_CLIENT_VERSION_BUILD, 0)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2018)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
-define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Particl Core]])
-AC_INIT([Particl Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION._CLIENT_VERSION_PARTICL],[https://github.com/particl/particl-core/issues],[particl],[https://particl.io/])
+define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[BitcoinC Core]])
+AC_INIT([BitcoinC Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION._CLIENT_VERSION_BITCOINC],[https://github.com/bitcoinc/bitcoinc-core/issues],[bitcoinc],[https://bitcoinc.io/])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/bitcoin-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 
-BITCOIN_DAEMON_NAME=particld
-BITCOIN_GUI_NAME=particl-qt
-BITCOIN_CLI_NAME=particl-cli
-BITCOIN_TX_NAME=particl-tx
+BITCOIN_DAEMON_NAME=bitcoincd
+BITCOIN_GUI_NAME=bitcoinc-qt
+BITCOIN_CLI_NAME=bitcoinc-cli
+BITCOIN_TX_NAME=bitcoinc-tx
 
 dnl Unless the user specified ARFLAGS, force it to be cr
 AC_ARG_VAR(ARFLAGS, [Flags for the archiver, defaults to <cr> if not set])
@@ -1272,7 +1272,7 @@ AC_MSG_CHECKING([whether to build libraries])
 AM_CONDITIONAL([BUILD_BITCOIN_LIBS], [test x$build_bitcoin_libs = xyes])
 if test x$build_bitcoin_libs = xyes; then
   AC_DEFINE(HAVE_CONSENSUS_LIB, 1, [Define this symbol if the consensus lib has been built])
-  AC_CONFIG_FILES([libparticlconsensus.pc:libparticlconsensus.pc.in])
+  AC_CONFIG_FILES([libbitcoincconsensus.pc:libbitcoincconsensus.pc.in])
 fi
 AC_MSG_RESULT($build_bitcoin_libs)
 
@@ -1425,7 +1425,7 @@ AM_CONDITIONAL([USE_ASM],[test x$use_asm = xyes])
 
 AC_DEFINE(CLIENT_VERSION_MAJOR, _CLIENT_VERSION_MAJOR, [Major version])
 AC_DEFINE(CLIENT_VERSION_MINOR, _CLIENT_VERSION_MINOR, [Minor version])
-AC_DEFINE(CLIENT_VERSION_PARTICL, _CLIENT_VERSION_PARTICL, [Particl version])
+AC_DEFINE(CLIENT_VERSION_BITCOINC, _CLIENT_VERSION_BITCOINC, [BitcoinC version])
 AC_DEFINE(CLIENT_VERSION_REVISION, _CLIENT_VERSION_REVISION, [Build revision])
 AC_DEFINE(CLIENT_VERSION_BUILD, _CLIENT_VERSION_BUILD, [Version Build])
 AC_DEFINE(CLIENT_VERSION_IS_RELEASE, _CLIENT_VERSION_IS_RELEASE, [Version is release])
@@ -1436,7 +1436,7 @@ define(_COPYRIGHT_HOLDERS_FINAL, [patsubst(_COPYRIGHT_HOLDERS, [%s], [_COPYRIGHT
 AC_DEFINE(COPYRIGHT_HOLDERS_FINAL, "_COPYRIGHT_HOLDERS_FINAL", [Copyright holder(s)])
 AC_SUBST(CLIENT_VERSION_MAJOR, _CLIENT_VERSION_MAJOR)
 AC_SUBST(CLIENT_VERSION_MINOR, _CLIENT_VERSION_MINOR)
-AC_SUBST(CLIENT_VERSION_PARTICL, _CLIENT_VERSION_PARTICL)
+AC_SUBST(CLIENT_VERSION_BITCOINC, _CLIENT_VERSION_BITCOINC)
 AC_SUBST(CLIENT_VERSION_REVISION, _CLIENT_VERSION_REVISION)
 AC_SUBST(CLIENT_VERSION_BUILD, _CLIENT_VERSION_BUILD)
 AC_SUBST(CLIENT_VERSION_IS_RELEASE, _CLIENT_VERSION_IS_RELEASE)

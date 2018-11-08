@@ -13,7 +13,7 @@ WalletTestingSetup::WalletTestingSetup(const std::string& chainName):
     bool fFirstRun;
 
     gArgs.ForceSetArg("-legacymode", "1");
-    fParticlWallet = false;
+    fBitcoinCWallet = false;
 
     m_wallet.LoadWallet(fFirstRun);
     RegisterValidationInterface(&m_wallet);

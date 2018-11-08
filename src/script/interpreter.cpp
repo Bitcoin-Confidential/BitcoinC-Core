@@ -1172,7 +1172,7 @@ public:
             ::Serialize(s, CTxOut());
         else
         {
-            if (txTo.IsParticlVersion())
+            if (txTo.IsBitcoinCVersion())
                 ::Serialize(s, *(txTo.vpout[nOutput].get()));
             else
                 ::Serialize(s, txTo.vout[nOutput]);
@@ -1225,7 +1225,7 @@ uint256 GetOutputsHash(const T& txTo)
 {
     CHashWriter ss(SER_GETHASH, 0);
 
-    if (txTo.IsParticlVersion())
+    if (txTo.IsBitcoinCVersion())
     {
         for (unsigned int n = 0; n < txTo.vpout.size(); n++)
             ss << *txTo.vpout[n];
@@ -1262,7 +1262,7 @@ uint256 SignatureHash(const CScript& scriptCode, const T& txTo, unsigned int nIn
     assert(nIn < txTo.vin.size());
 
     if (sigversion == SigVersion::WITNESS_V0
-        || txTo.IsParticlVersion()) {
+        || txTo.IsBitcoinCVersion()) {
         uint256 hashPrevouts;
         uint256 hashSequence;
         uint256 hashOutputs;
@@ -1281,7 +1281,7 @@ uint256 SignatureHash(const CScript& scriptCode, const T& txTo, unsigned int nIn
         } else if ((nHashType & 0x1f) == SIGHASH_SINGLE && nIn < txTo.GetNumVOuts()) {
             CHashWriter ss(SER_GETHASH, 0);
 
-            if (txTo.IsParticlVersion())
+            if (txTo.IsBitcoinCVersion())
                 ss << *(txTo.vpout[nIn].get());
             else
                 ss << txTo.vout[nIn];
@@ -1518,7 +1518,7 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
     }
 
     std::vector<std::vector<unsigned char> > stack, stackCopy;
-    if (checker.IsParticlVersion())
+    if (checker.IsBitcoinCVersion())
     {
         assert(witness);
         if (scriptSig.size() != 0) {
@@ -1564,7 +1564,7 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
         }
     }
 
-    bool fIsP2SH = checker.IsParticlVersion() ? scriptPubKey.IsPayToScriptHashAny(checker.IsCoinStake()) : scriptPubKey.IsPayToScriptHash();
+    bool fIsP2SH = checker.IsBitcoinCVersion() ? scriptPubKey.IsPayToScriptHashAny(checker.IsCoinStake()) : scriptPubKey.IsPayToScriptHash();
     if (fIsP2SH && flags & SCRIPT_VERIFY_NO_CSP2SH)
         fIsP2SH = scriptPubKey.IsPayToScriptHashAny(true); // will match only plain p2sh scripts
 
@@ -1634,7 +1634,7 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
         // possible, which is not a softfork.
         assert((flags & SCRIPT_VERIFY_P2SH) != 0);
 
-        if (!checker.IsParticlVersion())
+        if (!checker.IsBitcoinCVersion())
         if (!hadWitness && !witness->IsNull()) {
             return set_error(serror, SCRIPT_ERR_WITNESS_UNEXPECTED);
         }

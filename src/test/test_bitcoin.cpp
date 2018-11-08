@@ -37,7 +37,7 @@ uint256 insecure_rand_seed = GetRandHash();
 FastRandomContext insecure_rand_ctx(insecure_rand_seed);
 
 extern void noui_connect();
-extern bool fParticlMode;
+extern bool fBitcoinCMode;
 
 std::ostream& operator<<(std::ostream& os, const uint256& num)
 {
@@ -45,10 +45,10 @@ std::ostream& operator<<(std::ostream& os, const uint256& num)
     return os;
 }
 
-BasicTestingSetup::BasicTestingSetup(const std::string& chainName, bool fParticlModeIn)
-    : m_path_root(fs::temp_directory_path() / "test_particl" / strprintf("%lu_%i", (unsigned long)GetTime(), (int)(InsecureRandRange(1 << 30))))
+BasicTestingSetup::BasicTestingSetup(const std::string& chainName, bool fBitcoinCModeIn)
+    : m_path_root(fs::temp_directory_path() / "test_bitcoinc" / strprintf("%lu_%i", (unsigned long)GetTime(), (int)(InsecureRandRange(1 << 30))))
 {
-    fParticlMode = fParticlModeIn;
+    fBitcoinCMode = fBitcoinCModeIn;
 
     SHA256AutoDetect();
     RandomInit();
@@ -60,7 +60,7 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName, bool fParticl
     fCheckBlockIndex = true;
     SelectParams(chainName);
 
-    ResetParams(chainName, fParticlMode);
+    ResetParams(chainName, fBitcoinCMode);
 
     noui_connect();
 }
@@ -79,7 +79,7 @@ fs::path BasicTestingSetup::SetDataDir(const std::string& name)
     return ret;
 }
 
-TestingSetup::TestingSetup(const std::string& chainName, bool fParticlModeIn) : BasicTestingSetup(chainName, fParticlModeIn)
+TestingSetup::TestingSetup(const std::string& chainName, bool fBitcoinCModeIn) : BasicTestingSetup(chainName, fBitcoinCModeIn)
 {
     SetDataDir("tempdir");
     const CChainParams& chainparams = Params();

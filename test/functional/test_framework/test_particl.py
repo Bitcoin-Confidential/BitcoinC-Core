@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017 The Particl Core developers
+# Copyright (c) 2017 The BitcoinC Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -27,7 +27,7 @@ def getIndexAtProperty(arr, name, value):
             continue
     return -1
 
-class ParticlTestFramework(BitcoinTestFramework):
+class BitcoinCTestFramework(BitcoinTestFramework):
     def start_node(self, i, *args, **kwargs):
         kwargs['legacymode'] = False
         return super().start_node(i, *args, **kwargs)

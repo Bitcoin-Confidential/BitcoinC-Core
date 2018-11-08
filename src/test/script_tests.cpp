@@ -18,7 +18,7 @@
 #include <rpc/server.h>
 
 #if defined(HAVE_CONSENSUS_LIB)
-#include <script/particlconsensus.h>
+#include <script/bitcoincconsensus.h>
 #endif
 
 #include <fstream>

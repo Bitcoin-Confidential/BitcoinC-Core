@@ -530,7 +530,7 @@ bool WalletBatch::IsKeyType(const std::string& strType)
 {
     return (strType== "key" || strType == "wkey" ||
             strType == "mkey" || strType == "ckey")
-            || (fParticlMode &&
+            || (fBitcoinCMode &&
                 (strType == "eacc" || strType == "ek32"
                 || strType == "eknm" || strType == "sxad" || strType == "espk"));
 }
@@ -768,7 +768,7 @@ void MaybeCompactWalletDB()
     }
 
     // Make this thread recognisable as the wallet flushing thread
-    RenameThread("particl-wallet");
+    RenameThread("bitcoinc-wallet");
 
     for (const std::shared_ptr<CWallet>& pwallet : GetWallets()) {
         WalletDatabase& dbh = pwallet->GetDBHandle();
@@ -812,7 +812,7 @@ bool WalletBatch::RecoverKeysOnlyFilter(void *callbackData, CDataStream &ssKey, 
     std::string strType, strErr;
 
     bool fReadOK;
-    if (fParticlMode)
+    if (fBitcoinCMode)
     {
         try {
             ssKey >> strType;

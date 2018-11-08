@@ -90,8 +90,8 @@ void EnsureWalletIsUnlocked(CWallet * const pwallet)
     if (pwallet->IsLocked())
         throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
 
-    if (IsParticlWallet(pwallet)
-        && GetParticlWallet(pwallet)->fUnlockForStakingOnly)
+    if (IsBitcoinCWallet(pwallet)
+        && GetBitcoinCWallet(pwallet)->fUnlockForStakingOnly)
         throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Wallet is unlocked for staking only.");
 }
 
@@ -210,7 +210,7 @@ static UniValue getnewaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "getnewaddress ( \"label\" bech32 hardened 256bit )\n"
-            "\nReturns a new Particl address for receiving payments, key is saved in wallet.\n"
+            "\nReturns a new BitcoinC address for receiving payments, key is saved in wallet.\n"
            "If 'label' is specified, it is added to the address book \n"
             "so payments received with the address will be credited to 'account'.\n"
             "\nArguments:\n"
@@ -220,7 +220,7 @@ static UniValue getnewaddress(const JSONRPCRequest& request)
             "4. 256bit             (bool, optional, default=false) Use 256bit hash.\n"
             //"2. \"address_type\"   (string, optional) The address type to use. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -addresstype.\n"
             "\nResult:\n"
-            "\"address\"           (string) The new particl address\n"
+            "\"address\"           (string) The new bitcoinc address\n"
             "\nExamples:\n"
             + HelpExampleCli("getnewaddress", "")
             + HelpExampleRpc("getnewaddress", "")
@@ -235,7 +235,7 @@ static UniValue getnewaddress(const JSONRPCRequest& request)
     if (!request.params[0].isNull())
         label = LabelFromValue(request.params[0]);
 
-    if (IsParticlWallet(pwallet)) {
+    if (IsBitcoinCWallet(pwallet)) {
         CKeyID keyID;
         bool fBech32 = false;
         if (request.params.size() > 1) {
@@ -256,7 +256,7 @@ static UniValue getnewaddress(const JSONRPCRequest& request)
         }
 
         CPubKey newKey;
-        CHDWallet *phdw = GetParticlWallet(pwallet);
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
         {
             //LOCK2(cs_main, pwallet->cs_wallet);
             LOCK(cs_main);
@@ -329,19 +329,19 @@ static UniValue getaccountaddress(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts")) {
         if (request.fHelp) {
-            throw std::runtime_error("getaccountaddress (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("getaccountaddress (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getaccountaddress is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getaccountaddress is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
             "getaccountaddress \"account\"\n"
-            "\n\nDEPRECATED. Returns the current Particl address for receiving payments to this account.\n"
+            "\n\nDEPRECATED. Returns the current BitcoinC address for receiving payments to this account.\n"
             "\nArguments:\n"
             "1. \"account\"       (string, required) The account for the address. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created and a new address created  if there is no account by the given name.\n"
             "\nResult:\n"
-            "\"address\"          (string) The account particl address\n"
+            "\"address\"          (string) The account bitcoinc address\n"
             "\nExamples:\n"
             + HelpExampleCli("getaccountaddress", "")
             + HelpExampleCli("getaccountaddress", "\"\"")
@@ -373,7 +373,7 @@ static UniValue getrawchangeaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getrawchangeaddress ( \"address_type\" )\n"
-            "\nReturns a new Particl address, for receiving change.\n"
+            "\nReturns a new BitcoinC address, for receiving change.\n"
             "This is for use with raw transactions, NOT normal use.\n"
             "\nArguments:\n"
             "1. \"address_type\"           (string, optional) The address type to use. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -changetype.\n"
@@ -390,9 +390,9 @@ static UniValue getrawchangeaddress(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
-    if (IsParticlWallet(pwallet))
+    if (IsBitcoinCWallet(pwallet))
     {
-        CHDWallet *phdw = GetParticlWallet(pwallet);
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
         CPubKey pkOut;
 
         if (0 != phdw->NewKeyFromAccount(pkOut, true))
@@ -438,9 +438,9 @@ static UniValue setlabel(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts") && request.strMethod == "setaccount") {
         if (request.fHelp) {
-            throw std::runtime_error("setaccount (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("setaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "setaccount is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "setaccount is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() != 2)
@@ -448,7 +448,7 @@ static UniValue setlabel(const JSONRPCRequest& request)
             "setlabel \"address\" \"label\"\n"
             "\nSets the label associated with the given address.\n"
             "\nArguments:\n"
-            "1. \"address\"         (string, required) The particl address to be associated with a label.\n"
+            "1. \"address\"         (string, required) The bitcoinc address to be associated with a label.\n"
             "2. \"label\"           (string, required) The label to assign to the address.\n"
             "\nExamples:\n"
             + HelpExampleCli("setlabel", "\"PswXnorAgjpAtaySWkPSmWQe3Fc8LmviVc\" \"tabby\"")
@@ -459,7 +459,7 @@ static UniValue setlabel(const JSONRPCRequest& request)
 
     CTxDestination dest = DecodeDestination(request.params[0].get_str());
     if (!IsValidDestination(dest)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Particl address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid BitcoinC address");
     }
 
     std::string old_label = pwallet->mapAddressBook[dest].name;
@@ -504,9 +504,9 @@ static UniValue getaccount(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts")) {
         if (request.fHelp) {
-            throw std::runtime_error("getaccount (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("getaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getaccount is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getaccount is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() != 1)
@@ -514,7 +514,7 @@ static UniValue getaccount(const JSONRPCRequest& request)
             "getaccount \"address\"\n"
             "\nDEPRECATED. Returns the account associated with the given address.\n"
             "\nArguments:\n"
-            "1. \"address\"         (string, required) The particl address for account lookup.\n"
+            "1. \"address\"         (string, required) The bitcoinc address for account lookup.\n"
             "\nResult:\n"
             "\"accountname\"        (string) the account address\n"
             "\nExamples:\n"
@@ -526,7 +526,7 @@ static UniValue getaccount(const JSONRPCRequest& request)
 
     CTxDestination dest = DecodeDestination(request.params[0].get_str());
     if (!IsValidDestination(dest)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Particl address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid BitcoinC address");
     }
 
     std::string strAccount;
@@ -549,9 +549,9 @@ static UniValue getaddressesbyaccount(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts")) {
         if (request.fHelp) {
-            throw std::runtime_error("getaddressbyaccount (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("getaddressbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getaddressesbyaccount is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getaddressesbyaccount is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() != 1)
@@ -562,7 +562,7 @@ static UniValue getaddressesbyaccount(const JSONRPCRequest& request)
             "1. \"account\"        (string, required) The account name.\n"
             "\nResult:\n"
             "[                     (json array of string)\n"
-            "  \"address\"         (string) A particl address associated with the given account\n"
+            "  \"address\"         (string) A bitcoinc address associated with the given account\n"
             "  ,...\n"
             "]\n"
             "\nExamples:\n"
@@ -642,7 +642,7 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
             "\nSend an amount to a given address.\n"
             + HelpRequiringPassphrase(pwallet) +
             "\nArguments:\n"
-            "1. \"address\"     (string, required) The particl address to send to.\n"
+            "1. \"address\"     (string, required) The bitcoinc address to send to.\n"
             "2. amount          (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
             "3. \"comment\"     (string, optional) A comment used to store what the transaction is for. \n"
             "                            This is not part of the transaction, just kept in your wallet.\n"
@@ -650,7 +650,7 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
             "                            to which you're sending the transaction. This is not part of the \n"
             "                            transaction, just kept in your wallet.\n"
             "5. subtractfeefromamount  (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
-            "                            The recipient will receive less particl than you enter in the amount field.\n"
+            "                            The recipient will receive less bitcoinc than you enter in the amount field.\n"
             "6. \"narration\"   (string, optional) Up to 24 characters sent with the transaction.\n"
             "                            The narration is stored in the blockchain and is sent encrypted when destination is a stealth address and unencrypted otherwise.\n"
             "7. replaceable            (boolean, optional) Allow this transaction to be replaced by a transaction with higher fees via BIP 125\n"
@@ -711,7 +711,7 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
         }
     }
 
-    if (IsParticlWallet(pwallet))
+    if (IsBitcoinCWallet(pwallet))
     {
         JSONRPCRequest newRequest;
         newRequest.fHelp = false;
@@ -800,7 +800,7 @@ static UniValue listaddressgroupings(const JSONRPCRequest& request)
             "[\n"
             "  [\n"
             "    [\n"
-            "      \"address\",            (string) The particl address\n"
+            "      \"address\",            (string) The bitcoinc address\n"
             "      amount,                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
             "      \"label\"               (string, optional) The label\n"
             "    ]\n"
@@ -855,7 +855,7 @@ static UniValue signmessage(const JSONRPCRequest& request)
             "\nSign a message with the private key of an address"
             + HelpRequiringPassphrase(pwallet) + "\n"
             "\nArguments:\n"
-            "1. \"address\"         (string, required) The particl address to use for the private key.\n"
+            "1. \"address\"         (string, required) The bitcoinc address to use for the private key.\n"
             "2. \"message\"         (string, required) The message to create a signature for.\n"
             "\nResult:\n"
             "\"signature\"          (string) The signature of the message encoded in base 64\n"
@@ -915,9 +915,9 @@ static UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
             "getreceivedbyaddress \"address\" ( minconf )\n"
-            "\nReturns the total amount received by the given particl address in transactions with at least minconf confirmations.\n"
+            "\nReturns the total amount received by the given bitcoinc address in transactions with at least minconf confirmations.\n"
             "\nArguments:\n"
-            "1. \"address\"         (string, required) The particl address for transactions.\n"
+            "1. \"address\"         (string, required) The bitcoinc address for transactions.\n"
             "2. minconf             (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
             "\nResult:\n"
             "amount   (numeric) The total amount in " + CURRENCY_UNIT + " received at this address.\n"
@@ -941,7 +941,7 @@ static UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     // Bitcoin address
     CTxDestination dest = DecodeDestination(request.params[0].get_str());
     if (!IsValidDestination(dest)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Particl address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid BitcoinC address");
     }
     CScript scriptPubKey = GetScriptForDestination(dest);
     if (!IsMine(*pwallet, scriptPubKey)) {
@@ -958,10 +958,10 @@ static UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
 
-        if ((!fParticlWallet && wtx.IsCoinBase()) || !CheckFinalTx(*wtx.tx))
+        if ((!fBitcoinCWallet && wtx.IsCoinBase()) || !CheckFinalTx(*wtx.tx))
             continue;
 
-        if (fParticlWallet)
+        if (fBitcoinCWallet)
         {
             for (auto &txout : wtx.tx->vpout)
             {
@@ -994,9 +994,9 @@ static UniValue getreceivedbylabel(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts") && request.strMethod == "getreceivedbyaccount") {
         if (request.fHelp) {
-            throw std::runtime_error("getreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("getreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getreceivedbyaccount is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "getreceivedbyaccount is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
@@ -1038,10 +1038,10 @@ static UniValue getreceivedbylabel(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
-        if ((!fParticlWallet && wtx.IsCoinBase()) || !CheckFinalTx(*wtx.tx))
+        if ((!fBitcoinCWallet && wtx.IsCoinBase()) || !CheckFinalTx(*wtx.tx))
             continue;
 
-        if (fParticlWallet)
+        if (fBitcoinCWallet)
         {
             for (auto &txout : wtx.tx->vpout)
             {
@@ -1089,7 +1089,7 @@ static UniValue getbalance(const JSONRPCRequest& request)
             "The server total may be different to the balance in the default \"\" account.\n"
             "\nArguments:\n"
             "1. \"account\"         (string, optional) DEPRECATED. This argument will be removed in V0.18. \n"
-            "                     To use this deprecated argument, start particld with -deprecatedrpc=accounts. The account string may be given as a\n"
+            "                     To use this deprecated argument, start bitcoincd with -deprecatedrpc=accounts. The account string may be given as a\n"
             "                     specific account name to find the balance associated with wallet keys in\n"
             "                     a named account, or as the empty string (\"\") to find the balance\n"
             "                     associated with wallet keys not in any named account, or as \"*\" to find\n"
@@ -1195,9 +1195,9 @@ static UniValue movecmd(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts")) {
         if (request.fHelp) {
-            throw std::runtime_error("move (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("move (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "move is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "move is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 5)
@@ -1340,20 +1340,20 @@ static UniValue sendmany(const JSONRPCRequest& request)
         help_text = "sendmany \"\" {\"address\":amount,...} ( minconf \"comment\" [\"address\",...] replaceable conf_target \"estimate_mode\")\n"
             "\nSend multiple times. Amounts are double-precision floating point numbers.\n"
             "Note that the \"fromaccount\" argument has been removed in V0.17. To use this RPC with a \"fromaccount\" argument, restart\n"
-            "particld with -deprecatedrpc=accounts\n"
+            "bitcoincd with -deprecatedrpc=accounts\n"
             + HelpRequiringPassphrase(pwallet) + "\n"
             "\nArguments:\n"
             "1. \"dummy\"               (string, required) Must be set to \"\" for backwards compatibility.\n"
             "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
             "    {\n"
-            "      \"address\":amount   (numeric or string) The particl address is the key, the numeric amount (can be string) in " + CURRENCY_UNIT + " is the value\n"
+            "      \"address\":amount   (numeric or string) The bitcoinc address is the key, the numeric amount (can be string) in " + CURRENCY_UNIT + " is the value\n"
             "      ,...\n"
             "    }\n"
             "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
             "4. \"comment\"             (string, optional) A comment\n"
             "5. subtractfeefrom         (array, optional) A json array with addresses.\n"
             "                           The fee will be equally deducted from the amount of each selected address.\n"
-            "                           Those recipients will receive less particl than you enter in their corresponding amount field.\n"
+            "                           Those recipients will receive less bitcoinc than you enter in their corresponding amount field.\n"
             "                           If no addresses are specified here, the sender pays the fee.\n"
             "    [\n"
             "      \"address\"          (string) Subtract fee from this address\n"
@@ -1385,7 +1385,7 @@ static UniValue sendmany(const JSONRPCRequest& request)
             "1. \"fromaccount\"         (string, required) DEPRECATED. The account to send the funds from. Should be \"\" for the default account\n"
             "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
             "    {\n"
-            "      \"address\":amount   (numeric or string) The particl address is the key, the numeric amount (can be string) in " + CURRENCY_UNIT + " is the value\n"
+            "      \"address\":amount   (numeric or string) The bitcoinc address is the key, the numeric amount (can be string) in " + CURRENCY_UNIT + " is the value\n"
             "      ,...\n"
             "    }\n"
             "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
@@ -1461,7 +1461,7 @@ static UniValue sendmany(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid estimate_mode parameter");
         }
     }
-    if (IsParticlWallet(pwallet)) {
+    if (IsBitcoinCWallet(pwallet)) {
         JSONRPCRequest newRequest;
         newRequest.fHelp = false;
         newRequest.fSkipBlock = true; // already blocked in this function
@@ -1536,7 +1536,7 @@ static UniValue sendmany(const JSONRPCRequest& request)
     for (const std::string& name_ : keys) {
         CTxDestination dest = DecodeDestination(name_);
         if (!IsValidDestination(dest)) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Particl address: ") + name_);
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitcoinC address: ") + name_);
         }
 
         if (destinations.count(dest)) {
@@ -1603,16 +1603,16 @@ static UniValue addmultisigaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5) {
         std::string msg = "addmultisigaddress nrequired [\"key\",...] ( \"label\", bech32, 256bit)\n"
             "\nAdd a nrequired-to-sign multisignature address to the wallet. Requires a new wallet backup.\n"
-            "Each key is a Particl address or hex-encoded public key.\n"
+            "Each key is a BitcoinC address or hex-encoded public key.\n"
             "This functionality is only intended for use with non-watchonly addresses.\n"
             "See `importaddress` for watchonly p2sh address support.\n"
             "If 'label' is specified, assign address to that label.\n"
 
             "\nArguments:\n"
             "1. nrequired        (numeric, required) The number of required signatures out of the n keys or addresses.\n"
-            "2. \"keys\"         (string, required) A json array of particl addresses or hex-encoded public keys\n"
+            "2. \"keys\"         (string, required) A json array of bitcoinc addresses or hex-encoded public keys\n"
             "     [\n"
-            "       \"address\"  (string) particl address or hex-encoded public key\n"
+            "       \"address\"  (string) bitcoinc address or hex-encoded public key\n"
             "       ...,\n"
             "     ]\n"
             "3. \"label\"        (string, optional) A label to assign the addresses to.\n"
@@ -1653,7 +1653,7 @@ static UniValue addmultisigaddress(const JSONRPCRequest& request)
     }
 
     OutputType output_type = pwallet->m_default_address_type;
-    if (!fParticlMode)
+    if (!fBitcoinCMode)
     if (!request.params[3].isNull()) {
         if (!ParseOutputType(request.params[3].get_str(), output_type)) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[3].get_str()));
@@ -1665,8 +1665,8 @@ static UniValue addmultisigaddress(const JSONRPCRequest& request)
     CTxDestination dest = AddAndGetDestinationForScript(*pwallet, inner, output_type);
 
     UniValue result(UniValue::VOBJ);
-    bool fbech32 = fParticlMode && request.params.size() > 3 ? request.params[3].get_bool() : false;
-    bool f256Hash = fParticlMode && request.params.size() > 4 ? request.params[4].get_bool() : false;
+    bool fbech32 = fBitcoinCMode && request.params.size() > 3 ? request.params[3].get_bool() : false;
+    bool f256Hash = fBitcoinCMode && request.params.size() > 4 ? request.params[4].get_bool() : false;
 
     if (f256Hash) {
         CScriptID256 innerID;
@@ -1767,12 +1767,12 @@ static UniValue addwitnessaddress(const JSONRPCRequest& request)
         throw std::runtime_error(msg);
     }
 
-    if (fParticlMode)
-        throw JSONRPCError(RPC_MISC_ERROR, "addwitnessaddress is disabled for Particl");
+    if (fBitcoinCMode)
+        throw JSONRPCError(RPC_MISC_ERROR, "addwitnessaddress is disabled for BitcoinC");
 
     if (!IsDeprecatedRPCEnabled("addwitnessaddress")) {
         throw JSONRPCError(RPC_METHOD_DEPRECATED, "addwitnessaddress is deprecated and will be fully removed in v0.17. "
-            "To use addwitnessaddress in v0.16, restart particld with -deprecatedrpc=addwitnessaddress.\n"
+            "To use addwitnessaddress in v0.16, restart bitcoincd with -deprecatedrpc=addwitnessaddress.\n"
             "Projects should transition to using the address_type argument of getnewaddress, or option -addresstype=[bech32|p2sh-segwit] instead.\n");
     }
 
@@ -2054,9 +2054,9 @@ static UniValue listreceivedbylabel(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts") && request.strMethod == "listreceivedbyaccount") {
         if (request.fHelp) {
-            throw std::runtime_error("listreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("listreceivedbyaccount (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "listreceivedbyaccount is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "listreceivedbyaccount is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() > 3)
@@ -2178,12 +2178,12 @@ static void ListTransactions(CWallet* const pwallet, const CWalletTx& wtx, const
                 }
                 if (IsDeprecatedRPCEnabled("accounts")) entry.pushKV("account", account);
 
-                if (fParticlWallet
+                if (fBitcoinCWallet
                     && r.destination.type() == typeid(CKeyID))
                 {
                     CStealthAddress sx;
                     CKeyID idK = boost::get<CKeyID>(r.destination);
-                    if (GetParticlWallet(pwallet)->GetStealthLinked(idK, sx))
+                    if (GetBitcoinCWallet(pwallet)->GetStealthLinked(idK, sx))
                     {
                         entry.pushKV("stealth_address", sx.Encoded());
                     };
@@ -2200,7 +2200,7 @@ static void ListTransactions(CWallet* const pwallet, const CWalletTx& wtx, const
                         entry.pushKV("category", "immature");
                     else
                     {
-                        if (fParticlMode)
+                        if (fBitcoinCMode)
                             entry.pushKV("category", "coinbase");
                         else
                             entry.pushKV("category", "generate");
@@ -2418,7 +2418,7 @@ UniValue listtransactions(const JSONRPCRequest& request)
         help_text = "listtransactions (dummy count skip include_watchonly)\n"
             "\nReturns up to 'count' most recent transactions skipping the first 'from' transactions for account 'account'.\n"
             "Note that the \"account\" argument and \"otheraccount\" return value have been removed in V0.17. To use this RPC with an \"account\" argument, restart\n"
-            "particld with -deprecatedrpc=accounts\n"
+            "bitcoincd with -deprecatedrpc=accounts\n"
             "\nArguments:\n"
             "1. \"dummy\"    (string, optional) If set, should be \"*\" for backwards compatibility.\n"
             "2. count          (numeric, optional, default=10) The number of transactions to return\n"
@@ -2427,7 +2427,7 @@ UniValue listtransactions(const JSONRPCRequest& request)
             "\nResult:\n"
             "[\n"
             "  {\n"
-            "    \"address\":\"address\",    (string) The particl address of the transaction.\n"
+            "    \"address\":\"address\",    (string) The bitcoinc address of the transaction.\n"
             "    \"category\":\"send|receive\", (string) The transaction category.\n"
             "    \"amount\": x.xxx,          (numeric) The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and is positive\n"
             "                                        for the 'receive' category,\n"
@@ -2473,7 +2473,7 @@ UniValue listtransactions(const JSONRPCRequest& request)
             "  {\n"
             "    \"account\":\"accountname\",       (string) DEPRECATED. This field will be removed in V0.18. The account name associated with the transaction. \n"
             "                                                It will be \"\" for the default account.\n"
-            "    \"address\":\"address\",           (string) The particl address of the transaction. Not present for \n"
+            "    \"address\":\"address\",           (string) The bitcoinc address of the transaction. Not present for \n"
             "                                                move transactions (category = move).\n"
             "    \"category\":\"send|receive|move|coinbase|stake|orphaned_stake\", \n"
             "                                       (string) The transaction category. 'move' is a local (off blockchain)\n"
@@ -2584,11 +2584,11 @@ UniValue listtransactions(const JSONRPCRequest& request)
         ret.push_back(retReversed[i]);
     };
 
-    if (IsParticlWallet(pwallet))
+    if (IsBitcoinCWallet(pwallet))
     {
         LOCK2(cs_main, pwallet->cs_wallet);
 
-        CHDWallet *phdw = GetParticlWallet(pwallet);
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
         const RtxOrdered_t &txOrdered = phdw->rtxOrdered;
 
         // TODO: Combine finding and inserting into ret loops
@@ -2643,9 +2643,9 @@ static UniValue listaccounts(const JSONRPCRequest& request)
 
     if (!IsDeprecatedRPCEnabled("accounts")) {
         if (request.fHelp) {
-            throw std::runtime_error("listaccounts (Deprecated, will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts)");
+            throw std::runtime_error("listaccounts (Deprecated, will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts)");
         }
-        throw JSONRPCError(RPC_METHOD_DEPRECATED, "listaccounts is deprecated and will be removed in V0.18. To use this command, start particld with -deprecatedrpc=accounts.");
+        throw JSONRPCError(RPC_METHOD_DEPRECATED, "listaccounts is deprecated and will be removed in V0.18. To use this command, start bitcoincd with -deprecatedrpc=accounts.");
     }
 
     if (request.fHelp || request.params.size() > 2)
@@ -2752,8 +2752,8 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
             "\nResult:\n"
             "{\n"
             "  \"transactions\": [\n"
-            "    \"account\":\"accountname\",       (string) DEPRECATED. This field will be removed in V0.18. To see this deprecated field, start particld with -deprecatedrpc=accounts. The account name associated with the transaction. Will be \"\" for the default account.\n"
-            "    \"address\":\"address\",    (string) The particl address of the transaction. Not present for move transactions (category = move).\n"
+            "    \"account\":\"accountname\",       (string) DEPRECATED. This field will be removed in V0.18. To see this deprecated field, start bitcoincd with -deprecatedrpc=accounts. The account name associated with the transaction. Will be \"\" for the default account.\n"
+            "    \"address\":\"address\",    (string) The bitcoinc address of the transaction. Not present for move transactions (category = move).\n"
             "    \"category\":\"send|receive\",     (string) The transaction category. 'send' has negative amounts, 'receive' has positive amounts.\n"
             "    \"amount\": x.xxx,          (numeric) The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and for the 'move' category for moves \n"
             "                                          outbound. It is positive for the 'receive' category, and for the 'move' category for inbound funds.\n"
@@ -2839,9 +2839,9 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
         }
     }
 
-    if (IsParticlWallet(pwallet))
+    if (IsBitcoinCWallet(pwallet))
     {
-        CHDWallet *phdw = GetParticlWallet(pwallet);
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
 
         for (const auto &ri : phdw->mapRecords)
         {
@@ -2869,8 +2869,8 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
                 // even negative confirmation ones, hence the big negative.
                 ListTransactions(pwallet, it->second, "*", -100000000, true, removed, filter);
             } else
-            if (IsParticlWallet(pwallet)) {
-                CHDWallet *phdw = GetParticlWallet(pwallet);
+            if (IsBitcoinCWallet(pwallet)) {
+                CHDWallet *phdw = GetBitcoinCWallet(pwallet);
                 const uint256 &txhash = tx->GetHash();
                 MapRecords_t::const_iterator mri = phdw->mapRecords.find(txhash);
                 if (mri != phdw->mapRecords.end()) {
@@ -2925,8 +2925,8 @@ UniValue gettransaction(const JSONRPCRequest& request)
             "                                                   may be unknown for unconfirmed transactions not in the mempool\n"
             "  \"details\" : [\n"
             "    {\n"
-            "      \"account\" : \"accountname\",      (string) DEPRECATED. This field will be removed in a V0.18. To see this deprecated field, start particld with -deprecatedrpc=accounts. The account name involved in the transaction, can be \"\" for the default account.\n"
-            "      \"address\" : \"address\",          (string) The particl address involved in the transaction\n"
+            "      \"account\" : \"accountname\",      (string) DEPRECATED. This field will be removed in a V0.18. To see this deprecated field, start bitcoincd with -deprecatedrpc=accounts. The account name involved in the transaction, can be \"\" for the default account.\n"
+            "      \"address\" : \"address\",          (string) The bitcoinc address involved in the transaction\n"
             "      \"category\" : \"send|receive\",    (string) The category, either 'send' or 'receive'\n"
             "      \"amount\" : x.xxx,                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
             "      \"label\" : \"label\",              (string) A comment for the address/transaction, if any\n"
@@ -2965,8 +2965,8 @@ UniValue gettransaction(const JSONRPCRequest& request)
     UniValue entry(UniValue::VOBJ);
     auto it = pwallet->mapWallet.find(hash);
     if (it == pwallet->mapWallet.end()) {
-        if (IsParticlWallet(pwallet)) {
-            CHDWallet *phdw = GetParticlWallet(pwallet);
+        if (IsBitcoinCWallet(pwallet)) {
+            CHDWallet *phdw = GetBitcoinCWallet(pwallet);
             MapRecords_t::const_iterator mri = phdw->mapRecords.find(hash);
 
             if (mri != phdw->mapRecords.end())
@@ -3049,7 +3049,7 @@ static UniValue abandontransaction(const JSONRPCRequest& request)
     hash.SetHex(request.params[0].get_str());
 
     if (!pwallet->mapWallet.count(hash)) {
-        if (!IsParticlWallet(pwallet) || !GetParticlWallet(pwallet)->HaveTransaction(hash)) {
+        if (!IsBitcoinCWallet(pwallet) || !GetBitcoinCWallet(pwallet)->HaveTransaction(hash)) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid or non-wallet transaction id");
         }
     }
@@ -3228,9 +3228,9 @@ static UniValue walletpassphrase(const JSONRPCRequest& request)
     if (request.params.size() > 2)
         fWalletUnlockStakingOnly = request.params[2].get_bool();
 
-    if (IsParticlWallet(pwallet))
+    if (IsBitcoinCWallet(pwallet))
     {
-        CHDWallet *phdw = GetParticlWallet(pwallet);
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
         LOCK(phdw->cs_wallet);
         phdw->fUnlockForStakingOnly = fWalletUnlockStakingOnly;
     };
@@ -3364,7 +3364,7 @@ static UniValue encryptwallet(const JSONRPCRequest& request)
             "\nExamples:\n"
             "\nEncrypt your wallet\n"
             + HelpExampleCli("encryptwallet", "\"my pass phrase\"") +
-            "\nNow set the passphrase to use the wallet, such as for signing or sending particl\n"
+            "\nNow set the passphrase to use the wallet, such as for signing or sending bitcoinc\n"
             + HelpExampleCli("walletpassphrase", "\"my pass phrase\"") +
             "\nNow we can do something like sign\n"
             + HelpExampleCli("signmessage", "\"address\" \"test message\"") +
@@ -3400,8 +3400,8 @@ static UniValue encryptwallet(const JSONRPCRequest& request)
     // slack space in .dat files; that is bad if the old data is
     // unencrypted private keys. So:
     StartShutdown();
-    //return "wallet encrypted; Particl server stopping, restart to run with encrypted wallet. The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.";
-    return "wallet encrypted; Particl server stopping, restart to run with encrypted wallet. You need to make a new backup.";
+    //return "wallet encrypted; BitcoinC server stopping, restart to run with encrypted wallet. The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.";
+    return "wallet encrypted; BitcoinC server stopping, restart to run with encrypted wallet. You need to make a new backup.";
 }
 
 static UniValue lockunspent(const JSONRPCRequest& request)
@@ -3496,11 +3496,11 @@ static UniValue lockunspent(const JSONRPCRequest& request)
 
         const COutPoint outpt(uint256S(txid), nOutput);
 
-        if (IsParticlWallet(pwallet))
+        if (IsBitcoinCWallet(pwallet))
         {
             const auto it = pwallet->mapWallet.find(outpt.hash);
             if (it == pwallet->mapWallet.end()) {
-                CHDWallet *phdw = GetParticlWallet(pwallet);
+                CHDWallet *phdw = GetBitcoinCWallet(pwallet);
                 const auto it = phdw->mapRecords.find(outpt.hash);
                 if (it == phdw->mapRecords.end())
                     throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, unknown transaction");
@@ -3695,7 +3695,7 @@ static UniValue getwalletinfo(const JSONRPCRequest& request)
     obj.pushKV("walletname", pwallet->GetName());
     obj.pushKV("walletversion", pwallet->GetVersion());
 
-    if (fParticlWallet)
+    if (fBitcoinCWallet)
     {
         CHDWalletBalances bal;
         ((CHDWallet*)pwallet)->GetBalances(bal);
@@ -3731,13 +3731,13 @@ static UniValue getwalletinfo(const JSONRPCRequest& request)
         obj.pushKV("immature_balance",    ValueFromAmount(pwallet->GetImmatureBalance()));
     };
 
-    int nTxCount = (int)pwallet->mapWallet.size() + (fParticlWallet ? (int)((CHDWallet*)pwallet)->mapRecords.size() : 0);
+    int nTxCount = (int)pwallet->mapWallet.size() + (fBitcoinCWallet ? (int)((CHDWallet*)pwallet)->mapRecords.size() : 0);
 
     obj.pushKV("txcount",       (int)nTxCount);
 
     CKeyID seed_id;
-    if (IsParticlWallet(pwallet)) {
-        CHDWallet *pwhd = GetParticlWallet(pwallet);
+    if (IsBitcoinCWallet(pwallet)) {
+        CHDWallet *pwhd = GetBitcoinCWallet(pwallet);
 
         obj.pushKV("keypoololdest", pwhd->GetOldestActiveAccountTime());
         obj.pushKV("keypoolsize",   pwhd->CountActiveAccountKeys());
@@ -3812,7 +3812,7 @@ static UniValue loadwallet(const JSONRPCRequest& request)
         throw std::runtime_error(
             "loadwallet \"filename\"\n"
             "\nLoads a wallet from a wallet file or directory."
-            "\nNote that all wallet command-line options used when starting particld will be"
+            "\nNote that all wallet command-line options used when starting bitcoincd will be"
             "\napplied to the new wallet (eg -zapwallettxes, upgradewallet, rescan, etc).\n"
             "\nArguments:\n"
             "1. \"filename\"    (string, required) The wallet directory or .dat file.\n"
@@ -3848,13 +3848,13 @@ static UniValue loadwallet(const JSONRPCRequest& request)
     if (!wallet) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Wallet loading failed.");
     }
-    if (fParticlMode && !((CHDWallet*)wallet.get())->Initialise())
+    if (fBitcoinCMode && !((CHDWallet*)wallet.get())->Initialise())
         throw JSONRPCError(RPC_WALLET_ERROR, "Wallet initialise failed.");
     AddWallet(wallet);
 
     wallet->postInitProcess();
 
-    if (fParticlMode) {
+    if (fBitcoinCMode) {
         RestartStakingThreads();
     }
 
@@ -3907,7 +3907,7 @@ static UniValue createwallet(const JSONRPCRequest& request)
     if (!wallet) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Wallet creation failed.");
     }
-    if (fParticlMode && !((CHDWallet*)wallet.get())->Initialise())
+    if (fBitcoinCMode && !((CHDWallet*)wallet.get())->Initialise())
         throw JSONRPCError(RPC_WALLET_ERROR, "Wallet initialise failed.");
     AddWallet(wallet);
 
@@ -3962,7 +3962,7 @@ static UniValue unloadwallet(const JSONRPCRequest& request)
     // The wallet will be destroyed once the last shared pointer is released.
     wallet->NotifyUnload();
 
-    if (fParticlMode) {
+    if (fBitcoinCMode) {
         RestartStakingThreads();
     }
 
@@ -4004,9 +4004,9 @@ static UniValue resendwallettransactions(const JSONRPCRequest& request)
     std::vector<uint256> txids = pwallet->ResendWalletTransactionsBefore(GetTime(), g_connman.get());
 
     UniValue result(UniValue::VARR);
-    if (IsParticlWallet(pwallet))
+    if (IsBitcoinCWallet(pwallet))
     {
-        CHDWallet *phdw = GetParticlWallet(pwallet);
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
         std::vector<uint256> txidsRec;
         txidsRec = phdw->ResendRecordTransactionsBefore(GetTime(), g_connman.get());
 
@@ -4039,9 +4039,9 @@ static UniValue listunspent(const JSONRPCRequest& request)
             "\nArguments:\n"
             "1. minconf          (numeric, optional, default=1) The minimum confirmations to filter\n"
             "2. maxconf          (numeric, optional, default=9999999) The maximum confirmations to filter\n"
-            "3. \"addresses\"      (string) A json array of particl addresses to filter\n"
+            "3. \"addresses\"      (string) A json array of bitcoinc addresses to filter\n"
             "    [\n"
-            "      \"address\"     (string) particl address\n"
+            "      \"address\"     (string) bitcoinc address\n"
             "      ,...\n"
             "    ]\n"
             "4. include_unsafe (bool, optional, default=true) Include outputs that are not safe to spend\n"
@@ -4060,10 +4060,10 @@ static UniValue listunspent(const JSONRPCRequest& request)
             "  {\n"
             "    \"txid\" : \"txid\",        (string) the transaction id \n"
             "    \"vout\" : n,               (numeric) the vout value\n"
-            "    \"address\" : \"address\",    (string) the particl address\n"
-            "    \"coldstaking_address\"  : \"address\" (string) the particl address this output must stake on\n"
+            "    \"address\" : \"address\",    (string) the bitcoinc address\n"
+            "    \"coldstaking_address\"  : \"address\" (string) the bitcoinc address this output must stake on\n"
             "    \"label\" : \"label\",        (string) The associated label, or \"\" for the default label\n"
-            "    \"account\" : \"account\",    (string) DEPRECATED. This field will be removed in V0.18. To see this deprecated field, start particld with -deprecatedrpc=accounts. The associated account, or \"\" for the default account\n"
+            "    \"account\" : \"account\",    (string) DEPRECATED. This field will be removed in V0.18. To see this deprecated field, start bitcoincd with -deprecatedrpc=accounts. The associated account, or \"\" for the default account\n"
             "    \"scriptPubKey\" : \"key\",   (string) the script key\n"
             "    \"amount\" : x.xxx,         (numeric) the transaction output amount in " + CURRENCY_UNIT + "\n"
             "    \"confirmations\" : n,      (numeric) The number of confirmations\n"
@@ -4108,7 +4108,7 @@ static UniValue listunspent(const JSONRPCRequest& request)
             const UniValue& input = inputs[idx];
             CTxDestination dest = DecodeDestination(input.get_str());
             if (!IsValidDestination(dest)) {
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Particl address: ") + input.get_str());
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitcoinC address: ") + input.get_str());
             }
             if (!destinations.insert(dest).second) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ") + input.get_str());
@@ -4177,7 +4177,7 @@ static UniValue listunspent(const JSONRPCRequest& request)
         CTxDestination address;
         const CScript *scriptPubKey;
         bool fValidAddress;
-        if (fParticlWallet)
+        if (fBitcoinCWallet)
         {
             scriptPubKey = out.tx->tx->vpout[out.i]->GetPScriptPubKey();
             nValue = out.tx->tx->vpout[out.i]->GetValue();
@@ -4249,9 +4249,9 @@ static UniValue listunspent(const JSONRPCRequest& request)
         entry.pushKV("solvable", out.fSolvable);
         entry.pushKV("safe", out.fSafe);
 
-        if (IsParticlWallet(pwallet))
+        if (IsBitcoinCWallet(pwallet))
         {
-            CHDWallet *phdw = GetParticlWallet(pwallet);
+            CHDWallet *phdw = GetBitcoinCWallet(pwallet);
             CKeyID stakingKeyID;
             bool fStakeable = ExtractStakingKeyID(*scriptPubKey, stakingKeyID);
             if (fStakeable)
@@ -4314,7 +4314,7 @@ void FundTransaction(CWallet* const pwallet, CMutableTransaction& tx, CAmount& f
             CTxDestination dest = DecodeDestination(options["changeAddress"].get_str());
 
             if (!IsValidDestination(dest)) {
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "changeAddress must be a valid particl address");
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "changeAddress must be a valid bitcoinc address");
             }
 
             coinControl.destChange = dest;
@@ -4368,7 +4368,7 @@ void FundTransaction(CWallet* const pwallet, CMutableTransaction& tx, CAmount& f
       }
     }
 
-    size_t nOutputs = IsParticlWallet(pwallet) ? tx.vpout.size() : tx.vout.size();
+    size_t nOutputs = IsBitcoinCWallet(pwallet) ? tx.vpout.size() : tx.vout.size();
     if (nOutputs == 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "TX must have at least one output");
 
@@ -4419,7 +4419,7 @@ static UniValue fundrawtransaction(const JSONRPCRequest& request)
                             "1. \"hexstring\"           (string, required) The hex string of the raw transaction\n"
                             "2. options                 (object, optional)\n"
                             "   {\n"
-                            "     \"changeAddress\"          (string, optional, default pool address) The particl address to receive the change\n"
+                            "     \"changeAddress\"          (string, optional, default pool address) The bitcoinc address to receive the change\n"
                             "     \"changePosition\"         (numeric, optional, default random) The index of the change output\n"
                             "     \"change_type\"            (string, optional) The output type to use. Only valid if changeAddress is not specified. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -changetype.\n"
                             "     \"includeWatching\"        (boolean, optional, default false) Also select inputs which are watch only\n"
@@ -4428,7 +4428,7 @@ static UniValue fundrawtransaction(const JSONRPCRequest& request)
                             "     \"subtractFeeFromOutputs\" (array, optional) A json array of integers.\n"
                             "                              The fee will be equally deducted from the amount of each specified output.\n"
                             "                              The outputs are specified by their zero-based index, before any change output is added.\n"
-                            "                              Those recipients will receive less particl than you enter in their corresponding amount field.\n"
+                            "                              Those recipients will receive less bitcoinc than you enter in their corresponding amount field.\n"
                             "                              If no outputs are specified here, the sender pays the fee.\n"
                             "                                  [vout_index,...]\n"
                             "     \"replaceable\"            (boolean, optional) Marks this transaction as BIP125 replaceable.\n"
@@ -5007,13 +5007,13 @@ UniValue getaddressinfo(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() != 1) {
         throw std::runtime_error(
             "getaddressinfo \"address\"\n"
-            "\nReturn information about the given particl address. Some information requires the address\n"
+            "\nReturn information about the given bitcoinc address. Some information requires the address\n"
             "to be in the wallet.\n"
             "\nArguments:\n"
-            "1. \"address\"                    (string, required) The particl address to get the information of.\n"
+            "1. \"address\"                    (string, required) The bitcoinc address to get the information of.\n"
             "\nResult:\n"
             "{\n"
-            "  \"address\" : \"address\",        (string) The particl address validated\n"
+            "  \"address\" : \"address\",        (string) The bitcoinc address validated\n"
             "  \"scriptPubKey\" : \"hex\",       (string) The hex encoded scriptPubKey generated by the address\n"
             "  \"ismine\" : true|false,        (boolean) If the address is yours or not\n"
             "  \"iswatchonly\" : true|false,   (boolean) If the address is watchonly\n"
@@ -5033,7 +5033,7 @@ UniValue getaddressinfo(const JSONRPCRequest& request)
             "  \"embedded\" : {...},           (object, optional) Information about the address embedded in P2SH or P2WSH, if relevant and known. It includes all getaddressinfo output fields for the embedded address, excluding metadata (\"timestamp\", \"hdkeypath\", \"hdseedid\") and relation to the wallet (\"ismine\", \"iswatchonly\", \"account\").\n"
             "  \"iscompressed\" : true|false,  (boolean) If the address is compressed\n"
             "  \"label\" :  \"label\"         (string) The label associated with the address, \"\" is the default account\n"
-            "  \"account\" : \"account\"         (string) DEPRECATED. This field will be removed in V0.18. To see this deprecated field, start particld with -deprecatedrpc=accounts. The account associated with the address, \"\" is the default account\n"
+            "  \"account\" : \"account\"         (string) DEPRECATED. This field will be removed in V0.18. To see this deprecated field, start bitcoincd with -deprecatedrpc=accounts. The account associated with the address, \"\" is the default account\n"
             "  \"timestamp\" : timestamp,      (number, optional) The creation time of the key if available in seconds since epoch (Jan 1 1970 GMT)\n"
             "  \"hdkeypath\" : \"keypath\"       (string, optional) The HD keypath if the key is HD and available\n"
             "  \"hdseedid\" : \"<hash160>\"      (string, optional) The Hash160 of the HD seed\n"
@@ -5076,8 +5076,8 @@ UniValue getaddressinfo(const JSONRPCRequest& request)
     ret.pushKV("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
 
     isminetype mine = ISMINE_NO;
-    if (IsParticlWallet(pwallet)) {
-        CHDWallet *phdw = GetParticlWallet(pwallet);
+    if (IsBitcoinCWallet(pwallet)) {
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
         if (dest.type() == typeid(CExtKeyPair)) {
             CExtKeyPair ek = boost::get<CExtKeyPair>(dest);
             CKeyID id = ek.GetID();
@@ -5317,8 +5317,8 @@ UniValue sethdseed(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, "Cannot set a HD seed on a non-HD wallet. Start with -upgradewallet in order to upgrade a non-HD wallet to HD");
     }
 
-    if (IsParticlWallet(pwallet))
-        throw JSONRPCError(RPC_WALLET_ERROR, "Not necessary in Particl mode.");
+    if (IsBitcoinCWallet(pwallet))
+        throw JSONRPCError(RPC_WALLET_ERROR, "Not necessary in BitcoinC mode.");
 
     EnsureWalletIsUnlocked(pwallet);
 
@@ -5594,7 +5594,7 @@ UniValue walletcreatefundedpsbt(const JSONRPCRequest& request)
                             "2. \"outputs\"               (array, required) a json array with outputs (key-value pairs)\n"
                             "   [\n"
                             "    {\n"
-                            "      \"address\": x.xxx,    (obj, optional) A key-value pair. The key (string) is the particl address, the value (float or string) is the amount in " + CURRENCY_UNIT + "\n"
+                            "      \"address\": x.xxx,    (obj, optional) A key-value pair. The key (string) is the bitcoinc address, the value (float or string) is the amount in " + CURRENCY_UNIT + "\n"
                             "    },\n"
                             "    {\n"
                             "      \"data\": \"hex\"        (obj, optional) A key-value pair. The key must be \"data\", the value is hex encoded data\n"
@@ -5606,7 +5606,7 @@ UniValue walletcreatefundedpsbt(const JSONRPCRequest& request)
                             "                             Allows this transaction to be replaced by a transaction with higher fees. If provided, it is an error if explicit sequence numbers are incompatible.\n"
                             "4. options                 (object, optional)\n"
                             "   {\n"
-                            "     \"changeAddress\"          (string, optional, default pool address) The particl address to receive the change\n"
+                            "     \"changeAddress\"          (string, optional, default pool address) The bitcoinc address to receive the change\n"
                             "     \"changePosition\"         (numeric, optional, default random) The index of the change output\n"
                             "     \"change_type\"            (string, optional) The output type to use. Only valid if changeAddress is not specified. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -changetype.\n"
                             "     \"includeWatching\"        (boolean, optional, default false) Also select inputs which are watch only\n"
@@ -5615,7 +5615,7 @@ UniValue walletcreatefundedpsbt(const JSONRPCRequest& request)
                             "     \"subtractFeeFromOutputs\" (array, optional) A json array of integers.\n"
                             "                              The fee will be equally deducted from the amount of each specified output.\n"
                             "                              The outputs are specified by their zero-based index, before any change output is added.\n"
-                            "                              Those recipients will receive less particl than you enter in their corresponding amount field.\n"
+                            "                              Those recipients will receive less bitcoinc than you enter in their corresponding amount field.\n"
                             "                              If no outputs are specified here, the sender pays the fee.\n"
                             "                                  [vout_index,...]\n"
                             "     \"replaceable\"            (boolean, optional) Marks this transaction as BIP125 replaceable.\n"

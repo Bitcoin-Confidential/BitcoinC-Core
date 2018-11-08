@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018 The Particl Core developers
+# Copyright (c) 2018 The BitcoinC Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 # Test Decred atomic swap contracts
 
-from test_framework.test_particl import ParticlTestFramework
-from test_framework.test_particl import isclose, getIndexAtProperty
+from test_framework.test_bitcoinc import BitcoinCTestFramework
+from test_framework.test_bitcoinc import isclose, getIndexAtProperty
 from test_framework.util import *
 from test_framework.script import *
 from test_framework.messages import sha256
 from test_framework.address import chars as __b58chars, script_to_p2sh
 import binascii
 
-from test_framework.test_particl import jsonDecimal
+from test_framework.test_bitcoinc import jsonDecimal
 
 
 def script_to_p2sh_part(b):
@@ -342,7 +342,7 @@ def createClaimTxCT(node, rawtx, output_amounts, script, secret, privKeySign, pu
     return rawtxClaim
 
 
-class AtomicSwapTest(ParticlTestFramework):
+class AtomicSwapTest(BitcoinCTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

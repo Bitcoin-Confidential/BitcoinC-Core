@@ -7,7 +7,7 @@
 # Check include guards.
 
 export LC_ALL=C
-HEADER_ID_PREFIX="(BITCOIN_|PARTICL_)"
+HEADER_ID_PREFIX="(BITCOIN_|BITCOINC_)"
 HEADER_ID_SUFFIX="_H"
 
 REGEXP_EXCLUDE_FILES_WITH_PREFIX="src/(crypto/ctaes/|leveldb/|secp256k1/|tinyformat.h|univalue/|key/wordlists/|xxhash/|unilib/|lz4/|usbdevice/ledger/)"

@@ -66,12 +66,12 @@
         <translation>Vastuvõtvad aadressid</translation>
     </message>
     <message>
-        <source>These are your Particl addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Need on sinu Particl aadressid maksete saatmiseks. Ennem müntide saatmist kontrolli alati summat ja makse saaja aadressi.</translation>
+        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Need on sinu BitcoinC aadressid maksete saatmiseks. Ennem müntide saatmist kontrolli alati summat ja makse saaja aadressi.</translation>
     </message>
     <message>
-        <source>These are your Particl addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Need on sinu Particl aadressid sisenevate maksete vastu võtmiseks. Soovitav on iga tehingu tarbeks kasutada uut aadressi.</translation>
+        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Need on sinu BitcoinC aadressid sisenevate maksete vastu võtmiseks. Soovitav on iga tehingu tarbeks kasutada uut aadressi.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -172,7 +172,7 @@
         <translation>Kinnita rahakoti krüpteerimine.</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PARTICL&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOINC&lt;/b&gt;!</source>
         <translation>Hoiatus:Kui sa krüpteerid oma rahakoti ja kaotad salafraasi, siis sa&lt;b&gt;KAOTAD OMA BITCOINID&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -294,8 +294,8 @@
         <translation>Kettal olevate blokkide re-indekseerimine...</translation>
     </message>
     <message>
-        <source>Send coins to a Particl address</source>
-        <translation>Saada münte Particli aadressile</translation>
+        <source>Send coins to a BitcoinC address</source>
+        <translation>Saada münte BitcoinCi aadressile</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -318,8 +318,8 @@
         <translation>&amp;Kontrolli sõnumit...</translation>
     </message>
     <message>
-        <source>Particl</source>
-        <translation>Particl</translation>
+        <source>BitcoinC</source>
+        <translation>BitcoinC</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -346,12 +346,12 @@
         <translation>Krüpteeri oma rahakoti privaatvõtmed</translation>
     </message>
     <message>
-        <source>Sign messages with your Particl addresses to prove you own them</source>
-        <translation>Omandi tõestamiseks allkirjasta sõnumid oma Particli aadressiga</translation>
+        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
+        <translation>Omandi tõestamiseks allkirjasta sõnumid oma BitcoinCi aadressiga</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Particl addresses</source>
-        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud Particli aadressiga</translation>
+        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
+        <translation>Kinnita sõnumid kindlustamaks et need allkirjastati määratud BitcoinCi aadressiga</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -370,20 +370,20 @@
         <translation>Vahelehe tööriistariba</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and particl: URIs)</source>
-        <translation>Loo maksepäring (genereerib QR koodid ja particli: URId)</translation>
+        <source>Request payments (generates QR codes and bitcoinc: URIs)</source>
+        <translation>Loo maksepäring (genereerib QR koodid ja bitcoinci: URId)</translation>
     </message>
     <message>
-        <source>Open a particl: URI or payment request</source>
-        <translation>Ava particli: URI või maksepäring</translation>
+        <source>Open a bitcoinc: URI or payment request</source>
+        <translation>Ava bitcoinci: URI või maksepäring</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Käsurea valikud</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Particl network</source>
-        <translation><numerusform>%n aktiivne ühendus Particli võrku</numerusform><numerusform>%n aktiivset ühendust Particli võrku</numerusform></translation>
+        <source>%n active connection(s) to BitcoinC network</source>
+        <translation><numerusform>%n aktiivne ühendus BitcoinCi võrku</numerusform><numerusform>%n aktiivset ühendust BitcoinCi võrku</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -626,8 +626,8 @@
         <translation>Muuda saatvat aadressi</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Particl address.</source>
-        <translation>Sisestatud aadress "%1" ei ole korrektne Particl aadress.</translation>
+        <source>The entered address "%1" is not a valid BitcoinC address.</source>
+        <translation>Sisestatud aadress "%1" ei ole korrektne BitcoinC aadress.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -663,8 +663,8 @@
         <translation>Teretulemast</translation>
     </message>
     <message>
-        <source>Particl</source>
-        <translation>Particl</translation>
+        <source>BitcoinC</source>
+        <translation>BitcoinC</translation>
     </message>
     <message>
         <source>Error</source>
@@ -740,8 +740,8 @@
         <translation>Ekspert</translation>
     </message>
     <message>
-        <source>Automatically open the Particl client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Particli kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
+        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>BitcoinCi kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -839,7 +839,7 @@
         <translation>Vorm</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Particl network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
         <translation>Kuvatav info ei pruugi olla ajakohane. Ühenduse loomisel süngitakse sinu rahakott automaatselt Bitconi võrgustikuga, kuid see toiming on hetkel lõpetamata.</translation>
     </message>
     <message>
@@ -1345,8 +1345,8 @@
         <translation>Maksepäring aegunud.</translation>
     </message>
     <message>
-        <source>Warning: Invalid Particl address</source>
-        <translation>Hoiatus: Ebakorrektne Particl aadress</translation>
+        <source>Warning: Invalid BitcoinC address</source>
+        <translation>Hoiatus: Ebakorrektne BitcoinC aadress</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -1429,8 +1429,8 @@
         <translation>&amp;Allkirjastamise teade</translation>
     </message>
     <message>
-        <source>The Particl address to sign the message with</source>
-        <translation>Particl aadress millega sõnum allkirjastada</translation>
+        <source>The BitcoinC address to sign the message with</source>
+        <translation>BitcoinC aadress millega sõnum allkirjastada</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1461,8 +1461,8 @@
         <translation>Kopeeri praegune signatuur vahemällu</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Particl address</source>
-        <translation>Allkirjasta sõnum Particli aadressi sulle kuulumise tõestamiseks</translation>
+        <source>Sign the message to prove you own this BitcoinC address</source>
+        <translation>Allkirjasta sõnum BitcoinCi aadressi sulle kuulumise tõestamiseks</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1481,12 +1481,12 @@
         <translation>&amp;Kinnita Sõnum</translation>
     </message>
     <message>
-        <source>The Particl address the message was signed with</source>
-        <translation>Particl aadress millega sõnum on allkirjastatud</translation>
+        <source>The BitcoinC address the message was signed with</source>
+        <translation>BitcoinC aadress millega sõnum on allkirjastatud</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Particl address</source>
-        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Particli aadressiga.</translation>
+        <source>Verify the message to ensure it was signed with the specified BitcoinC address</source>
+        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud BitcoinCi aadressiga.</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -1918,8 +1918,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Particl Core</source>
-        <translation>Particli tuumik</translation>
+        <source>BitcoinC Core</source>
+        <translation>BitcoinCi tuumik</translation>
     </message>
     <message>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>

@@ -7,7 +7,7 @@
 #include <key/extkey.h>
 #include <key/stealth.h>
 #if defined(HAVE_CONSENSUS_LIB)
-#include <script/particlconsensus.h>
+#include <script/bitcoincconsensus.h>
 #endif
 #include <script/script.h>
 #include <script/sign.h>

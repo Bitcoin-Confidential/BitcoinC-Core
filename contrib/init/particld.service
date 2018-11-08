@@ -1,17 +1,17 @@
 [Unit]
-Description=Particl daemon
+Description=BitcoinC daemon
 After=network.target
 
 [Service]
-User=particl
-Group=particl
+User=bitcoinc
+Group=bitcoinc
 
 Type=forking
-PIDFile=/home/particl/.particl/particld.pid
-ExecStart=/home/particl/Particl/particld -daemon -pid=/home/particl/.particl/particld.pid \
--conf=/home/particl/.particl/particl.conf -datadir=/home/particl/.particl
+PIDFile=/home/bitcoinc/.bitcoinc/bitcoincd.pid
+ExecStart=/home/bitcoinc/BitcoinC/bitcoincd -daemon -pid=/home/bitcoinc/.bitcoinc/bitcoincd.pid \
+-conf=/home/bitcoinc/.bitcoinc/bitcoinc.conf -datadir=/home/bitcoinc/.bitcoinc
 
-ExecStop=/home/particl/Particl/particl-cli -conf=/home/particl/.particl/particl.conf stop
+ExecStop=/home/bitcoinc/BitcoinC/bitcoinc-cli -conf=/home/bitcoinc/.bitcoinc/bitcoinc.conf stop
 ExecStop=/usr/bin/sleep 25
 
 Restart=no

@@ -90,8 +90,8 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>Send coins to a Particl address</source>
-        <translation>ផ្ញើកាក់ទៅកាន់ អាសយដ្ឋាន Particl មួយ</translation>
+        <source>Send coins to a BitcoinC address</source>
+        <translation>ផ្ញើកាក់ទៅកាន់ អាសយដ្ឋាន BitcoinC មួយ</translation>
     </message>
     <message>
         <source>Wallet</source>
