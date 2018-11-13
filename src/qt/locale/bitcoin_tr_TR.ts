@@ -62,12 +62,12 @@
         <translation>Alınan Adresler</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Bunlar ödeme göndermek için gereken BitcoinC adreslerinizdir. Para göndermeden önce her zaman miktarı ve alıcı adresi kontrol edin.</translation>
+        <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Bunlar ödeme göndermek için gereken Bitcoin Confidential adreslerinizdir. Para göndermeden önce her zaman miktarı ve alıcı adresi kontrol edin.</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Bunlar ödeme almak için kullanılacak BitcoinC adreslerinizdir. Her işlem için yeni bir ödeme alma adresi kullanılması tavsiye edilir.</translation>
+        <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Bunlar ödeme almak için kullanılacak Bitcoin Confidential adreslerinizdir. Her işlem için yeni bir ödeme alma adresi kullanılması tavsiye edilir.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -286,8 +286,8 @@
         <translation>Bloklar disk üzerinde yeniden indeksleniyor...</translation>
     </message>
     <message>
-        <source>Send coins to a BitcoinC address</source>
-        <translation>BitcoinC adresine madeni para gönderin</translation>
+        <source>Send coins to a Bitcoin Confidential address</source>
+        <translation>Bitcoin Confidential adresine madeni para gönderin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -302,8 +302,8 @@
         <translation>Onay mesajı...</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential
 </translation>
     </message>
     <message>
@@ -458,8 +458,8 @@
         <translation>Gönderim adresini düzenleyin</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitcoinC address.</source>
-        <translation>Girilen adres "%1" BitcoinC adresiyle eşleşmiyor.</translation>
+        <source>The entered address "%1" is not a valid Bitcoin Confidential address.</source>
+        <translation>Girilen adres "%1" Bitcoin Confidential adresiyle eşleşmiyor.</translation>
     </message>
     <message>
         <source>New key generation failed.</source>
@@ -495,8 +495,8 @@
         <translation>Hoş geldiniz</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Error</source>
@@ -627,7 +627,7 @@
         <translation>Form</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin Confidential network after a connection is established, but this process has not completed yet.</source>
         <translation>Gösterilen bilgi geçerli olmayabilir. Bağlantı tekrar sağlandıktan sonra cüzdanınız otomatik olarak senkronize olacaktır. Henüz senkronize olma işlemi tamamlanmadı.</translation>
     </message>
     <message>
@@ -708,8 +708,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Enter a BitcoinC address (e.g. %1)</source>
-        <translation>BitcoinC adresinizi girin (örneğin %1)</translation>
+        <source>Enter a Bitcoin Confidential address (e.g. %1)</source>
+        <translation>Bitcoin Confidential adresinizi girin (örneğin %1)</translation>
     </message>
     <message>
         <source>N/A</source>
@@ -1093,8 +1093,8 @@
         <translation>Coin gönderimini onaylayın</translation>
     </message>
     <message>
-        <source>Warning: Invalid BitcoinC address</source>
-        <translation>Uyarı: Hatalı BitcoinC adresi</translation>
+        <source>Warning: Invalid Bitcoin Confidential address</source>
+        <translation>Uyarı: Hatalı Bitcoin Confidential adresi</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -1386,8 +1386,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>BitcoinC Core</source>
-        <translation>BitcoinC Çekirdeği</translation>
+        <source>Bitcoin Confidential Core</source>
+        <translation>Bitcoin Confidential Çekirdeği</translation>
     </message>
     <message>
         <source>Copyright (C) %i-%i</source>

@@ -66,12 +66,12 @@
         <translation>Vastaanotto-osoitteet</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Nämä ovat BitcoinC-osoitteesi maksujen lähettämistä varten. Tarkista aina määrä ja vastaanotto-osoite ennen kolikoiden lähettämistä.</translation>
+        <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Nämä ovat Bitcoin Confidential-osoitteesi maksujen lähettämistä varten. Tarkista aina määrä ja vastaanotto-osoite ennen kolikoiden lähettämistä.</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Tässä ovat BitcoinC vastaanotto-osoitteesi. On suositeltavaa käyttää uutta vastaanotto-osoitetta jokaista lähetystä varten.</translation>
+        <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Tässä ovat Bitcoin Confidential vastaanotto-osoitteesi. On suositeltavaa käyttää uutta vastaanotto-osoitetta jokaista lähetystä varten.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -358,8 +358,8 @@
         <translation>Välipalvelin on &lt;b&gt;käytössä&lt;/b&gt;: %1</translation>
     </message>
     <message>
-        <source>Send coins to a BitcoinC address</source>
-        <translation>Lähetä kolikoita BitcoinC-osoitteeseen</translation>
+        <source>Send coins to a Bitcoin Confidential address</source>
+        <translation>Lähetä kolikoita Bitcoin Confidential-osoitteeseen</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -382,8 +382,8 @@
         <translation>Varmista &amp;viesti...</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -403,19 +403,19 @@
     </message>
     <message>
         <source>Show or hide the main Window</source>
-        <translation>Näytä tai piilota BitcoinC-ikkuna</translation>
+        <translation>Näytä tai piilota Bitcoin Confidential-ikkuna</translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
         <translation>Suojaa yksityiset avaimet, jotka kuuluvat lompakkoosi</translation>
     </message>
     <message>
-        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
-        <translation>Allekirjoita viestisi omalla BitcoinC -osoitteellasi todistaaksesi, että omistat ne</translation>
+        <source>Sign messages with your Bitcoin Confidential addresses to prove you own them</source>
+        <translation>Allekirjoita viestisi omalla Bitcoin Confidential -osoitteellasi todistaaksesi, että omistat ne</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
-        <translation>Varmista, että viestisi on allekirjoitettu määritetyllä BitcoinC -osoitteella</translation>
+        <source>Verify messages to ensure they were signed with specified Bitcoin Confidential addresses</source>
+        <translation>Varmista, että viestisi on allekirjoitettu määritetyllä Bitcoin Confidential -osoitteella</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -454,8 +454,8 @@
         <translation>&amp;Komentorivin valinnat</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitcoinC network</source>
-        <translation><numerusform>%n aktiivinen yhteys BitcoinC-verkkoon</numerusform><numerusform>%n aktiivista yhteyttä Bitcoin-verkkoon</numerusform></translation>
+        <source>%n active connection(s) to Bitcoin Confidential network</source>
+        <translation><numerusform>%n aktiivinen yhteys Bitcoin Confidential-verkkoon</numerusform><numerusform>%n aktiivista yhteyttä Bitcoin-verkkoon</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -498,8 +498,8 @@
         <translation>Rahansiirtohistoria on ajan tasalla</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitcoinC command-line options</source>
-        <translation>Näytä %1 ohjeet saadaksesi listan mahdollisista BitcoinCin komentorivivalinnoista</translation>
+        <source>Show the %1 help message to get a list with possible Bitcoin Confidential command-line options</source>
+        <translation>Näytä %1 ohjeet saadaksesi listan mahdollisista Bitcoin Confidentialin komentorivivalinnoista</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -568,8 +568,8 @@
         <translation>Lompakko on &lt;b&gt;salattu&lt;/b&gt; ja tällä hetkellä &lt;b&gt;lukittuna&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitcoinC can no longer continue safely and will quit.</source>
-        <translation>Peruuttamaton virhe on tapahtunut. BitcoinC ei voi enää jatkaa turvallisesti ja sammutetaan.</translation>
+        <source>A fatal error occurred. Bitcoin Confidential can no longer continue safely and will quit.</source>
+        <translation>Peruuttamaton virhe on tapahtunut. Bitcoin Confidential ei voi enää jatkaa turvallisesti ja sammutetaan.</translation>
     </message>
 </context>
 <context>
@@ -758,8 +758,8 @@
         <translation>Muokkaa lähettävää osoitetta</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitcoinC address.</source>
-        <translation>Antamasi osoite "%1" ei ole kelvollinen BitcoinC-osoite.</translation>
+        <source>The entered address "%1" is not a valid Bitcoin Confidential address.</source>
+        <translation>Antamasi osoite "%1" ei ole kelvollinen Bitcoin Confidential-osoite.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -847,8 +847,8 @@
         <translation>Määritä oma kansio:</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -859,8 +859,8 @@
         <translation>Noin %1 GB tietoa varastoidaan tähän hakemistoon.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the BitcoinC block chain.</source>
-        <translation>%1 lataa ja tallentaa kopion BitcoinCin lohkoketjusta.</translation>
+        <source>%1 will download and store a copy of the Bitcoin Confidential block chain.</source>
+        <translation>%1 lataa ja tallentaa kopion Bitcoin Confidentialin lohkoketjusta.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1052,8 +1052,8 @@
         <translation>&amp;Käytä varmistamattomia vaihtorahoja</translation>
     </message>
     <message>
-        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Avaa BitcoinC-asiakasohjelman portti reitittimellä automaattisesti. Tämä toimii vain, jos reitittimesi tukee UPnP:tä ja se on käytössä.</translation>
+        <source>Automatically open the Bitcoin Confidential client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Avaa Bitcoin Confidential-asiakasohjelman portti reitittimellä automaattisesti. Tämä toimii vain, jos reitittimesi tukee UPnP:tä ja se on käytössä.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1068,8 +1068,8 @@
         <translation>Hyväksy sisääntulevia yhteyksiä</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a SOCKS5 proxy.</source>
-        <translation>Yhdistä BitcoinC-verkkoon SOCKS5-välityspalvelimen kautta.</translation>
+        <source>Connect to the Bitcoin Confidential network through a SOCKS5 proxy.</source>
+        <translation>Yhdistä Bitcoin Confidential-verkkoon SOCKS5-välityspalvelimen kautta.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1104,8 +1104,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Yhdistä BitcoinC-verkkoon erillisen SOCKS5-välityspalvelimen kautta piilotettuja Tor-palveluja varten.</translation>
+        <source>Connect to the Bitcoin Confidential network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Yhdistä Bitcoin Confidential-verkkoon erillisen SOCKS5-välityspalvelimen kautta piilotettuja Tor-palveluja varten.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1211,8 +1211,8 @@
         <translation>Lomake</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
-        <translation>Näytetyt tiedot eivät välttämättä ole ajantasalla. Lompakkosi synkronoituu BitcoinC-verkon kanssa automaattisesti yhteyden muodostamisen jälkeen, mutta synkronointi on vielä meneillään.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin Confidential network after a connection is established, but this process has not completed yet.</source>
+        <translation>Näytetyt tiedot eivät välttämättä ole ajantasalla. Lompakkosi synkronoituu Bitcoin Confidential-verkon kanssa automaattisesti yhteyden muodostamisen jälkeen, mutta synkronointi on vielä meneillään.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1252,7 +1252,7 @@
     </message>
     <message>
         <source>Your current total balance</source>
-        <translation>Tililläsi tällä hetkellä olevien BitcoinCien määrä</translation>
+        <translation>Tililläsi tällä hetkellä olevien Bitcoin Confidentialien määrä</translation>
     </message>
     <message>
         <source>Your current balance in watch-only addresses</source>
@@ -1287,7 +1287,7 @@
     </message>
     <message>
         <source>Cannot start bitcoinc: click-to-pay handler</source>
-        <translation>BitcoinCia ei voi käynnistää: klikkaa-maksaaksesi -käsittelijän virhe</translation>
+        <translation>Bitcoin Confidentialia ei voi käynnistää: klikkaa-maksaaksesi -käsittelijän virhe</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1302,8 +1302,8 @@
         <translation>Virheellinen maksuosoite %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid BitcoinC address or malformed URI parameters.</source>
-        <translation>URIa ei voitu jäsentää! Tämä voi johtua virheellisestä BitcoinC-osoitteesta tai väärin muotoilluista URI parametreista.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin Confidential address or malformed URI parameters.</source>
+        <translation>URIa ei voitu jäsentää! Tämä voi johtua virheellisestä Bitcoin Confidential-osoitteesta tai väärin muotoilluista URI parametreista.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1404,8 +1404,8 @@
         <translation>Määrä</translation>
     </message>
     <message>
-        <source>Enter a BitcoinC address (e.g. %1)</source>
-        <translation>Syötä BitcoinC-osoite (esim. %1)</translation>
+        <source>Enter a Bitcoin Confidential address (e.g. %1)</source>
+        <translation>Syötä Bitcoin Confidential-osoite (esim. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1800,8 +1800,8 @@
         <translation>&amp;Viesti:</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the BitcoinC network.</source>
-        <translation>Valinnainen viesti liitetään maksupyyntöön ja näytetään avattaessa. Viestiä ei lähetetä BitcoinC-verkkoon.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin Confidential network.</source>
+        <translation>Valinnainen viesti liitetään maksupyyntöön ja näytetään avattaessa. Viestiä ei lähetetä Bitcoin Confidential-verkkoon.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2185,8 +2185,8 @@
         <translation>Maksa vain vaadittu kulu %1 </translation>
     </message>
     <message>
-        <source>Warning: Invalid BitcoinC address</source>
-        <translation>Varoitus: Virheellinen BitcoinC-osoite </translation>
+        <source>Warning: Invalid Bitcoin Confidential address</source>
+        <translation>Varoitus: Virheellinen Bitcoin Confidential-osoite </translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2228,8 +2228,8 @@
         <translation>Tämä on normaali maksu.</translation>
     </message>
     <message>
-        <source>The BitcoinC address to send the payment to</source>
-        <translation>BitcoinC-osoite johon maksu lähetetään</translation>
+        <source>The Bitcoin Confidential address to send the payment to</source>
+        <translation>Bitcoin Confidential-osoite johon maksu lähetetään</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2276,8 +2276,8 @@
         <translation>Aseta nimi tälle osoitteelle lisätäksesi sen käytettyjen osoitteiden listalle.</translation>
     </message>
     <message>
-        <source>A message that was attached to the bitcoinc: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the BitcoinC network.</source>
-        <translation>Viesti joka liitettiin bitcoinc: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä BitcoinC-verkkoon.</translation>
+        <source>A message that was attached to the bitcoinc: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin Confidential network.</source>
+        <translation>Viesti joka liitettiin bitcoinc: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä Bitcoin Confidential-verkkoon.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2325,8 +2325,8 @@
         <translation>Voit allekirjoittaa viestit / sopimukset omalla osoitteellasi todistaaksesi että voit vastaanottaa siihen lähetetyt bitcoincit. Varo allekirjoittamasta mitään epämääräistä, sillä phishing-hyökkääjät voivat huijata sinua luovuttamaan henkilöllisyytesi allekirjoituksella. Allekirjoita ainoastaan täysin yksityiskohtainen selvitys siitä, mihin olet sitoutumassa.</translation>
     </message>
     <message>
-        <source>The BitcoinC address to sign the message with</source>
-        <translation>BitcoinC-osoite jolla viesti allekirjoitetaan</translation>
+        <source>The Bitcoin Confidential address to sign the message with</source>
+        <translation>Bitcoin Confidential-osoite jolla viesti allekirjoitetaan</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2357,8 +2357,8 @@
         <translation>Kopioi tämänhetkinen allekirjoitus leikepöydälle</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitcoinC address</source>
-        <translation>Allekirjoita viesti todistaaksesi, että omistat tämän BitcoinC-osoitteen</translation>
+        <source>Sign the message to prove you own this Bitcoin Confidential address</source>
+        <translation>Allekirjoita viesti todistaaksesi, että omistat tämän Bitcoin Confidential-osoitteen</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2381,12 +2381,12 @@
         <translation>Syötä vastaanottajan osoite, viesti ja allekirjoitus (varmista että kopioit rivinvaihdot, välilyönnit, sarkaimet yms. täsmälleen) alle vahvistaaksesi viestin. Varo lukemasta allekirjoitukseen enempää kuin mitä viestissä itsessään on välttääksesi man-in-the-middle -hyökkäyksiltä. Huomaa, että tämä todentaa ainoastaan allekirjoittavan vastaanottajan osoitteen, tämä ei voi todentaa minkään tapahtuman lähettäjää!</translation>
     </message>
     <message>
-        <source>The BitcoinC address the message was signed with</source>
-        <translation>BitcoinC-osoite jolla viesti on allekirjoitettu</translation>
+        <source>The Bitcoin Confidential address the message was signed with</source>
+        <translation>Bitcoin Confidential-osoite jolla viesti on allekirjoitettu</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitcoinC address</source>
-        <translation>Tarkista viestin allekirjoitus varmistaaksesi, että se allekirjoitettiin tietyllä BitcoinC-osoitteella</translation>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin Confidential address</source>
+        <translation>Tarkista viestin allekirjoitus varmistaaksesi, että se allekirjoitettiin tietyllä Bitcoin Confidential-osoitteella</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -3006,8 +3006,8 @@
         <translation>HTTP-palvelinta ei voitu käynnistää. Katso debug-lokista lisätietoja.</translation>
     </message>
     <message>
-        <source>BitcoinC Core</source>
-        <translation>BitcoinC-ydin</translation>
+        <source>Bitcoin Confidential Core</source>
+        <translation>Bitcoin Confidential-ydin</translation>
     </message>
     <message>
         <source>The %s developers</source>

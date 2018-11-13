@@ -98,8 +98,8 @@
         <translation>Vhura &amp;URI</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -165,8 +165,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     </context>
 <context>
@@ -194,8 +194,8 @@
         <translation>Marii </translation>
     </message>
     <message>
-        <source>Enter a BitcoinC address (e.g. %1)</source>
-        <translation>Nyora kero ye BitcoinC (sekuti %1)</translation>
+        <source>Enter a Bitcoin Confidential address (e.g. %1)</source>
+        <translation>Nyora kero ye Bitcoin Confidential (sekuti %1)</translation>
     </message>
     <message>
         <source>%1 d</source>

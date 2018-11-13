@@ -62,12 +62,12 @@
         <translation>Địa chỉ nhận</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Đây là các địa chỉ BitcoinC để gửi bạn gửi tiền. Trước khi gửi bạn nên kiểm tra lại số tiền bạn muốn gửi và địa chỉ bitcoinc của người nhận.</translation>
+        <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Đây là các địa chỉ Bitcoin Confidential để gửi bạn gửi tiền. Trước khi gửi bạn nên kiểm tra lại số tiền bạn muốn gửi và địa chỉ bitcoinc của người nhận.</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Đây là các địa chỉ BitcoinC để bạn nhận tiền. Với mỗi giao dịch, bạn nên dùng một địa chỉ BitcoinC mới để nhận tiền.</translation>
+        <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Đây là các địa chỉ Bitcoin Confidential để bạn nhận tiền. Với mỗi giao dịch, bạn nên dùng một địa chỉ Bitcoin Confidential mới để nhận tiền.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -331,8 +331,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Đánh chỉ số (indexing) lại các khối (blocks) trên ổ đĩa ...</translation>
     </message>
     <message>
-        <source>Send coins to a BitcoinC address</source>
-        <translation>Gửi coins đến tài khoản BitcoinC</translation>
+        <source>Send coins to a Bitcoin Confidential address</source>
+        <translation>Gửi coins đến tài khoản Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -355,8 +355,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>&amp;Tin nhắn xác thực</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -383,12 +383,12 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Mã hoá các khoá bí mật trong Ví của bạn.</translation>
     </message>
     <message>
-        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
-        <translation>Dùng địa chỉ BitcoinC của bạn ký các tin nhắn để xác minh những nội dung tin nhắn đó là của bạn.</translation>
+        <source>Sign messages with your Bitcoin Confidential addresses to prove you own them</source>
+        <translation>Dùng địa chỉ Bitcoin Confidential của bạn ký các tin nhắn để xác minh những nội dung tin nhắn đó là của bạn.</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
-        <translation>Kiểm tra các tin nhắn để chắc chắn rằng chúng được ký bằng các địa chỉ BitcoinC xác định.</translation>
+        <source>Verify messages to ensure they were signed with specified Bitcoin Confidential addresses</source>
+        <translation>Kiểm tra các tin nhắn để chắc chắn rằng chúng được ký bằng các địa chỉ Bitcoin Confidential xác định.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -408,7 +408,7 @@ Ví của bạn chưa được mã hóa.</translation>
     </message>
     <message>
         <source>Request payments (generates QR codes and bitcoinc: URIs)</source>
-        <translation>Yêu cầu thanh toán(tạo mã QR và địa chỉ BitcoinC: URLs)</translation>
+        <translation>Yêu cầu thanh toán(tạo mã QR và địa chỉ Bitcoin Confidential: URLs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -427,8 +427,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>7Tùy chọn dòng lệnh</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitcoinC network</source>
-        <translation><numerusform>%n liên kết hoạt động với mạng lưới BitcoinC</numerusform></translation>
+        <source>%n active connection(s) to Bitcoin Confidential network</source>
+        <translation><numerusform>%n liên kết hoạt động với mạng lưới Bitcoin Confidential</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -471,8 +471,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Đã cập nhật</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitcoinC command-line options</source>
-        <translation>Hiển thị tin nhắn trợ giúp %1 để có được danh sách với các tùy chọn dòng lệnh BitcoinC.</translation>
+        <source>Show the %1 help message to get a list with possible Bitcoin Confidential command-line options</source>
+        <translation>Hiển thị tin nhắn trợ giúp %1 để có được danh sách với các tùy chọn dòng lệnh Bitcoin Confidential.</translation>
     </message>
     <message>
         <source>Connecting to peers...</source>
@@ -636,8 +636,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Sử dụng vị trí dữ liệu mặc định</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Error</source>
@@ -689,8 +689,8 @@ Ví của bạn chưa được mã hóa.</translation>
         <translation>Ví</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a SOCKS5 proxy.</source>
-        <translation>Kết nối đến máy chủ BitcoinC thông qua SOCKS5 proxy.</translation>
+        <source>Connect to the Bitcoin Confidential network through a SOCKS5 proxy.</source>
+        <translation>Kết nối đến máy chủ Bitcoin Confidential thông qua SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -1203,8 +1203,8 @@ Ví của bạn chưa được mã hóa.</translation>
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>BitcoinC Core</source>
-        <translation>BitcoinC Core</translation>
+        <source>Bitcoin Confidential Core</source>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <source>Information</source>

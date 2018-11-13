@@ -214,8 +214,8 @@
         <translation>Bloku reindeksēšana no diska...</translation>
     </message>
     <message>
-        <source>Send coins to a BitcoinC address</source>
-        <translation>Nosūtīt bitkoinus uz BitcoinC adresi</translation>
+        <source>Send coins to a Bitcoin Confidential address</source>
+        <translation>Nosūtīt bitkoinus uz Bitcoin Confidential adresi</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -238,8 +238,8 @@
         <translation>&amp;Pārbaudīt ziņojumu...</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -266,12 +266,12 @@
         <translation>Šifrēt privātās atslēgas kuras pieder tavam maciņam</translation>
     </message>
     <message>
-        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
-        <translation>Parakstīt ziņojumus ar savām BitcoinC adresēm lai pierādītu ka tās pieder tev</translation>
+        <source>Sign messages with your Bitcoin Confidential addresses to prove you own them</source>
+        <translation>Parakstīt ziņojumus ar savām Bitcoin Confidential adresēm lai pierādītu ka tās pieder tev</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
-        <translation>Pārbaudīt ziņojumus lai pārliecinātos, ka tie tika parakstīti ar norādītajām BitcoinC adresēm</translation>
+        <source>Verify messages to ensure they were signed with specified Bitcoin Confidential addresses</source>
+        <translation>Pārbaudīt ziņojumus lai pārliecinātos, ka tie tika parakstīti ar norādītajām Bitcoin Confidential adresēm</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -469,8 +469,8 @@
         <translation>Izmantot pielāgotu datu mapi:</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Error</source>
@@ -570,8 +570,8 @@
         <translation>&amp;Tērēt neapstiprinātu atlikumu</translation>
     </message>
     <message>
-        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Uz rūtera automātiski atvērt BitcoinC klienta portu. Tas strādā tikai tad, ja rūteris atbalsta UPnP un tas ir ieslēgts.</translation>
+        <source>Automatically open the Bitcoin Confidential client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Uz rūtera automātiski atvērt Bitcoin Confidential klienta portu. Tas strādā tikai tad, ja rūteris atbalsta UPnP un tas ir ieslēgts.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -623,7 +623,7 @@
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
-        <translation>Vai rādīt BitcoinC kontroles funkcijas vai nē.</translation>
+        <translation>Vai rādīt Bitcoin Confidential kontroles funkcijas vai nē.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -661,8 +661,8 @@
         <translation>Forma</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
-        <translation>Attēlotā informācija var būt novecojusi. Jūsu maciņš pēc savienojuma izveides automātiski sinhronizējas ar BitcoinC tīklu, taču šis process vēl nav beidzies.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin Confidential network after a connection is established, but this process has not completed yet.</source>
+        <translation>Attēlotā informācija var būt novecojusi. Jūsu maciņš pēc savienojuma izveides automātiski sinhronizējas ar Bitcoin Confidential tīklu, taču šis process vēl nav beidzies.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -928,7 +928,7 @@
     </message>
     <message>
         <source>Coin Control Features</source>
-        <translation>BitcoinC Kontroles Funkcijas</translation>
+        <translation>Bitcoin Confidential Kontroles Funkcijas</translation>
     </message>
     <message>
         <source>Inputs...</source>
@@ -1111,8 +1111,8 @@
         <translation>Kopēt parakstu uz sistēmas starpliktuvi</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitcoinC address</source>
-        <translation>Parakstīt ziņojumu lai pierādītu, ka esi šīs BitcoinC adreses īpašnieks.</translation>
+        <source>Sign the message to prove you own this Bitcoin Confidential address</source>
+        <translation>Parakstīt ziņojumu lai pierādītu, ka esi šīs Bitcoin Confidential adreses īpašnieks.</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1204,8 +1204,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>BitcoinC Core</source>
-        <translation>BitcoinC Core</translation>
+        <source>Bitcoin Confidential Core</source>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <source>Error loading block database</source>

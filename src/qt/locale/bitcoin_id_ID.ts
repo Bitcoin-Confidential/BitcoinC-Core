@@ -66,12 +66,12 @@
         <translation>Alamat-alamat penerima</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Berikut ialah alamat-alamat BitcoinC Anda yang digunakan untuk mengirimkan pembayaran. Selalu periksa jumlah dan alamat penerima sebelum mengirimkan koin.</translation>
+        <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Berikut ialah alamat-alamat Bitcoin Confidential Anda yang digunakan untuk mengirimkan pembayaran. Selalu periksa jumlah dan alamat penerima sebelum mengirimkan koin.</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Berikut ialah alamat-alamat BitcoinC Anda yang digunakan untuk menerima pembayaran. Dianjurkan untuk menggunakan alamat penerimaan baru untuk setiap transaksi.</translation>
+        <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Berikut ialah alamat-alamat Bitcoin Confidential Anda yang digunakan untuk menerima pembayaran. Dianjurkan untuk menggunakan alamat penerimaan baru untuk setiap transaksi.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -350,8 +350,8 @@
         <translation>Mengindex ulang blok di dalam disk...</translation>
     </message>
     <message>
-        <source>Send coins to a BitcoinC address</source>
-        <translation>Kirim koin ke alamat BitcoinC</translation>
+        <source>Send coins to a Bitcoin Confidential address</source>
+        <translation>Kirim koin ke alamat Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -374,8 +374,8 @@
         <translation>&amp;Verifikasi pesan...</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -402,12 +402,12 @@
         <translation>Enkripsi private key yang dimiliki dompet Anda</translation>
     </message>
     <message>
-        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
-        <translation>Tanda tangani sebuah pesan menggunakan alamat BitcoinC Anda untuk membuktikan bahwa Anda adalah pemilik alamat tersebut</translation>
+        <source>Sign messages with your Bitcoin Confidential addresses to prove you own them</source>
+        <translation>Tanda tangani sebuah pesan menggunakan alamat Bitcoin Confidential Anda untuk membuktikan bahwa Anda adalah pemilik alamat tersebut</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
-        <translation>Verifikasi pesan untuk memastikan bahwa pesan tersebut ditanda tangani oleh suatu alamat BitcoinC tertentu</translation>
+        <source>Verify messages to ensure they were signed with specified Bitcoin Confidential addresses</source>
+        <translation>Verifikasi pesan untuk memastikan bahwa pesan tersebut ditanda tangani oleh suatu alamat Bitcoin Confidential tertentu</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -446,8 +446,8 @@
         <translation>&amp;pilihan Command-line</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitcoinC network</source>
-        <translation><numerusform>%n koneksi aktif ke jaringan BitcoinC</numerusform></translation>
+        <source>%n active connection(s) to Bitcoin Confidential network</source>
+        <translation><numerusform>%n koneksi aktif ke jaringan Bitcoin Confidential</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -498,8 +498,8 @@
         <translation>Terbaru</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitcoinC command-line options</source>
-        <translation>Tampilkan %1 pesan bantuan untuk mendapatkan daftar opsi baris perintah BitcoinC yang memungkinkan</translation>
+        <source>Show the %1 help message to get a list with possible Bitcoin Confidential command-line options</source>
+        <translation>Tampilkan %1 pesan bantuan untuk mendapatkan daftar opsi baris perintah Bitcoin Confidential yang memungkinkan</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -568,8 +568,8 @@
         <translation>Dompet saat ini &lt;b&gt;terenkripsi&lt;/b&gt; dan &lt;b&gt;terkunci&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitcoinC can no longer continue safely and will quit.</source>
-        <translation>Terjadi Kesalahan Fatal. BitcoinC Tidak Dapat Melanjutkan Dengan Aman Dan Akan Keluar</translation>
+        <source>A fatal error occurred. Bitcoin Confidential can no longer continue safely and will quit.</source>
+        <translation>Terjadi Kesalahan Fatal. Bitcoin Confidential Tidak Dapat Melanjutkan Dengan Aman Dan Akan Keluar</translation>
     </message>
 </context>
 <context>
@@ -746,8 +746,8 @@
         <translation>Ubah alamat pengirim</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitcoinC address.</source>
-        <translation>Alamat yang dimasukkan "%1" bukanlah alamat BitcoinC yang valid.</translation>
+        <source>The entered address "%1" is not a valid Bitcoin Confidential address.</source>
+        <translation>Alamat yang dimasukkan "%1" bukanlah alamat Bitcoin Confidential yang valid.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -835,8 +835,8 @@
         <translation>Gunakan direktori pilihan Anda:</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -847,8 +847,8 @@
         <translation>%1 GB data akan disimpan di direktori ini.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the BitcoinC block chain.</source>
-        <translation>%1 akan mengunduh dan menyimpan salinan BitcoinC block chain.</translation>
+        <source>%1 will download and store a copy of the Bitcoin Confidential block chain.</source>
+        <translation>%1 akan mengunduh dan menyimpan salinan Bitcoin Confidential block chain.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -879,7 +879,7 @@
     </message>
     <message>
         <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoinc network, as detailed below.</source>
-        <translation>Transaksi-transaksi terkini mungkin belum terlihat dan oleh karenanya, saldo dompet Anda mungkin tidak tepat. Informasi ini akan akurat ketika dompet Anda tersinkronisasi dengan jaringan BitcoinC, seperti rincian berikut.</translation>
+        <translation>Transaksi-transaksi terkini mungkin belum terlihat dan oleh karenanya, saldo dompet Anda mungkin tidak tepat. Informasi ini akan akurat ketika dompet Anda tersinkronisasi dengan jaringan Bitcoin Confidential, seperti rincian berikut.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1020,8 +1020,8 @@
         <translation>&amp;Perubahan saldo untuk transaksi yang belum dikonfirmasi</translation>
     </message>
     <message>
-        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Otomatis membuka port client BitcoinC di router. Hanya berjalan apabila router anda mendukung UPnP dan di-enable.</translation>
+        <source>Automatically open the Bitcoin Confidential client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Otomatis membuka port client Bitcoin Confidential di router. Hanya berjalan apabila router anda mendukung UPnP dan di-enable.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1036,8 +1036,8 @@
         <translation>Terima koneksi-koneksi masuk</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a SOCKS5 proxy.</source>
-        <translation>Hubungkan ke jaringan BitcoinC melalui SOCKS5 proxy.</translation>
+        <source>Connect to the Bitcoin Confidential network through a SOCKS5 proxy.</source>
+        <translation>Hubungkan ke jaringan Bitcoin Confidential melalui SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -1155,8 +1155,8 @@
         <translation>Formulir</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
-        <translation>Informasi terlampir mungkin sudah kedaluwarsa. Dompet Anda secara otomatis mensinkronisasi dengan jaringan BitcoinC ketika sebuah hubungan terbentuk, namun proses ini belum selesai.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin Confidential network after a connection is established, but this process has not completed yet.</source>
+        <translation>Informasi terlampir mungkin sudah kedaluwarsa. Dompet Anda secara otomatis mensinkronisasi dengan jaringan Bitcoin Confidential ketika sebuah hubungan terbentuk, namun proses ini belum selesai.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -1224,8 +1224,8 @@
         <translation>Nilai</translation>
     </message>
     <message>
-        <source>Enter a BitcoinC address (e.g. %1)</source>
-        <translation>Masukkan alamat BitcoinC (contoh %1)</translation>
+        <source>Enter a Bitcoin Confidential address (e.g. %1)</source>
+        <translation>Masukkan alamat Bitcoin Confidential (contoh %1)</translation>
     </message>
     <message>
         <source>%1 h</source>
@@ -1751,8 +1751,8 @@
         <translation>Salin tanda tangan terpilih ke sistem klipboard</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitcoinC address</source>
-        <translation>Tandai pesan untuk menyetujui kamu pemiliki alamat BitcoinC ini</translation>
+        <source>Sign the message to prove you own this Bitcoin Confidential address</source>
+        <translation>Tandai pesan untuk menyetujui kamu pemiliki alamat Bitcoin Confidential ini</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1868,8 +1868,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>BitcoinC Core</source>
-        <translation>BitcoinC Core</translation>
+        <source>Bitcoin Confidential Core</source>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>

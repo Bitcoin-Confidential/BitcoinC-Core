@@ -20,7 +20,7 @@ BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
             VALUE "CompanyName",        "Bitcoin Confidential"
-            VALUE "FileDescription",    PACKAGE_NAME " (GUI node for BitcoinC)"
+            VALUE "FileDescription",    PACKAGE_NAME " (GUI node for Bitcoin Confidential)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "bitcoinc-qt"
             VALUE "LegalCopyright",     COPYRIGHT_STR

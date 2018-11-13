@@ -66,12 +66,12 @@
         <translation>Prijímajúce adresy</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Toto sú Vaše BitcoinC adresy pre posielanie platieb. Vždy skontrolujte sumu a prijímaciu adresu pred poslaním mincí.</translation>
+        <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Toto sú Vaše Bitcoin Confidential adresy pre posielanie platieb. Vždy skontrolujte sumu a prijímaciu adresu pred poslaním mincí.</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Toto sú vaše BitcoinC adresy pre prijímanie platieb. Odporúča sa použiť vždy novú prijímaciu adresu pre každú transakciu.</translation>
+        <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Toto sú vaše Bitcoin Confidential adresy pre prijímanie platieb. Odporúča sa použiť vždy novú prijímaciu adresu pre každú transakciu.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -358,7 +358,7 @@
         <translation>Proxy je &lt;b&gt;zapnuté&lt;/b&gt;: %1</translation>
     </message>
     <message>
-        <source>Send coins to a BitcoinC address</source>
+        <source>Send coins to a Bitcoin Confidential address</source>
         <translation>Poslať bitcoinc na adresu</translation>
     </message>
     <message>
@@ -382,8 +382,8 @@
         <translation>O&amp;veriť správu...</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -410,12 +410,12 @@
         <translation>Zašifruj súkromné kľúče ktoré patria do vašej peňaženky</translation>
     </message>
     <message>
-        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
-        <translation>Podpísať správu s vašou adresou BitcoinC aby ste preukázali že ju vlastníte</translation>
+        <source>Sign messages with your Bitcoin Confidential addresses to prove you own them</source>
+        <translation>Podpísať správu s vašou adresou Bitcoin Confidential aby ste preukázali že ju vlastníte</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
-        <translation>Overiť či správa bola podpísaná uvedenou BitcoinC adresou</translation>
+        <source>Verify messages to ensure they were signed with specified Bitcoin Confidential addresses</source>
+        <translation>Overiť či správa bola podpísaná uvedenou Bitcoin Confidential adresou</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -454,8 +454,8 @@
         <translation>&amp;Možnosti príkazového riadku</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitcoinC network</source>
-        <translation><numerusform>%n aktívne pripojenie do siete BitcoinC</numerusform><numerusform>%n aktívne pripojenia do siete BitcoinC</numerusform><numerusform>%n aktívnych pripojení do siete BitcoinC</numerusform><numerusform>%n aktívnych pripojení do siete BitcoinC</numerusform></translation>
+        <source>%n active connection(s) to Bitcoin Confidential network</source>
+        <translation><numerusform>%n aktívne pripojenie do siete Bitcoin Confidential</numerusform><numerusform>%n aktívne pripojenia do siete Bitcoin Confidential</numerusform><numerusform>%n aktívnych pripojení do siete Bitcoin Confidential</numerusform><numerusform>%n aktívnych pripojení do siete Bitcoin Confidential</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -498,8 +498,8 @@
         <translation>Aktualizovaný</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitcoinC command-line options</source>
-        <translation>Ukáž %1 zoznam možných nastavení BitcoinCu pomocou príkazového riadku</translation>
+        <source>Show the %1 help message to get a list with possible Bitcoin Confidential command-line options</source>
+        <translation>Ukáž %1 zoznam možných nastavení Bitcoin Confidentialu pomocou príkazového riadku</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -574,8 +574,8 @@
         <translation>Peňaženka je &lt;b&gt;zašifrovaná&lt;/b&gt; a momentálne &lt;b&gt;zamknutá&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitcoinC can no longer continue safely and will quit.</source>
-        <translation>Vyskytla sa kritická chyba. BitcoinC nemôže ďalej bezpečne pokračovať a ukončí sa.</translation>
+        <source>A fatal error occurred. Bitcoin Confidential can no longer continue safely and will quit.</source>
+        <translation>Vyskytla sa kritická chyba. Bitcoin Confidential nemôže ďalej bezpečne pokračovať a ukončí sa.</translation>
     </message>
 </context>
 <context>
@@ -764,8 +764,8 @@
         <translation>Upraviť odosielaciu adresu</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitcoinC address.</source>
-        <translation>Vložená adresa "%1" nieje platnou adresou BitcoinC.</translation>
+        <source>The entered address "%1" is not a valid Bitcoin Confidential address.</source>
+        <translation>Vložená adresa "%1" nieje platnou adresou Bitcoin Confidential.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -853,8 +853,8 @@
         <translation>Použiť vlastný dátový adresár:</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -865,7 +865,7 @@
         <translation>Približne %1 GB dát bude uložených v tejto zložke.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the BitcoinC block chain.</source>
+        <source>%1 will download and store a copy of the Bitcoin Confidential block chain.</source>
         <translation>%1 bude sťahovať kopiu reťazca blokov.</translation>
     </message>
     <message>
@@ -1074,8 +1074,8 @@
         <translation>&amp;Minúť nepotvrdený výdavok</translation>
     </message>
     <message>
-        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automaticky otvorit port pre BitcoinC na routeri. Toto funguje len ak router podporuje UPnP a je táto podpora aktivovaná.</translation>
+        <source>Automatically open the Bitcoin Confidential client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automaticky otvorit port pre Bitcoin Confidential na routeri. Toto funguje len ak router podporuje UPnP a je táto podpora aktivovaná.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1090,8 +1090,8 @@
         <translation>Povoliť prichá&amp;dzajúce spojenia</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a SOCKS5 proxy.</source>
-        <translation>Pripojiť do siete BitcoinC cez proxy server SOCKS5.</translation>
+        <source>Connect to the Bitcoin Confidential network through a SOCKS5 proxy.</source>
+        <translation>Pripojiť do siete Bitcoin Confidential cez proxy server SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1126,8 +1126,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Pripojiť k BitcoinCovej sieti cez separované SOCKS5 proxy pre skrytú službu Tor.</translation>
+        <source>Connect to the Bitcoin Confidential network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Pripojiť k Bitcoin Confidentialovej sieti cez separované SOCKS5 proxy pre skrytú službu Tor.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1233,8 +1233,8 @@
         <translation>Forma</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
-        <translation>Zobrazené informácie môžu byť neaktuálne. Vaša peňaženka sa automaticky synchronizuje so sieťou BitcoinC po nadviazaní spojenia, ale tento proces ešte nie je ukončený.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin Confidential network after a connection is established, but this process has not completed yet.</source>
+        <translation>Zobrazené informácie môžu byť neaktuálne. Vaša peňaženka sa automaticky synchronizuje so sieťou Bitcoin Confidential po nadviazaní spojenia, ale tento proces ešte nie je ukončený.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1309,7 +1309,7 @@
     </message>
     <message>
         <source>Cannot start bitcoinc: click-to-pay handler</source>
-        <translation>Nemôžeme spustiť BitcoinC: obsluha click-to-pay</translation>
+        <translation>Nemôžeme spustiť Bitcoin Confidential: obsluha click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1328,8 +1328,8 @@
         <translation>Neplatná adresa platby %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid BitcoinC address or malformed URI parameters.</source>
-        <translation>URI sa nedá analyzovať! To môže byť spôsobené neplatnou BitcoinC adresou alebo zle nastavenými vlastnosťami URI.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin Confidential address or malformed URI parameters.</source>
+        <translation>URI sa nedá analyzovať! To môže byť spôsobené neplatnou Bitcoin Confidential adresou alebo zle nastavenými vlastnosťami URI.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1430,7 +1430,7 @@
         <translation>Suma</translation>
     </message>
     <message>
-        <source>Enter a BitcoinC address (e.g. %1)</source>
+        <source>Enter a Bitcoin Confidential address (e.g. %1)</source>
         <translation>Zadajte bitcoinc adresu (napr. %1)</translation>
     </message>
     <message>
@@ -1863,8 +1863,8 @@
         <translation>&amp;Správa:</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the BitcoinC network.</source>
-        <translation>Pridať voliteľnú správu k výzve na zaplatenie, ktorá sa zobrazí keď bude výzva otvorená. Poznámka: Správa nebude poslaná s platbou cez sieť BitcoinC.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin Confidential network.</source>
+        <translation>Pridať voliteľnú správu k výzve na zaplatenie, ktorá sa zobrazí keď bude výzva otvorená. Poznámka: Správa nebude poslaná s platbou cez sieť Bitcoin Confidential.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2029,7 +2029,7 @@
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Poslať BitcoinC</translation>
+        <translation>Poslať Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -2284,8 +2284,8 @@
         <translation><numerusform>Odhadovaný začiatok potvrdzovania po %n bloku.</numerusform><numerusform>Odhadovaný začiatok potvrdzovania po %n blokoch.</numerusform><numerusform>Odhadovaný začiatok potvrdzovania po %n blokoch.</numerusform><numerusform>Odhadovaný začiatok potvrdzovania po %n blokoch.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid BitcoinC address</source>
-        <translation>Varovanie: Neplatná BitcoinC adresa</translation>
+        <source>Warning: Invalid Bitcoin Confidential address</source>
+        <translation>Varovanie: Neplatná Bitcoin Confidential adresa</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2327,7 +2327,7 @@
         <translation>Toto je normálna platba.</translation>
     </message>
     <message>
-        <source>The BitcoinC address to send the payment to</source>
+        <source>The Bitcoin Confidential address to send the payment to</source>
         <translation>Zvoľte adresu kam poslať platbu</translation>
     </message>
     <message>
@@ -2375,8 +2375,8 @@
         <translation>Vložte popis pre túto adresu aby sa uložila do zoznamu použitých adries</translation>
     </message>
     <message>
-        <source>A message that was attached to the bitcoinc: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the BitcoinC network.</source>
-        <translation>Správa ktorá bola pripojená k bitcoinc: URI a ktorá bude uložená s transakcou pre Vaše potreby. Poznámka: Táto správa nebude poslaná cez sieť BitcoinC.</translation>
+        <source>A message that was attached to the bitcoinc: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin Confidential network.</source>
+        <translation>Správa ktorá bola pripojená k bitcoinc: URI a ktorá bude uložená s transakcou pre Vaše potreby. Poznámka: Táto správa nebude poslaná cez sieť Bitcoin Confidential.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2424,8 +2424,8 @@
         <translation>Môžete podpísať správy svojou adresou a dokázať, že viete prijímať mince zaslané na túto adresu. Buďte však opatrní a podpíšte len podrobné prehlásenia, s ktorými plne súhlasíte, nakoľko útoky typu "phishing" Vás môžu lákať k podpísaniu nejasných alebo príliš všeobecných tvrdení čím prevezmú vašu identitu.</translation>
     </message>
     <message>
-        <source>The BitcoinC address to sign the message with</source>
-        <translation>BitcoinC adresa pre podpísanie správy s</translation>
+        <source>The Bitcoin Confidential address to sign the message with</source>
+        <translation>Bitcoin Confidential adresa pre podpísanie správy s</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2456,7 +2456,7 @@
         <translation>Kopírovať tento podpis do systémovej schránky</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitcoinC address</source>
+        <source>Sign the message to prove you own this Bitcoin Confidential address</source>
         <translation>Podpíšte správu aby ste dokázali že vlastníte túto adresu</translation>
     </message>
     <message>
@@ -2480,16 +2480,16 @@
         <translation>Vložte adresu príjemcu, správu (uistite sa, že presne kopírujete ukončenia riadkov, medzery, odrážky, atď.) a podpis pre potvrdenie správy. Buďte opatrní a nedomýšľajte si viac než je uvedené v samotnej podpísanej správe a môžete sa tak vyhnúť podvodu MITM útokom. Toto len potvrdzuje, že podpisujúca strana môže prijímať na tejto adrese, nepotvrdzuje to vlastníctvo žiadnej transakcie!</translation>
     </message>
     <message>
-        <source>The BitcoinC address the message was signed with</source>
-        <translation>Adresa BitcoinC, ktorou bola podpísaná správa</translation>
+        <source>The Bitcoin Confidential address the message was signed with</source>
+        <translation>Adresa Bitcoin Confidential, ktorou bola podpísaná správa</translation>
     </message>
     <message>
-        <source>The BitcoinC address the message was signed with</source>
-        <translation>Adresa BitcoinC, ktorou bola podpísaná správa</translation>
+        <source>The Bitcoin Confidential address the message was signed with</source>
+        <translation>Adresa Bitcoin Confidential, ktorou bola podpísaná správa</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitcoinC address</source>
-        <translation>Overím správy sa uistiť že bola podpísaná označenou BitcoinC adresou</translation>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin Confidential address</source>
+        <translation>Overím správy sa uistiť že bola podpísaná označenou Bitcoin Confidential adresou</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -3133,8 +3133,8 @@
         <translation>Nepodarilo sa spustiť HTTP server. Pre viac detailov zobrazte debug log.</translation>
     </message>
     <message>
-        <source>BitcoinC Core</source>
-        <translation>BitcoinC Core</translation>
+        <source>Bitcoin Confidential Core</source>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <source>The %s developers</source>

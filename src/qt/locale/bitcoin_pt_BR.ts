@@ -66,11 +66,11 @@
         <translation>Endereços de recebimento</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>Estes são os seus endereços para enviar pagamentos. Sempre cheque a quantia e o endereço do destinatário antes de enviar moedas.</translation>
     </message>
     <message>
-        <source>These are your BitcoinC addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
         <translation>Estes são os seus endereços para receber pagamentos. É recomendado usar um novo para cada transação.</translation>
     </message>
     <message>
@@ -354,7 +354,7 @@
         <translation>Proxy &lt;b&gt;ativado&lt;/b&gt;: %1</translation>
     </message>
     <message>
-        <source>Send coins to a BitcoinC address</source>
+        <source>Send coins to a Bitcoin Confidential address</source>
         <translation>Enviar moedas para um endereço bitcoinc</translation>
     </message>
     <message>
@@ -378,8 +378,8 @@
         <translation>&amp;Verificar mensagem...</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -406,12 +406,12 @@
         <translation>Criptografar as chaves privadas que pertencem à sua carteira</translation>
     </message>
     <message>
-        <source>Sign messages with your BitcoinC addresses to prove you own them</source>
-        <translation>Assine mensagens com seus endereços BitcoinC para provar que você é dono delas</translation>
+        <source>Sign messages with your Bitcoin Confidential addresses to prove you own them</source>
+        <translation>Assine mensagens com seus endereços Bitcoin Confidential para provar que você é dono delas</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified BitcoinC addresses</source>
-        <translation>Verificar mensagens para se assegurar que elas foram assinadas pelo dono de Endereços BitcoinC específicos</translation>
+        <source>Verify messages to ensure they were signed with specified Bitcoin Confidential addresses</source>
+        <translation>Verificar mensagens para se assegurar que elas foram assinadas pelo dono de Endereços Bitcoin Confidential específicos</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -450,8 +450,8 @@
         <translation>Opções de linha de &amp;comando</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to BitcoinC network</source>
-        <translation><numerusform>%n conexão ativa na rede BitcoinC</numerusform><numerusform>%n conexões ativas na rede BitcoinC</numerusform></translation>
+        <source>%n active connection(s) to Bitcoin Confidential network</source>
+        <translation><numerusform>%n conexão ativa na rede Bitcoin Confidential</numerusform><numerusform>%n conexões ativas na rede Bitcoin Confidential</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -494,8 +494,8 @@
         <translation>Atualizado</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible BitcoinC command-line options</source>
-        <translation>Mostrar a mensagem de ajuda do %1 para obter uma lista com possíveis opções de linha de comando BitcoinC</translation>
+        <source>Show the %1 help message to get a list with possible Bitcoin Confidential command-line options</source>
+        <translation>Mostrar a mensagem de ajuda do %1 para obter uma lista com possíveis opções de linha de comando Bitcoin Confidential</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -570,8 +570,8 @@
         <translation>Carteira está &lt;b&gt;criptografada&lt;/b&gt; e atualmente &lt;b&gt;bloqueada&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. BitcoinC can no longer continue safely and will quit.</source>
-        <translation>Um erro fatal ocorreu. BitcoinC não pode continuar em segurança e irá fechar.</translation>
+        <source>A fatal error occurred. Bitcoin Confidential can no longer continue safely and will quit.</source>
+        <translation>Um erro fatal ocorreu. Bitcoin Confidential não pode continuar em segurança e irá fechar.</translation>
     </message>
 </context>
 <context>
@@ -760,7 +760,7 @@
         <translation>Editar endereço de envio</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid BitcoinC address.</source>
+        <source>The entered address "%1" is not a valid Bitcoin Confidential address.</source>
         <translation>O endereço digitado "%1" não é um endereço válido.</translation>
     </message>
     <message>
@@ -857,8 +857,8 @@
         <translation>Use um diretório de dados personalizado:</translation>
     </message>
     <message>
-        <source>BitcoinC</source>
-        <translation>BitcoinC</translation>
+        <source>Bitcoin Confidential</source>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -869,8 +869,8 @@
         <translation>Aproximadamente %1 GB de dados serão armazenados neste diretório.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the BitcoinC block chain.</source>
-        <translation>%1 irá baixar e armazenar uma cópia da block chain do BitcoinC.</translation>
+        <source>%1 will download and store a copy of the Bitcoin Confidential block chain.</source>
+        <translation>%1 irá baixar e armazenar uma cópia da block chain do Bitcoin Confidential.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1090,8 +1090,8 @@
         <translation>Ga&amp;star troco não confirmado</translation>
     </message>
     <message>
-        <source>Automatically open the BitcoinC client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abrir as portas do cliente BitcoinC automaticamente no roteador. Isto só funcionará se seu roteador suportar UPnP e esta função estiver habilitada.</translation>
+        <source>Automatically open the Bitcoin Confidential client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Abrir as portas do cliente Bitcoin Confidential automaticamente no roteador. Isto só funcionará se seu roteador suportar UPnP e esta função estiver habilitada.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1106,8 +1106,8 @@
         <translation>Permitir conexões de entrada</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a SOCKS5 proxy.</source>
-        <translation>Conectar na rede BitcoinC através de um proxy SOCKS5.</translation>
+        <source>Connect to the Bitcoin Confidential network through a SOCKS5 proxy.</source>
+        <translation>Conectar na rede Bitcoin Confidential através de um proxy SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1142,8 +1142,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the BitcoinC network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Conecte-se à rede BitcoinC através de um proxy SOCKS5 separado para utilizar serviços ocultos Tor.</translation>
+        <source>Connect to the Bitcoin Confidential network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Conecte-se à rede Bitcoin Confidential através de um proxy SOCKS5 separado para utilizar serviços ocultos Tor.</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1249,8 +1249,8 @@
         <translation>Formulário</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the BitcoinC network after a connection is established, but this process has not completed yet.</source>
-        <translation>A informação mostrada pode estar desatualizada. Sua carteira sincroniza automaticamente com a rede BitcoinC depois que a conexão é estabelecida, mas este processo ainda não está completo.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin Confidential network after a connection is established, but this process has not completed yet.</source>
+        <translation>A informação mostrada pode estar desatualizada. Sua carteira sincroniza automaticamente com a rede Bitcoin Confidential depois que a conexão é estabelecida, mas este processo ainda não está completo.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1344,7 +1344,7 @@
         <translation>Endereço de pagamento %1 inválido</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid BitcoinC address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin Confidential address or malformed URI parameters.</source>
         <translation>A URI não pode ser analisada! Isto pode ser causado por um endereço inválido ou um parâmetro URI malformado.</translation>
     </message>
     <message>
@@ -1446,8 +1446,8 @@
         <translation>Quantidade</translation>
     </message>
     <message>
-        <source>Enter a BitcoinC address (e.g. %1)</source>
-        <translation>Informe um endereço BitcoinC (ex: %1)</translation>
+        <source>Enter a Bitcoin Confidential address (e.g. %1)</source>
+        <translation>Informe um endereço Bitcoin Confidential (ex: %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1894,8 +1894,8 @@
         <translation>&amp;Mensagem:</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the BitcoinC network.</source>
-        <translation>Uma mensagem opcional que será anexada na cobrança e será mostrada quando ela for aberta. Nota: A mensagem não será enviada com o pagamento pela rede BitcoinC.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin Confidential network.</source>
+        <translation>Uma mensagem opcional que será anexada na cobrança e será mostrada quando ela for aberta. Nota: A mensagem não será enviada com o pagamento pela rede Bitcoin Confidential.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2327,8 +2327,8 @@ Nota:  Como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por 
         <translation><numerusform>Confirmação em %n bloco.</numerusform><numerusform>Início estimado para confirmação em %n blocos.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid BitcoinC address</source>
-        <translation>Aviso: Endereço BitcoinC inválido</translation>
+        <source>Warning: Invalid Bitcoin Confidential address</source>
+        <translation>Aviso: Endereço Bitcoin Confidential inválido</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2370,8 +2370,8 @@ Nota:  Como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por 
         <translation>Este é um pagamento normal.</translation>
     </message>
     <message>
-        <source>The BitcoinC address to send the payment to</source>
-        <translation>O endereço BitcoinC para enviar o pagamento</translation>
+        <source>The Bitcoin Confidential address to send the payment to</source>
+        <translation>O endereço Bitcoin Confidential para enviar o pagamento</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2418,8 +2418,8 @@ Nota:  Como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por 
         <translation>Digite um rótulo para este endereço para adicioná-lo no catálogo</translation>
     </message>
     <message>
-        <source>A message that was attached to the bitcoinc: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the BitcoinC network.</source>
-        <translation>A mensagem que foi anexada ao bitcoinc: URI na qual será gravada na transação para sua referência. Nota: Essa mensagem não será gravada publicamente na rede BitcoinC.</translation>
+        <source>A message that was attached to the bitcoinc: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin Confidential network.</source>
+        <translation>A mensagem que foi anexada ao bitcoinc: URI na qual será gravada na transação para sua referência. Nota: Essa mensagem não será gravada publicamente na rede Bitcoin Confidential.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2467,8 +2467,8 @@ Nota:  Como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por 
         <translation>Você pode assinar mensagens com seus endereços para provar que você pode receber bitcoinc enviados por alguém. Cuidado para não assinar nada vago ou aleatório, pois ataques phishing podem tentar te enganar para assinar coisas para eles como se fosse você. Somente assine termos bem detalhados que você concorde.</translation>
     </message>
     <message>
-        <source>The BitcoinC address to sign the message with</source>
-        <translation>O endereço BitcoinC que assinará a mensagem</translation>
+        <source>The Bitcoin Confidential address to sign the message with</source>
+        <translation>O endereço Bitcoin Confidential que assinará a mensagem</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2499,8 +2499,8 @@ Nota:  Como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por 
         <translation>Copiar a assinatura para a área de transferência do sistema</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this BitcoinC address</source>
-        <translation>Assinar mensagem para provar que você é dono deste endereço BitcoinC</translation>
+        <source>Sign the message to prove you own this Bitcoin Confidential address</source>
+        <translation>Assinar mensagem para provar que você é dono deste endereço Bitcoin Confidential</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2523,12 +2523,12 @@ Nota:  Como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por 
         <translation>Coloque o endereço do autor, a mensagem (certifique-se de copiar toda a mensagem, incluindo quebras de linha, espaços, tabulações, etc.) e a assinatura abaixo para verificar a mensagem. Cuidado para não compreender mais da assinatura do que está na mensagem assinada de fato, para evitar ser enganado por um ataque man-in-the-middle. Note que isso somente prova que o signatário recebe com este endereço, não pode provar que é o remetente de nenhuma transação!</translation>
     </message>
     <message>
-        <source>The BitcoinC address the message was signed with</source>
-        <translation>O endereço BitcoinC que foi usado para assinar a mensagem</translation>
+        <source>The Bitcoin Confidential address the message was signed with</source>
+        <translation>O endereço Bitcoin Confidential que foi usado para assinar a mensagem</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified BitcoinC address</source>
-        <translation>Verificar mensagem para se assegurar que ela foi assinada pelo dono de um endereço BitcoinC específico</translation>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin Confidential address</source>
+        <translation>Verificar mensagem para se assegurar que ela foi assinada pelo dono de um endereço Bitcoin Confidential específico</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -3176,8 +3176,8 @@ Nota:  Como a taxa é calculada por byte, uma taxa de "100 satoshis por kB" por 
         <translation>Não foi possível iniciar o servidor HTTP. Veja o log de depuração para detaihes.</translation>
     </message>
     <message>
-        <source>BitcoinC Core</source>
-        <translation>BitcoinC Core</translation>
+        <source>Bitcoin Confidential Core</source>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <source>The %s developers</source>
