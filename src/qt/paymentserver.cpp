@@ -439,7 +439,7 @@ void PaymentServer::handleURIOrFile(const QString& s)
             }
             else
                 Q_EMIT message(tr("URI handling"),
-                    tr("URI cannot be parsed! This can be caused by an invalid BitcoinC address or malformed URI parameters."),
+                    tr("URI cannot be parsed! This can be caused by an invalid Bitcoin Confidential address or malformed URI parameters."),
                     CClientUIInterface::ICON_WARNING);
 
             return;

@@ -1025,7 +1025,7 @@ void SendCoinsDialog::coinControlChangeEdited(const QString& text)
         }
         else if (!IsValidDestination(dest)) // Invalid address
         {
-            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid BitcoinC address"));
+            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Bitcoin Confidentail address"));
         }
         else // Valid address
         {
