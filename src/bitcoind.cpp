@@ -29,13 +29,13 @@
  *
  * \section intro_sec Introduction
  *
- * This is the developer documentation of the reference client for an experimental new digital currency called BitcoinC (https://www.bitcoinc.io/),
- * which enables instant payments to anyone, anywhere in the world. BitcoinC uses peer-to-peer technology to operate
+ * This is the developer documentation of the reference client for an experimental new digital currency called Bitcoin Confidential (https://www.https://www.bitcoinconfidential.cc),
+ * which enables instant payments to anyone, anywhere in the world. Bitcoin Confidential uses peer-to-peer technology to operate
  * with no central authority: managing transactions and issuing money are carried out collectively by the network.
  *
  * The software is a community-driven open source project, released under the MIT license.
  *
- * See https://github.com/bitcoin/bitcoin and https://bitcoincore.org/ for further information about the project.
+ * See https://github.com/bitcoin-confidential/bitcoin and https://www.bitcoinconfidential.cc for further information about the project.
  *
  * \section Navigation
  * Use the buttons <code>Namespaces</code>, <code>Classes</code> or <code>Files</code> at the top of the page to start navigating the code.
@@ -164,7 +164,7 @@ static bool AppInit(int argc, char* argv[])
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
-            fprintf(stdout, "BitcoinC server starting\n");
+            fprintf(stdout, "Bitcoin Confidential server starting\n");
 
             // Daemonize
             if (daemon(1, 0)) { // don't chdir (1), do close FDs (0)

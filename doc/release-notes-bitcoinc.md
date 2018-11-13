@@ -2,7 +2,7 @@
 
 BitcoinC Core version 0.16.0.1 is now available from:
 
-  <https://bitcoinc.io/>
+  <https://BitcoinConfidential.cc/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements.

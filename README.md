@@ -3,7 +3,7 @@ BitcoinC Core integration/staging tree
 
 [![Build Status](https://travis-ci.org/bitcoinc/bitcoinc-core.svg?branch=master)](https://travis-ci.org/bitcoinc/bitcoinc-core)
 
-https://bitcoinc.io
+https://www.bitcoinconfidential.cc/
 
 What is BitcoinC?
 ----------------
@@ -12,7 +12,7 @@ An open source, decentralized privacy platform
 built for global person to person eCommerce.
 
 For more information, as well as an immediately useable, binary version of
-the BitcoinC Core software, see https://bitcoinc.io.
+the Bitcoin Confidential Core software, see https://www.bitcoinconfidential.cc/.
 
 
 Getting Started
@@ -43,7 +43,7 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/bitcoinc/bitcoinc-core/tags) are created
+completely stable. [Tags](https://github.com/bitcoin-confidential/bitcoinc-core/tags) are created
 regularly to indicate new official, stable release versions of BitcoinC Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -508,9 +508,9 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("mainnet-seed.bitcoinc.io");
-        vSeeds.emplace_back("dnsseed-mainnet.bitcoinc.io");
-        vSeeds.emplace_back("mainnet.bitcoinc.io");
+        vSeeds.emplace_back("mainnet-seed.bitcoinconfidential.cc/");
+        vSeeds.emplace_back("dnsseed-mainnet.bitcoinconfidential.cc/");
+        vSeeds.emplace_back("mainnet.bitcoinconfidential.cc/");
 
 
         vDevFundSettings.emplace_back(0,
@@ -675,8 +675,8 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet-seed.bitcoinc.io");
-        vSeeds.emplace_back("dnsseed-testnet.bitcoinc.io");
+        vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc/");
+        vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc/");
 
         vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("rTvv9vsbu269mjYYEecPYinDG8Bt7D86qD", 10, 60)));
 

@@ -47,7 +47,7 @@ static const int MAX_URI_LENGTH = 255;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "Bitcoin Confidential"
-#define QAPP_ORG_DOMAIN "bitcoinc.io"
+#define QAPP_ORG_DOMAIN "bitcoinconfidential.cc"
 #define QAPP_APP_NAME_DEFAULT "BitcoinC-Qt"
 #define QAPP_APP_NAME_TESTNET "BitcoinC-Qt-testnet"
 

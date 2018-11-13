@@ -676,8 +676,8 @@ void SetupServerArgs()
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/bitcoinc/bitcoinc-core>";
-    const std::string URL_WEBSITE = "<https://bitcoinc.io/>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/Bitcoin-Confidential>";
+    const std::string URL_WEBSITE = "<https://www.BitcoinConfidential.cc>";
 
     return CopyrightHolders(_("Copyright (C)")) + "\n" +
            "\n" +
