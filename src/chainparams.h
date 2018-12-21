@@ -165,7 +165,7 @@ protected:
     uint32_t nTargetTimespan;
 
     uint32_t nStakeTimestampMask = (1 << 4) -1; // 4 bits, every kernel stake hash will change every 16 seconds
-    int64_t nCoinYearReward = 2 * CENT; // 2% per year
+    int64_t nCoinYearReward = 0 * CENT; // 0% per year, fees only after 4th year
 
     std::vector<CImportedCoinbaseTxn> vImportedCoinbaseTxns;
     uint32_t nLastImportHeight;       // set from vImportedCoinbaseTxns
