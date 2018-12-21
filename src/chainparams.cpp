@@ -454,7 +454,7 @@ public:
         consensus.csp2shHeight = 0x7FFFFFFF;
 //        consensus.powLimit = uint256S("000000000000bfffffffffffffffffffffffffffffffffffffffffffffffffff");
 //        consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.powLimit = uint256S("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -505,26 +505,31 @@ public:
 
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlockMainNet(1544595191, 15916329, 0x1f00ffff); // 2018-12-12
-        consensus.hashGenesisBlock = genesis.GetHash();
+        //genesis = CreateGenesisBlockMainNet(1544595191, 15916329, 0x1d00ffff); // 2018-12-12
+        //consensus.hashGenesisBlock = genesis.GetHash();
+        bool fNegative;
+        bool fOverflow;
+        arith_uint256 bnTarget;
 
-// added
-/*                 genesis = CreateGenesisBlockMainNet(1544595191, 1, 0x1f00ffff);
-              int count;
-              for(count = 51231; count < 1000000000; count++){
-                 genesis = CreateGenesisBlockMainNet(1544595191, count, 0x1f00ffff);
-// default               if (UintToArith256(genesis.GetHash()) < arith_uint256("000000000000bfffffffffffffffffffffffffffffffffffffffffffffffffff")){
-// from min work               if (UintToArith256(genesis.GetHash()) < arith_uint256("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")){ 
-                 if (UintToArith256(genesis.GetHash()) < arith_uint256("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")){
+        bnTarget.SetCompact(0x1d00ffff, &fNegative, &fOverflow);
+
+// added           
+              for(int count = 111760000; count < 100000000000; count++){
+                 genesis = CreateGenesisBlockMainNet(1544595191, count, 0x1d00ffff);
+// default
+                 if (UintToArith256(genesis.GetHash()) <= bnTarget){
                     printf("genesis.nNonce = %d\n", count);
                     printf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
                     printf("new mainnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
                     printf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
- 	            assert(genesis.GetHash() == uint256S(""));
+                    break;
+                }
+                 if( count % 1000000 == 0 )
+                  printf("count = %d\n", count);
 		 }
-  	      }
+
 // to here
-*/
+
 /*
 /// create genesis
 consensus.hashGenesisBlock = uint256(1514296400, 31429, 0x1f00ffff);
@@ -543,9 +548,9 @@ if (true && consensus.GetHash() != consensus.hashGenesisBlock)
 ///
  //       consensus.hashGenesisBlock = genesis.GetHash();
 
-        assert(consensus.hashGenesisBlock == uint256S("0x0000003dfd447cc654af4b1457b92cb958ed054a682b15d76753da6c6d9b234c"));
-        assert(genesis.hashMerkleRoot == uint256S("0x3382539fce7cade18d78667ac207ff4014f65fb5aea002450c0326bc87dce154"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x73359bd1555adb0d32b9496a7f001c4f5f3b8011cf7fd79b417c0f07dd4f8d1a"));
+       // assert(consensus.hashGenesisBlock == uint256S("0x0000003dfd447cc654af4b1457b92cb958ed054a682b15d76753da6c6d9b234c"));
+       // assert(genesis.hashMerkleRoot == uint256S("0x3382539fce7cade18d78667ac207ff4014f65fb5aea002450c0326bc87dce154"));
+       // assert(genesis.hashWitnessMerkleRoot == uint256S("0x73359bd1555adb0d32b9496a7f001c4f5f3b8011cf7fd79b417c0f07dd4f8d1a"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
