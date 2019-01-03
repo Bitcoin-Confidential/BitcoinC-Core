@@ -26,6 +26,8 @@
 
 #include <univalue.h>
 
+#include "../crypto/sph_types.h"
+#include "../crypto/sph_keccak.h"
 
 int64_t static DecodeDumpTime(const std::string &str) {
     static const boost::posix_time::ptime epoch = boost::posix_time::from_time_t(0);
@@ -99,8 +101,54 @@ static void RescanWallet(CWallet& wallet, const WalletRescanReserver& reserver, 
     }
 }
 
+template<typename T1>
+inline uint256 HashKeccak(const T1 pbegin, const T1 pend)
+{        {
+    sph_keccak256_context ctx_keccak;
+    static unsigned char pblank[1];
+    uint256 hash;
+    sph_keccak256_init(&ctx_keccak);
+    sph_keccak256 (&ctx_keccak, (pbegin == pend ? pblank : static_cast<const void*>(&pbegin[0])), (pend - pbegin) * sizeof(pbegin[0]));
+    sph_keccak256_close(&ctx_keccak, static_cast<void*>(&hash));
+    return hash;
+}        }
+
+static bool DecodeBase58CheckSmartCash(const char* psz, std::vector<unsigned char>& vchRet)
+{
+    if (!DecodeBase58(psz, vchRet) ||
+        (vchRet.size() < 4)) {
+        vchRet.clear();
+        return false;
+    }
+    // re-calculate the checksum, insure it matches the included 4-byte checksum
+    uint256 hash = HashKeccak(vchRet.begin(), vchRet.end() - 4);
+    if (memcmp(&hash, &vchRet.end()[-4], 4) != 0) {
+        vchRet.clear();
+        return false;
+    }
+    vchRet.resize(vchRet.size() - 4);
+    return true;
+}
+
+static void convertSmartCashAddressToBitcoinConfidential(std::string& privateKey)
+{
+	std::vector<unsigned char> decodedSmartCashAddress;
+
+	if (DecodeBase58CheckSmartCash(privateKey.c_str(), decodedSmartCashAddress))
+	{
+		decodedSmartCashAddress[0]='';
+		privateKey = EncodeBase58Check(decodedSmartCashAddress);
+	}
+}
+
 UniValue importprivkey(const JSONRPCRequest& request)
 {
+	std::string strSecret = request.params[0].get_str();
+
+	//Check if it's an SmartCash address
+	if (strSecret[0]=='V')
+		convertSmartCashAddressToBitcoinConfidential(strSecret);
+	
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
@@ -139,7 +187,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
 
         EnsureWalletIsUnlocked(pwallet);
 
-        std::string strSecret = request.params[0].get_str();
+        //std::string strSecret = request.params[0].get_str();
         std::string strLabel = "";
         if (!request.params[1].isNull())
             strLabel = request.params[1].get_str();
