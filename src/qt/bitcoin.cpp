@@ -553,6 +553,7 @@ static void SetupUIArgs()
 }
 
 #ifndef BITCOIN_QT_TEST
+
 int main(int argc, char *argv[])
 {
     SetupEnvironment();
