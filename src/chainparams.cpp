@@ -506,7 +506,7 @@ public:
 
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlockMainNet(1544595191, 46350, 0x1f00ffff); // 2018-12-12
+        genesis = CreateGenesisBlockMainNet(1544595191, 24661, 0x1f00ffff); // 2018-12-12
         consensus.hashGenesisBlock = genesis.GetHash();
 
 /* //added-->
@@ -566,9 +566,9 @@ if (true && consensus.GetHash() != consensus.hashGenesisBlock)
 ///
  //       consensus.hashGenesisBlock = genesis.GetHash();
 
-        assert(consensus.hashGenesisBlock == uint256S("0x000022da889ba021a68bc475105169f1ec642d577066b4b71080e7584bf29da1"));
-        assert(genesis.hashMerkleRoot == uint256S("0xa0ee915baa3354e75dc995381549512489bc63d227e2bdd86e951ef010ea8a9e"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x58fd52dac3ff8325596493f433ed20f4f4bcb5a309d043e3d39c5e5461e28da7"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00008e068f6df1ce68e12a3b5318cb37e2939ddfa9c48152232145fdc201ad62"));
+        assert(genesis.hashMerkleRoot == uint256S("0x991cdb51ee6dbf0fa60cebd10d46a20b2428fa40ecf8664ade97d8688cc45b0c"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x4a3e030cd275a626c6dcca80accdf33c466964cc430a0137b86818490fe1a554"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
