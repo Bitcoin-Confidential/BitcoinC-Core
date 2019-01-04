@@ -379,6 +379,13 @@ static CBlock CreateGenesisBlockMainNet(uint32_t nTime, uint32_t nNonce, uint32_
     out->nValue = 397364 * COIN;
     out->scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("8a055e3525ea850325e462ef58c3ab5b75d7d3fd") << OP_EQUALVERIFY << OP_CHECKSIG;
     txNew.vpout.push_back(out);
+
+    // Airdrop Address
+    // bH54zbnXUHUhcvyP8fTboMVUXoPfTAjU6E
+    out = MAKE_OUTPUT<CTxOutStandard>();
+    out->nValue = 7367509500 * COIN;
+    out->scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("2f9f0e260ed2e09956109d62603312968a19642f") << OP_EQUALVERIFY << OP_CHECKSIG;
+    txNew.vpout.push_back(out);
 /*
     out = MAKE_OUTPUT<CTxOutStandard>();
     out->nValue = 296138 * COIN;
@@ -506,7 +513,7 @@ public:
 
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlockMainNet(1544595191, 83054, 0x1f00ffff); // 2018-12-12
+        genesis = CreateGenesisBlockMainNet(1544595191, 109119, 0x1f00ffff); // 2018-12-12
         consensus.hashGenesisBlock = genesis.GetHash();
 /*
  //added-->
@@ -531,9 +538,9 @@ public:
 ///<--added*/
 
 
-        assert(consensus.hashGenesisBlock == uint256S("0x00002d2bf5305c6a65ccce5440e4710e8cafe559ae5897c6c9fcdbc6876c4b3b"));
-        assert(genesis.hashMerkleRoot == uint256S("0xa3af27e47506ea813815589d7a0ac4129a08efa85d81cf69502f6b7fceb4097e"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x6d2f8bf12c8f288d4212c24294d214326dfa9ace92590fc965e44687521266e7"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000fbd4bfd38bb48e62e3fb7b212adaf068946858d7171f3227e2de46d6882"));
+        assert(genesis.hashMerkleRoot == uint256S("07a4f66122250d6253f89a5d1f128c3ebf910687da82e0d0a9b78be5fd24c58df"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x05344179e3bf005278309da74c5585f3590e4de023bea9ad4dc33456457d8759"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
