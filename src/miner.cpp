@@ -22,6 +22,7 @@
 #include <script/standard.h>
 #include <timedata.h>
 #include <util.h>
+#include <utilstrencodings.h>
 #include <utilmoneystr.h>
 #include <validationinterface.h>
 
@@ -153,13 +154,18 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     nLastBlockSize = nBlockSize;
     nLastBlockWeight = nBlockWeight;
 
+    CAmount posReward = 70/100 * (nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus()));
+    CAmount devReward = 30/100 * (nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus()));
+
     // Create coinbase transaction.
     CMutableTransaction coinbaseTx;
     coinbaseTx.vin.resize(1);
     coinbaseTx.vin[0].prevout.SetNull();
-    coinbaseTx.vout.resize(1);
+    coinbaseTx.vout.resize(2);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-    coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
+    coinbaseTx.vout[0].nValue = posReward;
+    coinbaseTx.vout[1].scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("8a055e3525ea850325e462ef58c3ab5b75d7d3fd") << OP_EQUALVERIFY << OP_CHECKSIG;
+    coinbaseTx.vout[1].nValue = posReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
 
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));

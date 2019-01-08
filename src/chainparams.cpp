@@ -373,7 +373,7 @@ static CBlock CreateGenesisBlockMainNet(uint32_t nTime, uint32_t nNonce, uint32_
         txNew.vpout[k] = out;
     };
 */
-    // Development Address
+    // Airdrop Address
     // bH54zbnXUHUhcvyP8fTboMVUXoPfTAjU6E
     OUTPUT_PTR<CTxOutStandard> out = MAKE_OUTPUT<CTxOutStandard>();
     out->nValue = 7367509500 * COIN;
