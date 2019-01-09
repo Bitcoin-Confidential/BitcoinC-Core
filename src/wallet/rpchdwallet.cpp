@@ -4447,9 +4447,9 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
     }
 
-    if (typeOut == OUTPUT_RINGCT && Params().NetworkID() == "main") {
+/*    if (typeOut == OUTPUT_RINGCT && Params().NetworkID() == "main") {
         throw std::runtime_error("Disabled on mainnet.");
-    }
+    }*/
 
     CAmount nTotal = 0;
 
