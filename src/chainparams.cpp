@@ -454,9 +454,7 @@ public:
         consensus.fAllowOpIsCoinstakeWithP2PKH = false;
         consensus.nPaidSmsgTime = 0x3AFE130E00; // 9999 TODO: lower
         consensus.csp2shHeight = 0x7FFFFFFF;
-//        consensus.powLimit = uint256S("000000000000bfffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-//        consensus.powLimit = uint256S("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -690,31 +688,34 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1544595191, 7151182, 0x1d00ffff);
+        genesis = CreateGenesisBlockTestNet(1544595191, 17083, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
-/*
-// added
-               genesis = CreateGenesisBlockTestNet(1544595191, 90000, 0x1f00ffff);
-               int count;
-               for(count = 90000; count < 1000000000; count++){
+
+/* //added-->
+         bool fNegative;
+         bool fOverflow;
+         arith_uint256 bnTarget;
+
+         bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
+               for(int count = 1; count < 100000000000; count++){
                   genesis = CreateGenesisBlockTestNet(1544595191, count, 0x1f00ffff);
-                if (UintToArith256(genesis.GetHash()) < arith_uint256("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")){
-                     printf("genesis.nNonce = %d\n", count);
-                     printf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
-                     printf("new mainnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
-                     printf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
-                     assert(genesis.GetHash() == uint256S(""));
+ // default
+                  if (UintToArith256(genesis.GetHash()) <= bnTarget){
+                     printf("testnet genesis.nNonce = %d\n", count);
+                     printf("new testnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+                     printf("new testnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
+                     printf("new testnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
+                     break;
+                 }
+                  if( count % 1000000 == 0 )
+                   printf("count = %d\n", count);
                   }
-               }
-*/
+///<--added*/
 
-//        assert(consensus.hashGenesisBlock == uint256S("0x000000eca076b42f3720d246b76c66f9d3a3720126b526782f8d3ac3c40ddee1"));
-//        assert(genesis.hashMerkleRoot == uint256S("0xa3af27e47506ea813815589d7a0ac4129a08efa85d81cf69502f6b7fceb4097e"));
-//        assert(genesis.hashWitnessMerkleRoot == uint256S("0x6d2f8bf12c8f288d4212c24294d214326dfa9ace92590fc965e44687521266e7"));
 
-//        assert(consensus.hashGenesisBlock == uint256S("0x0000594ada5310b367443ee0afd4fa3d0bbd5850ea4e33cdc7d6a904a7ec7c90"));
-//        assert(genesis.hashMerkleRoot == uint256S("0xdf6d7bb1cadb2c430a091dfe7f45c849f94a32b586a51fc801ad1bbd06c591ec"));
-//        assert(genesis.hashWitnessMerkleRoot == uint256S("0xf9e2235c9531d5a19263ece36e82c4d5b71910d73cd0b677b81c5e50d17b6cda"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00006a4533bd1ba048bf1a98cac0a962b67cd8cfd10fc97511cdf329e1b854b4"));
+        assert(genesis.hashMerkleRoot == uint256S("0xe2c6f30c2cc6ea4d516f889a03a5a0468ba567218fa13a09ec18836d35fc83e0"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0xd833c75ac31f70bc526f6da2ec443825e04a282f5bded429b2e042bd8f08fd66"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -839,29 +840,35 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockRegTest(1544595191, 10468, 0x207fffff);
+        genesis = CreateGenesisBlockRegTest(1544595191, 4, 0x207fffff);
         consensus.hashGenesisBlock = genesis.GetHash();
-/* // added
-                genesis = CreateGenesisBlockRegTest(1544595191, 10000, 0x207fffff);
-                int count;
-                for(count = 10000; count < 1000000000; count++){
-                   genesis = CreateGenesisBlockRegTest(1544595191, count, 0x207fffff);
-                 if (UintToArith256(genesis.GetHash()) < arith_uint256("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")){
-                      printf("genesis.nNonce = %d\n", count);
-                      printf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
-                      printf("new mainnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
-                      printf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
-                      assert(genesis.GetHash() == uint256S(""));
-                   }
-                }
+/*
+//added-->
+          bool fNegative;
+          bool fOverflow;
+          arith_uint256 bnTarget;
 
+          bnTarget.SetCompact(0x207fffff, &fNegative, &fOverflow);
+                for(int count = 1; count < 100000000000; count++){
+                   genesis = CreateGenesisBlockRegTest(1544595191, count, 0x207fffff);
+  // default
+                   if (UintToArith256(genesis.GetHash()) <= bnTarget){
+                      printf("regtest genesis.nNonce = %d\n", count);
+                      printf("new regtest genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+                      printf("new regtest genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
+                      printf("new regtest genesis hash: %s\n", genesis.GetHash().ToString().c_str());
+                      break;
+                  }
+                   if( count % 1000000 == 0 )
+                    printf("count = %d\n", count);
+                   }
+ ///<--added
 */
-//        assert(consensus.hashGenesisBlock == uint256S("0x008d0dd5681a6d1cd8b1da50b0305dcf2d82abb350dc171d75b6af954359c338"));
+
+
+        assert(consensus.hashGenesisBlock == uint256S("0x276d721ff1b46eabc60df2eb403d1a2f78aa90fa57cb795028060965024e1455"));
         assert(genesis.hashMerkleRoot == uint256S("0xe2c6f30c2cc6ea4d516f889a03a5a0468ba567218fa13a09ec18836d35fc83e0"));
         assert(genesis.hashWitnessMerkleRoot == uint256S("0xd833c75ac31f70bc526f6da2ec443825e04a282f5bded429b2e042bd8f08fd66"));
-//        assert(consensus.hashGenesisBlock == uint256S("0x6cd174536c0ada5bfa3b8fde16b98ae508fff6586f2ee24cf86686709$
-//        assert(genesis.hashMerkleRoot == uint256S("0xf89653c7208af2c76a3070d436229fb782acbd065bd5810307995b9982423$
-//        assert(genesis.hashWitnessMerkleRoot == uint256S("0x36b66a1aff91f34ab794da710d007777ef5e612a320e1979ac96e5$
 
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
