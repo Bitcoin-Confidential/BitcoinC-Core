@@ -214,8 +214,8 @@ const std::pair<const char*, CAmount> genesisOutputs[] = {
 const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]);
 
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
-/*    std::make_pair("46a064688dc7beb5f70ef83569a0f15c7abf4f28",7017084118),
-    std::make_pair("9c97b561ac186bd3758bf690036296d36b1fd019",221897417980),
+    std::make_pair("cff968e962da8b81727ae0c20ecc0b1f6a9a92e0",100000017084118),
+/*    std::make_pair("9c97b561ac186bd3758bf690036296d36b1fd019",221897417980),
     std::make_pair("118a92e28242a73244fb03c96b7e1429c06f979f",120499999),
     std::make_pair("cae4bf990ce39624e2f77c140c543d4b15428ce7",18074999),
     std::make_pair("9d6b7b5874afc100eb82a4883441a73b99d9c306",92637054909),
@@ -242,8 +242,8 @@ const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
     std::make_pair("604f36860d79a9d72b827c99409118bfe16711bd",108968353176),
     std::make_pair("f02e5891cef35c9c5d9a770756b240aba5ba3639",126271503135),
     std::make_pair("8251b4983be1027a17dc3b977502086f08ba8910",35102718156),
-    std::make_pair("b991d98acde28455ecb0193fefab06841187c4e7",80306152234),
-*/};
+    std::make_pair("b991d98acde28455ecb0193fefab06841187c4e7",80306152234),*/
+};
 const size_t nGenesisOutputsTestnet = sizeof(genesisOutputsTestnet) / sizeof(genesisOutputsTestnet[0]);
 
 
@@ -544,11 +544,8 @@ public:
         vSeeds.emplace_back("mainnet.bitcoinconfidential.cc/");
 
 
-/*        vDevFundSettings.emplace_back(0,
-           DevFundSettings("RJAPhgckEgRGVPZa9WoGSWW24spskSfLTQ", 10, 60));
-        vDevFundSettings.emplace_back(consensus.OpIsCoinstakeTime,
-            DevFundSettings("RBiiQBnQsVPPQkUaJVQTjsZM9K2xMKozST", 10, 60));
-*/
+        vDevFundSettings.emplace_back(0,DevFundSettings("bRK4NgJTH2LWUr7YUHxuocDbnQqk6WL8S7", 30, 1));
+
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b
         base58Prefixes[SCRIPT_ADDRESS]     = {0x0A}; // 5
@@ -640,7 +637,7 @@ public:
         consensus.nPaidSmsgTime = 0;
         consensus.csp2shHeight = 0x7FFFFFFF;
 
-        consensus.powLimit = uint256S("000000000005ffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -662,7 +659,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1493596800; // May 1st 2017
 
         // The best chain should have at least this much work.
-//        consensus.nMinimumChainWork = uint256S("0x00");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000010001");
 
         // By default assume that the signatures in ancestors of this block are valid.
         //consensus.defaultAssumeValid = uint256S("0x000000000871ee6842d3648317ccc8a435eb8cc3c2429aee94faff9ba26b05a0"); //1043841
@@ -688,19 +685,15 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1544595191, 17083, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1544595191, 93739, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-/* //added-->
-         bool fNegative;
-         bool fOverflow;
-         arith_uint256 bnTarget;
-
-         bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
+ /*//added-->
                for(int count = 1; count < 100000000000; count++){
-                  genesis = CreateGenesisBlockTestNet(1544595191, count, 0x1f00ffff);
+                  unsigned int nBits = 0x1f00ffff;
+                  genesis = CreateGenesisBlockTestNet(1544595191, count, nBits);
  // default
-                  if (UintToArith256(genesis.GetHash()) <= bnTarget){
+                  if (CheckProofOfWork2(genesis.GetHash(), nBits, consensus, 0, GetLastImportHeight())){
                      printf("testnet genesis.nNonce = %d\n", count);
                      printf("new testnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
                      printf("new testnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
@@ -713,9 +706,9 @@ public:
 ///<--added*/
 
 
-        assert(consensus.hashGenesisBlock == uint256S("0x00006a4533bd1ba048bf1a98cac0a962b67cd8cfd10fc97511cdf329e1b854b4"));
-        assert(genesis.hashMerkleRoot == uint256S("0xe2c6f30c2cc6ea4d516f889a03a5a0468ba567218fa13a09ec18836d35fc83e0"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0xd833c75ac31f70bc526f6da2ec443825e04a282f5bded429b2e042bd8f08fd66"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000524f55e29c67a51ed1b9f9399da4e25dd6e68ce6dbefc0bcbfce56eb0ddf"));
+        assert(genesis.hashMerkleRoot == uint256S("0xb8db4de6f4bfbc32eb03b40e04d71562227e94a7ff252fc960cf5051436864ec"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0xd6b0c67aee9506d6715e2066c6742a26ac8c2fc772a5f241f9912afdc12ca538"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -723,7 +716,7 @@ public:
         vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc/");
         vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc/");
 
-//        vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("rTvv9vsbu269mjYYEecPYinDG8Bt7D86qD", 10, 60)));
+        vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1)));
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x76}; // p
         base58Prefixes[SCRIPT_ADDRESS]     = {0x7a};
@@ -999,4 +992,3 @@ void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime,
 {
     globalChainParams->UpdateVersionBitsParameters(d, nStartTime, nTimeout);
 }
-
