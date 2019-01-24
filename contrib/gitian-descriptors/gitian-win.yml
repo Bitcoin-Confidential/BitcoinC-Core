@@ -18,14 +18,13 @@ packages:
 - "bsdmainutils"
 - "mingw-w64"
 - "g++-mingw-w64"
-- "nsis"
 - "zip"
 - "ca-certificates"
 - "python"
 - "rename"
 remotes:
-- "url": "https://github.com/bitcoinc/bitcoinc-core.git"
-  "dir": "bitcoinc-core"
+- "url": "git@git.smartcash.cc:BitcoinC/BitcoinC-Core.git"
+  "dir": "BitcoinC-Core"
 files: []
 script: |
   WRAP_DIR=$HOME/wrapped
@@ -107,7 +106,7 @@ script: |
   #create_per-host_linker_wrapper "2000-01-01 12:00:00"
   export PATH=${WRAP_DIR}:${PATH}
 
-  cd bitcoinc-core
+  cd BitcoinC-Core
   BASEPREFIX=`pwd`/depends
 
   create_per-host_linker_wrapper "2000-01-01 12:00:00"
