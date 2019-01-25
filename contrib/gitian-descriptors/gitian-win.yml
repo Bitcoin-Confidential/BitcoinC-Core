@@ -18,6 +18,7 @@ packages:
 - "bsdmainutils"
 - "mingw-w64"
 - "g++-mingw-w64"
+- "nsis"
 - "zip"
 - "ca-certificates"
 - "python"
