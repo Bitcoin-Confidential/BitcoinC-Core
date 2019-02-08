@@ -30,8 +30,8 @@ packages:
 - "python"
 - "libudev-dev"
 remotes:
-- "url": "https://github.com/bitcoinc/bitcoinc-core.git"
-  "dir": "bitcoinc-core"
+- "url": "https://github.com/bitcoin-confidential/bitcoinc-core.git"
+  "dir": "BitcoinC-Core"
 files: []
 script: |
   # prepare
@@ -52,6 +52,7 @@ script: |
   HOST_CXXFLAGS="-O2 -g"
   HOST_LDFLAGS=-static-libstdc++
 
+  export MAKEOPTS="-j $(nproc)"
   export QT_RCC_TEST=1
   export QT_RCC_SOURCE_DATE_OVERRIDE=1
   export GZIP="-9n"
