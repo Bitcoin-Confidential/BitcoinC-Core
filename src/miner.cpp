@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2018-2019 The BitcoinC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -154,8 +155,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     nLastBlockSize = nBlockSize;
     nLastBlockWeight = nBlockWeight;
 
-    CAmount posReward = 70/100 * (nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus()));
-    CAmount devReward = 30/100 * (nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus()));
+    CAmount posReward = (7 * (nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus())) / 10;
+    CAmount devReward = (3 * GetBlockSubsidy(nHeight, chainparams.GetConsensus())) / 10;
 
     // Create coinbase transaction.
     CMutableTransaction coinbaseTx;
@@ -165,7 +166,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     coinbaseTx.vout[0].nValue = posReward;
     coinbaseTx.vout[1].scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("8a055e3525ea850325e462ef58c3ab5b75d7d3fd") << OP_EQUALVERIFY << OP_CHECKSIG;
-    coinbaseTx.vout[1].nValue = posReward;
+    coinbaseTx.vout[1].nValue = devReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
 
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
