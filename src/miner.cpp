@@ -155,7 +155,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     nLastBlockSize = nBlockSize;
     nLastBlockWeight = nBlockWeight;
 
-    CAmount posReward = (7 * (nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus())) / 10;
+    CAmount posReward = nfees + (7 * GetBlockSubsidy(nHeight, chainparams.GetConsensus())) / 10;
     CAmount devReward = (3 * GetBlockSubsidy(nHeight, chainparams.GetConsensus())) / 10;
 
     // Create coinbase transaction.
