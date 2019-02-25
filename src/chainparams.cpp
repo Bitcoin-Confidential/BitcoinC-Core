@@ -517,12 +517,34 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1544595191, 93739, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1551128292, 188308, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        assert(consensus.hashGenesisBlock == uint256S("0x0000524f55e29c67a51ed1b9f9399da4e25dd6e68ce6dbefc0bcbfce56eb0ddf"));
-        assert(genesis.hashMerkleRoot == uint256S("0xb8db4de6f4bfbc32eb03b40e04d71562227e94a7ff252fc960cf5051436864ec"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0xd6b0c67aee9506d6715e2066c6742a26ac8c2fc772a5f241f9912afdc12ca538"));
+/* //added-->
+           bool fNegative;
+           bool fOverflow;
+           arith_uint256 bnTarget;
+
+           bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
+                 for(int count = 1; count < 100000000000; count++){
+                    genesis = CreateGenesisBlockTestNet(1551128292, count, 0x1f00ffff);
+   // default
+                    if (UintToArith256(genesis.GetHash()) <= bnTarget){
+                       printf("testnet genesis.nNonce = %d\n", count);
+                       printf("new testnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+                       printf("new testnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
+                       printf("new testnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
+                       break;
+                   }
+                    if( count % 1000000 == 0 )
+                     printf("count = %d\n", count);
+                    }
+  ///<--added*/
+
+
+        assert(consensus.hashGenesisBlock == uint256S("0x000021734264385a60c5bb40d38f1eb9fb1dcc033fd03b11012a64770b55ea8d"));
+        assert(genesis.hashMerkleRoot == uint256S("0x6d0a944ef53f5713c7a3485cc0f51e197858c09d1588ef95f84f69fb71c8775a"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0xff62cae983b972dc1b1e61124a0eea57e02494664e5d073379b62c165ef681dc"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
