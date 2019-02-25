@@ -9,8 +9,8 @@
  * network protocol versioning
  */
 
-static const int PROTOCOL_VERSION = 90007;
-static const int MIN_BITCOINC_VERSION = 90004;
+static const int PROTOCOL_VERSION = 90008;
+static const int MIN_BITCOINC_VERSION = 90008;
 
 //! initial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
@@ -19,7 +19,7 @@ static const int INIT_PROTO_VERSION = 209;
 static const int GETHEADERS_VERSION = 31800;
 
 //! disconnect from peers older than this proto version
-static const int MIN_PEER_PROTO_VERSION = 90005;
+static const int MIN_PEER_PROTO_VERSION = 90008;
 
 //! nTime field added to CAddress, starting with this version;
 //! if possible, avoid requesting addresses nodes older than this
