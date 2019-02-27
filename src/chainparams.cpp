@@ -175,10 +175,10 @@ const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]
 
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
 	//Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
-	std::make_pair("76a914296507bd43339b6ebe8610b48e27a7c7bf5d0dfa88ac",100000),
+	std::make_pair("76a914296507bd43339b6ebe8610b48e27a7c7bf5d0dfa88ac",100000 * COIN),
 
 	//Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
-	std::make_pair("76a914cff968e962da8b81727ae0c20ecc0b1f6a9a92e088ac",7367509500),
+	std::make_pair("76a914cff968e962da8b81727ae0c20ecc0b1f6a9a92e088ac",7367509500 * COIN),
 };
 
 const size_t nGenesisOutputsTestnet = sizeof(genesisOutputsTestnet) / sizeof(genesisOutputsTestnet[0]);
