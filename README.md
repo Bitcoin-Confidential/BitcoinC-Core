@@ -5,7 +5,7 @@ BitcoinC Core integration/staging tree
 
 https://www.bitcoinconfidential.cc/
 
-What is BitcoinC?
+What is Bitcoin Confidential?
 ----------------
 
 An open source, decentralized privacy platform
