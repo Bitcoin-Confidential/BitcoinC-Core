@@ -174,11 +174,11 @@ const std::pair<const char*, CAmount> genesisOutputs[] = {
 const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]);
 
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
-	//Dev address
-	std::make_pair("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc",100000),
+	//Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
+	std::make_pair("76a914296507bd43339b6ebe8610b48e27a7c7bf5d0dfa88ac",100000),
 
-	//Airdrop funds address
-	std::make_pair("poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv",7367509500),
+	//Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
+	std::make_pair("76a914cff968e962da8b81727ae0c20ecc0b1f6a9a92e088ac",7367509500),
 };
 
 const size_t nGenesisOutputsTestnet = sizeof(genesisOutputsTestnet) / sizeof(genesisOutputsTestnet[0]);
@@ -517,7 +517,7 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1551128292, 188308, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1551128292, 8226, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
 /* //added-->
@@ -542,9 +542,9 @@ public:
   ///<--added*/
 
 
-        assert(consensus.hashGenesisBlock == uint256S("0x000021734264385a60c5bb40d38f1eb9fb1dcc033fd03b11012a64770b55ea8d"));
-        assert(genesis.hashMerkleRoot == uint256S("0x6d0a944ef53f5713c7a3485cc0f51e197858c09d1588ef95f84f69fb71c8775a"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0xff62cae983b972dc1b1e61124a0eea57e02494664e5d073379b62c165ef681dc"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00006fa7f88ab0173a65cda4d1a8063b49282c4cc4032a1fa04d21b070f51b4d"));
+        assert(genesis.hashMerkleRoot == uint256S("0x5778189487732e7ff98293f03e806513a338f1da302147f1b00879d89367bcef"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x4112d40503f589123cbe50e36c2e6da01f2cc402fda165a26fe72c473688b1b2"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
