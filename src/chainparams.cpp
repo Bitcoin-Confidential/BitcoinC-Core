@@ -175,10 +175,12 @@ const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]
 
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
 	//Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
-	std::make_pair("76a914296507bd43339b6ebe8610b48e27a7c7bf5d0dfa88ac",100000 * COIN),
+//	std::make_pair("76a914296507bd43339b6ebe8610b48e27a7c7bf5d0dfa88ac",100000 * COIN),
+	std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",100000 * COIN),
 
 	//Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
-	std::make_pair("76a914cff968e962da8b81727ae0c20ecc0b1f6a9a92e088ac",7367509500 * COIN),
+//	std::make_pair("76a914cff968e962da8b81727ae0c20ecc0b1f6a9a92e088ac",7367509500 * COIN),
+	std::make_pair("cff968e962da8b81727ae0c20ecc0b1f6a9a92e0",7367509500 * COIN),
 };
 
 const size_t nGenesisOutputsTestnet = sizeof(genesisOutputsTestnet) / sizeof(genesisOutputsTestnet[0]);
@@ -517,7 +519,7 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1551128292, 60839, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1551128292, 13275, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
 /* //added-->
@@ -542,9 +544,9 @@ public:
   ///<--added*/
 
 
-        assert(consensus.hashGenesisBlock == uint256S("0x000014bfec0f67e130e2b0f973911e37ec22e5ae1f2a412c62d1effce4fe614b"));
-        assert(genesis.hashMerkleRoot == uint256S("0x1a08aae8d42a6cce93325cd8c4a5ca22606a38294ae0e9482f66415b6e9ee8ae"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x5cea016ee0c3345d98991f921bccc08ea9f86926ebe0bc4826e2d1aee6933295"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000018eee6f7a0bf60eed000791f44fa0bc126189b551a740ee303976f6a7ad9"));
+        assert(genesis.hashMerkleRoot == uint256S("0x632fe810e06daedd3705ed3d21fdd1cd1fcf8e58db1deeef7c768c55690a47d0"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x9d523973c984b9a8d6c981aa21e08627d182711404ee85001e06605fb7736c2b"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
