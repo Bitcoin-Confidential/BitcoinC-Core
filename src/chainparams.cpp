@@ -519,7 +519,7 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1551128292, 13275, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1551128292, 101084, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
 /* //added-->
@@ -544,9 +544,9 @@ public:
   ///<--added*/
 
 
-        assert(consensus.hashGenesisBlock == uint256S("0x000018eee6f7a0bf60eed000791f44fa0bc126189b551a740ee303976f6a7ad9"));
-        assert(genesis.hashMerkleRoot == uint256S("0x632fe810e06daedd3705ed3d21fdd1cd1fcf8e58db1deeef7c768c55690a47d0"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x9d523973c984b9a8d6c981aa21e08627d182711404ee85001e06605fb7736c2b"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000a3e7ded0040aaf59712b7b3bb7aa4b1674acd50142aa18e066cd3f0eebd0"));
+        assert(genesis.hashMerkleRoot == uint256S("0x9653df368ffa84856737a7c6591c16ed5970ca1ee6dea31b1d1805720f8246f3"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x1a012364dbe8e1e61be63ebd3a5f9375c0ba522763badeea2b554282bcc76ba6"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
