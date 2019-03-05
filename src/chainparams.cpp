@@ -551,9 +551,9 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet.b-c.rocks/");
-        vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc/");
-        vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc/");
+        vSeeds.emplace_back("testnet.b-c.rocks");
+        vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc");
+        vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc");
 
         vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1)));
 
