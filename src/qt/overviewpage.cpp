@@ -173,7 +173,6 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
         + balances.balanceWatchStaked, false, BitcoinUnits::separatorAlways));
 
     ui->labelStaked->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStaked, false, BitcoinUnits::separatorAlways));
-    ui->labelBlindBalance->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceBlind, false, BitcoinUnits::separatorAlways));
     ui->labelAnonBalance->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceAnon, false, BitcoinUnits::separatorAlways));
     ui->labelWatchStaked->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStaked, false, BitcoinUnits::separatorAlways));
 
