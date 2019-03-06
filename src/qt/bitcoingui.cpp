@@ -391,7 +391,6 @@ void BitcoinGUI::createMenuBar()
         file->addAction(usedReceivingAddressesAction);
         file->addSeparator();
         file->addAction(mnemonicAction);
-        file->addAction(coldstakingAction);
         file->addSeparator();
     }
     file->addAction(quitAction);
@@ -429,6 +428,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
+        toolbar->addAction(coldstakingAction);
         overviewAction->setChecked(true);
 
 #ifdef ENABLE_WALLET
