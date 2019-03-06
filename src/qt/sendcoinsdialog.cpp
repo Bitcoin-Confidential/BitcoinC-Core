@@ -69,7 +69,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
         ui->sendButton->setIcon(QIcon());
     } else {
         ui->addButton->setIcon(_platformStyle->SingleColorIcon(":/icons/add"));
-        ui->addButtonCS->setIcon(_platformStyle->SingleColorIcon(":/icons/add"));
         ui->clearButton->setIcon(_platformStyle->SingleColorIcon(":/icons/remove"));
         ui->sendButton->setIcon(_platformStyle->SingleColorIcon(":/icons/send"));
     }
@@ -79,7 +78,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
     addEntry();
 
     connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addEntry()));
-    connect(ui->addButtonCS, SIGNAL(clicked()), this, SLOT(addEntryCS()));
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
     // Coin Control
