@@ -25,7 +25,7 @@ ColdStakingDialog::ColdStakingDialog(QWidget *parent, WalletModel *wm) :
 
     ui->lblWallet->setText(QString::fromStdString(walletModel->wallet().getWalletName()));
 
-    GUIUtil::setupAddressWidget(ui->coldStakeChangeAddr, this, true);
+    GUIUtil::setupColdStakeAddressWidget(ui->coldStakeChangeAddr, this, true);
 
     QString change_spend;
     getChangeSettings(change_spend, m_coldStakeChangeAddress);

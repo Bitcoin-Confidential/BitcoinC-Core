@@ -48,6 +48,7 @@ namespace GUIUtil
 
     // Set up widget for address
     void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool allow_stakeonly=false);
+	void setupColdStakeAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool allow_stakeonly=false);
 
     // Parse "bitcoin:" URI into recipient object, return true on successful parsing
     bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
