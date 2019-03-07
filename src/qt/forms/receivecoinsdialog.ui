@@ -113,22 +113,22 @@
             </property>
             <item>
              <property name="text">
-              <string>Standard</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
               <string>Stealth</string>
              </property>
             </item>
-            <item>
+			<item>
              <property name="text">
               <string>Extended</string>
              </property>
             </item>
+			<item>
+             <property name="text">
+              <string>ColdStake</string>
+             </property>
+            </item>
             <item>
              <property name="text">
-              <string>Standard 256bit</string>
+              <string>ColdReturn</string>
              </property>
             </item>
            </widget>
