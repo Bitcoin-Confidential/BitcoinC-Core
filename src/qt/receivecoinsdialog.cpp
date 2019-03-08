@@ -159,7 +159,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     OutputType address_type = ui->useBech32->isChecked() ? OutputType::BECH32 : OutputType::LEGACY;
 
     /* Generate new receiving address*/
-    AddressTableModel::AddrType addrType = AddressTableModel::ADDR_STANDARD;
+    AddressTableModel::AddrType addrType = AddressTableModel::ADDR_STEALTH;
 
     if (ui->cbxAddressType->currentText() == "Stealth")
         addrType = AddressTableModel::ADDR_STEALTH;
