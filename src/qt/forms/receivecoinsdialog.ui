@@ -118,11 +118,6 @@
             </item>
 			<item>
              <property name="text">
-              <string>Extended</string>
-             </property>
-            </item>
-			<item>
-             <property name="text">
               <string>ColdStake</string>
              </property>
             </item>
