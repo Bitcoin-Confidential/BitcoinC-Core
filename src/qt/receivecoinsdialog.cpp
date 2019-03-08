@@ -158,16 +158,19 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     */
     OutputType address_type = ui->useBech32->isChecked() ? OutputType::BECH32 : OutputType::LEGACY;
 
-    /* Generate new receiving address */
+    /* Generate new receiving address*/
     AddressTableModel::AddrType addrType = AddressTableModel::ADDR_STANDARD;
 
     if (ui->cbxAddressType->currentText() == "Stealth")
         addrType = AddressTableModel::ADDR_STEALTH;
     else
-    if (ui->cbxAddressType->currentText() == "Extended")
+/*    if (ui->cbxAddressType->currentText() == "Extended")
         addrType = AddressTableModel::ADDR_EXT;
+    else */
+    if (ui->cbxAddressType->currentText() == "ColdStake")
+        addrType = AddressTableModel::ADDR_STANDARD;
     else
-    if (ui->cbxAddressType->currentText() == "Standard 256bit")
+    if (ui->cbxAddressType->currentText() == "ColdReturn")
         addrType = AddressTableModel::ADDR_STANDARD256;
 
     address = model->getAddressTableModel()->addRow(AddressTableModel::Receive, label, "", address_type, addrType);
