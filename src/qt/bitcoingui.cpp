@@ -335,7 +335,7 @@ void BitcoinGUI::createActions()
 
     mnemonicAction = new QAction(platformStyle->TextColorIcon(":/icons/info"), tr("&HD Wallet..."), this);
     mnemonicAction->setMenuRole(QAction::NoRole);
-    coldstakingAction = new QAction(platformStyle->TextColorIcon(":/icons/info"), tr("&Staking Setup"), this);
+    coldstakingAction = new QAction(platformStyle->TextColorIcon(":/icons/staking"), tr("&Cold Staking"), this);
     coldstakingAction->setMenuRole(QAction::NoRole);
 
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
