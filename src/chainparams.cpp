@@ -426,26 +426,13 @@ public:
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b ColdStake
         base58Prefixes[SCRIPT_ADDRESS]     = {0x0A}; // 5
-//        base58Prefixes[PUBKEY_ADDRESS_256] = {0x39}; // r ColdReturn now 2u
-//        base58Prefixes[PUBKEY_ADDRESS_256] = {0x3C}; // r ColdReturn actual 32u
-        base58Prefixes[PUBKEY_ADDRESS_256] = {0xDF}; // ColdReturn 8
-        base58Prefixes[SCRIPT_ADDRESS_256] = {0x3d}; 
-//        base58Prefixes[SECRET_KEY]         = {0x1c}; // C now 5
-//        base58Prefixes[SECRET_KEY]         = {0x35}; // C actual 8
+        base58Prefixes[PUBKEY_ADDRESS_256] = {0xA5,0x00}; // ColdReturn R
+        base58Prefixes[SCRIPT_ADDRESS_256] = {0x3d}; // 7
         base58Prefixes[SECRET_KEY]         = {0x4B}; // C
-//        base58Prefixes[EXT_PUBLIC_KEY]     = {0x69, 0x6e, 0x82, 0xd1}; // PPAR
-//        base58Prefixes[EXT_PUBLIC_KEY]     = {0x02, 0xD4, 0x13, 0xFF}; // PPAR   actual Unsk
-//         base58Prefixes[EXT_PUBLIC_KEY]     = {0x82, 0xE8, 0xDA, 0x58}; // bpub actual UNsKC
         base58Prefixes[EXT_PUBLIC_KEY]     = {0x02, 0xD4, 0x13, 0xFF}; // bpub
-//         base58Prefixes[EXT_SECRET_KEY]     = {0x8f, 0x1d, 0xae, 0xb8}; // XPAR
-//        base58Prefixes[EXT_SECRET_KEY]     = {0x82, 0xE8, 0xDA, 0x58}; // cprv actual bpub
-//         base58Prefixes[EXT_SECRET_KEY]     = {0x82, 0xE8, 0xD2, 0x87}; // bprv act UnsEG
-//          base58Prefixes[EXT_SECRET_KEY]     = {0x02, 0xD4, 0x0C, 0x2E}; // bprv
-        base58Prefixes[EXT_SECRET_KEY]     = {0x02, 0xD4, 0x0D, 0x3E}; // bprv
+        base58Prefixes[EXT_SECRET_KEY]     = {0x02, 0xD4, 0x0F, 0xC5}; // bprv
 
-//        base58Prefixes[STEALTH_ADDRESS]    = {0xB2}; // B now 4
-//        base58Prefixes[STEALTH_ADDRESS]    = {0xC3}; // B actual 5
-        base58Prefixes[STEALTH_ADDRESS]    = {0xB5}; // B5=4xj4 B4=4wTT B3=4vBq B2=4tve B1=4sec
+        base58Prefixes[STEALTH_ADDRESS]    = {0x08}; // B
         base58Prefixes[EXT_KEY_HASH]       = {0x4b}; // X
         base58Prefixes[EXT_ACC_HASH]       = {0x17}; // A
         base58Prefixes[EXT_PUBLIC_KEY_BTC] = {0x04, 0x88, 0xB2, 0x1E}; // xpub
