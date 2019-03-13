@@ -1,5 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2019 The Bitcoin Confidential developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -160,26 +161,30 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
+//RegTest
 const std::pair<const char*, CAmount> regTestOutputs[] = {
 //  std::make_pair("585c2b3914d9ee51f8e710304e386531c3abcc82", 10000 * COIN),
 };
 
 const size_t nGenesisOutputsRegtest = sizeof(regTestOutputs) / sizeof(regTestOutputs[0]);
 
+//Mainnet
 const std::pair<const char*, CAmount> genesisOutputs[] = {
-    std::make_pair("4A6763806860D43D0B1376D012D3EA1E89CF97A3",7017084118),
-    std::make_pair("E359427F1BC5B29A8A092A387D19EC123F2C35F1",221897417980),
+         //Dev address bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ
+    std::make_pair("fff85dd28a712f821414fabec2a58395858ff7ae",100000 * COIN),
+
+         //Airdrop funds address baUw2uoeZTjrPjuj2YTRwiLpEuhEKSRb4S
+    std::make_pair("ee9c88287db0e48d56e4776b6bd5a762c4dbb22e",7367509500 * COIN),
 };
 
 const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]);
 
+//Testnet
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
 	//Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
-//	std::make_pair("76a914296507bd43339b6ebe8610b48e27a7c7bf5d0dfa88ac",100000 * COIN),
 	std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",100000 * COIN),
 
 	//Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
-//	std::make_pair("76a914cff968e962da8b81727ae0c20ecc0b1f6a9a92e088ac",7367509500 * COIN),
 	std::make_pair("cff968e962da8b81727ae0c20ecc0b1f6a9a92e0",7367509500 * COIN),
 };
 
@@ -265,13 +270,21 @@ static CBlock CreateGenesisBlockMainNet(uint32_t nTime, uint32_t nNonce, uint32_
     uint32_t nHeight = 0;  // bip34
     txNew.vin[0].scriptSig = CScript() << 486604799 << CScriptNum(4) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp)) << OP_RETURN << nHeight;
 
+    txNew.vpout.resize(nGenesisOutputs);
+    for (size_t k = 0; k < nGenesisOutputs; ++k) {
+        OUTPUT_PTR<CTxOutStandard> out = MAKE_OUTPUT<CTxOutStandard>();
+        out->nValue = genesisOutputs[k].second;
+        out->scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex(genesisOutputs[k].first) << OP_EQUALVERIFY << OP_CHECKSIG;
+        txNew.vpout[k] = out;
+    }
+/*
     // Airdrop Address
     // bH54zbnXUHUhcvyP8fTboMVUXoPfTAjU6E
     OUTPUT_PTR<CTxOutStandard> out = MAKE_OUTPUT<CTxOutStandard>();
     out->nValue = 7367509500 * COIN;
     out->scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("2f9f0e260ed2e09956109d62603312968a19642f") << OP_EQUALVERIFY << OP_CHECKSIG;
     txNew.vpout.push_back(out);
-
+*/
     CBlock genesis;
     genesis.nTime    = nTime;
     genesis.nBits    = nBits;
@@ -367,12 +380,35 @@ public:
 
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlockMainNet(1544595191, 38335, 0x1f00ffff); // 2018-12-12
+        genesis = CreateGenesisBlockMainNet(1551128292, 59115, 0x1f00ffff); // 2018-12-12
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        assert(consensus.hashGenesisBlock == uint256S("0x000027aa4bd85c64d0a9c2d2efe747573079a2f69ed8c176ffb43b0ee8334412"));
-        assert(genesis.hashMerkleRoot == uint256S("0xc7c73b255f7a9e4f2db9124e7dc11a2b10557bcd039d5e5f598f95e2f3508c14"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x99cf3e1a63eadadf9002a8c8bcf03c04467ce0b11cd66154323320dbb515520c"));
+/* //added-->
+            bool fNegative;
+            bool fOverflow;
+            arith_uint256 bnTarget;
+
+            bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
+                  for(int count = 1; count < 100000000000; count++){
+                     genesis = CreateGenesisBlockMainNet(1551128292, count, 0x1f00ffff);
+    // default
+                     if (UintToArith256(genesis.GetHash()) <= bnTarget){
+                        printf("new mainnet genesis.nNonce = %d\n", count);
+                        printf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+                        printf("new mainnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
+                        printf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
+                        break;
+                    }
+                     if( count % 1000000 == 0 )
+                      printf("count = %d\n", count);
+                     }
+   ///<--added*/
+
+
+
+        assert(consensus.hashGenesisBlock == uint256S("0x0000a019b8be2cd848ad659473a32251b6f79403d5cfbd34777e9dfbba64f9e5"));
+        assert(genesis.hashMerkleRoot == uint256S("0x8d47c652109492c2fc66e54e43f2ec458341ec764931a9fb54cd259918c3be57"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x3c8664b4554698ef489407145df6268be19387ed09734421e04c854835e20432"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -385,20 +421,31 @@ public:
         vSeeds.emplace_back("mainnet.bitcoinconfidential.cc");
 
 
-        vDevFundSettings.emplace_back(0,DevFundSettings("bRK4NgJTH2LWUr7YUHxuocDbnQqk6WL8S7", 30, 1));
+        vDevFundSettings.emplace_back(0,DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1));
 
 
-        base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b
+        base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b ColdStake
         base58Prefixes[SCRIPT_ADDRESS]     = {0x0A}; // 5
-        base58Prefixes[PUBKEY_ADDRESS_256] = {0x39};
-        base58Prefixes[SCRIPT_ADDRESS_256] = {0x3d};
-        base58Prefixes[SECRET_KEY]         = {0x1c}; // C
+//        base58Prefixes[PUBKEY_ADDRESS_256] = {0x39}; // r ColdReturn now 2u
+//        base58Prefixes[PUBKEY_ADDRESS_256] = {0x3C}; // r ColdReturn actual 32u
+        base58Prefixes[PUBKEY_ADDRESS_256] = {0xDF}; // ColdReturn 8
+        base58Prefixes[SCRIPT_ADDRESS_256] = {0x3d}; 
+//        base58Prefixes[SECRET_KEY]         = {0x1c}; // C now 5
+//        base58Prefixes[SECRET_KEY]         = {0x35}; // C actual 8
+        base58Prefixes[SECRET_KEY]         = {0x4B}; // C
 //        base58Prefixes[EXT_PUBLIC_KEY]     = {0x69, 0x6e, 0x82, 0xd1}; // PPAR
-        base58Prefixes[EXT_PUBLIC_KEY]     = {0x02, 0xD4, 0x13, 0xFF}; // PPAR   bpub
+//        base58Prefixes[EXT_PUBLIC_KEY]     = {0x02, 0xD4, 0x13, 0xFF}; // PPAR   actual Unsk
+//         base58Prefixes[EXT_PUBLIC_KEY]     = {0x82, 0xE8, 0xDA, 0x58}; // bpub actual UNsKC
+        base58Prefixes[EXT_PUBLIC_KEY]     = {0x02, 0xD4, 0x13, 0xFF}; // bpub
 //         base58Prefixes[EXT_SECRET_KEY]     = {0x8f, 0x1d, 0xae, 0xb8}; // XPAR
-        base58Prefixes[EXT_SECRET_KEY]     = {0x82, 0xE8, 0xDA, 0x58}; // cprv
+//        base58Prefixes[EXT_SECRET_KEY]     = {0x82, 0xE8, 0xDA, 0x58}; // cprv actual bpub
+//         base58Prefixes[EXT_SECRET_KEY]     = {0x82, 0xE8, 0xD2, 0x87}; // bprv act UnsEG
+//          base58Prefixes[EXT_SECRET_KEY]     = {0x02, 0xD4, 0x0C, 0x2E}; // bprv
+        base58Prefixes[EXT_SECRET_KEY]     = {0x02, 0xD4, 0x0D, 0x3E}; // bprv
 
-        base58Prefixes[STEALTH_ADDRESS]    = {0xB2}; // B
+//        base58Prefixes[STEALTH_ADDRESS]    = {0xB2}; // B now 4
+//        base58Prefixes[STEALTH_ADDRESS]    = {0xC3}; // B actual 5
+        base58Prefixes[STEALTH_ADDRESS]    = {0xB5}; // B5=4xj4 B4=4wTT B3=4vBq B2=4tve B1=4sec
         base58Prefixes[EXT_KEY_HASH]       = {0x4b}; // X
         base58Prefixes[EXT_ACC_HASH]       = {0x17}; // A
         base58Prefixes[EXT_PUBLIC_KEY_BTC] = {0x04, 0x88, 0xB2, 0x1E}; // xpub
