@@ -165,7 +165,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout.resize(2);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     coinbaseTx.vout[0].nValue = posReward;
-    coinbaseTx.vout[1].scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("8a055e3525ea850325e462ef58c3ab5b75d7d3fd") << OP_EQUALVERIFY << OP_CHECKSIG;
+//testnet    coinbaseTx.vout[1].scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("8a055e3525ea850325e462ef58c3ab5b75d7d3fd") << OP_EQUALVERIFY << OP_CHECKSIG;
+    coinbaseTx.vout[1].scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("fff85dd28a712f821414fabec2a58395858ff7ae") << OP_EQUALVERIFY << OP_CHECKSIG;
     coinbaseTx.vout[1].nValue = devReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
 
