@@ -249,8 +249,8 @@ bool CheckBlindOutput(CValidationState &state, const CTxOutCT *p)
 
 bool CheckAnonOutput(CValidationState &state, const CTxOutRingCT *p)
 {
-    if (Params().NetworkID() == "main")
-        return state.DoS(100, false, REJECT_INVALID, "AnonOutput in mainnet");
+/*    if (Params().NetworkID() == "main")
+        return state.DoS(100, false, REJECT_INVALID, "AnonOutput in mainnet"); */
 
     if (p->vData.size() < 33 || p->vData.size() > 33 + 5)
         return state.DoS(100, false, REJECT_INVALID, "bad-rctout-ephem-size");
