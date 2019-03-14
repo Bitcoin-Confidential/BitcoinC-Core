@@ -421,8 +421,8 @@ public:
         vSeeds.emplace_back("mainnet.bitcoinconfidential.cc");
 
 
-        vDevFundSettings.emplace_back(0,DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1));
-
+//        vDevFundSettings.emplace_back(0,DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1));
+         vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1)));
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b ColdStake
         base58Prefixes[SCRIPT_ADDRESS]     = {0x0A}; // 5
