@@ -27,6 +27,11 @@ QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
 
+extern const std::array<int, 9> confTargets;
+
+int getIndexForConfTarget(int target);
+int getConfTargetForIndex(int index);
+
 /** Dialog for sending bitcoins */
 class SendCoinsDialog : public QDialog
 {

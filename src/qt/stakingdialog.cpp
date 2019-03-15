@@ -15,6 +15,7 @@
 #include <qt/sendcoinsentry.h>
 #include <qt/sendcoinsdialog.h>
 
+
 #include <chainparams.h>
 #include <interfaces/node.h>
 #include <key_io.h>
@@ -34,25 +35,6 @@
 #include <QTextDocument>
 #include <QApplication>
 #include <QInputDialog>
-
-static const std::array<int, 9> confTargets = { {2, 4, 6, 12, 24, 48, 144, 504, 1008} };
-int getConfTargetForIndex(int index) {
-    if (index+1 > static_cast<int>(confTargets.size())) {
-        return confTargets.back();
-    }
-    if (index < 0) {
-        return confTargets[0];
-    }
-    return confTargets[index];
-}
-int getIndexForConfTarget(int target) {
-    for (unsigned int i = 0; i < confTargets.size(); i++) {
-        if (confTargets[i] >= target) {
-            return i;
-        }
-    }
-    return confTargets.size() - 1;
-}
 
 StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
     QDialog(parent),
