@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/sendcoinsdialog.h>
-#include <qt/forms/ui_sendcoinsdialog.h>
+#include <qt/stakingdialog.h>
+#include <qt/forms/ui_stakingdialog.h>
 
 #include <qt/addresstablemodel.h>
 #include <qt/bitcoinunits.h>
@@ -13,6 +13,7 @@
 #include <qt/optionsmodel.h>
 #include <qt/platformstyle.h>
 #include <qt/sendcoinsentry.h>
+#include <qt/sendcoinsdialog.h>
 
 #include <chainparams.h>
 #include <interfaces/node.h>
@@ -32,6 +33,7 @@
 #include <QSettings>
 #include <QTextDocument>
 #include <QApplication>
+#include <QInputDialog>
 
 static const std::array<int, 9> confTargets = { {2, 4, 6, 12, 24, 48, 144, 504, 1008} };
 int getConfTargetForIndex(int index) {
@@ -52,9 +54,9 @@ int getIndexForConfTarget(int target) {
     return confTargets.size() - 1;
 }
 
-SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
+StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SendCoinsDialog),
+    ui(new Ui::StakingDialog),
     clientModel(0),
     model(0),
     fNewRecipientAllowed(true),
@@ -65,11 +67,9 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
     ui->setupUi(this);
 
     if (!_platformStyle->getImagesOnButtons()) {
-        ui->addButton->setIcon(QIcon());
         ui->clearButton->setIcon(QIcon());
         ui->sendButton->setIcon(QIcon());
     } else {
-        ui->addButton->setIcon(_platformStyle->SingleColorIcon(":/icons/add"));
         ui->clearButton->setIcon(_platformStyle->SingleColorIcon(":/icons/remove"));
         ui->sendButton->setIcon(_platformStyle->SingleColorIcon(":/icons/send"));
     }
@@ -78,7 +78,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
 
     addEntry();
 
-    connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addEntry()));
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
     // Coin Control
@@ -101,8 +100,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
     connect(clipboardBytesAction, SIGNAL(triggered()), this, SLOT(coinControlClipboardBytes()));
     connect(clipboardLowOutputAction, SIGNAL(triggered()), this, SLOT(coinControlClipboardLowOutput()));
     connect(clipboardChangeAction, SIGNAL(triggered()), this, SLOT(coinControlClipboardChange()));
-
-    connect(ui->cbxTypeFrom, SIGNAL(currentIndexChanged(int)), this, SLOT(cbxTypeFromChanged(int)));
 
     ui->labelCoinControlQuantity->addAction(clipboardQuantityAction);
     ui->labelCoinControlAmount->addAction(clipboardAmountAction);
@@ -132,9 +129,36 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, QWidget *p
     ui->customFee->setValue(settings.value("nTransactionFee").toLongLong());
     ui->checkBoxMinimumFee->setChecked(settings.value("fPayOnlyMinFee").toBool());
     minimizeFeeSection(settings.value("fFeeSectionMinimized").toBool());
+
+    modeSelection.addButton(ui->radioOverview, 0);
+    modeSelection.addButton(ui->radioSpending, 1);
+    modeSelection.addButton(ui->radioStaking, 2);
+    modeSelection.addButton(ui->radioColdStaking, 3);
+
+    connect(&modeSelection, SIGNAL(buttonClicked(int)), this, SLOT(modeChanged(int)));
+
+    modeChanged(0);
 }
 
-void SendCoinsDialog::setClientModel(ClientModel *_clientModel)
+bool StakingDialog::getChangeSettings(QString &change_spend, QString &change_stake)
+{
+    UniValue rv;
+    QString sCommand = "walletsettings changeaddress";
+    if (model->tryCallRpc(sCommand, rv)) {
+        if (rv["changeaddress"].isObject()
+            && rv["changeaddress"]["address_standard"].isStr()) {
+            change_spend = QString::fromStdString(rv["changeaddress"]["address_standard"].get_str());
+        }
+        if (rv["changeaddress"].isObject()
+            && rv["changeaddress"]["coldstakingaddress"].isStr()) {
+            change_stake = QString::fromStdString(rv["changeaddress"]["coldstakingaddress"].get_str());
+        }
+        return true;
+    }
+    return false;
+}
+
+void StakingDialog::setClientModel(ClientModel *_clientModel)
 {
     this->clientModel = _clientModel;
 
@@ -143,12 +167,13 @@ void SendCoinsDialog::setClientModel(ClientModel *_clientModel)
     }
 }
 
-void SendCoinsDialog::setModel(WalletModel *_model)
+void StakingDialog::setModel(WalletModel *_model)
 {
     this->model = _model;
 
     if(_model && _model->getOptionsModel())
     {
+
         for(int i = 0; i < ui->entries->count(); ++i)
         {
             SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
@@ -167,7 +192,7 @@ void SendCoinsDialog::setModel(WalletModel *_model)
         // Coin Control
         connect(_model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(coinControlUpdateLabels()));
         connect(_model->getOptionsModel(), SIGNAL(coinControlFeaturesChanged(bool)), this, SLOT(coinControlFeatureChanged(bool)));
-        ui->frameCoinControl->setVisible(_model->getOptionsModel()->getCoinControlFeatures());
+        ui->frameCoinControl->setVisible(_model->getOptionsModel()->getCoinControlFeatures() && modeSelection.checkedId() > 0);
         coinControlUpdateLabels();
 
         // fee section
@@ -205,10 +230,117 @@ void SendCoinsDialog::setModel(WalletModel *_model)
             ui->confTargetSelector->setCurrentIndex(getIndexForConfTarget(model->wallet().getConfirmTarget()));
         else
             ui->confTargetSelector->setCurrentIndex(getIndexForConfTarget(settings.value("nConfTarget").toInt()));
+
+        ui->lblStakingWallet->setText(QString::fromStdString(model->wallet().getWalletName()));
+
+        QString change_spend;
+        getChangeSettings(change_spend, m_coldStakeChangeAddress);
+        ui->lblColdStakingAddress->setText(m_coldStakeChangeAddress);
+
+        UniValue rv;
+        QString sCommand = "getcoldstakinginfo";
+        if (model->tryCallRpc(sCommand, rv)) {
+
+            bool fColdStakingEnabled = false;
+
+            if (rv["enabled"].isBool()) {
+                fColdStakingEnabled = rv["enabled"].get_bool();
+
+                if( fColdStakingEnabled ){
+                   ui->lblColdStakingEnabled->setText("ENABLED");
+
+                   if (rv["percent_in_coldstakeable_script"].isNum()) {
+                       ui->lblColdStakingPercent->setText(QString::fromStdString(strprintf("%.02f", rv["percent_in_coldstakeable_script"].get_real())));
+                   }
+
+                   if (rv["coin_in_coldstakeable_script"].isNum()) {
+                       ui->lblColdStakingCoinInScript->setText(QString::fromStdString(strprintf("%.02f", rv["coin_in_coldstakeable_script"].get_real())));
+                   }
+
+                }else{
+                    ui->lblColdStakingEnabled->setText("DISABLED");
+                }
+
+            }
+
+            ui->lblColdStakingAddress->setVisible(fColdStakingEnabled);
+            ui->lblColdStakingPercent->setVisible(fColdStakingEnabled);
+            ui->lblColdStakingCoinInScript->setVisible(fColdStakingEnabled);
+
+            ui->lblColdStakingAddressLabel->setVisible(fColdStakingEnabled);
+            ui->lblColdStakingPercentLabel->setVisible(fColdStakingEnabled);
+            ui->lblColdStakingCoinInScriptLabel->setVisible(fColdStakingEnabled);
+
+        }
+
+        sCommand = "getstakinginfo";
+        if (model->tryCallRpc(sCommand, rv)) {
+
+            bool fHotStaking = false;
+
+            if (rv["enabled"].isBool()) {
+                fHotStaking = rv["enabled"].get_bool();
+
+                if( fHotStaking ){
+                    ui->lblHotStakingEnabled->setText("ENABLED");
+
+                    if (rv["staking"].isBool()) {
+                        ui->lblHotStakingActive->setText(rv["staking"].get_bool() ? "True" : "False");
+                    }
+
+                    if (rv["errors"].isStr() && rv["errors"].get_str() != "") {
+
+                        ui->lblHotStakingErrorLabel->show();
+                        ui->lblHotStakingError->show();
+
+                        ui->lblHotStakingError->setText(QString::fromStdString(rv["errors"].get_str()));
+                    }else{
+                        ui->lblHotStakingErrorLabel->hide();
+                        ui->lblHotStakingError->hide();
+                    }
+
+                    if (rv["weight"].isNum()) {
+                        ui->lblHotStakingWalletWeight->setText(QString::fromStdString(strprintf("%d", rv["weight"].get_int64())));
+                    }
+
+                    if (rv["expectedtime"].isNum()) {
+                        ui->lblHotStakingExpectedTime->setText(QString::fromStdString(strprintf("%d", rv["expectedtime"].get_int64())));
+                    }
+
+                }else{
+                    ui->lblHotStakingEnabled->setText("DISABLED");
+
+                }
+
+                ui->lblHotStakingActiveLabel->setVisible(fHotStaking);
+                ui->lblHotStakingErrorLabel->setVisible(fHotStaking);
+                ui->lblHotStakingWalletWeightLabel->setVisible(fHotStaking);
+                ui->lblHotStakingExpectedTimeLabel->setVisible(fHotStaking);
+
+                ui->lblHotStakingActive->setVisible(fHotStaking);
+                ui->lblHotStakingError->setVisible(fHotStaking);
+                ui->lblHotStakingWalletWeight->setVisible(fHotStaking);
+                ui->lblHotStakingExpectedTime->setVisible(fHotStaking);
+
+            }
+
+            if (rv["percentyearreward"].isNum()) {
+                ui->lblStakingReward->setText(QString::fromStdString(strprintf("%.02f%%", rv["percentyearreward"].get_real())));
+            }
+
+            if (rv["difficulty"].isNum()) {
+                ui->lblStakingDiff->setText(QString::fromStdString(strprintf("%.02f", rv["difficulty"].get_real())));
+            }
+
+            if (rv["netstakeweight"].isNum()) {
+                ui->lblStakingNetWeight->setText(QString::fromStdString(strprintf("%d", rv["netstakeweight"].get_int64())));
+            }
+
+        }
     }
 }
 
-SendCoinsDialog::~SendCoinsDialog()
+StakingDialog::~StakingDialog()
 {
     QSettings settings;
     settings.setValue("fFeeSectionMinimized", fFeeMinimized);
@@ -220,7 +352,7 @@ SendCoinsDialog::~SendCoinsDialog()
     delete ui;
 }
 
-void SendCoinsDialog::on_sendButton_clicked()
+void StakingDialog::on_sendButton_clicked()
 {
     if(!model || !model->getOptionsModel())
         return;
@@ -266,7 +398,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     // Always use a CCoinControl instance, use the CoinControlDialog instance if CoinControl has been enabled
     CCoinControl ctrl;
     if (model->getOptionsModel()->getCoinControlFeatures())
-        ctrl = *CoinControlDialog::coinControl(CoinControlDialog::SPENDING);
+        ctrl = *CoinControlDialog::coinControl(GetCoinControlFlag());
 
     updateCoinControlState(ctrl);
 
@@ -284,8 +416,8 @@ void SendCoinsDialog::on_sendButton_clicked()
     QString sCommand = "sendtypeto ";
 
     // TODO: Translations?
-    QString sTypeFrom = ui->cbxTypeFrom->currentText();
-    QString sTypeTo = ui->cbxTypeTo->currentText();
+    QString sTypeFrom = GetFrom();
+    QString sTypeTo = GetTo();
 
     sCommand += sTypeFrom.toLower() + " ";
     sCommand += sTypeTo.toLower();
@@ -323,11 +455,10 @@ void SendCoinsDialog::on_sendButton_clicked()
         nRecipient++;
     }
 
-    int nRingSize = ui->spinRingSize->value();
-    int nMaxInputs = ui->spinMaxInputs->value();
+    int nRingSize = 4;
+    int nMaxInputs = 32;
 
     sCommand += "] \"\" \"\" "+QString::number(nRingSize)+" "+QString::number(nMaxInputs);
-
 
     QString sCoinControl;
     sCoinControl += " {";
@@ -536,7 +667,7 @@ void SendCoinsDialog::on_sendButton_clicked()
 
     if (sendStatus.status == WalletModel::OK) {
         accept();
-        CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->UnSelectAll();
+        CoinControlDialog::coinControl(GetCoinControlFlag())->UnSelectAll();
         coinControlUpdateLabels();
         //Q_EMIT coinsSent(currentTransaction.getWtx()->get().GetHash());
         Q_EMIT coinsSent(hashSent);
@@ -544,10 +675,10 @@ void SendCoinsDialog::on_sendButton_clicked()
     fNewRecipientAllowed = true;
 }
 
-void SendCoinsDialog::clear()
+void StakingDialog::clear()
 {
     // Clear coin control settings
-    CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->UnSelectAll();
+    CoinControlDialog::coinControl(GetCoinControlFlag())->UnSelectAll();
     ui->checkBoxCoinControlChange->setChecked(false);
     ui->lineEditCoinControlChange->clear();
     coinControlUpdateLabels();
@@ -558,27 +689,25 @@ void SendCoinsDialog::clear()
         ui->entries->takeAt(0)->widget()->deleteLater();
     }
 
-    ui->cbxTypeFrom->setCurrentIndex(ui->cbxTypeFrom->findText("Part"));
-    ui->cbxTypeTo->setCurrentIndex(ui->cbxTypeTo->findText("Part"));
-
-    addEntry();
-
     updateTabsAndLabels();
 }
 
-void SendCoinsDialog::reject()
+void StakingDialog::reject()
 {
     clear();
+    addEntry();
 }
 
-void SendCoinsDialog::accept()
+void StakingDialog::accept()
 {
     clear();
+    addEntry();
 }
 
-SendCoinsEntry *SendCoinsDialog::addEntry()
+SendCoinsEntry *StakingDialog::addEntry()
 {
-    SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this);
+    SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_STAKING );
+    entry->hideDeleteButton();
     entry->setModel(model);
     ui->entries->addWidget(entry);
     connect(entry, SIGNAL(removeEntry(SendCoinsEntry*)), this, SLOT(removeEntry(SendCoinsEntry*)));
@@ -599,7 +728,7 @@ SendCoinsEntry *SendCoinsDialog::addEntry()
     return entry;
 }
 
-SendCoinsEntry *SendCoinsDialog::addEntryCS()
+SendCoinsEntry *StakingDialog::addEntryCS()
 {
     if (ui->entries->count() == 1) {
         SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(0)->widget());
@@ -608,7 +737,8 @@ SendCoinsEntry *SendCoinsDialog::addEntryCS()
         }
     }
 
-    SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, true);
+    SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, false, true);
+    entry->hideDeleteButton();
     entry->setModel(model);
     ui->entries->addWidget(entry);
     connect(entry, SIGNAL(removeEntry(SendCoinsEntry*)), this, SLOT(removeEntry(SendCoinsEntry*)));
@@ -629,13 +759,13 @@ SendCoinsEntry *SendCoinsDialog::addEntryCS()
     return entry;
 }
 
-void SendCoinsDialog::updateTabsAndLabels()
+void StakingDialog::updateTabsAndLabels()
 {
     setupTabChain(0);
     coinControlUpdateLabels();
 }
 
-void SendCoinsDialog::removeEntry(SendCoinsEntry* entry)
+void StakingDialog::removeEntry(SendCoinsEntry* entry)
 {
     entry->hide();
 
@@ -648,7 +778,7 @@ void SendCoinsDialog::removeEntry(SendCoinsEntry* entry)
     updateTabsAndLabels();
 }
 
-QWidget *SendCoinsDialog::setupTabChain(QWidget *prev)
+QWidget *StakingDialog::setupTabChain(QWidget *prev)
 {
     for(int i = 0; i < ui->entries->count(); ++i)
     {
@@ -660,11 +790,10 @@ QWidget *SendCoinsDialog::setupTabChain(QWidget *prev)
     }
     QWidget::setTabOrder(prev, ui->sendButton);
     QWidget::setTabOrder(ui->sendButton, ui->clearButton);
-    QWidget::setTabOrder(ui->clearButton, ui->addButton);
-    return ui->addButton;
+    return ui->clearButton;
 }
 
-void SendCoinsDialog::setAddress(const QString &address)
+void StakingDialog::setAddress(const QString &address)
 {
     SendCoinsEntry *entry = 0;
     // Replace the first entry if it is still unused
@@ -684,7 +813,7 @@ void SendCoinsDialog::setAddress(const QString &address)
     entry->setAddress(address);
 }
 
-void SendCoinsDialog::pasteEntry(const SendCoinsRecipient &rv)
+void StakingDialog::pasteEntry(const SendCoinsRecipient &rv)
 {
     if(!fNewRecipientAllowed)
         return;
@@ -708,7 +837,7 @@ void SendCoinsDialog::pasteEntry(const SendCoinsRecipient &rv)
     updateTabsAndLabels();
 }
 
-bool SendCoinsDialog::handlePaymentRequest(const SendCoinsRecipient &rv)
+bool StakingDialog::handlePaymentRequest(const SendCoinsRecipient &rv)
 {
     // Just paste the entry, all pre-checks
     // are done in paymentserver.cpp.
@@ -716,7 +845,7 @@ bool SendCoinsDialog::handlePaymentRequest(const SendCoinsRecipient &rv)
     return true;
 }
 
-void SendCoinsDialog::setBalance(const interfaces::WalletBalances& balances)
+void StakingDialog::setBalance(const interfaces::WalletBalances& balances)
 {
     if(model && model->getOptionsModel())
     {
@@ -731,7 +860,7 @@ void SendCoinsDialog::setBalance(const interfaces::WalletBalances& balances)
     }
 }
 
-void SendCoinsDialog::updateDisplayUnit()
+void StakingDialog::updateDisplayUnit()
 {
     setBalance(model->wallet().getBalances());
     ui->customFee->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
@@ -739,13 +868,13 @@ void SendCoinsDialog::updateDisplayUnit()
     updateSmartFeeLabel();
 }
 
-void SendCoinsDialog::processSendCoinsReturn(const WalletModel::SendCoinsReturn &sendCoinsReturn, const QString &msgArg)
+void StakingDialog::processSendCoinsReturn(const WalletModel::SendCoinsReturn &sendCoinsReturn, const QString &msgArg)
 {
     QPair<QString, CClientUIInterface::MessageBoxFlags> msgParams;
     // Default to a warning message, override if error message is needed
     msgParams.second = CClientUIInterface::MSG_WARNING;
 
-    // This comment is specific to SendCoinsDialog usage of WalletModel::SendCoinsReturn.
+    // This comment is specific to StakingDialog usage of WalletModel::SendCoinsReturn.
     // WalletModel::TransactionCommitFailed is used only in WalletModel::sendCoins()
     // all others are used only in WalletModel::prepareTransaction()
     switch(sendCoinsReturn.status)
@@ -789,7 +918,7 @@ void SendCoinsDialog::processSendCoinsReturn(const WalletModel::SendCoinsReturn 
     Q_EMIT message(tr("Send Coins"), msgParams.first, msgParams.second);
 }
 
-void SendCoinsDialog::minimizeFeeSection(bool fMinimize)
+void StakingDialog::minimizeFeeSection(bool fMinimize)
 {
     ui->labelFeeMinimized->setVisible(fMinimize);
     ui->buttonChooseFee  ->setVisible(fMinimize);
@@ -799,26 +928,61 @@ void SendCoinsDialog::minimizeFeeSection(bool fMinimize)
     fFeeMinimized = fMinimize;
 }
 
-void SendCoinsDialog::on_buttonChooseFee_clicked()
+void StakingDialog::on_buttonChooseFee_clicked()
 {
     minimizeFeeSection(false);
 }
 
-void SendCoinsDialog::on_buttonMinimizeFee_clicked()
+void StakingDialog::on_buttonMinimizeFee_clicked()
 {
     updateFeeMinimizedLabel();
     minimizeFeeSection(true);
 }
 
-void SendCoinsDialog::useAvailableBalance(SendCoinsEntry* entry)
+void StakingDialog::on_btnChangeColdStakingAddress_clicked()
+{
+    bool ok;
+    QString newColdStakeChangeAddress = QInputDialog::getText(this, tr("Change Cold Staking Address"),
+                                                              tr("Enter a external cold staking address:"), QLineEdit::Normal,
+                                                              "", &ok);
+    if (ok && !newColdStakeChangeAddress.isEmpty()){
+        QString sCommand;
+
+        if (newColdStakeChangeAddress != m_coldStakeChangeAddress) {
+            QString change_spend, change_stake;
+            getChangeSettings(change_spend, m_coldStakeChangeAddress);
+
+            sCommand = "walletsettings changeaddress {";
+            if (!change_spend.isEmpty()) {
+                sCommand += "\"address_standard\":\""+change_spend+"\"";
+            }
+            if (!newColdStakeChangeAddress.isEmpty()) {
+                if (!change_spend.isEmpty()) {
+                    sCommand += ",";
+                }
+                sCommand += "\"coldstakingaddress\":\""+newColdStakeChangeAddress+"\"";
+            }
+            sCommand += "}";
+        }
+
+        if (!sCommand.isEmpty()) {
+            UniValue rv;
+            if (!model->tryCallRpc(sCommand, rv)) {
+                return;
+            }
+        }
+    }
+}
+
+void StakingDialog::useAvailableBalance(SendCoinsEntry* entry)
 {
     // Get CCoinControl instance if CoinControl is enabled or create a new one.
     CCoinControl coin_control;
     if (model->getOptionsModel()->getCoinControlFeatures()) {
-        coin_control = *CoinControlDialog::coinControl(CoinControlDialog::SPENDING);
+        coin_control = *CoinControlDialog::coinControl(GetCoinControlFlag());
     }
 
-    QString sTypeFrom = ui->cbxTypeFrom->currentText().toLower();
+    QString sTypeFrom = GetFrom();
     // Calculate available amount to send.
 
     CAmount amount =
@@ -841,12 +1005,12 @@ void SendCoinsDialog::useAvailableBalance(SendCoinsEntry* entry)
     }
 }
 
-void SendCoinsDialog::setMinimumFee()
+void StakingDialog::setMinimumFee()
 {
     ui->customFee->setValue(model->wallet().getRequiredFee(1000));
 }
 
-void SendCoinsDialog::updateFeeSectionControls()
+void StakingDialog::updateFeeSectionControls()
 {
     ui->confTargetSelector      ->setEnabled(ui->radioSmartFee->isChecked());
     ui->labelSmartFee           ->setEnabled(ui->radioSmartFee->isChecked());
@@ -859,7 +1023,7 @@ void SendCoinsDialog::updateFeeSectionControls()
     ui->customFee               ->setEnabled(ui->radioCustomFee->isChecked() && !ui->checkBoxMinimumFee->isChecked());
 }
 
-void SendCoinsDialog::updateFeeMinimizedLabel()
+void StakingDialog::updateFeeMinimizedLabel()
 {
     if(!model || !model->getOptionsModel())
         return;
@@ -871,7 +1035,7 @@ void SendCoinsDialog::updateFeeMinimizedLabel()
     }
 }
 
-void SendCoinsDialog::updateMinFeeLabel()
+void StakingDialog::updateMinFeeLabel()
 {
     if (model && model->getOptionsModel())
         ui->checkBoxMinimumFee->setText(tr("Pay only the required fee of %1").arg(
@@ -879,7 +1043,7 @@ void SendCoinsDialog::updateMinFeeLabel()
         );
 }
 
-void SendCoinsDialog::updateCoinControlState(CCoinControl& ctrl)
+void StakingDialog::updateCoinControlState(CCoinControl& ctrl)
 {
     if (ui->radioCustomFee->isChecked()) {
         ctrl.m_feerate = CFeeRate(ui->customFee->value());
@@ -892,7 +1056,55 @@ void SendCoinsDialog::updateCoinControlState(CCoinControl& ctrl)
     ctrl.m_signal_bip125_rbf = ui->optInRBF->isChecked();
 }
 
-void SendCoinsDialog::updateSmartFeeLabel()
+CoinControlDialog::ControlModes StakingDialog::GetCoinControlFlag()
+{
+    switch(modeSelection.checkedId()){
+    case 0:
+        return CoinControlDialog::INVALID;
+    case 1:
+        return CoinControlDialog::CONVERT_TO_SPENDING;
+    case 2:
+        return CoinControlDialog::CONVERT_TO_STAKING;
+    case 3:
+        return CoinControlDialog::CONVERT_TO_COLD_STAKE;
+    }
+
+    return CoinControlDialog::INVALID;
+}
+
+QString StakingDialog::GetFrom()
+{
+    switch(GetCoinControlFlag()){
+    case CoinControlDialog::CONVERT_TO_SPENDING:
+    case CoinControlDialog::CONVERT_TO_COLD_STAKE:
+        return "part";
+    case CoinControlDialog::CONVERT_TO_STAKING:
+        return "anon";
+    case CoinControlDialog::SPENDING:
+    case CoinControlDialog::INVALID:
+        return "invalid";
+    }
+
+    return "error";
+}
+
+QString StakingDialog::GetTo()
+{
+    switch(GetCoinControlFlag()){
+    case CoinControlDialog::CONVERT_TO_SPENDING:
+        return "anon";
+    case CoinControlDialog::CONVERT_TO_STAKING:
+    case CoinControlDialog::CONVERT_TO_COLD_STAKE:
+        return "part";
+    case CoinControlDialog::SPENDING:
+    case CoinControlDialog::INVALID:
+        return "invalid";
+    }
+
+    return "error";
+}
+
+void StakingDialog::updateSmartFeeLabel()
 {
     if(!model || !model->getOptionsModel())
         return;
@@ -924,84 +1136,141 @@ void SendCoinsDialog::updateSmartFeeLabel()
     updateFeeMinimizedLabel();
 }
 
+void StakingDialog::modeChanged(int nNewMode)
+{
+    clear();
+
+    if( model ){
+        ui->frameCoinControl->setVisible(model->getOptionsModel()->getCoinControlFeatures() && nNewMode > 0);
+    }
+
+    switch(nNewMode){
+    case OVERVIEW: // Used for overview
+
+        ui->sendWidget->hide();
+        ui->frameFee->hide();
+        ui->scrollArea->hide();
+        ui->frameStakingInfo->show();
+        ui->frameHotStakingInfo->show();
+        ui->frameColdStakingInfo->show();
+
+        break;
+    case TO_SPENDING:
+
+        ui->sendWidget->show();
+        ui->frameFee->show();
+        ui->scrollArea->show();
+        ui->frameStakingInfo->hide();
+        ui->frameHotStakingInfo->hide();
+        ui->frameColdStakingInfo->hide();
+
+        addEntry();
+        break;
+    case TO_STAKING:
+
+        ui->sendWidget->show();
+        ui->frameFee->show();
+        ui->scrollArea->show();
+        ui->frameStakingInfo->hide();
+        ui->frameHotStakingInfo->hide();
+        ui->frameColdStakingInfo->hide();
+
+        addEntry();
+        break;
+    case TO_COLD_STAKING:
+
+        ui->sendWidget->show();
+        ui->frameFee->show();
+        ui->scrollArea->show();
+        ui->frameStakingInfo->hide();
+        ui->frameHotStakingInfo->hide();
+        ui->frameColdStakingInfo->hide();
+
+        addEntryCS();
+        break;
+    }
+
+    updateTabsAndLabels();
+}
+
 // Coin Control: copy label "Quantity" to clipboard
-void SendCoinsDialog::coinControlClipboardQuantity()
+void StakingDialog::coinControlClipboardQuantity()
 {
     GUIUtil::setClipboard(ui->labelCoinControlQuantity->text());
 }
 
 // Coin Control: copy label "Amount" to clipboard
-void SendCoinsDialog::coinControlClipboardAmount()
+void StakingDialog::coinControlClipboardAmount()
 {
     GUIUtil::setClipboard(ui->labelCoinControlAmount->text().left(ui->labelCoinControlAmount->text().indexOf(" ")));
 }
 
 // Coin Control: copy label "Fee" to clipboard
-void SendCoinsDialog::coinControlClipboardFee()
+void StakingDialog::coinControlClipboardFee()
 {
     GUIUtil::setClipboard(ui->labelCoinControlFee->text().left(ui->labelCoinControlFee->text().indexOf(" ")).replace(ASYMP_UTF8, ""));
 }
 
 // Coin Control: copy label "After fee" to clipboard
-void SendCoinsDialog::coinControlClipboardAfterFee()
+void StakingDialog::coinControlClipboardAfterFee()
 {
     GUIUtil::setClipboard(ui->labelCoinControlAfterFee->text().left(ui->labelCoinControlAfterFee->text().indexOf(" ")).replace(ASYMP_UTF8, ""));
 }
 
 // Coin Control: copy label "Bytes" to clipboard
-void SendCoinsDialog::coinControlClipboardBytes()
+void StakingDialog::coinControlClipboardBytes()
 {
     GUIUtil::setClipboard(ui->labelCoinControlBytes->text().replace(ASYMP_UTF8, ""));
 }
 
 // Coin Control: copy label "Dust" to clipboard
-void SendCoinsDialog::coinControlClipboardLowOutput()
+void StakingDialog::coinControlClipboardLowOutput()
 {
     GUIUtil::setClipboard(ui->labelCoinControlLowOutput->text());
 }
 
 // Coin Control: copy label "Change" to clipboard
-void SendCoinsDialog::coinControlClipboardChange()
+void StakingDialog::coinControlClipboardChange()
 {
     GUIUtil::setClipboard(ui->labelCoinControlChange->text().left(ui->labelCoinControlChange->text().indexOf(" ")).replace(ASYMP_UTF8, ""));
 }
 
-void SendCoinsDialog::cbxTypeFromChanged(int index)
+void StakingDialog::cbxTypeFromChanged(int index)
 {
     if (model && model->getOptionsModel()->getCoinControlFeatures())
-        CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->nCoinType = index+1;
+        CoinControlDialog::coinControl(GetCoinControlFlag())->nCoinType = index+1;
 };
 
 // Coin Control: settings menu - coin control enabled/disabled by user
-void SendCoinsDialog::coinControlFeatureChanged(bool checked)
+void StakingDialog::coinControlFeatureChanged(bool checked)
 {
     ui->frameCoinControl->setVisible(checked);
 
     if (!checked && model) // coin control features disabled
-        CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->SetNull();
+        CoinControlDialog::coinControl(GetCoinControlFlag())->SetNull();
 
     coinControlUpdateLabels();
 }
 
 // Coin Control: button inputs -> show actual coin control dialog
-void SendCoinsDialog::coinControlButtonClicked()
+void StakingDialog::coinControlButtonClicked()
 {
     if( coinControlDialog ){
         delete coinControlDialog;
     }
 
-    coinControlDialog = new CoinControlDialog(platformStyle, CoinControlDialog::SPENDING);
+    coinControlDialog = new CoinControlDialog(platformStyle, GetCoinControlFlag());
     coinControlDialog->setModel(model);
     coinControlDialog->exec();
     coinControlUpdateLabels();
 }
 
 // Coin Control: checkbox custom change address
-void SendCoinsDialog::coinControlChangeChecked(int state)
+void StakingDialog::coinControlChangeChecked(int state)
 {
     if (state == Qt::Unchecked)
     {
-        CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->destChange = CNoDestination();
+        CoinControlDialog::coinControl(GetCoinControlFlag())->destChange = CNoDestination();
         ui->labelCoinControlChangeLabel->clear();
     }
     else
@@ -1012,12 +1281,12 @@ void SendCoinsDialog::coinControlChangeChecked(int state)
 }
 
 // Coin Control: custom change address changed
-void SendCoinsDialog::coinControlChangeEdited(const QString& text)
+void StakingDialog::coinControlChangeEdited(const QString& text)
 {
     if (model && model->getAddressTableModel())
     {
         // Default to no change address until verified
-        CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->destChange = CNoDestination();
+        CoinControlDialog::coinControl(GetCoinControlFlag())->destChange = CNoDestination();
         ui->labelCoinControlChangeLabel->setStyleSheet("QLabel{color:red;}");
 
         const CTxDestination dest = DecodeDestination(text.toStdString());
@@ -1042,7 +1311,7 @@ void SendCoinsDialog::coinControlChangeEdited(const QString& text)
                     QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
 
                 if(btnRetVal == QMessageBox::Yes)
-                    CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->destChange = dest;
+                    CoinControlDialog::coinControl(GetCoinControlFlag())->destChange = dest;
                 else
                 {
                     ui->lineEditCoinControlChange->setText("");
@@ -1061,19 +1330,19 @@ void SendCoinsDialog::coinControlChangeEdited(const QString& text)
                 else
                     ui->labelCoinControlChangeLabel->setText(tr("(no label)"));
 
-                CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->destChange = dest;
+                CoinControlDialog::coinControl(GetCoinControlFlag())->destChange = dest;
             }
         }
     }
 }
 
 // Coin Control: update labels
-void SendCoinsDialog::coinControlUpdateLabels()
+void StakingDialog::coinControlUpdateLabels()
 {
     if (!model || !model->getOptionsModel())
         return;
 
-    updateCoinControlState(*CoinControlDialog::coinControl(CoinControlDialog::SPENDING));
+    updateCoinControlState(*CoinControlDialog::coinControl(GetCoinControlFlag()));
 
     // set pay amounts
     CoinControlDialog::payAmounts.clear();
@@ -1091,7 +1360,7 @@ void SendCoinsDialog::coinControlUpdateLabels()
         }
     }
 
-    if (CoinControlDialog::coinControl(CoinControlDialog::SPENDING)->HasSelected())
+    if (CoinControlDialog::coinControl(GetCoinControlFlag())->HasSelected())
     {
         // actual coin control calculation
         if( coinControlDialog ){

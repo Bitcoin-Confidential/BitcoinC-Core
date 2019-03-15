@@ -23,7 +23,7 @@
 #include <qt/walletmodel.h>
 #include <qt/walletview.h>
 #include <qt/mnemonicdialog.h>
-#include <qt/coldstakingdialog.h>
+#include <qt/stakingdialog.h>
 #endif // ENABLE_WALLET
 
 #ifdef Q_OS_MAC
@@ -269,6 +269,13 @@ void BitcoinGUI::createActions()
     historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(historyAction);
 
+    coldstakingAction = new QAction(platformStyle->SingleColorIcon(":/icons/staking"), tr("&Staking"), this);
+    coldstakingAction->setStatusTip(tr("Setup staking"));
+    coldstakingAction->setToolTip(coldstakingAction->statusTip());
+    coldstakingAction->setCheckable(true);
+    coldstakingAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    tabGroup->addAction(coldstakingAction);
+
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
     // can be triggered from the tray menu, and need to show the GUI to be useful.
@@ -284,6 +291,8 @@ void BitcoinGUI::createActions()
     connect(receiveCoinsMenuAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
+    connect(coldstakingAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(coldstakingAction, SIGNAL(triggered()), this, SLOT(gotoStakingPage()));
 #endif // ENABLE_WALLET
 
     quitAction = new QAction(platformStyle->TextColorIcon(":/icons/quit"), tr("E&xit"), this);
@@ -335,8 +344,6 @@ void BitcoinGUI::createActions()
 
     mnemonicAction = new QAction(platformStyle->TextColorIcon(":/icons/info"), tr("&HD Wallet..."), this);
     mnemonicAction->setMenuRole(QAction::NoRole);
-    coldstakingAction = new QAction(platformStyle->TextColorIcon(":/icons/staking"), tr("&Cold Staking"), this);
-    coldstakingAction->setMenuRole(QAction::NoRole);
 
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
@@ -345,7 +352,6 @@ void BitcoinGUI::createActions()
     connect(toggleHideAction, SIGNAL(triggered()), this, SLOT(toggleHidden()));
     connect(showHelpMessageAction, SIGNAL(triggered()), this, SLOT(showHelpMessageClicked()));
     connect(mnemonicAction, SIGNAL(triggered()), this, SLOT(showMnemonicClicked()));
-    connect(coldstakingAction, SIGNAL(triggered()), this, SLOT(showColdStakingClicked()));
     connect(openRPCConsoleAction, SIGNAL(triggered()), this, SLOT(showDebugWindow()));
     // prevents an open debug window from becoming stuck/unusable on client shutdown
     connect(quitAction, SIGNAL(triggered()), rpcConsole, SLOT(hide()));
@@ -721,25 +727,6 @@ void BitcoinGUI::showMnemonicClicked()
 #endif // ENABLE_WALLET
 }
 
-void BitcoinGUI::showColdStakingClicked()
-{
-#ifdef ENABLE_WALLET
-    if (!walletFrame) {
-        return;
-    }
-    WalletView *walletView = walletFrame->currentWalletView();
-    if (!walletView) {
-        return;
-    }
-    WalletModel *walletModel = walletView->getWalletModel();
-    if (!walletModel) {
-        return;
-    }
-    ColdStakingDialog dlg(this, walletModel);
-    dlg.exec();
-#endif // ENABLE_WALLET
-}
-
 void BitcoinGUI::showHelpMessageClicked()
 {
     helpMessageDialog->show();
@@ -777,6 +764,12 @@ void BitcoinGUI::gotoSendCoinsPage(QString addr)
 {
     sendCoinsAction->setChecked(true);
     if (walletFrame) walletFrame->gotoSendCoinsPage(addr);
+}
+
+void BitcoinGUI::gotoStakingPage()
+{
+    coldstakingAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoStakingPage();
 }
 
 void BitcoinGUI::gotoSignMessageTab(QString addr)

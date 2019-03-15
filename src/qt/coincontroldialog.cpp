@@ -42,11 +42,28 @@ bool CCoinControlWidgetItem::operator<(const QTreeWidgetItem &other) const {
     return QTreeWidgetItem::operator<(other);
 }
 
-CoinControlDialog::CoinControlDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
+OutputTypes ControlModeToCbxType(CoinControlDialog::ControlModes mode){
+
+    switch(mode){
+    case CoinControlDialog::CONVERT_TO_COLD_STAKE:
+    case CoinControlDialog::CONVERT_TO_SPENDING:
+        return OUTPUT_STANDARD;
+    case CoinControlDialog::SPENDING:
+    case CoinControlDialog::CONVERT_TO_STAKING:
+        return OUTPUT_RINGCT;
+    case CoinControlDialog::INVALID:
+        break;
+    }
+
+    return OUTPUT_NULL;
+}
+
+CoinControlDialog::CoinControlDialog(const PlatformStyle *_platformStyle, ControlModes modeFlag, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CoinControlDialog),
     model(0),
-    platformStyle(_platformStyle)
+    platformStyle(_platformStyle),
+    mode(modeFlag)
 {
     ui->setupUi(this);
 
@@ -106,8 +123,6 @@ CoinControlDialog::CoinControlDialog(const PlatformStyle *_platformStyle, QWidge
     connect(ui->radioTreeMode, SIGNAL(toggled(bool)), this, SLOT(radioTreeMode(bool)));
     connect(ui->radioListMode, SIGNAL(toggled(bool)), this, SLOT(radioListMode(bool)));
 
-    connect(ui->cbxType, SIGNAL(currentIndexChanged(int)), this, SLOT(cbxTypeChanged(int)));
-
     // click on checkbox
     connect(ui->treeWidget, SIGNAL(itemChanged(QTreeWidgetItem*, int)), this, SLOT(viewItemChanged(QTreeWidgetItem*, int)));
 
@@ -140,11 +155,7 @@ CoinControlDialog::CoinControlDialog(const PlatformStyle *_platformStyle, QWidge
     if (settings.contains("nCoinControlSortColumn") && settings.contains("nCoinControlSortOrder"))
         sortView(settings.value("nCoinControlSortColumn").toInt(), (static_cast<Qt::SortOrder>(settings.value("nCoinControlSortOrder").toInt())));
 
-    if (coinControl()->nCoinType == OUTPUT_CT)
-        ui->cbxType->setCurrentIndex(1);
-    else
-    if (coinControl()->nCoinType == OUTPUT_RINGCT)
-        ui->cbxType->setCurrentIndex(2);
+    ui->cbxType->hide();
 }
 
 CoinControlDialog::~CoinControlDialog()
@@ -163,6 +174,7 @@ void CoinControlDialog::setModel(WalletModel *_model)
 
     if(_model && _model->getOptionsModel() && _model->getAddressTableModel())
     {
+        cbxTypeChanged();
         updateView();
         updateLabelLocked();
         CoinControlDialog::updateLabels(_model, this);
@@ -194,7 +206,7 @@ void CoinControlDialog::buttonSelectAllClicked()
                 ui->treeWidget->topLevelItem(i)->setCheckState(COLUMN_CHECKBOX, state);
     ui->treeWidget->setEnabled(true);
     if (state == Qt::Unchecked)
-        coinControl()->UnSelectAll(); // just to be sure
+        coinControl(mode)->UnSelectAll(); // just to be sure
     CoinControlDialog::updateLabels(model, this);
 }
 
@@ -372,12 +384,12 @@ void CoinControlDialog::radioListMode(bool checked)
         updateView();
 }
 
-void CoinControlDialog::cbxTypeChanged(int index)
+void CoinControlDialog::cbxTypeChanged()
 {
     if (model)
     {
-        coinControl()->nCoinType = index+1;
-        coinControl()->UnSelectAll();
+        coinControl(mode)->nCoinType = ControlModeToCbxType(mode);
+        coinControl(mode)->UnSelectAll();
         CoinControlDialog::updateLabels(model, this);
         updateView();
     };
@@ -391,11 +403,11 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
         COutPoint outpt(uint256S(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt());
 
         if (item->checkState(COLUMN_CHECKBOX) == Qt::Unchecked)
-            coinControl()->UnSelect(outpt);
+            coinControl(mode)->UnSelect(outpt);
         else if (item->isDisabled()) // locked (this happens if "check all" through parent node)
             item->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
         else
-            coinControl()->Select(outpt);
+            coinControl(mode)->Select(outpt);
 
         // selection changed -> update labels
         if (ui->treeWidget->isEnabled()) // do not update on every click for (un)select all
@@ -455,7 +467,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     bool fWitness               = false;
 
     std::vector<COutPoint> vCoinControl;
-    coinControl()->ListSelected(vCoinControl);
+    coinControl(mode)->ListSelected(vCoinControl);
 
     size_t i = 0;
     for (const auto& out : model->wallet().getCoins(vCoinControl)) {
@@ -466,7 +478,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
         const COutPoint& outpt = vCoinControl[i++];
         if (out.is_spent)
         {
-            coinControl()->UnSelect(outpt);
+            coinControl(mode)->UnSelect(outpt);
             continue;
         }
 
@@ -519,7 +531,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
                 nBytes -= 34;
 
         // Fee
-        nPayFee = model->wallet().getMinimumFee(nBytes, *coinControl(), nullptr /* returned_target */, nullptr /* reason */);
+        nPayFee = model->wallet().getMinimumFee(nBytes, *coinControl(mode), nullptr /* returned_target */, nullptr /* reason */);
 
         if (nPayAmount > 0)
         {
@@ -610,10 +622,15 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
         label->setVisible(nChange < 0);
 }
 
-CCoinControl* CoinControlDialog::coinControl()
+CCoinControl* CoinControlDialog::coinControl(CoinControlDialog::ControlModes mode)
 {
-    static CCoinControl coin_control;
-    return &coin_control;
+    static CCoinControl coin_control_send, coin_control_stake;
+
+    if( mode == CoinControlDialog::SPENDING ){
+        return &coin_control_send;
+    }
+
+    return &coin_control_stake;
 }
 
 void CoinControlDialog::updateView()
@@ -631,10 +648,7 @@ void CoinControlDialog::updateView()
 
     int nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 
-    QString sType = ui->cbxType->currentText().toLower();
-
-    for (const auto& coins : model->wallet().listCoins(
-        sType == "anon" ? OUTPUT_RINGCT : sType == "blind" ? OUTPUT_CT : OUTPUT_STANDARD)) {
+    for (const auto& coins : model->wallet().listCoins(ControlModeToCbxType(mode))) {
 
         CCoinControlWidgetItem *itemWalletAddress = new CCoinControlWidgetItem();
         itemWalletAddress->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
@@ -721,13 +735,13 @@ void CoinControlDialog::updateView()
              // disable locked coins
             if (model->wallet().isLockedCoin(output))
             {
-                coinControl()->UnSelect(output); // just to be sure
+                coinControl(mode)->UnSelect(output); // just to be sure
                 itemOutput->setDisabled(true);
                 itemOutput->setIcon(COLUMN_CHECKBOX, platformStyle->SingleColorIcon(":/icons/lock_closed"));
             };
 
             // set checkbox
-            if (coinControl()->IsSelected(output))
+            if (coinControl(mode)->IsSelected(output))
                 itemOutput->setCheckState(COLUMN_CHECKBOX, Qt::Checked);
         }
 

@@ -14,7 +14,7 @@
 #include <QApplication>
 #include <QClipboard>
 
-SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *parent, bool coldstake) :
+SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *parent, bool fSpending, bool coldstake) :
     QStackedWidget(parent),
     ui(new Ui::SendCoinsEntry),
     model(0),
@@ -38,6 +38,9 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
         // just a label for displaying bitcoin address(es)
         ui->stakeAddr->setFont(GUIUtil::fixedPitchFont());
         ui->spendAddr->setFont(GUIUtil::fixedPitchFont());
+
+        ui->stakeAddr->setPlaceholderText("Enter Stake address");
+        ui->spendAddr->setPlaceholderText("Enter Cold Stake address");
 
         // Connect signals
         connect(ui->payAmount_cs, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
@@ -64,6 +67,10 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
     GUIUtil::setupAddressWidget(ui->payTo, this);
     // just a label for displaying bitcoin address(es)
     ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
+
+    if( !fSpending ){
+        ui->payTo->setPlaceholderText("Enter Stake address");
+    }
 
     // Connect signals
     connect(ui->payAmount, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
@@ -366,6 +373,12 @@ bool SendCoinsEntry::isClear()
 void SendCoinsEntry::setFocus()
 {
     ui->payTo->setFocus();
+}
+
+void SendCoinsEntry::hideDeleteButton()
+{
+    ui->deleteButton->hide();
+    ui->deleteButton_cs->hide();
 }
 
 void SendCoinsEntry::updateDisplayUnit()

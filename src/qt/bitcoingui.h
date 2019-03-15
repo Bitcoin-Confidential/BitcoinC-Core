@@ -236,6 +236,8 @@ private Q_SLOTS:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+    /** Switch to cold staking page */
+    void gotoStakingPage();
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
@@ -261,8 +263,6 @@ private Q_SLOTS:
     void showHelpMessageClicked();
     /** Show mnemonic dialog */
     void showMnemonicClicked();
-    /** Show coldstaking dialog */
-    void showColdStakingClicked();
 
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */

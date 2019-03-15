@@ -43,16 +43,25 @@ class CoinControlDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit CoinControlDialog(const PlatformStyle *platformStyle, QWidget *parent = 0);
+
+    enum ControlModes{
+        INVALID,
+        SPENDING,
+        CONVERT_TO_SPENDING,
+        CONVERT_TO_STAKING,
+        CONVERT_TO_COLD_STAKE,
+    };
+
+    explicit CoinControlDialog(const PlatformStyle *platformStyle, ControlModes modeFlag, QWidget *parent = 0);
     ~CoinControlDialog();
 
     void setModel(WalletModel *model);
 
-    // static because also called from sendcoinsdialog
-    static void updateLabels(WalletModel*, QDialog*);
+    void updateLabels(WalletModel*, QDialog*);
+    void cbxTypeChanged();
 
     static QList<CAmount> payAmounts;
-    static CCoinControl *coinControl();
+    static CCoinControl *coinControl(ControlModes mode);
     static bool fSubtractFeeFromAmount;
 
 private:
@@ -68,6 +77,7 @@ private:
     QAction *unlockAction;
 
     const PlatformStyle *platformStyle;
+    ControlModes mode;
 
     void sortView(int, Qt::SortOrder);
     void updateView();
@@ -102,7 +112,6 @@ private Q_SLOTS:
     void clipboardChange();
     void radioTreeMode(bool);
     void radioListMode(bool);
-    void cbxTypeChanged(int);
     void viewItemChanged(QTreeWidgetItem*, int);
     void headerSectionClicked(int);
     void buttonBoxClicked(QAbstractButton*);

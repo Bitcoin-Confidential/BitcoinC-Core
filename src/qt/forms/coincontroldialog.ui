@@ -332,11 +332,6 @@
           </item>
           <item>
            <property name="text">
-            <string>Blind</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
             <string>Anon</string>
            </property>
           </item>
