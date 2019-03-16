@@ -285,7 +285,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="spendAddrLabel">
       <property name="text">
-       <string>Spend  Address:</string>
+       <string>ColdReturn Address:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -313,7 +313,7 @@
       <item>
        <widget class="QValidatedLineEdit" name="spendAddr">
         <property name="toolTip">
-         <string>The Bitcoin Confidential address that will be able to spend the output (must be 256bit)</string>
+         <string>The address to returns funds when stopped (must be ColdReturn in your wallet)</string>
         </property>
        </widget>
       </item>
@@ -388,7 +388,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="stakeAddrLabel">
       <property name="text">
-       <string>Stake Address:</string>
+       <string>ColdStake Address:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -419,7 +419,7 @@
       <item>
        <widget class="QValidatedLineEdit" name="stakeAddr">
         <property name="toolTip">
-         <string>The Bitcoin Confidential address that will be able to stake the output</string>
+         <string>The ColdStake address on the remote node (cannot be in this wallet)</string>
         </property>
        </widget>
       </item>

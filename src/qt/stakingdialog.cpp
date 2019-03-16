@@ -924,8 +924,8 @@ void StakingDialog::on_buttonMinimizeFee_clicked()
 void StakingDialog::on_btnChangeColdStakingAddress_clicked()
 {
     bool ok;
-    QString newColdStakeChangeAddress = QInputDialog::getText(this, tr("Change Cold Staking Address"),
-                                                              tr("Enter a external cold staking address:"), QLineEdit::Normal,
+    QString newColdStakeChangeAddress = QInputDialog::getText(this, tr("Set Cold Staking Address"),
+                                                              tr("Enter an external cold staking address:"), QLineEdit::Normal,
                                                               "", &ok);
     if (ok && !newColdStakeChangeAddress.isEmpty()){
         QString sCommand;

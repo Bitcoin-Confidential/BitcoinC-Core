@@ -39,8 +39,8 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
         ui->stakeAddr->setFont(GUIUtil::fixedPitchFont());
         ui->spendAddr->setFont(GUIUtil::fixedPitchFont());
 
-        ui->stakeAddr->setPlaceholderText("Enter Stake address");
-        ui->spendAddr->setPlaceholderText("Enter Cold Stake address");
+        ui->stakeAddr->setPlaceholderText("Enter ColdStake address");
+        ui->spendAddr->setPlaceholderText("Enter ColdReturn address");
 
         // Connect signals
         connect(ui->payAmount_cs, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));

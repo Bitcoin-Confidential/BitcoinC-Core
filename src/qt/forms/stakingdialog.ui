@@ -59,7 +59,7 @@
          <item>
           <widget class="QRadioButton" name="radioColdStaking">
            <property name="text">
-            <string>Activate Coldstaking</string>
+            <string>Activate cold staking</string>
            </property>
           </widget>
          </item>
