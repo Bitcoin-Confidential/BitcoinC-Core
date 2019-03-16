@@ -11976,7 +11976,7 @@ bool CHDWallet::CreateCoinStake(unsigned int nBits, int64_t nTime, int nBlockHei
         int64_t nStakeSplit = std::max(pDevFundSettings->nMinDevStakePercent, nWalletDevFundCedePercent);
 
         CAmount nDevPart = (pDevFundSettings->nDevOutputPeriod * nReward * nStakeSplit) / 100;
-        nRewardOut = nReward - nDevPart;
+        nRewardOut = nReward - (nDevPart / pDevFundSettings->nDevOutputPeriod);
 
         CAmount nDevBfwd = 0;
         if (nBlockHeight > 1) { // genesis block is pow
