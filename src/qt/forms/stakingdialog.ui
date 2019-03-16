@@ -45,21 +45,21 @@
          <item>
           <widget class="QRadioButton" name="radioSpending">
            <property name="text">
-            <string>Convert to spending</string>
+            <string>Convert funds to spend</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QRadioButton" name="radioStaking">
            <property name="text">
-            <string>Convert to staking</string>
+            <string>Convert funds to stake</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QRadioButton" name="radioColdStaking">
            <property name="text">
-            <string>Convert to cold staking</string>
+            <string>Activate Coldstaking</string>
            </property>
           </widget>
          </item>
@@ -1031,7 +1031,7 @@
         <item>
          <widget class="QPushButton" name="btnChangeColdStakingAddress">
           <property name="text">
-           <string>Change cold staking address</string>
+           <string>Set cold staking address</string>
           </property>
          </widget>
         </item>
@@ -1050,7 +1050,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Cold staking change address</string>
+             <string>Cold staking address</string>
             </property>
            </widget>
           </item>

@@ -161,7 +161,7 @@ void CHDWallet::AddOptions()
     gArgs.AddArg("-minstakeinterval=<n>", _("Minimum time in seconds between successful stakes (default: 0)"), false, OptionsCategory::PART_STAKING);
     gArgs.AddArg("-minersleep=<n>", _("Milliseconds between stake attempts. Lowering this param will not result in more stakes. (default: 500)"), false, OptionsCategory::PART_STAKING);
     gArgs.AddArg("-reservebalance=<amount>", _("Ensure available balance remains above reservebalance. (default: 0)"), false, OptionsCategory::PART_STAKING);
-    gArgs.AddArg("-foundationdonationpercent=<n>", _("Percentage of block reward donated to the foundation fund, overridden by system minimum. (default: 0)"), false, OptionsCategory::PART_STAKING);
+//    gArgs.AddArg("-foundationdonationpercent=<n>", _("Percentage of block reward donated to the foundation fund, overridden by system minimum. (default: 0)"), false, OptionsCategory::PART_STAKING);
 
     return;
 };
@@ -11975,7 +11975,7 @@ bool CHDWallet::CreateCoinStake(unsigned int nBits, int64_t nTime, int nBlockHei
     } else {
         int64_t nStakeSplit = std::max(pDevFundSettings->nMinDevStakePercent, nWalletDevFundCedePercent);
 
-        CAmount nDevPart = (nReward * nStakeSplit) / 100;
+        CAmount nDevPart = (pDevFundSettings->nDevOutputPeriod * nReward * nStakeSplit) / 100;
         nRewardOut = nReward - nDevPart;
 
         CAmount nDevBfwd = 0;

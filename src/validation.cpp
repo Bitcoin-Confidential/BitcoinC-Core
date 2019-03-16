@@ -2695,7 +2695,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             {
                 assert(pDevFundSettings->nMinDevStakePercent <= 100);
 
-                CAmount nMinDevPart = (nCalculatedStakeReward * pDevFundSettings->nMinDevStakePercent) / 100;
+                CAmount nMinDevPart = (pDevFundSettings->nDevOutputPeriod * nCalculatedStakeReward * pDevFundSettings->nMinDevStakePercent) / 100;
                 CAmount nMaxHolderPart = nCalculatedStakeReward - nMinDevPart;
                 if (nMinDevPart < 0 || nMaxHolderPart < 0)
                     return state.DoS(100, error("%s: bad coinstake split amount (foundation=%d vs reward=%d)", __func__, nMinDevPart, nMaxHolderPart), REJECT_INVALID, "bad-cs-amount");

@@ -3760,9 +3760,9 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             "  \"percentyearreward\": xxxxxxx,  (numeric) current stake reward percentage\n"
             "  \"moneysupply\": xxxxxxx,        (numeric) the total amount of bitcoinc in the network\n"
             "  \"reserve\": xxxxxxx,            (numeric) the total amount of bitcoinc in the network\n"
-            "  \"walletfoundationdonationpercent\": xxxxxxx,\n    (numeric) user set percentage of the block reward ceded to the foundation\n"
-            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
-            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
+//            "  \"walletfoundationdonationpercent\": xxxxxxx,\n    (numeric) user set percentage of the block reward ceded to the foundation\n"
+//            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
+//            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
             "  \"currentblocksize\": nnn,       (numeric) the last block size in bytes\n"
             "  \"currentblockweight\": nnn,     (numeric) the last block weight\n"
             "  \"currentblocktx\": nnn,         (numeric) the number of transactions in the last block\n"
@@ -3831,14 +3831,14 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
         obj.pushKV("reserve", ValueFromAmount(pwallet->nReserveBalance));
     }
 
-    if (pwallet->nWalletDevFundCedePercent > 0) {
+  /*  if (pwallet->nWalletDevFundCedePercent > 0) {
         obj.pushKV("walletfoundationdonationpercent", pwallet->nWalletDevFundCedePercent);
-    }
+    }*/
 
     const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTipTime);
-    if (pDevFundSettings && pDevFundSettings->nMinDevStakePercent > 0) {
+ /*   if (pDevFundSettings && pDevFundSettings->nMinDevStakePercent > 0) {
         obj.pushKV("foundationdonationpercent", pDevFundSettings->nMinDevStakePercent);
-    }
+    }*/
 
     obj.pushKV("currentblocksize", (uint64_t)nLastBlockSize);
     obj.pushKV("currentblocktx", (uint64_t)nLastBlockTx);
@@ -5598,7 +5598,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             "  \"enabled\"                   (bool, optional, default=true) Toggle staking enabled on this wallet.\n"
             "  \"stakecombinethreshold\"     (amount, optional, default=1000) Join outputs below this value.\n"
             "  \"stakesplitthreshold\"       (amount, optional, default=2000) Split outputs above this value.\n"
-            "  \"foundationdonationpercent\" (int, optional, default=0) Set the percentage of each block reward to donate to the foundation.\n"
+//            "  \"foundationdonationpercent\" (int, optional, default=0) Set the percentage of each block reward to donate to the foundation.\n"
             "  \"rewardaddress\"             (string, optional, default=none) An address which the user portion of the block reward gets sent to.\n"
             "}\n"
             "\"stakelimit\" {\n"

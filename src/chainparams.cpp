@@ -421,8 +421,7 @@ public:
         vSeeds.emplace_back("mainnet.bitcoinconfidential.cc");
 
 
-//        vDevFundSettings.emplace_back(0,DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1));
-         vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1)));
+        vDevFundSettings.emplace_back(0,DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1000));
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b ColdStake
         base58Prefixes[SCRIPT_ADDRESS]     = {0x0A}; // 5
@@ -541,9 +540,9 @@ public:
         nDefaultPort = 19789;
         nBIP44ID = 0x80000001;
 
-        nModifierInterval = 10 * 60;    // 10 minutes
+        nModifierInterval = 1 * 60;    // was 10 minutes
         nStakeMinConfirmations = 225;   // 225 * 2 minutes
-        nTargetSpacing = 120;           // 2 minutes
+        nTargetSpacing = 10;           // 10 seconds was 120 seconds
         nTargetTimespan = 24 * 60;      // 24 mins
 
 
@@ -589,7 +588,8 @@ public:
         vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc");
         vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc");
 
-        vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1)));
+//        vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1)));
+        vDevFundSettings.emplace_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1000)));
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x76}; // p
         base58Prefixes[SCRIPT_ADDRESS]     = {0x7a};
