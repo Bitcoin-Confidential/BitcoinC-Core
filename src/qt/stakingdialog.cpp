@@ -1122,10 +1122,6 @@ void StakingDialog::modeChanged(int nNewMode)
 {
     clear();
 
-    if( model ){
-        ui->frameCoinControl->setVisible(model->getOptionsModel()->getCoinControlFeatures() && nNewMode > 0);
-    }
-
     switch(nNewMode){
     case OVERVIEW: // Used for overview
 
@@ -1170,6 +1166,10 @@ void StakingDialog::modeChanged(int nNewMode)
 
         addEntryCS();
         break;
+    }
+
+    if( model ){
+        ui->frameCoinControl->setVisible(model->getOptionsModel()->getCoinControlFeatures() && nNewMode > 0);
     }
 
     updateTabsAndLabels();
