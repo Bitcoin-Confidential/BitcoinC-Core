@@ -657,6 +657,14 @@ void StakingDialog::on_sendButton_clicked()
     fNewRecipientAllowed = true;
 }
 
+void StakingDialog::on_addButton_clicked()
+{
+    if( GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_COLD_STAKE)
+        addEntry();
+    else
+        addEntryCS();
+}
+
 void StakingDialog::clear()
 {
     // Clear coin control settings
@@ -689,7 +697,6 @@ void StakingDialog::accept()
 SendCoinsEntry *StakingDialog::addEntry()
 {
     SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_STAKING );
-    entry->hideDeleteButton();
     entry->setModel(model);
     ui->entries->addWidget(entry);
     connect(entry, SIGNAL(removeEntry(SendCoinsEntry*)), this, SLOT(removeEntry(SendCoinsEntry*)));
@@ -720,7 +727,6 @@ SendCoinsEntry *StakingDialog::addEntryCS()
     }
 
     SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, false, true);
-    entry->hideDeleteButton();
     entry->setModel(model);
     ui->entries->addWidget(entry);
     connect(entry, SIGNAL(removeEntry(SendCoinsEntry*)), this, SLOT(removeEntry(SendCoinsEntry*)));

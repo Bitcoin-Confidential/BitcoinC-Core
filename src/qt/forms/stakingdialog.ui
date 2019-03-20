@@ -1161,7 +1161,7 @@
         <x>0</x>
         <y>0</y>
         <width>811</width>
-        <height>177</height>
+        <height>159</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
@@ -1717,18 +1717,6 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
    <item>
     <widget class="QWidget" name="sendWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QPushButton" name="sendButton">
         <property name="minimumSize">
@@ -1744,7 +1732,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
          <string>S&amp;end</string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/send</normaloff>:/icons/send</iconset>
         </property>
         <property name="autoDefault">
@@ -1770,8 +1758,25 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
          <string>Clear &amp;All</string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addButton">
+        <property name="toolTip">
+         <string>Send to multiple recipients at once</string>
+        </property>
+        <property name="text">
+         <string>Add &amp;Recipient</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../bitcoin.qrc">
+          <normaloff>:/icons/add</normaloff>:/icons/add</iconset>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -1848,7 +1853,9 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../bitcoin.qrc"/>
+ </resources>
  <connections/>
  <buttongroups>
   <buttongroup name="groupFee"/>
