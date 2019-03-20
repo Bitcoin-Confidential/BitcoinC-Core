@@ -182,7 +182,26 @@ const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]
 //Testnet
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
 	//Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
-	std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",100000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
+    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",5000 * COIN),
 
 	//Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
 	std::make_pair("cff968e962da8b81727ae0c20ecc0b1f6a9a92e0",7367509500 * COIN),
@@ -552,17 +571,18 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1551128292, 101084, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1553024864, 10787, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
 /* //added-->
+
            bool fNegative;
            bool fOverflow;
            arith_uint256 bnTarget;
 
            bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
                  for(int count = 1; count < 100000000000; count++){
-                    genesis = CreateGenesisBlockTestNet(1551128292, count, 0x1f00ffff);
+                    genesis = CreateGenesisBlockTestNet(1553024864, count, 0x1f00ffff);
    // default
                     if (UintToArith256(genesis.GetHash()) <= bnTarget){
                        printf("testnet genesis.nNonce = %d\n", count);
@@ -577,9 +597,9 @@ public:
   ///<--added*/
 
 
-        assert(consensus.hashGenesisBlock == uint256S("0x0000a3e7ded0040aaf59712b7b3bb7aa4b1674acd50142aa18e066cd3f0eebd0"));
-        assert(genesis.hashMerkleRoot == uint256S("0x9653df368ffa84856737a7c6591c16ed5970ca1ee6dea31b1d1805720f8246f3"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x1a012364dbe8e1e61be63ebd3a5f9375c0ba522763badeea2b554282bcc76ba6"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000569ee8a8c9bc5184396c01236e479227abee2493c8fe8770efcbbe2b45a2"));
+        assert(genesis.hashMerkleRoot == uint256S("0x6f74e09001858d03dc759e8753216b0b2697f379ca97b8b08a2089b11a287d10"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x788bbbd195382ec98acc18b78699dade52e19c9eac1ae34e501b38b1b7cd0e70"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
