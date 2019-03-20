@@ -2,18 +2,19 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_SENDCOINSDIALOG_H
-#define BITCOIN_QT_SENDCOINSDIALOG_H
+#ifndef BITCOIN_QT_SENDCOINDSDIALOG_H
+#define BITCOIN_QT_SENDCOINDSDIALOG_H
 
 #include <qt/walletmodel.h>
+#include <qt/coincontroldialog.h>
 
+#include <QButtonGroup>
 #include <QDialog>
 #include <QMessageBox>
 #include <QString>
 #include <QTimer>
 
 class ClientModel;
-class CoinControlDialog;
 class PlatformStyle;
 class SendCoinsEntry;
 class SendCoinsRecipient;
@@ -25,12 +26,8 @@ namespace Ui {
 
 QT_BEGIN_NAMESPACE
 class QUrl;
+
 QT_END_NAMESPACE
-
-extern const std::array<int, 9> confTargets;
-
-int getIndexForConfTarget(int target);
-int getConfTargetForIndex(int index);
 
 /** Dialog for sending bitcoins */
 class SendCoinsDialog : public QDialog
@@ -38,7 +35,7 @@ class SendCoinsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent = 0);
+    explicit SendCoinsDialog(const PlatformStyle *platformStyle, bool fStakingDialog = false, QWidget *parent = 0);
     ~SendCoinsDialog();
 
     void setClientModel(ClientModel *clientModel);
@@ -65,13 +62,28 @@ Q_SIGNALS:
     void coinsSent(const uint256& txid);
 
 private:
+
+    enum{
+        OVERVIEW,
+        TO_SPENDING,
+        TO_STAKING,
+        TO_COLD_STAKING,
+        SPENDING
+    };
+
     Ui::SendCoinsDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
     bool fNewRecipientAllowed;
     bool fFeeMinimized;
     const PlatformStyle *platformStyle;
-    CoinControlDialog *coinControlDialog;
+    CoinControlDialog * coinControlDialog;
+    bool fStakingDialog;
+    QTimer updateStakingTimer;
+
+    QButtonGroup modeSelection;
+
+    QString m_coldStakeChangeAddress;
 
     // Process WalletModel::SendCoinsReturn and generate a pair consisting
     // of a message and message flags for use in Q_EMIT message().
@@ -83,10 +95,19 @@ private:
     // Update the passed in CCoinControl with state from the GUI
     void updateCoinControlState(CCoinControl& ctrl);
 
+    CoinControlDialog::ControlModes GetCoinControlFlag();
+
+    bool getChangeSettings(QString &change_spend, QString &change_stake);
+
+    QString GetFrom();
+    QString GetTo();
+
 private Q_SLOTS:
     void on_sendButton_clicked();
+    void on_addButton_clicked();
     void on_buttonChooseFee_clicked();
     void on_buttonMinimizeFee_clicked();
+    void on_btnChangeColdStakingAddress_clicked();
     void removeEntry(SendCoinsEntry* entry);
     void useAvailableBalance(SendCoinsEntry* entry);
     void updateDisplayUnit();
@@ -107,12 +128,13 @@ private Q_SLOTS:
     void updateFeeSectionControls();
     void updateMinFeeLabel();
     void updateSmartFeeLabel();
+    void modeChanged(int nNewMode);
+    void updateStakingUI();
 
 Q_SIGNALS:
     // Fired when a message should be reported to the user
     void message(const QString &title, const QString &message, unsigned int style);
 };
-
 
 #define SEND_CONFIRM_DELAY   3
 
@@ -134,4 +156,4 @@ private:
     int secDelay;
 };
 
-#endif // BITCOIN_QT_SENDCOINSDIALOG_H
+#endif // BITCOIN_QT_SENDCOINDSDIALOG_H

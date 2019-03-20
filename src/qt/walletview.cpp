@@ -8,7 +8,7 @@
 #include <qt/askpassphrasedialog.h>
 #include <qt/bitcoingui.h>
 #include <qt/clientmodel.h>
-#include <qt/stakingdialog.h>
+#include <qt/sendcoinsdialog.h>
 #include <qt/guiutil.h>
 #include <qt/optionsmodel.h>
 #include <qt/overviewpage.h>
@@ -58,7 +58,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
-    stakingPage = new StakingDialog(platformStyle);
+    stakingPage = new SendCoinsDialog(platformStyle, true);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);

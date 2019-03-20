@@ -16,7 +16,7 @@ class PlatformStyle;
 class ReceiveCoinsDialog;
 class SendCoinsDialog;
 class SendCoinsRecipient;
-class StakingDialog;
+class SendCoinsDialog;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
@@ -64,7 +64,7 @@ private:
     QWidget *transactionsPage;
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
-    StakingDialog *stakingPage;
+    SendCoinsDialog *stakingPage;
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
 

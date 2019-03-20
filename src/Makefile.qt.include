@@ -141,7 +141,6 @@ QT_FORMS_UI = \
   qt/forms/sendcoinsentry.ui \
   qt/forms/signverifymessagedialog.ui \
   qt/forms/transactiondescdialog.ui \
-  qt/forms/stakingdialog.ui \
   qt/forms/mnemonicdialog.ui
 
 QT_MOC_CPP = \
@@ -191,7 +190,6 @@ QT_MOC_CPP = \
   qt/moc_walletframe.cpp \
   qt/moc_walletmodel.cpp \
   qt/moc_walletview.cpp \
-  qt/moc_stakingdialog.cpp \
   qt/moc_mnemonicdialog.cpp
 
 BITCOIN_MM = \
@@ -269,7 +267,6 @@ BITCOIN_QT_H = \
   qt/walletmodeltransaction.h \
   qt/walletview.h \
   qt/winshutdownmonitor.h \
-  qt/stakingdialog.h \
   qt/mnemonicdialog.h
 
 RES_ICONS = \
@@ -383,7 +380,6 @@ BITCOIN_QT_WALLET_CPP = \
   qt/walletmodel.cpp \
   qt/walletmodeltransaction.cpp \
   qt/walletview.cpp \
-  qt/stakingdialog.cpp \
   qt/mnemonicdialog.cpp
 
 BITCOIN_QT_CPP = $(BITCOIN_QT_BASE_CPP)

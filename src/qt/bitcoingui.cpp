@@ -23,7 +23,6 @@
 #include <qt/walletmodel.h>
 #include <qt/walletview.h>
 #include <qt/mnemonicdialog.h>
-#include <qt/stakingdialog.h>
 #endif // ENABLE_WALLET
 
 #ifdef Q_OS_MAC
