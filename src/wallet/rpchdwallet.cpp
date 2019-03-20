@@ -1718,7 +1718,7 @@ static UniValue getnewextaddress(const JSONRPCRequest &request)
     return CBitcoinAddress(sek->kp, fBech32).ToString();
 }
 
-static UniValue getnewstealthaddress(const JSONRPCRequest &request)
+static UniValue getnewaddress(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -1727,7 +1727,7 @@ static UniValue getnewstealthaddress(const JSONRPCRequest &request)
 
     if (request.fHelp || request.params.size() > 5)
         throw std::runtime_error(
-            "getnewstealthaddress ( \"label\" num_prefix_bits prefix_num bech32 makeV2 )\n"
+            "getnewaddress ( \"label\" num_prefix_bits prefix_num bech32 makeV2 )\n"
             "Returns a new BitcoinC stealth address for receiving payments."
             + HelpRequiringPassphrase(pwallet) +
             "\nArguments:\n"
@@ -1743,8 +1743,8 @@ static UniValue getnewstealthaddress(const JSONRPCRequest &request)
             "\nResult:\n"
             "\"address\"              (string) The new bitcoinc stealth address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewstealthaddress", "\"lblTestSxAddrPrefix\" 3 \"0b101\"")
-            + HelpExampleRpc("getnewstealthaddress", "\"lblTestSxAddrPrefix\", 3, \"0b101\""));
+            + HelpExampleCli("getnewaddress", "\"lblTestSxAddrPrefix\" 3 \"0b101\"")
+            + HelpExampleRpc("getnewaddress", "\"lblTestSxAddrPrefix\", 3, \"0b101\""));
 
     EnsureWalletIsUnlocked(pwallet);
 
@@ -7463,7 +7463,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "extkeygenesisimport",              &extkeygenesisimport,           {"source","passphrase","save_bip44_root","master_label","account_label","scan_chain_from"} },
     { "wallet",             "extkeyaltversion",                 &extkeyaltversion,              {"ext_key"} },
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
-    { "wallet",             "getnewstealthaddress",             &getnewstealthaddress,          {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
+    { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 
