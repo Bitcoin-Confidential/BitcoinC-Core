@@ -385,7 +385,7 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
                 sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
                 break;
             case ADDR_STANDARD:
-                sCommand = "getnewcoldstakeaddress ";
+                sCommand = "getnewstakeaddress ";
                 sCommand += "\""+label+ "\" ";
                 sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
                 sCommand += " 0 ";

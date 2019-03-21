@@ -1729,10 +1729,10 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
     if (request.fHelp || request.params.size() > 5)
         throw std::runtime_error(
             "getnewaddress ( \"label\" num_prefix_bits prefix_num bech32 makeV2 )\n"
-            "Returns a new BitcoinC stealth address for receiving payments."
+            "Returns a new BitcoinC confidential address for receiving payments."
             + HelpRequiringPassphrase(pwallet) +
             "\nArguments:\n"
-            "1. \"label\"             (string, optional) If specified the key is added to the address book.\n"
+            "1. \"label\"           (string, optional) If specified the key is added to the address book.\n"
             "2. num_prefix_bits     (int, optional) If specified and > 0, the stealth address is created with a prefix.\n"
             "3. prefix_num          (int, optional) If prefix_num is not specified the prefix will be selected deterministically.\n"
             "           prefix_num can be specified in base2, 10 or 16, for base 2 prefix_num must begin with 0b, 0x for base16.\n"
@@ -1742,7 +1742,7 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
             "4. bech32              (bool, optional, default=false) Use Bech32 encoding.\n"
             "5. makeV2              (bool, optional, default=false) Generate an address from the same method used for hardware wallets.\n"
             "\nResult:\n"
-            "\"address\"              (string) The new bitcoinc stealth address\n"
+            "\"address\"              (string) The new bitcoinc address\n"
             "\nExamples:\n"
             + HelpExampleCli("getnewaddress", "\"lblTestSxAddrPrefix\" 3 \"0b101\"")
             + HelpExampleRpc("getnewaddress", "\"lblTestSxAddrPrefix\", 3, \"0b101\""));
@@ -1830,7 +1830,7 @@ static UniValue getnewstandardaddress(CWallet *pwallet, std::string &label, bool
     return UniValue(UniValue::VNULL);
 }
 
-static UniValue getnewcoldstakeaddress(const JSONRPCRequest& request)
+static UniValue getnewstakeaddress(const JSONRPCRequest& request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
@@ -1841,19 +1841,17 @@ static UniValue getnewcoldstakeaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
-            "getnewcoldstakeaddress ( \"label\" bech32 hardened 256bit )\n"
-            "\nReturns a new BitcoinC address for receiving payments, key is saved in wallet.\n"
-           "If 'label' is specified, it is added to the address book \n"
-            "so payments received with the address will be credited to 'account'.\n"
+            "getnewstakeaddress ( \"label\" bech32 hardened 256bit )\n"
+            "\nReturns a new BitcoinC staking address, key is saved in wallet.\n"
             "\nArguments:\n"
-            "1. \"label\"        (string, optional) DEPRECATED. The account name for the address to be linked to. If not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
+            "1. \"label\"          (string, optional) If specified the key is added to the address book.\n"
             "2. bech32             (bool, optional, default=false) Use Bech32 encoding.\n"
             "3. hardened           (bool, optional, default=false) Derive a hardened key.\n"
             "\nResult:\n"
-            "\"address\"           (string) The new bitcoinc address\n"
+            "\"address\"           (string) The new stake address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewcoldstakeaddress", "")
-            + HelpExampleRpc("getnewcoldstakeaddress", "")
+            + HelpExampleCli("getnewstakeaddress", "")
+            + HelpExampleRpc("getnewstakeaddress", "")
         );
 
     if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
@@ -1892,15 +1890,13 @@ static UniValue getnewcoldreturnaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "getnewcoldreturnaddress ( \"label\" bech32 hardened 256bit )\n"
-            "\nReturns a new BitcoinC address for receiving payments, key is saved in wallet.\n"
-           "If 'label' is specified, it is added to the address book \n"
-            "so payments received with the address will be credited to 'account'.\n"
+            "\nReturns a new BitcoinC address for cold stake return address, key is saved in wallet.\n"
             "\nArguments:\n"
-            "1. \"label\"        (string, optional) DEPRECATED. The account name for the address to be linked to. If not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
+            "1. \"label\"          (string, optional) If specified the key is added to the address book.\n"
             "2. bech32             (bool, optional, default=false) Use Bech32 encoding.\n"
             "3. hardened           (bool, optional, default=false) Derive a hardened key.\n"
             "\nResult:\n"
-            "\"address\"           (string) The new bitcoinc address\n"
+            "\"address\"           (string) The new cold return address\n"
             "\nExamples:\n"
             + HelpExampleCli("getnewcoldreturnaddress", "")
             + HelpExampleRpc("getnewcoldreturnaddress", "")
@@ -7603,7 +7599,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "extkeyaltversion",                 &extkeyaltversion,              {"ext_key"} },
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
-    { "wallet",             "getnewcoldstakeaddress",           &getnewcoldstakeaddress,        {"label","bech32", "hardened"} },
+    { "wallet",             "getnewstakeaddress",               &getnewstakeaddress,            {"label","bech32", "hardened"} },
     { "wallet",             "getnewcoldreturnaddress",          &getnewcoldreturnaddress,       {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
