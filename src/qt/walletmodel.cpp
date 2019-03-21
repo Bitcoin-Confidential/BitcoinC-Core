@@ -36,6 +36,7 @@ WalletModel::WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces:
     QObject(parent), m_wallet(std::move(wallet)), m_node(node), optionsModel(_optionsModel), addressTableModel(0),
     transactionTableModel(0),
     recentRequestsTableModel(0),
+    recentStakingRequestsTableModel(0),
     cachedEncryptionStatus(Unencrypted),
     cachedNumBlocks(0)
 {
@@ -44,7 +45,8 @@ WalletModel::WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces:
 
     addressTableModel = new AddressTableModel(this);
     transactionTableModel = new TransactionTableModel(platformStyle, this);
-    recentRequestsTableModel = new RecentRequestsTableModel(this);
+    recentRequestsTableModel = new RecentRequestsTableModel(false, this);
+    recentStakingRequestsTableModel = new RecentRequestsTableModel(true, this);
 
     // This timer will be fired repeatedly to update the balance
     pollTimer = new QTimer(this);
@@ -352,6 +354,11 @@ RecentRequestsTableModel *WalletModel::getRecentRequestsTableModel()
     return recentRequestsTableModel;
 }
 
+RecentRequestsTableModel *WalletModel::getRecentStakingRequestsTableModel()
+{
+    return recentStakingRequestsTableModel;
+}
+
 WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const
 {
     if(!m_wallet->isCrypted())
@@ -603,6 +610,25 @@ bool WalletModel::saveReceiveRequest(const std::string &sAddress, const int64_t 
     std::stringstream ss;
     ss << nId;
     std::string key = "rr" + ss.str(); // "rr" prefix = "receive request" in destdata
+
+    if (sRequest.empty())
+        return m_wallet->eraseDestData(dest, key);
+    else
+        return m_wallet->addDestData(dest, key, sRequest);
+}
+
+void WalletModel::loadStakingRequests(std::vector<std::string>& vReceiveRequests)
+{
+    vReceiveRequests = m_wallet->getDestValues("sr"); // staking request
+}
+
+bool WalletModel::saveStakingRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest)
+{
+    CTxDestination dest = DecodeDestination(sAddress);
+
+    std::stringstream ss;
+    ss << nId;
+    std::string key = "sr" + ss.str(); // "sr" prefix = "staking request" in destdata
 
     if (sRequest.empty())
         return m_wallet->eraseDestData(dest, key);

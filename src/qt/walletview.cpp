@@ -56,7 +56,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     vbox->addLayout(hbox_buttons);
     transactionsPage->setLayout(vbox);
 
-    receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
+    receiveCoinsPage = new ReceiveCoinsDialog(platformStyle, false);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
     stakingPage = new SendCoinsDialog(platformStyle, true);
 

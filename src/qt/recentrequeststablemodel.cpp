@@ -12,14 +12,18 @@
 #include <streams.h>
 
 
-RecentRequestsTableModel::RecentRequestsTableModel(WalletModel *parent) :
-    QAbstractTableModel(parent), walletModel(parent)
+RecentRequestsTableModel::RecentRequestsTableModel(bool fStaking, WalletModel *parent) :
+    QAbstractTableModel(parent), fStaking(fStaking), walletModel(parent)
 {
     nReceiveRequestsMaxId = 0;
 
     // Load entries from wallet
     std::vector<std::string> vReceiveRequests;
-    parent->loadReceiveRequests(vReceiveRequests);
+    if( fStaking ){
+        parent->loadStakingRequests(vReceiveRequests);
+    }else{
+        parent->loadReceiveRequests(vReceiveRequests);
+    }
     for (const std::string& request : vReceiveRequests)
         addNewRequest(request);
 
@@ -141,8 +145,14 @@ bool RecentRequestsTableModel::removeRows(int row, int count, const QModelIndex 
         for (int i = 0; i < count; ++i)
         {
             const RecentRequestEntry* rec = &list[row+i];
-            if (!walletModel->saveReceiveRequest(rec->recipient.address.toStdString(), rec->id, ""))
-                return false;
+
+            if( fStaking ){
+                if (!walletModel->saveStakingRequest(rec->recipient.address.toStdString(), rec->id, ""))
+                    return false;
+            }else{
+                if (!walletModel->saveReceiveRequest(rec->recipient.address.toStdString(), rec->id, ""))
+                    return false;
+            }
         }
 
         beginRemoveRows(parent, row, row + count - 1);
@@ -170,8 +180,13 @@ void RecentRequestsTableModel::addNewRequest(const SendCoinsRecipient &recipient
     CDataStream ss(SER_DISK, CLIENT_VERSION);
     ss << newEntry;
 
-    if (!walletModel->saveReceiveRequest(recipient.address.toStdString(), newEntry.id, ss.str()))
-        return;
+    if( fStaking ){
+        if (!walletModel->saveStakingRequest(recipient.address.toStdString(), newEntry.id, ss.str()))
+            return;
+    }else{
+        if (!walletModel->saveReceiveRequest(recipient.address.toStdString(), newEntry.id, ss.str()))
+            return;
+    }
 
     addNewRequest(newEntry);
 }

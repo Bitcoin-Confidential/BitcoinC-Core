@@ -150,6 +150,7 @@ public:
     AddressTableModel *getAddressTableModel();
     TransactionTableModel *getTransactionTableModel();
     RecentRequestsTableModel *getRecentRequestsTableModel();
+    RecentRequestsTableModel *getRecentStakingRequestsTableModel();
 
     EncryptionStatus getEncryptionStatus() const;
 
@@ -208,6 +209,9 @@ public:
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest);
 
+    void loadStakingRequests(std::vector<std::string>& vReceiveRequests);
+    bool saveStakingRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest);
+
     bool bumpFee(uint256 hash);
 
     static bool isWalletEnabled();
@@ -248,6 +252,7 @@ private:
     AddressTableModel *addressTableModel;
     TransactionTableModel *transactionTableModel;
     RecentRequestsTableModel *recentRequestsTableModel;
+    RecentRequestsTableModel *recentStakingRequestsTableModel;
 
     // Cache some values to be able to detect changes
     interfaces::WalletBalances m_cached_balances;

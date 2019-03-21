@@ -113,12 +113,12 @@
             </property>
             <item>
              <property name="text">
-              <string>Stealth</string>
+              <string>Confidential</string>
              </property>
             </item>
-			<item>
+            <item>
              <property name="text">
-              <string>ColdStake</string>
+              <string>Stake</string>
              </property>
             </item>
             <item>
@@ -234,7 +234,6 @@
             <property name="focusPolicy">
              <enum>Qt::StrongFocus</enum>
             </property>
-
             <property name="toolTip">
              <string>Use bech32 encoding.</string>
             </property>
