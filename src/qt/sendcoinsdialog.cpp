@@ -64,7 +64,8 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
     fFeeMinimized(true),
     platformStyle(_platformStyle),
     coinControlDialog(nullptr),
-    fStakingDialog(fStakingDialog)
+    fStakingDialog(fStakingDialog),
+    nMode(CoinControlDialog::SPENDING)
 {
     ui->setupUi(this);
 
@@ -131,157 +132,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
     ui->customFee->setValue(settings.value("nTransactionFee").toLongLong());
     ui->checkBoxMinimumFee->setChecked(settings.value("fPayOnlyMinFee").toBool());
     minimizeFeeSection(settings.value("fFeeSectionMinimized").toBool());
-
-    modeSelection.addButton(ui->radioOverview, 0);
-    modeSelection.addButton(ui->radioSpending, 1);
-    modeSelection.addButton(ui->radioStaking, 2);
-    modeSelection.addButton(ui->radioColdStaking, 3);
-
-    connect(&modeSelection, SIGNAL(buttonClicked(int)), this, SLOT(modeChanged(int)));
-
-    if( fStakingDialog ){
-        connect(&updateStakingTimer, SIGNAL(timeout()), this, SLOT(updateStakingUI()));
-        updateStakingTimer.start(5000);
-    }else{
-        updateStakingTimer.stop();
-    }
-}
-
-void SendCoinsDialog::updateStakingUI()
-{
-    if( ShutdownRequested() ){
-        updateStakingTimer.stop();
-        return;
-    }
-
-    if( !model ){
-        return;
-    }
-
-    ui->lblStakingWallet->setText(QString::fromStdString(model->wallet().getWalletName()));
-
-    QString change_spend;
-    getChangeSettings(change_spend, m_coldStakeChangeAddress);
-    ui->lblColdStakingAddress->setText(m_coldStakeChangeAddress);
-
-    UniValue rv;
-    QString sCommand = "getcoldstakinginfo";
-    if (model->tryCallRpc(sCommand, rv)) {
-
-        bool fColdStakingEnabled = false;
-
-        if (rv["enabled"].isBool()) {
-            fColdStakingEnabled = rv["enabled"].get_bool();
-
-            if( fColdStakingEnabled ){
-               ui->lblColdStakingEnabled->setText("ENABLED");
-
-               if (rv["percent_in_coldstakeable_script"].isNum()) {
-                   ui->lblColdStakingPercent->setText(QString::fromStdString(strprintf("%.02f", rv["percent_in_coldstakeable_script"].get_real())));
-               }
-
-               if (rv["coin_in_coldstakeable_script"].isNum()) {
-                   ui->lblColdStakingCoinInScript->setText(QString::fromStdString(strprintf("%.02f", rv["coin_in_coldstakeable_script"].get_real())));
-               }
-
-            }else{
-                ui->lblColdStakingEnabled->setText("DISABLED");
-            }
-
-        }
-
-        ui->lblColdStakingAddress->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingPercent->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingCoinInScript->setVisible(fColdStakingEnabled);
-
-        ui->lblColdStakingAddressLabel->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingPercentLabel->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingCoinInScriptLabel->setVisible(fColdStakingEnabled);
-
-    }
-
-    sCommand = "getstakinginfo";
-    if (model->tryCallRpc(sCommand, rv)) {
-
-        bool fHotStaking = false;
-
-        if (rv["enabled"].isBool()) {
-            fHotStaking = rv["enabled"].get_bool();
-
-            if( fHotStaking ){
-                ui->lblHotStakingEnabled->setText("ENABLED");
-
-                if (rv["staking"].isBool()) {
-                    ui->lblHotStakingActive->setText(rv["staking"].get_bool() ? "True" : "False");
-                }
-
-                if (rv["errors"].isStr() && rv["errors"].get_str() != "") {
-
-                    ui->lblHotStakingErrorLabel->show();
-                    ui->lblHotStakingError->show();
-
-                    ui->lblHotStakingError->setText(QString::fromStdString(rv["errors"].get_str()));
-                }else{
-                    ui->lblHotStakingErrorLabel->hide();
-                    ui->lblHotStakingError->hide();
-                }
-
-                if (rv["weight"].isNum()) {
-                    ui->lblHotStakingWalletWeight->setText(QString::fromStdString(strprintf("%d", rv["weight"].get_int64())));
-                }
-
-                if (rv["expectedtime"].isNum()) {
-                    ui->lblHotStakingExpectedTime->setText(QString::fromStdString(strprintf("%d", rv["expectedtime"].get_int64())));
-                }
-
-            }else{
-                ui->lblHotStakingEnabled->setText("DISABLED");
-
-            }
-
-            ui->lblHotStakingActiveLabel->setVisible(fHotStaking);
-            ui->lblHotStakingErrorLabel->setVisible(fHotStaking);
-            ui->lblHotStakingWalletWeightLabel->setVisible(fHotStaking);
-            ui->lblHotStakingExpectedTimeLabel->setVisible(fHotStaking);
-
-            ui->lblHotStakingActive->setVisible(fHotStaking);
-            ui->lblHotStakingError->setVisible(fHotStaking);
-            ui->lblHotStakingWalletWeight->setVisible(fHotStaking);
-            ui->lblHotStakingExpectedTime->setVisible(fHotStaking);
-
-        }
-
-        if (rv["percentyearreward"].isNum()) {
-            ui->lblStakingReward->setText(QString::fromStdString(strprintf("%.02f%%", rv["percentyearreward"].get_real())));
-        }
-
-        if (rv["difficulty"].isNum()) {
-            ui->lblStakingDiff->setText(QString::fromStdString(strprintf("%.02f", rv["difficulty"].get_real())));
-        }
-
-        if (rv["netstakeweight"].isNum()) {
-            ui->lblStakingNetWeight->setText(QString::fromStdString(strprintf("%d", rv["netstakeweight"].get_int64())));
-        }
-
-    }
-}
-
-bool SendCoinsDialog::getChangeSettings(QString &change_spend, QString &change_stake)
-{
-    UniValue rv;
-    QString sCommand = "walletsettings changeaddress";
-    if (model->tryCallRpc(sCommand, rv)) {
-        if (rv["changeaddress"].isObject()
-            && rv["changeaddress"]["address_standard"].isStr()) {
-            change_spend = QString::fromStdString(rv["changeaddress"]["address_standard"].get_str());
-        }
-        if (rv["changeaddress"].isObject()
-            && rv["changeaddress"]["coldstakingaddress"].isStr()) {
-            change_stake = QString::fromStdString(rv["changeaddress"]["coldstakingaddress"].get_str());
-        }
-        return true;
-    }
-    return false;
 }
 
 void SendCoinsDialog::setClientModel(ClientModel *_clientModel)
@@ -299,8 +149,6 @@ void SendCoinsDialog::setModel(WalletModel *_model)
 
     if(_model && _model->getOptionsModel())
     {
-        modeChanged( fStakingDialog ? OVERVIEW : SPENDING);
-
         for(int i = 0; i < ui->entries->count(); ++i)
         {
             SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
@@ -356,10 +204,6 @@ void SendCoinsDialog::setModel(WalletModel *_model)
             ui->confTargetSelector->setCurrentIndex(getIndexForConfTarget(model->wallet().getConfirmTarget()));
         else
             ui->confTargetSelector->setCurrentIndex(getIndexForConfTarget(settings.value("nConfTarget").toInt()));
-
-        if( fStakingDialog ){
-            updateStakingUI();
-        }
     }
 }
 
@@ -762,6 +606,7 @@ SendCoinsEntry *SendCoinsDialog::addEntryCS()
 {
     if (ui->entries->count() == 1) {
         SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(0)->widget());
+
         if (entry->isClear() && !entry->m_coldstake) {
             ui->entries->takeAt(0)->widget()->deleteLater();
         }
@@ -970,41 +815,6 @@ void SendCoinsDialog::on_buttonMinimizeFee_clicked()
     minimizeFeeSection(true);
 }
 
-void SendCoinsDialog::on_btnChangeColdStakingAddress_clicked()
-{
-    bool ok;
-    QString newColdStakeChangeAddress = QInputDialog::getText(this, tr("Set Cold Staking Address"),
-                                                              tr("Enter an external cold staking address:"), QLineEdit::Normal,
-                                                              "", &ok);
-    if (ok && !newColdStakeChangeAddress.isEmpty()){
-        QString sCommand;
-
-        if (newColdStakeChangeAddress != m_coldStakeChangeAddress) {
-            QString change_spend, change_stake;
-            getChangeSettings(change_spend, m_coldStakeChangeAddress);
-
-            sCommand = "walletsettings changeaddress {";
-            if (!change_spend.isEmpty()) {
-                sCommand += "\"address_standard\":\""+change_spend+"\"";
-            }
-            if (!newColdStakeChangeAddress.isEmpty()) {
-                if (!change_spend.isEmpty()) {
-                    sCommand += ",";
-                }
-                sCommand += "\"coldstakingaddress\":\""+newColdStakeChangeAddress+"\"";
-            }
-            sCommand += "}";
-        }
-
-        if (!sCommand.isEmpty()) {
-            UniValue rv;
-            if (!model->tryCallRpc(sCommand, rv)) {
-                return;
-            }
-        }
-    }
-}
-
 void SendCoinsDialog::useAvailableBalance(SendCoinsEntry* entry)
 {
     // Get CCoinControl instance if CoinControl is enabled or create a new one.
@@ -1089,20 +899,7 @@ void SendCoinsDialog::updateCoinControlState(CCoinControl& ctrl)
 
 CoinControlDialog::ControlModes SendCoinsDialog::GetCoinControlFlag()
 {
-    if( fStakingDialog){
-        switch(modeSelection.checkedId()){
-        case 0:
-            return CoinControlDialog::INVALID;
-        case 1:
-            return CoinControlDialog::CONVERT_TO_SPENDING;
-        case 2:
-            return CoinControlDialog::CONVERT_TO_STAKING;
-        case 3:
-            return CoinControlDialog::CONVERT_TO_COLD_STAKE;
-        }
-    }
-
-    return CoinControlDialog::SPENDING;
+    return nMode;
 }
 
 QString SendCoinsDialog::GetFrom()
@@ -1114,8 +911,6 @@ QString SendCoinsDialog::GetFrom()
     case CoinControlDialog::SPENDING:
     case CoinControlDialog::CONVERT_TO_STAKING:
         return "anon";
-    case CoinControlDialog::INVALID:
-        return "invalid";
     }
 
     return "error";
@@ -1130,8 +925,6 @@ QString SendCoinsDialog::GetTo()
     case CoinControlDialog::CONVERT_TO_STAKING:
     case CoinControlDialog::CONVERT_TO_COLD_STAKE:
         return "part";
-    case CoinControlDialog::INVALID:
-        return "invalid";
     }
 
     return "error";
@@ -1169,74 +962,21 @@ void SendCoinsDialog::updateSmartFeeLabel()
     updateFeeMinimizedLabel();
 }
 
-void SendCoinsDialog::modeChanged(int nNewMode)
+void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
 {
     clear();
 
+    nMode = nNewMode;
+
     switch(nNewMode){
-    case OVERVIEW: // Used for overview
-
-        ui->frameStakingSelection->show();
-        ui->sendWidget->hide();
-        ui->frameFee->hide();
-        ui->scrollArea->hide();
-        ui->frameStakingInfo->show();
-        ui->frameHotStakingInfo->show();
-        ui->frameColdStakingInfo->show();
-
-        break;
-    case TO_SPENDING:
-
-        ui->frameStakingSelection->show();
-        ui->sendWidget->show();
-        ui->frameFee->show();
-        ui->scrollArea->show();
-        ui->frameStakingInfo->hide();
-        ui->frameHotStakingInfo->hide();
-        ui->frameColdStakingInfo->hide();
-
+    case CoinControlDialog::CONVERT_TO_SPENDING:
+    case CoinControlDialog::CONVERT_TO_STAKING:
+    case CoinControlDialog::SPENDING:
         addEntry();
         break;
-    case TO_STAKING:
-
-        ui->frameStakingSelection->show();
-        ui->sendWidget->show();
-        ui->frameFee->show();
-        ui->scrollArea->show();
-        ui->frameStakingInfo->hide();
-        ui->frameHotStakingInfo->hide();
-        ui->frameColdStakingInfo->hide();
-
-        addEntry();
-        break;
-    case TO_COLD_STAKING:
-
-        ui->frameStakingSelection->show();
-        ui->sendWidget->show();
-        ui->frameFee->show();
-        ui->scrollArea->show();
-        ui->frameStakingInfo->hide();
-        ui->frameHotStakingInfo->hide();
-        ui->frameColdStakingInfo->hide();
-
+    case CoinControlDialog::CONVERT_TO_COLD_STAKE:
         addEntryCS();
         break;
-    case SPENDING:
-
-        ui->frameStakingSelection->hide();
-        ui->sendWidget->show();
-        ui->frameFee->show();
-        ui->scrollArea->show();
-        ui->frameStakingInfo->hide();
-        ui->frameHotStakingInfo->hide();
-        ui->frameColdStakingInfo->hide();
-
-        addEntry();
-        break;
-    }
-
-    if( model ){
-        ui->frameCoinControl->setVisible(model->getOptionsModel()->getCoinControlFeatures() && nNewMode > 0);
     }
 
     updateTabsAndLabels();

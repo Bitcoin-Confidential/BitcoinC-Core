@@ -14,6 +14,7 @@ FORMS += \
     ../src/qt/forms/debugwindow.ui \
     ../src/qt/forms/sendcoinsdialog.ui \
     ../src/qt/forms/sendcoinsentry.ui \
+    ../src/qt/forms/stakingdialog.ui \
     ../src/qt/forms/signverifymessagedialog.ui \
     ../src/qt/forms/transactiondescdialog.ui \
     ../src/qt/forms/mnemonicdialog.ui \

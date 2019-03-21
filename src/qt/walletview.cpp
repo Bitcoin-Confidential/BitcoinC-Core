@@ -15,6 +15,7 @@
 #include <qt/platformstyle.h>
 #include <qt/receivecoinsdialog.h>
 #include <qt/sendcoinsdialog.h>
+#include <qt/stakingdialog.h>
 #include <qt/signverifymessagedialog.h>
 #include <qt/transactiontablemodel.h>
 #include <qt/transactionview.h>
@@ -58,7 +59,12 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     receiveCoinsPage = new ReceiveCoinsDialog(platformStyle, false);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
-    stakingPage = new SendCoinsDialog(platformStyle, true);
+    stakingPage = new StakingDialog(platformStyle);
+
+    SendCoinsDialog *conversionPage = new SendCoinsDialog(platformStyle, true);
+    ReceiveCoinsDialog *addressPage = new ReceiveCoinsDialog(platformStyle, true);
+
+    stakingPage->setPages(addressPage, conversionPage);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);

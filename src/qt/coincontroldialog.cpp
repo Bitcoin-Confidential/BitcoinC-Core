@@ -51,8 +51,6 @@ OutputTypes ControlModeToCbxType(CoinControlDialog::ControlModes mode){
     case CoinControlDialog::SPENDING:
     case CoinControlDialog::CONVERT_TO_STAKING:
         return OUTPUT_RINGCT;
-    case CoinControlDialog::INVALID:
-        break;
     }
 
     return OUTPUT_NULL;

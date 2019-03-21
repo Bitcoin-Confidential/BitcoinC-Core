@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>132</height>
+    <height>134</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,22 +60,17 @@
        </property>
        <item>
         <property name="text">
-         <string>Standard</string>
+         <string>Confidential</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Stealth</string>
+         <string>Stake</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Extended</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Standard 256bit</string>
+         <string>ColdReturn</string>
         </property>
        </item>
       </widget>

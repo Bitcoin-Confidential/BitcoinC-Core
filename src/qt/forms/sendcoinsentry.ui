@@ -96,7 +96,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
         </property>
         <property name="iconSize">
@@ -119,7 +119,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
         </property>
         <property name="iconSize">
@@ -142,7 +142,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
         <property name="iconSize">
@@ -285,7 +285,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="spendAddrLabel">
       <property name="text">
-       <string>ColdReturn Address:</string>
+       <string>Return Address</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -326,7 +326,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
         </property>
         <property name="iconSize">
@@ -349,7 +349,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
         </property>
         <property name="iconSize">
@@ -388,7 +388,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="stakeAddrLabel">
       <property name="text">
-       <string>ColdStake Address:</string>
+       <string>Stake Address:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -432,7 +432,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
         </property>
         <property name="iconSize">
@@ -455,7 +455,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
         </property>
         <property name="iconSize">
@@ -478,7 +478,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
         <property name="iconSize">
@@ -949,7 +949,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
        </widget>
@@ -1482,7 +1482,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="../bitcoin.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
        </widget>
@@ -1555,6 +1555,8 @@
   <tabstop>edtNarration</tabstop>
   <tabstop>deleteButton_s</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../bitcoin.qrc"/>
+ </resources>
  <connections/>
 </ui>

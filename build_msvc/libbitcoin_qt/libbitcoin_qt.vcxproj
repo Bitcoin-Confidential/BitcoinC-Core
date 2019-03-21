@@ -53,6 +53,7 @@
     <None Include="..\..\src\qt\formseceiverequestdialog.ui" />
     <None Include="..\..\src\qt\forms\sendcoinsdialog.ui" />
     <None Include="..\..\src\qt\forms\sendcoinsentry.ui" />
+    <None Include="..\..\src\qt\forms\stakingdialog.ui" />
     <None Include="..\..\src\qt\forms\signverifymessagedialog.ui" />
     <None Include="..\..\src\qt\forms\transactiondescdialog.ui" />
     <None Include="..\..\src\qt\locale\bitcoin_af.ts">
@@ -743,6 +744,7 @@
     <ClCompile Include="GeneratedFiles\moc_rpcconsole.cpp" />
     <ClCompile Include="GeneratedFiles\moc_sendcoinsdialog.cpp" />
     <ClCompile Include="GeneratedFiles\moc_sendcoinsentry.cpp" />
+    <ClCompile Include="GeneratedFiles\moc_stakingdialog.cpp" />
     <ClCompile Include="GeneratedFiles\moc_signverifymessagedialog.cpp" />
     <ClCompile Include="GeneratedFiles\moc_splashscreen.cpp" />
     <ClCompile Include="GeneratedFiles\moc_trafficgraphwidget.cpp" />
@@ -777,6 +779,7 @@
     <ClInclude Include="GeneratedFiles\ui_receiverequestdialog.h" />
     <ClInclude Include="GeneratedFiles\ui_sendcoinsdialog.h" />
     <ClInclude Include="GeneratedFiles\ui_sendcoinsentry.h" />
+    <ClInclude Include="GeneratedFiles\ui_stakingdialog.h" />
     <ClInclude Include="GeneratedFiles\ui_signverifymessagedialog.h" />
     <ClInclude Include="GeneratedFiles\ui_transactiondescdialog.h" />
   </ItemGroup>

@@ -45,7 +45,6 @@ class CoinControlDialog : public QDialog
 public:
 
     enum ControlModes{
-        INVALID,
         SPENDING,
         CONVERT_TO_SPENDING,
         CONVERT_TO_STAKING,

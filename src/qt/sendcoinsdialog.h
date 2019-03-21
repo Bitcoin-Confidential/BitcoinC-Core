@@ -35,6 +35,7 @@ class SendCoinsDialog : public QDialog
     Q_OBJECT
 
 public:
+
     explicit SendCoinsDialog(const PlatformStyle *platformStyle, bool fStakingDialog = false, QWidget *parent = 0);
     ~SendCoinsDialog();
 
@@ -48,6 +49,8 @@ public:
     void setAddress(const QString &address);
     void pasteEntry(const SendCoinsRecipient &rv);
     bool handlePaymentRequest(const SendCoinsRecipient &recipient);
+
+    void setMode(CoinControlDialog::ControlModes nNewMode);
 
 public Q_SLOTS:
     void clear();
@@ -63,14 +66,6 @@ Q_SIGNALS:
 
 private:
 
-    enum{
-        OVERVIEW,
-        TO_SPENDING,
-        TO_STAKING,
-        TO_COLD_STAKING,
-        SPENDING
-    };
-
     Ui::SendCoinsDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
@@ -79,11 +74,7 @@ private:
     const PlatformStyle *platformStyle;
     CoinControlDialog * coinControlDialog;
     bool fStakingDialog;
-    QTimer updateStakingTimer;
-
-    QButtonGroup modeSelection;
-
-    QString m_coldStakeChangeAddress;
+    CoinControlDialog::ControlModes nMode;
 
     // Process WalletModel::SendCoinsReturn and generate a pair consisting
     // of a message and message flags for use in Q_EMIT message().
@@ -97,8 +88,6 @@ private:
 
     CoinControlDialog::ControlModes GetCoinControlFlag();
 
-    bool getChangeSettings(QString &change_spend, QString &change_stake);
-
     QString GetFrom();
     QString GetTo();
 
@@ -107,7 +96,6 @@ private Q_SLOTS:
     void on_addButton_clicked();
     void on_buttonChooseFee_clicked();
     void on_buttonMinimizeFee_clicked();
-    void on_btnChangeColdStakingAddress_clicked();
     void removeEntry(SendCoinsEntry* entry);
     void useAvailableBalance(SendCoinsEntry* entry);
     void updateDisplayUnit();
@@ -128,8 +116,6 @@ private Q_SLOTS:
     void updateFeeSectionControls();
     void updateMinFeeLabel();
     void updateSmartFeeLabel();
-    void modeChanged(int nNewMode);
-    void updateStakingUI();
 
 Q_SIGNALS:
     // Fired when a message should be reported to the user

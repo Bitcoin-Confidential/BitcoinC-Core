@@ -21,14 +21,15 @@ RecentRequestsTableModel::RecentRequestsTableModel(bool fStaking, WalletModel *p
     std::vector<std::string> vReceiveRequests;
     if( fStaking ){
         parent->loadStakingRequests(vReceiveRequests);
+        /* These columns must match the indices in the ColumnIndex enumeration */
+        columns << tr("Date") << tr("Label");
     }else{
         parent->loadReceiveRequests(vReceiveRequests);
+        /* These columns must match the indices in the ColumnIndex enumeration */
+        columns << tr("Date") << tr("Label") << tr("Message") << getAmountTitle();
     }
     for (const std::string& request : vReceiveRequests)
         addNewRequest(request);
-
-    /* These columns must match the indices in the ColumnIndex enumeration */
-    columns << tr("Date") << tr("Label") << tr("Message") << getAmountTitle();
 
     connect(walletModel->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
 }
@@ -119,6 +120,9 @@ QVariant RecentRequestsTableModel::headerData(int section, Qt::Orientation orien
 /** Updates the column title to "Amount (DisplayUnit)" and emits headerDataChanged() signal for table headers to react. */
 void RecentRequestsTableModel::updateAmountColumnTitle()
 {
+    if( columns.size() < Amount )
+        return;
+
     columns[Amount] = getAmountTitle();
     Q_EMIT headerDataChanged(Qt::Horizontal,Amount,Amount);
 }
@@ -220,7 +224,7 @@ void RecentRequestsTableModel::addNewRequest(RecentRequestEntry &recipient)
 void RecentRequestsTableModel::sort(int column, Qt::SortOrder order)
 {
     qSort(list.begin(), list.end(), RecentRequestEntryLessThan(column, order));
-    Q_EMIT dataChanged(index(0, 0, QModelIndex()), index(list.size() - 1, NUMBER_OF_COLUMNS - 1, QModelIndex()));
+    Q_EMIT dataChanged(index(0, 0, QModelIndex()), index(list.size() - 1, fStaking ? 2 : NUMBER_OF_COLUMNS - 1, QModelIndex()));
 }
 
 void RecentRequestsTableModel::updateDisplayUnit()
