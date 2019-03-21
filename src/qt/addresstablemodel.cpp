@@ -378,24 +378,25 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
         switch (addrType)
         {
             case ADDR_STEALTH:
-                sCommand = "getnewstealthaddress ";
-                sCommand += "\""+label+ "\" ";
-                sCommand += " 0 ";
-                sCommand += " 0 ";
-                sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
-                break;
-            case ADDR_EXT:
-                sCommand = "getnewextaddress ";
-                sCommand += "\""+label+ "\" ";
-                sCommand += " \"\" ";
-                sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
-                break;
-            default:
                 sCommand = "getnewaddress ";
                 sCommand += "\""+label+ "\" ";
+                sCommand += " 0 ";
+                sCommand += " 0 ";
                 sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
-                sCommand += " false ";
-                sCommand += (addrType == ADDR_STANDARD256) ? " true " : " false ";
+                break;
+            case ADDR_STANDARD:
+                sCommand = "getnewcoldstakeaddress ";
+                sCommand += "\""+label+ "\" ";
+                sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
+                sCommand += " 0 ";
+                break;
+            case ADDR_STANDARD256:
+                sCommand = "getnewcoldreturnaddress ";
+                sCommand += "\""+label+ "\" ";
+                sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
+                sCommand += " 0 ";
+                break;
+            default:
                 break;
         };
 

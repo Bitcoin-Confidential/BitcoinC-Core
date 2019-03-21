@@ -226,15 +226,12 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "createsignaturewithwallet", 1, "prevtx" },
     { "createsignaturewithkey", 1, "prevtx" },
 
-
-
     { "walletsettings", 1, "json" },
 
     { "getnewextaddress", 2, "bech32" },
     { "getnewextaddress", 3, "hardened" },
-    { "getnewstealthaddress", 3, "bech32" },
-    { "getnewstealthaddress", 4, "makeV2" },
-    { "importstealthaddress", 5, "bech32" },
+    { "getnewaddress", 3, "bech32" },
+    { "getnewaddress", 4, "makeV2" },
 
     { "listunspentanon", 0, "minconf" },
     { "listunspentanon", 1, "maxconf" },

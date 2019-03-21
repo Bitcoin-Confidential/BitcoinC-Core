@@ -38,6 +38,7 @@
 #include <stdint.h>
 
 
+extern std::string LabelFromValue(const UniValue& value);
 
 static void EnsureWalletIsUnlocked(CHDWallet *pwallet)
 {
@@ -1789,6 +1790,144 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
     akStealth.SetSxAddr(sxAddr);
 
     return sxAddr.ToString(fBech32);
+}
+
+
+static UniValue getnewstandardaddress(CWallet *pwallet, std::string &label, bool fBech32, bool fHardened, bool f256bit )
+{
+
+    if (IsBitcoinCWallet(pwallet)) {
+        CKeyID keyID;
+        CPubKey newKey;
+        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
+        {
+            //LOCK2(cs_main, pwallet->cs_wallet);
+            LOCK(cs_main);
+
+            {
+                LOCK(phdw->cs_wallet);
+                if (phdw->idDefaultAccount.IsNull()) {
+                    if (!phdw->pEKMaster)
+                        throw JSONRPCError(RPC_WALLET_ERROR, _("Wallet has no active master key."));
+                    throw JSONRPCError(RPC_WALLET_ERROR, _("No default account set."));
+                }
+            }
+            if (0 != phdw->NewKeyFromAccount(newKey, false, fHardened, f256bit, fBech32, label.c_str())) {
+                throw JSONRPCError(RPC_WALLET_ERROR, "NewKeyFromAccount failed.");
+            }
+        }
+
+        if (f256bit) {
+            CKeyID256 idKey256 = newKey.GetID256();
+            return CBitcoinAddress(idKey256, fBech32).ToString();
+        }
+        keyID = newKey.GetID();
+        return CBitcoinAddress(keyID, fBech32).ToString();
+    }else{
+        throw JSONRPCError(RPC_WALLET_ERROR, "Selected wallet invalid");
+    }
+
+    return UniValue(UniValue::VNULL);
+}
+
+static UniValue getnewcoldstakeaddress(const JSONRPCRequest& request)
+{
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 4)
+        throw std::runtime_error(
+            "getnewcoldstakeaddress ( \"label\" bech32 hardened 256bit )\n"
+            "\nReturns a new BitcoinC address for receiving payments, key is saved in wallet.\n"
+           "If 'label' is specified, it is added to the address book \n"
+            "so payments received with the address will be credited to 'account'.\n"
+            "\nArguments:\n"
+            "1. \"label\"        (string, optional) DEPRECATED. The account name for the address to be linked to. If not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
+            "2. bech32             (bool, optional, default=false) Use Bech32 encoding.\n"
+            "3. hardened           (bool, optional, default=false) Derive a hardened key.\n"
+            "\nResult:\n"
+            "\"address\"           (string) The new bitcoinc address\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getnewcoldstakeaddress", "")
+            + HelpExampleRpc("getnewcoldstakeaddress", "")
+        );
+
+    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Error: Private keys are disabled for this wallet");
+    }
+
+    // Parse the label first so we don't generate a key if there's an error
+    std::string label;
+    if (!request.params[0].isNull())
+        label = LabelFromValue(request.params[0]);
+
+    bool fBech32 = false;
+    if (request.params.size() > 1) {
+        std::string s = request.params[1].get_str();
+        fBech32 = part::IsStringBoolPositive(s);
+    }
+
+    bool fHardened = false;
+    if (request.params.size() > 2) {
+        std::string s = request.params[2].get_str();
+        fHardened = part::IsStringBoolPositive(s);
+    }
+
+    return getnewstandardaddress(pwallet, label, fBech32, fHardened, false);
+}
+
+static UniValue getnewcoldreturnaddress(const JSONRPCRequest& request)
+{
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 4)
+        throw std::runtime_error(
+            "getnewcoldreturnaddress ( \"label\" bech32 hardened 256bit )\n"
+            "\nReturns a new BitcoinC address for receiving payments, key is saved in wallet.\n"
+           "If 'label' is specified, it is added to the address book \n"
+            "so payments received with the address will be credited to 'account'.\n"
+            "\nArguments:\n"
+            "1. \"label\"        (string, optional) DEPRECATED. The account name for the address to be linked to. If not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
+            "2. bech32             (bool, optional, default=false) Use Bech32 encoding.\n"
+            "3. hardened           (bool, optional, default=false) Derive a hardened key.\n"
+            "\nResult:\n"
+            "\"address\"           (string) The new bitcoinc address\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getnewcoldreturnaddress", "")
+            + HelpExampleRpc("getnewcoldreturnaddress", "")
+        );
+
+    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Error: Private keys are disabled for this wallet");
+    }
+
+    // Parse the label first so we don't generate a key if there's an error
+    std::string label;
+    if (!request.params[0].isNull())
+        label = LabelFromValue(request.params[0]);
+
+    bool fBech32 = false;
+    if (request.params.size() > 1) {
+        std::string s = request.params[1].get_str();
+        fBech32 = part::IsStringBoolPositive(s);
+    }
+
+    bool fHardened = false;
+    if (request.params.size() > 2) {
+        std::string s = request.params[2].get_str();
+        fHardened = part::IsStringBoolPositive(s);
+    }
+
+    return getnewstandardaddress(pwallet, label, fBech32, fHardened, true);
 }
 
 static UniValue importstealthaddress(const JSONRPCRequest &request)
@@ -7464,6 +7603,8 @@ static const CRPCCommand commands[] =
     { "wallet",             "extkeyaltversion",                 &extkeyaltversion,              {"ext_key"} },
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
+    { "wallet",             "getnewcoldstakeaddress",           &getnewcoldstakeaddress,        {"label","bech32", "hardened"} },
+    { "wallet",             "getnewcoldreturnaddress",          &getnewcoldreturnaddress,       {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 

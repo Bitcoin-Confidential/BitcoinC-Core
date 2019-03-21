@@ -190,232 +190,12 @@ void RecordTxToJSON(CHDWallet *phdw, const uint256 &hash, const CTransactionReco
     */
 }
 
-static std::string LabelFromValue(const UniValue& value)
+std::string LabelFromValue(const UniValue& value)
 {
     std::string label = value.get_str();
     if (label == "*")
         throw JSONRPCError(RPC_WALLET_INVALID_LABEL_NAME, "Invalid label name");
     return label;
-}
-
-static UniValue getnewcoldstakeaddress(const JSONRPCRequest& request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CWallet* const pwallet = wallet.get();
-
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
-        return NullUniValue;
-    }
-
-    if (request.fHelp || request.params.size() > 4)
-        throw std::runtime_error(
-            "getnewcoldstakeaddress ( \"label\" bech32 hardened 256bit )\n"
-            "\nReturns a new BitcoinC address for receiving payments, key is saved in wallet.\n"
-           "If 'label' is specified, it is added to the address book \n"
-            "so payments received with the address will be credited to 'account'.\n"
-            "\nArguments:\n"
-            "1. \"label\"        (string, optional) DEPRECATED. The account name for the address to be linked to. If not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
-            "2. bech32             (bool, optional, default=false) Use Bech32 encoding.\n"
-            "3. hardened           (bool, optional, default=false) Derive a hardened key.\n"
-            "4. 256bit             (bool, optional, default=false) Use 256bit hash.\n"
-            //"2. \"address_type\"   (string, optional) The address type to use. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -addresstype.\n"
-            "\nResult:\n"
-            "\"address\"           (string) The new bitcoinc address\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getnewcoldstakeaddress", "")
-            + HelpExampleRpc("getnewcoldstakeaddress", "")
-        );
-
-    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
-        throw JSONRPCError(RPC_WALLET_ERROR, "Error: Private keys are disabled for this wallet");
-    }
-
-    // Parse the label first so we don't generate a key if there's an error
-    std::string label;
-    if (!request.params[0].isNull())
-        label = LabelFromValue(request.params[0]);
-
-    if (IsBitcoinCWallet(pwallet)) {
-        CKeyID keyID;
-        bool fBech32 = false;
-        if (request.params.size() > 1) {
-            std::string s = request.params[1].get_str();
-            fBech32 = part::IsStringBoolPositive(s);
-        }
-
-        bool fHardened = false;
-        if (request.params.size() > 2) {
-            std::string s = request.params[2].get_str();
-            fHardened = part::IsStringBoolPositive(s);
-        }
-
-        bool f256bit = false;
-        if (request.params.size() > 3) {
-            std::string s = request.params[3].get_str();
-            f256bit = part::IsStringBoolPositive(s);
-        }
-
-        CPubKey newKey;
-        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
-        {
-            //LOCK2(cs_main, pwallet->cs_wallet);
-            LOCK(cs_main);
-
-            {
-                LOCK(phdw->cs_wallet);
-                if (phdw->idDefaultAccount.IsNull()) {
-                    if (!phdw->pEKMaster)
-                        throw JSONRPCError(RPC_WALLET_ERROR, _("Wallet has no active master key."));
-                    throw JSONRPCError(RPC_WALLET_ERROR, _("No default account set."));
-                }
-            }
-            if (0 != phdw->NewKeyFromAccount(newKey, false, fHardened, f256bit, fBech32, label.c_str())) {
-                throw JSONRPCError(RPC_WALLET_ERROR, "NewKeyFromAccount failed.");
-            }
-        }
-
-        if (f256bit) {
-            CKeyID256 idKey256 = newKey.GetID256();
-            return CBitcoinAddress(idKey256, fBech32).ToString();
-        }
-        keyID = newKey.GetID();
-        return CBitcoinAddress(keyID, fBech32).ToString();
-    };
-
-    LOCK2(cs_main, pwallet->cs_wallet);
-
-    OutputType output_type = pwallet->m_default_address_type;
-    if (!request.params[1].isNull()) {
-        if (!ParseOutputType(request.params[1].get_str(), output_type)) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[1].get_str()));
-        }
-    }
-
-    if (!pwallet->IsLocked()) {
-        pwallet->TopUpKeyPool();
-    }
-
-    // Generate a new key that is added to wallet
-    CPubKey newKey;
-    if (!pwallet->GetKeyFromPool(newKey)) {
-        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
-    }
-    pwallet->LearnRelatedScripts(newKey, output_type);
-    CTxDestination dest = GetDestinationForKey(newKey, output_type);
-
-    pwallet->SetAddressBook(dest, label, "receive");
-
-    return EncodeDestination(dest);
-}
-
-static UniValue getnewcoldreturnaddress(const JSONRPCRequest& request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CWallet* const pwallet = wallet.get();
-
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
-        return NullUniValue;
-    }
-
-    if (request.fHelp || request.params.size() > 4)
-        throw std::runtime_error(
-            "getnewcoldreturnaddress ( \"label\" bech32 hardened 256bit )\n"
-            "\nReturns a new BitcoinC address for receiving payments, key is saved in wallet.\n"
-           "If 'label' is specified, it is added to the address book \n"
-            "so payments received with the address will be credited to 'account'.\n"
-            "\nArguments:\n"
-            "1. \"label\"        (string, optional) DEPRECATED. The account name for the address to be linked to. If not provided, the default account \"\" is used. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created if there is no account by the given name.\n"
-            "2. bech32             (bool, optional, default=false) Use Bech32 encoding.\n"
-            "3. hardened           (bool, optional, default=false) Derive a hardened key.\n"
-            "4. 256bit             (bool, optional, default=true) Use 256bit hash.\n"
-            //"2. \"address_type\"   (string, optional) The address type to use. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -addresstype.\n"
-            "\nResult:\n"
-            "\"address\"           (string) The new bitcoinc address\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getnewcoldreturnaddress", "")
-            + HelpExampleRpc("getnewcoldreturnaddress", "")
-        );
-
-    if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
-        throw JSONRPCError(RPC_WALLET_ERROR, "Error: Private keys are disabled for this wallet");
-    }
-
-    // Parse the label first so we don't generate a key if there's an error
-    std::string label;
-    if (!request.params[0].isNull())
-        label = LabelFromValue(request.params[0]);
-
-    if (IsBitcoinCWallet(pwallet)) {
-        CKeyID keyID;
-        bool fBech32 = false;
-        if (request.params.size() > 1) {
-            std::string s = request.params[1].get_str();
-            fBech32 = part::IsStringBoolPositive(s);
-        }
-
-        bool fHardened = false;
-        if (request.params.size() > 2) {
-            std::string s = request.params[2].get_str();
-            fHardened = part::IsStringBoolPositive(s);
-        }
-
-        bool f256bit = true;
-        if (request.params.size() > 3) {
-            std::string s = request.params[3].get_str();
-            f256bit = part::IsStringBoolPositive(s);
-        }
-
-        CPubKey newKey;
-        CHDWallet *phdw = GetBitcoinCWallet(pwallet);
-        {
-            //LOCK2(cs_main, pwallet->cs_wallet);
-            LOCK(cs_main);
-
-            {
-                LOCK(phdw->cs_wallet);
-                if (phdw->idDefaultAccount.IsNull()) {
-                    if (!phdw->pEKMaster)
-                        throw JSONRPCError(RPC_WALLET_ERROR, _("Wallet has no active master key."));
-                    throw JSONRPCError(RPC_WALLET_ERROR, _("No default account set."));
-                }
-            }
-            if (0 != phdw->NewKeyFromAccount(newKey, false, fHardened, f256bit, fBech32, label.c_str())) {
-                throw JSONRPCError(RPC_WALLET_ERROR, "NewKeyFromAccount failed.");
-            }
-        }
-
-        if (f256bit) {
-            CKeyID256 idKey256 = newKey.GetID256();
-            return CBitcoinAddress(idKey256, fBech32).ToString();
-        }
-        keyID = newKey.GetID();
-        return CBitcoinAddress(keyID, fBech32).ToString();
-    };
-
-    LOCK2(cs_main, pwallet->cs_wallet);
-
-    OutputType output_type = pwallet->m_default_address_type;
-    if (!request.params[1].isNull()) {
-        if (!ParseOutputType(request.params[1].get_str(), output_type)) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[1].get_str()));
-        }
-    }
-
-    if (!pwallet->IsLocked()) {
-        pwallet->TopUpKeyPool();
-    }
-
-    // Generate a new key that is added to wallet
-    CPubKey newKey;
-    if (!pwallet->GetKeyFromPool(newKey)) {
-        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
-    }
-    pwallet->LearnRelatedScripts(newKey, output_type);
-    CTxDestination dest = GetDestinationForKey(newKey, output_type);
-
-    pwallet->SetAddressBook(dest, label, "receive");
-
-    return EncodeDestination(dest);
 }
 
 
@@ -602,7 +382,6 @@ static UniValue setlabel(const JSONRPCRequest& request)
 
     return NullUniValue;
 }
-
 
 static UniValue getaccount(const JSONRPCRequest& request)
 {
@@ -5822,8 +5601,6 @@ static const CRPCCommand commands[] =
     { "wallet",             "encryptwallet",                    &encryptwallet,                 {"passphrase"} },
     { "wallet",             "getaddressinfo",                   &getaddressinfo,                {"address"} },
     { "wallet",             "getbalance",                       &getbalance,                    {"account|dummy","minconf","include_watchonly"} },
-    { "wallet",             "getnewcoldstakeaddress",           &getnewcoldstakeaddress,        {"label|account","address_type"} },
-    { "wallet",             "getnewcoldreturnaddress",          &getnewcoldreturnaddress,        {"label|account","address_type"} },
     { "wallet",             "getrawchangeaddress",              &getrawchangeaddress,           {"address_type"} },
     { "wallet",             "getreceivedbyaddress",             &getreceivedbyaddress,          {"address","minconf"} },
     { "wallet",             "gettransaction",                   &gettransaction,                {"txid","include_watchonly"} },
