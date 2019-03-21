@@ -4681,11 +4681,11 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
 
         if (typeOut == OUTPUT_RINGCT
             && !address.IsValidStealthAddress()) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid receive address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid stealth address");
         }
 
         if (!address.IsValid()) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid receive address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid stake address");
         }
 
         CAmount nAmount = AmountFromValue(request.params[1]);

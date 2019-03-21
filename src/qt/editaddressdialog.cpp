@@ -23,7 +23,7 @@ EditAddressDialog::EditAddressDialog(Mode _mode, QWidget *parent) :
 
     GUIUtil::setupAddressWidget(ui->addressEdit, this);
 
-    ui->cbxType->setCurrentIndex(ui->cbxType->findText("Confidential"));
+    ui->cbxType->setCurrentIndex(ui->cbxType->findText("Stealth"));
     if (mode == NewReceivingAddress)
     {
         ui->lblType->show();
@@ -93,7 +93,7 @@ bool EditAddressDialog::saveCurrentRow()
                 ui->labelEdit->text(),
                 ui->addressEdit->text(),
                 model->GetDefaultAddressType(),
-                ui->cbxType->currentText() == "Confidential" ? AddressTableModel::ADDR_STEALTH
+                ui->cbxType->currentText() == "Stealth" ? AddressTableModel::ADDR_STEALTH
                     : ui->cbxType->currentText() == "Return" ? AddressTableModel::ADDR_STANDARD256
                     : AddressTableModel::ADDR_STANDARD);
         break;
