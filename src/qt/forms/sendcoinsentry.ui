@@ -313,7 +313,7 @@
       <item>
        <widget class="QValidatedLineEdit" name="spendAddr">
         <property name="toolTip">
-         <string>The address to returns funds when stopped (must be ColdReturn in your wallet)</string>
+         <string>The address to returns funds when stopped (must be Return in your wallet)</string>
         </property>
        </widget>
       </item>

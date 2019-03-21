@@ -198,7 +198,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
         if (ui->cbxAddressType->currentText() == "Stake"){
                 addrType = AddressTableModel::ADDR_STANDARD;
                 fIsStakingAddress = true;
-            }else if (ui->cbxAddressType->currentText() == "ColdReturn"){
+            }else if (ui->cbxAddressType->currentText() == "Return"){
                 addrType = AddressTableModel::ADDR_STANDARD256;
                 fIsStakingAddress = true;
             }

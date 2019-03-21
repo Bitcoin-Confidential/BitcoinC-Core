@@ -391,7 +391,7 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
                 sCommand += " 0 ";
                 break;
             case ADDR_STANDARD256:
-                sCommand = "getnewcoldreturnaddress ";
+                sCommand = "getnewreturnaddress ";
                 sCommand += "\""+label+ "\" ";
                 sCommand += (address_type == OutputType::BECH32) ? " true " : " false ";
                 sCommand += " 0 ";
@@ -475,4 +475,3 @@ void AddressTableModel::emitDataChanged(int idx)
 {
     Q_EMIT dataChanged(index(idx, 0, QModelIndex()), index(idx, columns.length()-1, QModelIndex()));
 }
-

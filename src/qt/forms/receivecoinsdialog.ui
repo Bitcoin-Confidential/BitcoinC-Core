@@ -118,7 +118,7 @@
             </item>
             <item>
              <property name="text">
-              <string>ColdReturn</string>
+              <string>Return</string>
              </property>
             </item>
            </widget>

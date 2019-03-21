@@ -94,7 +94,7 @@ bool EditAddressDialog::saveCurrentRow()
                 ui->addressEdit->text(),
                 model->GetDefaultAddressType(),
                 ui->cbxType->currentText() == "Confidential" ? AddressTableModel::ADDR_STEALTH
-                    : ui->cbxType->currentText() == "ColdReturn" ? AddressTableModel::ADDR_STANDARD256
+                    : ui->cbxType->currentText() == "Return" ? AddressTableModel::ADDR_STANDARD256
                     : AddressTableModel::ADDR_STANDARD);
         break;
     case NewSendingAddress:

@@ -1878,7 +1878,7 @@ static UniValue getnewstakeaddress(const JSONRPCRequest& request)
     return getnewstandardaddress(pwallet, label, fBech32, fHardened, false);
 }
 
-static UniValue getnewcoldreturnaddress(const JSONRPCRequest& request)
+static UniValue getnewreturnaddress(const JSONRPCRequest& request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
@@ -1889,7 +1889,7 @@ static UniValue getnewcoldreturnaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
-            "getnewcoldreturnaddress ( \"label\" bech32 hardened 256bit )\n"
+            "getnewreturnaddress ( \"label\" bech32 hardened 256bit )\n"
             "\nReturns a new BitcoinC address for cold stake return address, key is saved in wallet.\n"
             "\nArguments:\n"
             "1. \"label\"          (string, optional) If specified the key is added to the address book.\n"
@@ -1898,8 +1898,8 @@ static UniValue getnewcoldreturnaddress(const JSONRPCRequest& request)
             "\nResult:\n"
             "\"address\"           (string) The new cold return address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewcoldreturnaddress", "")
-            + HelpExampleRpc("getnewcoldreturnaddress", "")
+            + HelpExampleCli("getnewreturnaddress", "")
+            + HelpExampleRpc("getnewreturnaddress", "")
         );
 
     if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
@@ -4681,11 +4681,11 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
 
         if (typeOut == OUTPUT_RINGCT
             && !address.IsValidStealthAddress()) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid BitcoinC stealth address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid receive address");
         }
 
         if (!address.IsValid()) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid BitcoinC address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid receive address");
         }
 
         CAmount nAmount = AmountFromValue(request.params[1]);
@@ -7600,7 +7600,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
     { "wallet",             "getnewstakeaddress",               &getnewstakeaddress,            {"label","bech32", "hardened"} },
-    { "wallet",             "getnewcoldreturnaddress",          &getnewcoldreturnaddress,       {"label","bech32", "hardened"} },
+    { "wallet",             "getnewreturnaddress",          &getnewreturnaddress,       {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 
