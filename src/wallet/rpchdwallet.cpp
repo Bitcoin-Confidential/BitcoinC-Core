@@ -4715,7 +4715,7 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
     switch (typeIn) {
         case OUTPUT_STANDARD:
             if (nTotal > pwallet->GetBalance()) {
-                throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+                throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient staking funds");
             }
             break;
         case OUTPUT_CT:
@@ -4725,7 +4725,7 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
             break;
         case OUTPUT_RINGCT:
             if (nTotal > pwallet->GetAnonBalance()) {
-                throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient anon funds");
+                throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient spendable funds");
             }
             break;
         default:
