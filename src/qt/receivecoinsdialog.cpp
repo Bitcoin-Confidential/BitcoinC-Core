@@ -115,7 +115,7 @@ void ReceiveCoinsDialog::clear()
     ui->reqAmount->clear();
     ui->reqLabel->setText("");
     ui->reqMessage->setText("");
-    ui->cbxAddressType->setCurrentIndex(ui->cbxAddressType->findText("Standard"));
+    ui->cbxAddressType->setCurrentIndex(ui->cbxAddressType->findText("Stealth"));
     updateDisplayUnit();
 }
 
