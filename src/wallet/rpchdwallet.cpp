@@ -3970,7 +3970,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
         obj.pushKV("walletfoundationdonationpercent", pwallet->nWalletDevFundCedePercent);
     }*/
 
-    const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTipTime);
+    //const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTipTime);
  /*   if (pDevFundSettings && pDevFundSettings->nMinDevStakePercent > 0) {
         obj.pushKV("foundationdonationpercent", pDevFundSettings->nMinDevStakePercent);
     }*/
@@ -5046,7 +5046,7 @@ static UniValue sendparttoblind(const JSONRPCRequest &request)
     return SendToInner(request, OUTPUT_STANDARD, OUTPUT_CT);
 };
 
-static UniValue sendparttoanon(const JSONRPCRequest &request)
+static UniValue converttostealth(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -5059,17 +5059,17 @@ static UniValue sendparttoanon(const JSONRPCRequest &request)
 };
 
 
-static UniValue sendblindtopart(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 6)
-        throw std::runtime_error(SendHelp(pwallet, OUTPUT_CT, OUTPUT_STANDARD));
-
-    return SendToInner(request, OUTPUT_CT, OUTPUT_STANDARD);
-};
+// static UniValue sendblindtopart(const JSONRPCRequest &request)
+// {
+//     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+//     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
+//     if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
+//         return NullUniValue;
+//     if (request.fHelp || request.params.size() < 2 || request.params.size() > 6)
+//         throw std::runtime_error(SendHelp(pwallet, OUTPUT_CT, OUTPUT_STANDARD));
+//
+//     return SendToInner(request, OUTPUT_CT, OUTPUT_STANDARD);
+// };
 
 static UniValue sendblindtoblind(const JSONRPCRequest &request)
 {
@@ -5096,7 +5096,7 @@ static UniValue sendblindtoanon(const JSONRPCRequest &request)
 };
 
 
-static UniValue sendanontopart(const JSONRPCRequest &request)
+static UniValue converttostake(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -7622,13 +7622,13 @@ static const CRPCCommand commands[] =
 
     //sendparttopart // normal txn
     { "wallet",             "sendparttoblind",                  &sendparttoblind,               {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
-    { "wallet",             "sendparttoanon",                   &sendparttoanon,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
+    { "wallet",             "converttostealth",                   &converttostealth,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
-    { "wallet",             "sendblindtopart",                  &sendblindtopart,               {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
+    //{ "wallet",             "sendblindtopart",                  &sendblindtopart,               {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
     { "wallet",             "sendblindtoblind",                 &sendblindtoblind,              {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
     { "wallet",             "sendblindtoanon",                  &sendblindtoanon,               {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
-    { "wallet",             "sendanontopart",                   &sendanontopart,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
+    { "wallet",             "converttostake",                   &converttostake,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
     { "wallet",             "sendanontoblind",                  &sendanontoblind,               {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
     { "wallet",             "sendanontoanon",                   &sendanontoanon,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
 

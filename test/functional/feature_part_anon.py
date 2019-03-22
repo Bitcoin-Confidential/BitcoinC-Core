@@ -41,7 +41,7 @@ class AnonTest(BitcoinCTestFramework):
         sxAddrTo0_1 = nodes[0].getnewstealthaddress('lblsx01')
 
 
-        txnHash = nodes[0].sendparttoanon(sxAddrTo1_1, 1, '', '', False, 'node0 -> node1 p->a')
+        txnHash = nodes[0].converttostealth(sxAddrTo1_1, 1, '', '', False, 'node0 -> node1 p->a')
         txnHashes.append(txnHash)
 
         txnHash = nodes[0].sendparttoblind(sxAddrTo0_1, 1000, '', '', False, 'node0 -> node0 p->b')
@@ -60,7 +60,7 @@ class AnonTest(BitcoinCTestFramework):
         txnHashes.append(txnHash)
 
         for k in range(6):
-            txnHash = nodes[0].sendparttoanon(sxAddrTo1_1, 10, '', '', False, 'node0 -> node1 p->a')
+            txnHash = nodes[0].converttostealth(sxAddrTo1_1, 10, '', '', False, 'node0 -> node1 p->a')
             txnHashes.append(txnHash)
 
         for h in txnHashes:

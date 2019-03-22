@@ -63,7 +63,7 @@ class FilterTransactionsTest(BitcoinCTestFramework):
         )
 
         # PART to ANON
-        nodes[0].sendparttoanon(
+        nodes[0].converttostealth(
             targetStealth,        # address
             20,                   # amount
             '',                   # ?

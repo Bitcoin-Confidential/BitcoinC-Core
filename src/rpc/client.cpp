@@ -191,8 +191,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
 
     { "sendparttoblind", 1, "amount" },
     { "sendparttoblind", 4, "subtractfeefromamount" },
-    { "sendparttoanon", 1, "amount" },
-    { "sendparttoanon", 4, "subtractfeefromamount" },
+    { "converttostealth", 1, "amount" },
+    { "converttostealth", 4, "subtractfeefromamount" },
 
     { "sendblindtopart", 1, "amount" },
     { "sendblindtopart", 4, "subtractfeefromamount" },
@@ -201,10 +201,10 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "sendblindtoanon", 1, "amount" },
     { "sendblindtoanon", 4, "subtractfeefromamount" },
 
-    { "sendanontopart", 1, "amount" },
-    { "sendanontopart", 4, "subtractfeefromamount" },
-    { "sendanontopart", 6, "ringsize" },
-    { "sendanontopart", 7, "inputs_per_sig" },
+    { "converttostake", 1, "amount" },
+    { "converttostake", 4, "subtractfeefromamount" },
+    { "converttostake", 6, "ringsize" },
+    { "converttostake", 7, "inputs_per_sig" },
 
     { "sendanontoblind", 1, "amount" },
     { "sendanontoblind", 4, "subtractfeefromamount" },
