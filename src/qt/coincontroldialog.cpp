@@ -387,7 +387,6 @@ void CoinControlDialog::cbxTypeChanged()
     if (model)
     {
         coinControl(mode)->nCoinType = ControlModeToCbxType(mode);
-        coinControl(mode)->UnSelectAll();
         CoinControlDialog::updateLabels(model, this);
         updateView();
     };
@@ -622,13 +621,23 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
 
 CCoinControl* CoinControlDialog::coinControl(CoinControlDialog::ControlModes mode)
 {
-    static CCoinControl coin_control_send, coin_control_stake;
+    static CCoinControl coinControlSend,
+                        coinControlToStealth,
+                        coinControlToStake,
+                        coinControlActivateCold;
 
-    if( mode == CoinControlDialog::SPENDING ){
-        return &coin_control_send;
+    switch(mode){
+    case CoinControlDialog::SPENDING:
+        return &coinControlSend;
+    case CoinControlDialog::CONVERT_TO_SPENDING:
+        return &coinControlToStealth;
+    case CoinControlDialog::CONVERT_TO_STAKING:
+        return &coinControlToStake;
+    case CoinControlDialog::CONVERT_TO_COLD_STAKE:
+        return &coinControlActivateCold;
     }
 
-    return &coin_control_stake;
+    return &coinControlSend;
 }
 
 void CoinControlDialog::updateView()

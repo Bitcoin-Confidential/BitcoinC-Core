@@ -61,10 +61,16 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     sendCoinsPage = new SendCoinsDialog(platformStyle);
     stakingPage = new StakingDialog(platformStyle);
 
-    SendCoinsDialog *conversionPage = new SendCoinsDialog(platformStyle, true);
     ReceiveCoinsDialog *addressPage = new ReceiveCoinsDialog(platformStyle, true);
+    SendCoinsDialog *toStealth = new SendCoinsDialog(platformStyle, true);
+    SendCoinsDialog *toStake = new SendCoinsDialog(platformStyle, true);
+    SendCoinsDialog *activateCold = new SendCoinsDialog(platformStyle, true);
 
-    stakingPage->setPages(addressPage, conversionPage);
+    toStealth->setMode(CoinControlDialog::CONVERT_TO_SPENDING);
+    toStake->setMode(CoinControlDialog::CONVERT_TO_STAKING);
+    activateCold->setMode(CoinControlDialog::CONVERT_TO_COLD_STAKE);
+
+    stakingPage->setPages(addressPage, toStealth, toStake, activateCold);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);

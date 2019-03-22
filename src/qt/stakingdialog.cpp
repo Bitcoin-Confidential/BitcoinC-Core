@@ -46,21 +46,16 @@ StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *paren
     model(0),
     platformStyle(_platformStyle),
     addressPage(nullptr),
-    conversionPage(nullptr)
+    toStealth(nullptr),
+    toStake(nullptr),
+    activateCold(nullptr)
 {
     ui->setupUi(this);
 
-    modeSelection.addButton(ui->radioOverview, 0);
-    modeSelection.addButton(ui->radioAddresses, 1);
-    modeSelection.addButton(ui->radioSpending, 2);
-    modeSelection.addButton(ui->radioStaking, 3);
-    modeSelection.addButton(ui->radioColdStaking, 4);
-
-    connect(&modeSelection, SIGNAL(buttonClicked(int)), this, SLOT(modeChanged(int)));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(modeChanged(int)));
 
     connect(&updateStakingTimer, SIGNAL(timeout()), this, SLOT(updateStakingUI()));
     updateStakingTimer.start(STAKING_UI_UPDATE_MS);
-
 }
 
 void StakingDialog::updateStakingUI()
@@ -204,9 +199,18 @@ void StakingDialog::setClientModel(ClientModel *_clientModel)
 {
     this->clientModel = _clientModel;
 
-    if( conversionPage ){
-        conversionPage->setClientModel(_clientModel);
+    if( toStealth ){
+        toStealth->setClientModel(_clientModel);
     }
+
+    if( toStake ){
+        toStake->setClientModel(_clientModel);
+    }
+
+    if( activateCold ){
+        activateCold->setClientModel(_clientModel);
+    }
+
 }
 
 void StakingDialog::setModel(WalletModel *_model)
@@ -221,21 +225,34 @@ void StakingDialog::setModel(WalletModel *_model)
             addressPage->setModel(_model);
         }
 
-        if( conversionPage ){
-            conversionPage->setModel(_model);
+        if( toStealth ){
+            toStealth->setModel(_model);
         }
+
+        if( toStake ){
+            toStake->setModel(_model);
+        }
+
+        if( activateCold ){
+            activateCold->setModel(_model);
+        }
+
     }
 }
 
-void StakingDialog::setPages(ReceiveCoinsDialog *addressPage, SendCoinsDialog *conversionPage)
+void StakingDialog::setPages(ReceiveCoinsDialog *addressPage, SendCoinsDialog *toStealth, SendCoinsDialog *toStake, SendCoinsDialog *activateCold )
 {
-    if( addressPage && conversionPage ){
+    if( addressPage && toStealth && toStake && activateCold ){
 
         this->addressPage = addressPage;
-        this->conversionPage = conversionPage;
+        this->toStealth = toStealth;
+        this->toStake = toStake;
+        this->activateCold = activateCold;
 
-        ui->stackedWidget->insertWidget(1, addressPage);
-        ui->stackedWidget->insertWidget(2, conversionPage);
+        ui->tabWidget->insertTab(1, addressPage, "Stake addresses");
+        ui->tabWidget->insertTab(2, toStealth, "Convert to stealth");
+        ui->tabWidget->insertTab(3, toStake, "Convert to stake");
+        ui->tabWidget->insertTab(4, activateCold, "Activate cold staking");
     }
 
 }
@@ -244,7 +261,34 @@ StakingDialog::~StakingDialog()
 {
     delete ui;
     delete addressPage;
-    delete conversionPage;
+    delete toStealth;
+    delete toStake;
+    delete activateCold;
+}
+
+void StakingDialog::on_btnRemoveColdStakingAddress_clicked()
+{
+    QString change_spend, change_stake;
+    getChangeSettings(change_spend, change_stake);
+
+    QString sCommandRemove = "walletsettings changeaddress {}";
+
+    UniValue rv;
+    if (!model->tryCallRpc(sCommandRemove, rv)) {
+        return;
+    }
+
+    QString sCommand = "walletsettings changeaddress {";
+    if (!change_spend.isEmpty()) {
+        sCommand += "\"address_standard\":\""+change_spend+"\"";
+    }
+    sCommand += "}";
+
+    if (!change_spend.isEmpty() && !model->tryCallRpc(sCommand, rv)) {
+        return;
+    }
+
+    updateStakingUI();
 }
 
 void StakingDialog::on_btnChangeColdStakingAddress_clicked()
@@ -280,41 +324,17 @@ void StakingDialog::on_btnChangeColdStakingAddress_clicked()
             }
         }
     }
-}
 
+    updateStakingUI();
+}
 
 void StakingDialog::modeChanged(int nNewMode)
 {
-    StakingDialogPages nNewIndex;
 
-    switch(nNewMode){
-    case OVERVIEW:
-        updateStakingTimer.start();
-        nNewIndex = StakingDialogPages::OVERVIEW_PAGE;
-        break;
-    case ADDRESSES:
-        nNewIndex = StakingDialogPages::ADDRESSES_PAGE;
-        break;
-    case TO_SPENDING:
-        conversionPage->setMode(CoinControlDialog::CONVERT_TO_SPENDING);
-        nNewIndex = StakingDialogPages::CONVERSION_PAGE;
-        break;
-    case TO_STAKING:
-        conversionPage->setMode(CoinControlDialog::CONVERT_TO_STAKING);
-        nNewIndex = StakingDialogPages::CONVERSION_PAGE;
-        break;
-    case TO_COLD_STAKING:
-        conversionPage->setMode(CoinControlDialog::CONVERT_TO_COLD_STAKE);
-        nNewIndex = StakingDialogPages::CONVERSION_PAGE;
-        break;
-    }
-
-    if( nNewIndex == StakingDialogPages::OVERVIEW_PAGE ){
+    if( nNewMode == StakingDialogPages::OVERVIEW ){
         updateStakingUI();
         updateStakingTimer.start(STAKING_UI_UPDATE_MS);
     }else{
         updateStakingTimer.stop();
     }
-
-    ui->stackedWidget->setCurrentIndex(nNewIndex);
 }

@@ -41,22 +41,16 @@ public:
     void setClientModel(ClientModel *clientModel);
     void setModel(WalletModel *model);
 
-    void setPages( ReceiveCoinsDialog *addressPage, SendCoinsDialog *conversionPage);
+    void setPages(ReceiveCoinsDialog *addressPage, SendCoinsDialog *toStealth, SendCoinsDialog *toStake, SendCoinsDialog *activateCold );
 
 private:
 
-    enum{
+    enum StakingDialogPages{
         OVERVIEW,
         ADDRESSES,
         TO_SPENDING,
         TO_STAKING,
         TO_COLD_STAKING
-    };
-
-    enum StakingDialogPages{
-        OVERVIEW_PAGE,
-        ADDRESSES_PAGE,
-        CONVERSION_PAGE
     };
 
     Ui::StakingDialog *ui;
@@ -66,16 +60,17 @@ private:
     QTimer updateStakingTimer;
 
     ReceiveCoinsDialog *addressPage;
-    SendCoinsDialog *conversionPage;
+    SendCoinsDialog *toStealth;
+    SendCoinsDialog *toStake;
+    SendCoinsDialog *activateCold;
 
     QString m_coldStakeChangeAddress;
-
-    QButtonGroup modeSelection;
 
     bool getChangeSettings(QString &change_spend, QString &change_stake);
 
 private Q_SLOTS:
 
+    void on_btnRemoveColdStakingAddress_clicked();
     void on_btnChangeColdStakingAddress_clicked();
     void modeChanged(int nNewMode);
     void updateStakingUI();
