@@ -30,7 +30,7 @@
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Setup / Info</string>
+       <string>Staking Status</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_10">
        <item>
@@ -437,14 +437,14 @@
             <item>
              <widget class="QPushButton" name="btnRemoveColdStakingAddress">
               <property name="text">
-               <string>Remove cold staking address</string>
+               <string>Remove Remote Stake Address</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="btnChangeColdStakingAddress">
               <property name="text">
-               <string>Set cold staking address</string>
+               <string>Set Remote Stake Address</string>
               </property>
              </widget>
             </item>

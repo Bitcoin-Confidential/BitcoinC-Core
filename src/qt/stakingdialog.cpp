@@ -249,10 +249,10 @@ void StakingDialog::setPages(ReceiveCoinsDialog *addressPage, SendCoinsDialog *t
         this->toStake = toStake;
         this->activateCold = activateCold;
 
-        ui->tabWidget->insertTab(1, addressPage, "Stake addresses");
-        ui->tabWidget->insertTab(2, toStealth, "Convert to stealth");
-        ui->tabWidget->insertTab(3, toStake, "Convert to stake");
-        ui->tabWidget->insertTab(4, activateCold, "Activate cold staking");
+        ui->tabWidget->insertTab(1, addressPage, "Stake Addresses");
+        ui->tabWidget->insertTab(2, toStealth, "Convert to Spending");
+        ui->tabWidget->insertTab(3, toStake, "Convert to Staking");
+        ui->tabWidget->insertTab(4, activateCold, "Activate ColdStaking");
     }
 
 }

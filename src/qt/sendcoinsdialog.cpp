@@ -731,7 +731,7 @@ void SendCoinsDialog::setBalance(const interfaces::WalletBalances& balances)
         if (balances.balanceBlind > 0)
             sBalance += "\n" + BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), balances.balanceBlind) + " B";
         if (balances.balanceAnon > 0)
-            sBalance += "\n" + BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), balances.balanceAnon) + " A";
+            sBalance += "\n" + BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), balances.balanceAnon) + " Spendable";
         ui->labelBalance->setText(sBalance);
     }
 }

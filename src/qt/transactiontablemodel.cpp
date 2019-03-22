@@ -387,7 +387,7 @@ QVariant TransactionTableModel::txAddressDecoration(const TransactionRecord *wtx
     {
     case TransactionRecord::Generated:
     case TransactionRecord::Staked:
-        return QIcon(":/icons/tx_mined");
+        return QIcon(":/icons/staking");
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::RecvFromOther:
         return QIcon(":/icons/tx_input");
