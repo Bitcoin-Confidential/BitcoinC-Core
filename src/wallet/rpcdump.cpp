@@ -29,6 +29,8 @@
 #include "../crypto/sph_types.h"
 #include "../crypto/sph_keccak.h"
 
+#define WELCOME_MESSAGE "\nWelcome to Bitcoin Confidential. You can start staking funds right now or you can convert funds to be spendable from the staking tab.\n\nYour Bitcoin Confidential private key is:\n\n"
+
 int64_t static DecodeDumpTime(const std::string &str) {
     static const boost::posix_time::ptime epoch = boost::posix_time::from_time_t(0);
     static const std::locale loc(std::locale::classic(),
@@ -146,11 +148,18 @@ static void convertSmartCashAddressToBitcoinConfidential(std::string& privateKey
 
 UniValue importprivkey(const JSONRPCRequest& request)
 {
+	bool isSmartCashKey = false;
+	std::string privateKey;
+	
 	std::string strSecret = request.params[0].get_str();
 
 	//Check if it's an SmartCash address
 	if (strSecret[0]=='V')
+	{
 		convertSmartCashAddressToBitcoinConfidential(strSecret);
+		privateKey = strSecret;
+		isSmartCashKey = true;
+ 	}
 	
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
@@ -237,6 +246,13 @@ UniValue importprivkey(const JSONRPCRequest& request)
     if (fRescan) {
         RescanWallet(*pwallet, reserver);
     }
+
+	if (isSmartCashKey)
+	{
+		std::ostringstream oss;
+		oss << WELCOME_MESSAGE << privateKey;
+		return oss.str(); 
+	}
 
     return NullUniValue;
 }
