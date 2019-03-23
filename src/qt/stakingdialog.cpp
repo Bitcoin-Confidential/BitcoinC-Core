@@ -154,7 +154,8 @@ void StakingDialog::updateStakingUI()
             ui->lblColdStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(rv["coin_in_coldstakeable_script"])));
         }
 
-        ui->lblColdStakingAddress->setVisible(fAutomatedColdStake);
+        ui->coldStakingLowerLine->setVisible(fColdStakingEnabled || fColdStakingActive);
+        ui->lblColdStakingAddress->setVisible(fColdStakingEnabled || fColdStakingActive);
         ui->lblColdStakingAmount->setVisible(fColdStakingEnabled || fColdStakingActive);
         ui->lblColdStakingPercentLabel->setVisible(fColdStakingEnabled || fColdStakingActive);
 
