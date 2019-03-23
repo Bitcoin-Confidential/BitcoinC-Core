@@ -714,34 +714,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>Staking</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <layout class="QFormLayout" name="formLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="reserveBalanceLabel">
-           <property name="text">
-            <string>Reserve Balance</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="BitcoinAmountField" name="reserveBalanceAmount">
-           <property name="maximumSize">
-            <size>
-             <width>250</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
    <item>
@@ -931,12 +903,6 @@
    <class>QValueComboBox</class>
    <extends>QComboBox</extends>
    <header>qt/qvaluecombobox.h</header>
-  </customwidget>
-  <customwidget>
-   <class>BitcoinAmountField</class>
-   <extends>QLineEdit</extends>
-   <header>qt/bitcoinamountfield.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
