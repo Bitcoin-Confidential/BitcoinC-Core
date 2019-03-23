@@ -93,6 +93,8 @@ void StakingDialog::updateStakingUI()
         return;
     }
 
+    bool fLocked = model->wallet().isLocked();
+
     int nDisplayUnit = BitcoinUnits::BTC;
     if (model && model->getOptionsModel())
         nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
@@ -154,14 +156,16 @@ void StakingDialog::updateStakingUI()
             ui->lblColdStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(rv["coin_in_coldstakeable_script"])));
         }
 
-        ui->coldStakingLowerLine->setVisible(fColdStakingEnabled || fColdStakingActive);
-        ui->lblColdStakingAddress->setVisible(fColdStakingEnabled || fColdStakingActive);
-        ui->lblColdStakingAmount->setVisible(fColdStakingEnabled || fColdStakingActive);
-        ui->lblColdStakingPercentLabel->setVisible(fColdStakingEnabled || fColdStakingActive);
+        bool fShowColdStakingElements = fColdStakingEnabled || fColdStakingActive;
 
+        ui->lblColdStakingAddress->setVisible(fAutomatedColdStake);
         ui->lblColdStakingAddressLabel->setVisible(fAutomatedColdStake);
-        ui->lblColdStakingAmountLabel->setVisible(fColdStakingEnabled || fColdStakingActive);
-        ui->progressColdStaking->setVisible(fColdStakingEnabled || fColdStakingActive);
+
+        ui->coldStakingLowerLine->setVisible(fShowColdStakingElements);
+        ui->lblColdStakingAmount->setVisible(fShowColdStakingElements);
+        ui->progressColdStaking->setVisible(fShowColdStakingElements);
+        ui->lblColdStakingAmountLabel->setVisible(fShowColdStakingElements);
+        ui->lblColdStakingPercentLabel->setVisible(fShowColdStakingElements);
 
         StakingStatusUpdate(ui->lblColdStakingEnabled, fColdStakingEnabled, fColdStakingActive);
     }
@@ -205,13 +209,16 @@ void StakingDialog::updateStakingUI()
             ui->lblHotStakingWalletWeight->setText(BitcoinUnits::format(BitcoinUnits::BTC, nWeight));
         }
 
-        if ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) ) {
+        if ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) {
 
             ui->lblHotStakingErrorLabel->show();
             ui->lblHotStakingError->show();
 
             QString strError = QString::fromStdString(rv["errors"].get_str());
-            if( strError == "" ){
+
+            if( fLocked ){
+                strError = "Your wallet is locked. To start staking unlock the wallet for staking only. To do the unlock you can click on the lock icon in the bottom bar.";
+            }else if( strError == "" ){
                 strError = "No suitable staking outputs";
             }
 
@@ -225,13 +232,15 @@ void StakingDialog::updateStakingUI()
             ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["expectedtime"].get_int64()));
         }
 
-        ui->lblHotStakingAmountLabel->setVisible(fHotStakingEnabled && fHotStakingActive);
-        ui->lblHotStakingWalletWeightLabel->setVisible(fHotStakingEnabled && fHotStakingActive);
-        ui->lblHotStakingExpectedTimeLabel->setVisible(fHotStakingEnabled && fHotStakingActive);
+        bool fShowHotStakingElements = fLocked ? false : fHotStakingEnabled || fHotStakingActive;
 
-        ui->lblHotStakingAmount->setVisible(fHotStakingEnabled && fHotStakingActive);
-        ui->lblHotStakingWalletWeight->setVisible(fHotStakingEnabled && fHotStakingActive);
-        ui->lblHotStakingExpectedTime->setVisible(fHotStakingEnabled && fHotStakingActive);
+        ui->lblHotStakingAmountLabel->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingWalletWeightLabel->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingExpectedTimeLabel->setVisible(fShowHotStakingElements);
+
+        ui->lblHotStakingAmount->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingWalletWeight->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingExpectedTime->setVisible(fShowHotStakingElements);
 
         StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive);
     }
