@@ -3930,10 +3930,10 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
 
     uint64_t nWeight = pwallet->GetStakeWeight();
 
-    uint64_t nNetworkWeight = GetPoSKernelPS();
+    double nNetworkWeight = GetPoSKernelPS();
 
     bool fStaking = nWeight && fIsStaking;
-    uint64_t nExpectedTime = fStaking ? (Params().GetTargetSpacing() * nNetworkWeight / nWeight) : 0;
+    uint64_t nExpectedTime = fStaking ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nWeight) : 0;
 
     obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true)); // enabled on node, vs enabled on wallet
     obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
@@ -3983,7 +3983,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     obj.pushKV("lastsearchtime", (uint64_t)pwallet->nLastCoinStakeSearchTime);
 
     obj.pushKV("weight", (uint64_t)nWeight);
-    obj.pushKV("netstakeweight", (uint64_t)nNetworkWeight);
+    obj.pushKV("netstakeweight", (double)nNetworkWeight);
 
     obj.pushKV("expectedtime", nExpectedTime);
 
