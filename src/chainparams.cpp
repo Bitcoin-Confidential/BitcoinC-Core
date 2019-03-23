@@ -181,11 +181,12 @@ const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]
 
 //Testnet
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
-	//Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
+    //Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
     std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",100000 * COIN),
-
-	//Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
-	std::make_pair("cff968e962da8b81727ae0c20ecc0b1f6a9a92e0",7367509500 * COIN),
+    //Staking test pqjn7jnXdMfov8JkYaF6yEMyM8nP95LQVy
+    std::make_pair("e4c40e40a13e0d412d43ccf3a9116cd9c4e9862e",100000 * COIN),
+    //Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
+    std::make_pair("cff968e962da8b81727ae0c20ecc0b1f6a9a92e0",7367509500 * COIN),
 };
 
 const size_t nGenesisOutputsTestnet = sizeof(genesisOutputsTestnet) / sizeof(genesisOutputsTestnet[0]);
@@ -420,7 +421,6 @@ public:
         vSeeds.emplace_back("dnsseed-mainnet.bitcoinconfidential.cc");
         vSeeds.emplace_back("mainnet.bitcoinconfidential.cc");
 
-
         vDevFundSettings.emplace_back(0,DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1000));
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b ColdStake
@@ -552,7 +552,7 @@ public:
         nPruneAfterHeight = 1000;
 
 
-        genesis = CreateGenesisBlockTestNet(1551128292, 101084, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1553292952, 11161, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
 /* //added-->
@@ -563,7 +563,7 @@ public:
 
            bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
                  for(int count = 1; count < 100000000000; count++){
-                    genesis = CreateGenesisBlockTestNet(1553024864, count, 0x1f00ffff);
+                    genesis = CreateGenesisBlockTestNet(1553292952, count, 0x1f00ffff);
    // default
                     if (UintToArith256(genesis.GetHash()) <= bnTarget){
                        printf("testnet genesis.nNonce = %d\n", count);
@@ -577,9 +577,9 @@ public:
                     }
   ///<--added*/
 
-        assert(consensus.hashGenesisBlock == uint256S("0x0000a3e7ded0040aaf59712b7b3bb7aa4b1674acd50142aa18e066cd3f0eebd0"));
-        assert(genesis.hashMerkleRoot == uint256S("0x9653df368ffa84856737a7c6591c16ed5970ca1ee6dea31b1d1805720f8246f3"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x1a012364dbe8e1e61be63ebd3a5f9375c0ba522763badeea2b554282bcc76ba6"));
+        assert(consensus.hashGenesisBlock == uint256S("0000e132f253ff106c326b393bdb192ca62f3f82e7121cac8a58ee1913e4b6a7"));
+        assert(genesis.hashMerkleRoot == uint256S("0x96e75dd08f4f0ea8d144b5f50f59d50156715d4402ff2c2ca02b5427abda91a9"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x135567593136757f573dbbd13ff425b7bf6b0758b273698af1fc026f2cd11696"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -589,7 +589,7 @@ public:
         vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc");
 
 //        vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1)));
-        vDevFundSettings.emplace_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1000)));
+        vDevFundSettings.emplace_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 10)));
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x76}; // p
         base58Prefixes[SCRIPT_ADDRESS]     = {0x7a};
@@ -768,7 +768,7 @@ public:
     {
         genesis = CreateGenesisBlock(1296688602, 2, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-  
+
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
