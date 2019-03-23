@@ -70,7 +70,7 @@ private:
 
 private Q_SLOTS:
 
-    void on_btnRemoveColdStakingAddress_clicked();
+    void on_btnChangeReserveBalance_clicked();
     void on_btnChangeColdStakingAddress_clicked();
     void modeChanged(int nNewMode);
     void updateStakingUI();

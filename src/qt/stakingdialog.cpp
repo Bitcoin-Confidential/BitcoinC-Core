@@ -29,6 +29,7 @@
 #include <wallet/hdwallet.h>
 
 #include <univalue.h>
+#include <utilmoneystr.h>
 
 #include <QFontMetrics>
 #include <QScrollBar>
@@ -38,6 +39,27 @@
 #include <QInputDialog>
 
 #define STAKING_UI_UPDATE_MS 5000
+
+extern CAmount AmountFromValue(const UniValue& value);
+
+void StakingStatusUpdate(QLabel *label, bool fEnabled, bool fActive)
+{
+    QString strColor, strText;
+
+    if( fEnabled && fActive ){
+        strText = "ENABLED";
+        strColor = "#2f6b16";
+    }else if( fEnabled && !fActive ){
+        strText = "INACTIVE";
+        strColor = "#d6660a";
+    }else{
+        strText = "DISABLED";
+        strColor = "#9b3209";
+    }
+
+    label->setText(strText);
+    label->setStyleSheet(QString("QLabel { color : %1 }").arg(strColor));
+}
 
 StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
     QDialog(parent),
@@ -51,6 +73,8 @@ StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *paren
     activateCold(nullptr)
 {
     ui->setupUi(this);
+
+    ui->progressColdStaking->setTextVisible(true);
 
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(modeChanged(int)));
 
@@ -69,111 +93,146 @@ void StakingDialog::updateStakingUI()
         return;
     }
 
-    ui->lblStakingWallet->setText(QString::fromStdString(model->wallet().getWalletName()));
+    int nDisplayUnit = BitcoinUnits::BTC;
+    if (model && model->getOptionsModel())
+        nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 
-    QString change_spend;
-    getChangeSettings(change_spend, m_coldStakeChangeAddress);
-    ui->lblColdStakingAddress->setText(m_coldStakeChangeAddress);
+    bool fAutomatedColdStake;
+    QString change_spend, change_stake;
+    if( getChangeSettings(change_spend, change_stake) && change_stake != ""){
+        fAutomatedColdStake = true;
+        ui->btnChangeColdStakingAddress->setText("Disable");
+    }else{
+        fAutomatedColdStake = false;
+        ui->btnChangeColdStakingAddress->setText("Enable");
+    }
+
+    ui->lblColdStakingAddress->setText(change_stake);
+
+    ui->lblHotStakingReserve->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, model->wallet().getReserveBalance()));
+
+    ui->lblCurrentHeight->setText(QString::number(chainActive.Height()));
+    ui->lblTotalSupply->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, chainActive.Tip()->nMoneySupply));
 
     UniValue rv;
-    QString sCommand = "getcoldstakinginfo";
+    QString sCommand = QString("getblockreward %1").arg(chainActive.Tip()->nHeight);
     if (model->tryCallRpc(sCommand, rv)) {
 
-        bool fColdStakingEnabled = false;
+        if (rv["stakereward"].isNum()) {
+            ui->lblBlockReward->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(rv["stakereward"])));
+        }else{
+            ui->lblBlockReward->setText("Failed to get reward");
+        }
+
+        if (rv["blockreward"].isNum()) {
+            ui->lblStakingReward->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(rv["blockreward"])));
+        }else{
+            ui->lblStakingReward->setText("Failed to get reward");
+        }
+    }
+
+    sCommand = "getcoldstakinginfo";
+    if (model->tryCallRpc(sCommand, rv)) {
+
+        bool fColdStakingEnabled = false, fColdStakingActive = false;
 
         if (rv["enabled"].isBool()) {
             fColdStakingEnabled = rv["enabled"].get_bool();
-
-            if( fColdStakingEnabled ){
-               ui->lblColdStakingEnabled->setText("ENABLED");
-
-               if (rv["percent_in_coldstakeable_script"].isNum()) {
-                   ui->lblColdStakingPercent->setText(QString::fromStdString(strprintf("%.02f", rv["percent_in_coldstakeable_script"].get_real())));
-               }
-
-               if (rv["coin_in_coldstakeable_script"].isNum()) {
-                   ui->lblColdStakingCoinInScript->setText(QString::fromStdString(strprintf("%.02f", rv["coin_in_coldstakeable_script"].get_real())));
-               }
-
-            }else{
-                ui->lblColdStakingEnabled->setText("DISABLED");
-            }
-
         }
 
-        ui->lblColdStakingAddress->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingPercent->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingCoinInScript->setVisible(fColdStakingEnabled);
+        if (rv["percent_in_coldstakeable_script"].isNum()) {
+            ui->progressColdStaking->setValue(rv["percent_in_coldstakeable_script"].get_real());
+        }
 
-        ui->lblColdStakingAddressLabel->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingPercentLabel->setVisible(fColdStakingEnabled);
-        ui->lblColdStakingCoinInScriptLabel->setVisible(fColdStakingEnabled);
+        if (rv["coin_in_stakeable_script"].isNum()) {
+            ui->lblHotStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(rv["coin_in_stakeable_script"])));
+        }
 
+        if (rv["coin_in_coldstakeable_script"].isNum()) {
+            fColdStakingActive = rv["coin_in_coldstakeable_script"].get_real() > 0;
+            fColdStakingEnabled = fColdStakingActive ? true : fColdStakingEnabled;
+            ui->lblColdStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(rv["coin_in_coldstakeable_script"])));
+        }
+
+        ui->lblColdStakingAddress->setVisible(fAutomatedColdStake);
+        ui->lblColdStakingAmount->setVisible(fColdStakingEnabled || fColdStakingActive);
+        ui->lblColdStakingPercentLabel->setVisible(fColdStakingEnabled || fColdStakingActive);
+
+        ui->lblColdStakingAddressLabel->setVisible(fAutomatedColdStake);
+        ui->lblColdStakingAmountLabel->setVisible(fColdStakingEnabled || fColdStakingActive);
+        ui->progressColdStaking->setVisible(fColdStakingEnabled || fColdStakingActive);
+
+        StakingStatusUpdate(ui->lblColdStakingEnabled, fColdStakingEnabled, fColdStakingActive);
     }
 
     sCommand = "getstakinginfo";
     if (model->tryCallRpc(sCommand, rv)) {
 
-        bool fHotStaking = false;
-
-        if (rv["enabled"].isBool()) {
-            fHotStaking = rv["enabled"].get_bool();
-
-            if( fHotStaking ){
-                ui->lblHotStakingEnabled->setText("ENABLED");
-
-                if (rv["staking"].isBool()) {
-                    ui->lblHotStakingActive->setText(rv["staking"].get_bool() ? "True" : "False");
-                }
-
-                if (rv["errors"].isStr() && rv["errors"].get_str() != "") {
-
-                    ui->lblHotStakingErrorLabel->show();
-                    ui->lblHotStakingError->show();
-
-                    ui->lblHotStakingError->setText(QString::fromStdString(rv["errors"].get_str()));
-                }else{
-                    ui->lblHotStakingErrorLabel->hide();
-                    ui->lblHotStakingError->hide();
-                }
-
-                if (rv["weight"].isNum()) {
-                    ui->lblHotStakingWalletWeight->setText(QString::fromStdString(strprintf("%d", rv["weight"].get_int64())));
-                }
-
-                if (rv["expectedtime"].isNum()) {
-                    ui->lblHotStakingExpectedTime->setText(QString::fromStdString(strprintf("%d", rv["expectedtime"].get_int64())));
-                }
-
-            }else{
-                ui->lblHotStakingEnabled->setText("DISABLED");
-
-            }
-
-            ui->lblHotStakingActiveLabel->setVisible(fHotStaking);
-            ui->lblHotStakingErrorLabel->setVisible(fHotStaking);
-            ui->lblHotStakingWalletWeightLabel->setVisible(fHotStaking);
-            ui->lblHotStakingExpectedTimeLabel->setVisible(fHotStaking);
-
-            ui->lblHotStakingActive->setVisible(fHotStaking);
-            ui->lblHotStakingError->setVisible(fHotStaking);
-            ui->lblHotStakingWalletWeight->setVisible(fHotStaking);
-            ui->lblHotStakingExpectedTime->setVisible(fHotStaking);
-
-        }
+        // Network info
 
         if (rv["percentyearreward"].isNum()) {
-            ui->lblStakingReward->setText(QString::fromStdString(strprintf("%.02f%%", rv["percentyearreward"].get_real())));
+            ui->lblAnnualStakingReward->hide(); //  <- TBD, remove me
+            ui->lblAnnualStakingRewardLabel->hide(); //  <- TBD, remove me
+            ui->lblMyAnnualStakingReward->hide(); //  <- TBD, remove me
+            ui->lblMyAnnualStakingRewardLabel->hide(); //  <- TBD, remove me
+            ui->lblAnnualStakingReward->setText(QString::fromStdString(strprintf("%.02f%%", rv["percentyearreward"].get_real())));
         }
 
         if (rv["difficulty"].isNum()) {
-            ui->lblStakingDiff->setText(QString::fromStdString(strprintf("%.02f", rv["difficulty"].get_real())));
+            ui->lblStakingDiff->setText(QString::fromStdString(strprintf("%.08f", rv["difficulty"].get_real())));
         }
 
         if (rv["netstakeweight"].isNum()) {
-            ui->lblStakingNetWeight->setText(QString::fromStdString(strprintf("%d", rv["netstakeweight"].get_int64())));
+            ui->lblStakingNetWeight->setText(BitcoinUnits::format(BitcoinUnits::BTC, rv["netstakeweight"].get_real() * COIN));
         }
 
+        // Local info
+
+        bool fHotStakingEnabled = false, fHotStakingActive = false;
+        int64_t nWeight;
+
+        if (rv["enabled"].isBool()) {
+            fHotStakingEnabled = rv["enabled"].get_bool();
+        }
+
+        if (rv["staking"].isBool()) {
+            fHotStakingActive = rv["staking"].get_bool();
+        }
+
+        if (rv["weight"].isNum()) {
+            nWeight = rv["weight"].get_int64();
+            ui->lblHotStakingWalletWeight->setText(BitcoinUnits::format(BitcoinUnits::BTC, nWeight));
+        }
+
+        if ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) ) {
+
+            ui->lblHotStakingErrorLabel->show();
+            ui->lblHotStakingError->show();
+
+            QString strError = QString::fromStdString(rv["errors"].get_str());
+            if( strError == "" ){
+                strError = "No suitable staking outputs";
+            }
+
+            ui->lblHotStakingError->setText(strError);
+        }else{
+            ui->lblHotStakingErrorLabel->hide();
+            ui->lblHotStakingError->hide();
+        }
+
+        if (rv["expectedtime"].isNum()) {
+            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["expectedtime"].get_int64()));
+        }
+
+        ui->lblHotStakingAmountLabel->setVisible(fHotStakingEnabled && fHotStakingActive);
+        ui->lblHotStakingWalletWeightLabel->setVisible(fHotStakingEnabled && fHotStakingActive);
+        ui->lblHotStakingExpectedTimeLabel->setVisible(fHotStakingEnabled && fHotStakingActive);
+
+        ui->lblHotStakingAmount->setVisible(fHotStakingEnabled && fHotStakingActive);
+        ui->lblHotStakingWalletWeight->setVisible(fHotStakingEnabled && fHotStakingActive);
+        ui->lblHotStakingExpectedTime->setVisible(fHotStakingEnabled && fHotStakingActive);
+
+        StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive);
     }
 }
 
@@ -193,6 +252,20 @@ bool StakingDialog::getChangeSettings(QString &change_spend, QString &change_sta
         return true;
     }
     return false;
+}
+
+void StakingDialog::on_btnChangeReserveBalance_clicked()
+{
+    bool ok;
+    double nNewReserveBalance = QInputDialog::getDouble(this, "Change Reserve Balance" ,
+                                                                "New Reserve Balance in BC:",
+                                                                0, 0, MAX_MONEY / COIN, 8, &ok);
+
+    if( ok ){
+        model->setReserveBalance(nNewReserveBalance * COIN);
+    }
+
+    updateStakingUI();
 }
 
 void StakingDialog::setClientModel(ClientModel *_clientModel)
@@ -266,62 +339,60 @@ StakingDialog::~StakingDialog()
     delete activateCold;
 }
 
-void StakingDialog::on_btnRemoveColdStakingAddress_clicked()
-{
-    QString change_spend, change_stake;
-    getChangeSettings(change_spend, change_stake);
-
-    QString sCommandRemove = "walletsettings changeaddress {}";
-
-    UniValue rv;
-    if (!model->tryCallRpc(sCommandRemove, rv)) {
-        return;
-    }
-
-    QString sCommand = "walletsettings changeaddress {";
-    if (!change_spend.isEmpty()) {
-        sCommand += "\"address_standard\":\""+change_spend+"\"";
-    }
-    sCommand += "}";
-
-    if (!change_spend.isEmpty() && !model->tryCallRpc(sCommand, rv)) {
-        return;
-    }
-
-    updateStakingUI();
-}
-
 void StakingDialog::on_btnChangeColdStakingAddress_clicked()
 {
-    bool ok;
-    QString newColdStakeChangeAddress = QInputDialog::getText(this, tr("Set Cold Staking Address"),
-                                                              tr("Enter an external cold staking address:"), QLineEdit::Normal,
-                                                              "", &ok);
-    if (ok && !newColdStakeChangeAddress.isEmpty()){
-        QString sCommand;
 
-        if (newColdStakeChangeAddress != m_coldStakeChangeAddress) {
-            QString change_spend, change_stake;
-            getChangeSettings(change_spend, m_coldStakeChangeAddress);
+    if( ui->btnChangeColdStakingAddress->text() == "Enable" ){
+        bool ok;
+        QString newColdStakeChangeAddress = QInputDialog::getText(this, tr("Set Cold Staking Address"),
+                                                                  tr("Enter an external cold staking address:"), QLineEdit::Normal,
+                                                                  "", &ok);
+        if (ok && !newColdStakeChangeAddress.isEmpty()){
+            QString sCommand;
 
-            sCommand = "walletsettings changeaddress {";
-            if (!change_spend.isEmpty()) {
-                sCommand += "\"address_standard\":\""+change_spend+"\"";
-            }
-            if (!newColdStakeChangeAddress.isEmpty()) {
+            if (newColdStakeChangeAddress != m_coldStakeChangeAddress) {
+                QString change_spend, change_stake;
+                getChangeSettings(change_spend, m_coldStakeChangeAddress);
+
+                sCommand = "walletsettings changeaddress {";
                 if (!change_spend.isEmpty()) {
-                    sCommand += ",";
+                    sCommand += "\"address_standard\":\""+change_spend+"\"";
                 }
-                sCommand += "\"coldstakingaddress\":\""+newColdStakeChangeAddress+"\"";
+                if (!newColdStakeChangeAddress.isEmpty()) {
+                    if (!change_spend.isEmpty()) {
+                        sCommand += ",";
+                    }
+                    sCommand += "\"coldstakingaddress\":\""+newColdStakeChangeAddress+"\"";
+                }
+                sCommand += "}";
             }
-            sCommand += "}";
+
+            if (!sCommand.isEmpty()) {
+                UniValue rv;
+                if (!model->tryCallRpc(sCommand, rv)) {
+                    return;
+                }
+            }
+        }
+    }else{
+        QString change_spend, change_stake;
+        getChangeSettings(change_spend, change_stake);
+
+        QString sCommandRemove = "walletsettings changeaddress {}";
+
+        UniValue rv;
+        if (!model->tryCallRpc(sCommandRemove, rv)) {
+            return;
         }
 
-        if (!sCommand.isEmpty()) {
-            UniValue rv;
-            if (!model->tryCallRpc(sCommand, rv)) {
-                return;
-            }
+        QString sCommand = "walletsettings changeaddress {";
+        if (!change_spend.isEmpty()) {
+            sCommand += "\"address_standard\":\""+change_spend+"\"";
+        }
+        sCommand += "}";
+
+        if (!change_spend.isEmpty() && !model->tryCallRpc(sCommand, rv)) {
+            return;
         }
     }
 
