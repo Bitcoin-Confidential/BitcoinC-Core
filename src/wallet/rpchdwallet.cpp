@@ -5752,7 +5752,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    EnsureWalletIsUnlocked(pwallet);
+//    EnsureWalletIsUnlocked(pwallet);
 
     UniValue result(UniValue::VOBJ);
 
