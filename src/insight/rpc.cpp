@@ -1024,7 +1024,7 @@ UniValue getblockreward(const JSONRPCRequest& request)
         output.pushKV("value", ValueFromAmount(txout->GetValue()));
         outputs.push_back(output);
 
-        if (devfundconf && *txout->GetPScriptPubKey() == devFundScriptPubKey) {
+        if (nHeight && devfundconf && *txout->GetPScriptPubKey() == devFundScriptPubKey) {
             value_foundation += txout->GetValue();
             continue;
         }
@@ -1032,26 +1032,29 @@ UniValue getblockreward(const JSONRPCRequest& request)
         value_out += txout->GetValue();
     }
 
+
     CScript kernel_script;
     int n = -1;
-    for (const auto& txin : tx->vin) {
-        n++;
-        if (txin.IsAnonInput()) {
-            continue;
-        }
+    if( nHeight ){
+        for (const auto& txin : tx->vin) {
+            n++;
+            if (txin.IsAnonInput()) {
+                continue;
+            }
 
-        CBlockIndex *blockindex = nullptr;
-        CTransactionRef tx_prev;
-        uint256 hashBlock;
-        if (!GetTransaction(txin.prevout.hash, tx_prev, Params().GetConsensus(), hashBlock, true, blockindex)) {
-            throw JSONRPCError(RPC_MISC_ERROR, "Transaction not found on disk");
-        }
-        if (txin.prevout.n > tx_prev->GetNumVOuts()) {
-            throw JSONRPCError(RPC_MISC_ERROR, "prevout not found on disk");
-        }
-        value_in += tx_prev->vpout[txin.prevout.n]->GetValue();
-        if (n == 0) {
-            kernel_script = *tx_prev->vpout[txin.prevout.n]->GetPScriptPubKey();
+            CBlockIndex *blockindex = nullptr;
+            CTransactionRef tx_prev;
+            uint256 hashBlock;
+            if (!GetTransaction(txin.prevout.hash, tx_prev, Params().GetConsensus(), hashBlock, true, blockindex)) {
+                throw JSONRPCError(RPC_MISC_ERROR, "Transaction not found on disk");
+            }
+            if (txin.prevout.n > tx_prev->GetNumVOuts()) {
+                throw JSONRPCError(RPC_MISC_ERROR, "prevout not found on disk");
+            }
+            value_in += tx_prev->vpout[txin.prevout.n]->GetValue();
+            if (n == 0) {
+                kernel_script = *tx_prev->vpout[txin.prevout.n]->GetPScriptPubKey();
+            }
         }
     }
 
@@ -1059,18 +1062,20 @@ UniValue getblockreward(const JSONRPCRequest& request)
 
     UniValue rv(UniValue::VOBJ);
     rv.pushKV("blockhash", pblockindex->GetBlockHash().ToString());
-    if (tx->IsCoinStake()) {
-        rv.pushKV("coinstake", tx->GetHash().ToString());
-    }
-    rv.pushKV("stakereward", ValueFromAmount(stake_reward));
-    rv.pushKV("blockreward", ValueFromAmount(block_reward));
+    if(nHeight){
+        if (tx->IsCoinStake()) {
+            rv.pushKV("coinstake", tx->GetHash().ToString());
+        }
+        rv.pushKV("stakereward", ValueFromAmount(stake_reward));
+        rv.pushKV("blockreward", ValueFromAmount(block_reward));
 
- /*   if (value_foundation > 0) {
-        rv.pushKV("foundationreward", ValueFromAmount(value_foundation));
-    }*/
+     /*   if (value_foundation > 0) {
+            rv.pushKV("foundationreward", ValueFromAmount(value_foundation));
+        }*/
 
-    if (tx->IsCoinStake()) {
-        pushScript(rv, "kernelscript", &kernel_script);
+        if (tx->IsCoinStake()) {
+            pushScript(rv, "kernelscript", &kernel_script);
+        }
     }
     rv.pushKV("outputs", outputs);
 
