@@ -127,7 +127,7 @@ bool IsConfirmedInNPrevBlocks(const uint256 &hashBlock, const CBlockIndex *pinde
     for (const CBlockIndex *pindex = pindexFrom; pindex && pindexFrom->nHeight - pindex->nHeight < nMaxDepth; pindex = pindex->pprev)
     if (hashBlock == pindex->GetBlockHash())
     {
-        nActualDepth = pindexFrom->nHeight - pindex->nHeight;
+        nActualDepth = pindexFrom->nHeight - pindex->nHeight + 1;
         return true;
     };
 
@@ -192,7 +192,7 @@ bool CheckProofOfStake(CValidationState &state, const CBlockIndex *pindexPrev, c
 
         int nDepth;
         if (!CheckAge(pindexPrev, hashBlock, nDepth)) {
-            return state.DoS(100, error("%s: Tried to stake at depth %d", __func__, nDepth + 1), REJECT_INVALID, "invalid-stake-depth");
+            return state.DoS(100, error("%s: Tried to stake at depth %d", __func__, nDepth), REJECT_INVALID, "invalid-stake-depth");
         }
 
         kernelPubKey = *outPrev->GetPScriptPubKey();
@@ -209,10 +209,10 @@ bool CheckProofOfStake(CValidationState &state, const CBlockIndex *pindexPrev, c
             return state.DoS(100, error("%s: invalid-prevout", __func__), REJECT_INVALID, "invalid-prevout");
         }
 
-        nDepth = pindexPrev->nHeight - coin.nHeight;
+        nDepth = pindexPrev->nHeight - coin.nHeight + 1;
         int nRequiredDepth = std::min((int)(Params().GetStakeMinConfirmations()-1), (int)(pindexPrev->nHeight / 2));
         if (nRequiredDepth > nDepth) {
-            return state.DoS(100, error("%s: Tried to stake at depth %d", __func__, nDepth + 1), REJECT_INVALID, "invalid-stake-depth");
+            return state.DoS(100, error("%s: Tried to stake at depth %d", __func__, nDepth), REJECT_INVALID, "invalid-stake-depth");
         }
 
         kernelPubKey = coin.out.scriptPubKey;
@@ -323,7 +323,7 @@ bool CheckKernel(const CBlockIndex *pindexPrev, unsigned int nBits, int64_t nTim
         return false;
 
     int nRequiredDepth = std::min((int)(Params().GetStakeMinConfirmations()-1), (int)(pindexPrev->nHeight / 2));
-    int nDepth = pindexPrev->nHeight - coin.nHeight;
+    int nDepth = pindexPrev->nHeight - coin.nHeight + 1;
 
     if (nRequiredDepth > nDepth)
         return false;
