@@ -19,6 +19,23 @@
 
 #include <boost/thread/thread.hpp> // boost::thread::interrupt
 
+std::pair<int64_t,int64_t> GetBlockRange(const UniValue& params)
+{
+    int64_t nStart, nStop;
+
+    CBlockIndex *pIndex = chainActive.Tip();
+
+    if( params.size() > 1 ){
+        nStart = params[0].get_int64();
+        nStop = params[1].get_int64();
+    }else{
+        nStart = pIndex->nHeight - params[0].get_int64();
+        nStop = pIndex->nHeight;
+    }
+
+    return std::make_pair(nStart, nStop);
+}
+
 bool getAddressFromIndex(const int &type, const uint256 &hash, std::string &address)
 {
     if (type == ADDR_INDT_SCRIPT_ADDRESS) {
@@ -1082,6 +1099,67 @@ UniValue getblockreward(const JSONRPCRequest& request)
     return rv;
 }
 
+UniValue getblocktimes(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 2)
+        throw std::runtime_error(
+            "getblocktimes from to\n"
+            "\nReturns the average, shortest and longest blocktimes in a given range.\n"
+            "\nArguments:\n"
+            "1. from              (numeric, required) The start block for the calculation.\n"
+            "2. to                (numeric, required) The end block for the calculation.\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"shortest\" : n,  (numberic) The shortest blocktime in the given range.\n"
+            "  \"longest\" : n,   (numberic) The longest blocktime in the given range.\n"
+            "  \"average\" : n,   (numeric) The average blocktime in the given range.\n"
+            "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getblocktimes", "10 100")
+            + HelpExampleRpc("getblocktimes", "50 100")
+        );
+
+    UniValue obj = UniValue(UniValue::VOBJ);
+
+    LOCK(cs_main);
+
+    auto range = GetBlockRange(request.params);
+
+    CBlockIndex *pIndex = NULL;
+    CBlockIndex *pLastIndex = NULL;
+    int64_t nBlockTime = 0;
+    int64_t nCount = 0;
+    int64_t nSum = 0;
+    int64_t nMinBlockTime = INT_MAX;
+    int64_t nMaxBlockTime = INT_MIN;
+
+    pIndex = chainActive[range.first];
+    pLastIndex = chainActive[range.first - 1 ];
+
+    if( pLastIndex && range.first < range.second){
+
+        while( pIndex && pIndex->nHeight != range.second ){
+
+            nBlockTime = pIndex->GetBlockTime() - pLastIndex->GetBlockTime();
+
+            ++nCount;
+            nSum += nBlockTime;
+
+            if( nBlockTime < nMinBlockTime ) nMinBlockTime = nBlockTime;
+            if( nBlockTime > nMaxBlockTime ) nMaxBlockTime = nBlockTime;
+
+            pLastIndex = pIndex;
+            pIndex = chainActive.Next(pIndex);
+        }
+
+        obj.pushKV("shortest", nMinBlockTime);
+        obj.pushKV("longest", nMaxBlockTime);
+        obj.pushKV("average", nSum / nCount);
+    }
+
+    return obj;
+}
+
 UniValue listcoldstakeunspent(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 3)
@@ -1250,11 +1328,13 @@ static const CRPCCommand commands[] =
     { "addressindex",       "getaddressbalance",      &getaddressbalance,      {"addresses"} },
 
     /* Blockchain */
-    { "blockchain",         "getspentinfo",           &getspentinfo,           {"inputs"} },
+    { "blockchain",         "getspentinfo",           &getspentinfo,            {"inputs"} },
     { "blockchain",         "getblockdeltas",         &getblockdeltas,          {} },
     { "blockchain",         "getblockhashes",         &getblockhashes,          {"high","low","options"} },
     { "blockchain",         "gettxoutsetinfobyscript",&gettxoutsetinfobyscript, {} },
-    { "blockchain",         "getblockreward",         &getblockreward,         {"height"} },
+    { "blockchain",         "getblockreward",         &getblockreward,          {"height"} },
+    { "blockchain",         "getblocktimes",          &getblocktimes,           {"min", "low"} },
+
 
     { "csindex",            "listcoldstakeunspent",   &listcoldstakeunspent,   {"stakeaddress","height","options"} },
 };

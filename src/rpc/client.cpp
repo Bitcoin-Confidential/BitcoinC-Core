@@ -171,6 +171,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "listcoldstakeunspent", 1, "height"},
     { "listcoldstakeunspent", 2, "options"},
     { "getblockreward", 0, "height"},
+    { "getblocktimes", 0, "from"},
+    { "getblocktimes", 1, "to"},
     { "bumpfee", 1, "options" },
 
 
