@@ -139,7 +139,7 @@ static void convertSmartCashAddressToBitcoinConfidential(std::string& privateKey
 	if (DecodeBase58CheckSmartCash(privateKey.c_str(), decodedSmartCashAddress))
 	{
 //		decodedSmartCashAddress[0]='';
-/*Mainnet*/ if (decodedSmartCashAddress[0]==(unsigned char)191) {decodedSmartCashAddress[0]=(unsigned char)28;}
+/*Mainnet*/ if (decodedSmartCashAddress[0]==(unsigned char)191) {decodedSmartCashAddress[0]=(unsigned char)75;}
 /*Testnet*/ else if (decodedSmartCashAddress[0]==(unsigned char)193) {decodedSmartCashAddress[0]=(unsigned char)46;}		
 
 		    privateKey = EncodeBase58Check(decodedSmartCashAddress);
