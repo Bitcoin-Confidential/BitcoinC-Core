@@ -27,10 +27,9 @@ private:
     unsigned int nSize;
 
 public:
-    CMedianFilter(unsigned int _size, T initial_value) : nSize(_size)
+    CMedianFilter(unsigned int _size) : nSize(_size)
     {
         vValues.reserve(_size);
-        vValues.push_back(initial_value);
         vSorted = vValues;
     }
     
@@ -38,11 +37,10 @@ public:
     {
     }
     
-    void set(unsigned int size, T initial_value)
+    void set(unsigned int size)
     {
         nSize = size;
         vValues.reserve(nSize);
-        vValues.push_back(initial_value);
         vSorted = vValues;
     }
 
