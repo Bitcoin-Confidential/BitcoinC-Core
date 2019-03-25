@@ -29,7 +29,10 @@
 #include "../crypto/sph_types.h"
 #include "../crypto/sph_keccak.h"
 
-#define WELCOME_MESSAGE "\nWelcome to Bitcoin Confidential. You can start staking funds right now or you can convert funds to be spendable from the staking tab.\n\nYour Bitcoin Confidential private key is:\n\n"
+#define WELCOME_MESSAGE "\nWelcome to Bitcoin Confidential. "\
+                        "You can start staking funds right now or you can convert funds to be spendable from the staking tab.\n\n"\
+                        "Your Bitcoin Confidential private key: %s\n"\
+                        "Your Bitcoin Confidential address: %s"
 
 int64_t static DecodeDumpTime(const std::string &str) {
     static const boost::posix_time::ptime epoch = boost::posix_time::from_time_t(0);
@@ -103,52 +106,8 @@ static void RescanWallet(CWallet& wallet, const WalletRescanReserver& reserver, 
     }
 }
 
-static bool DecodeBase58CheckSmartCash(const char* psz, std::vector<unsigned char>& vchRet)
-{
-    if (!DecodeBase58(psz, vchRet) ||
-        (vchRet.size() < 4)) {
-        vchRet.clear();
-        return false;
-    }
-    // re-calculate the checksum, insure it matches the included 4-byte checksum
-    uint256 hash = HashKeccak(vchRet.begin(), vchRet.end() - 4);
-    if (memcmp(&hash, &vchRet.end()[-4], 4) != 0) {
-        vchRet.clear();
-        return false;
-    }
-    vchRet.resize(vchRet.size() - 4);
-    return true;
-}
-
-static void convertSmartCashAddressToBitcoinConfidential(std::string& privateKey)
-{
-	std::vector<unsigned char> decodedSmartCashAddress;
-
-	if (DecodeBase58CheckSmartCash(privateKey.c_str(), decodedSmartCashAddress))
-	{
-//		decodedSmartCashAddress[0]='';
-/*Mainnet*/ if (decodedSmartCashAddress[0]==(unsigned char)191) {decodedSmartCashAddress[0]=(unsigned char)75;}
-/*Testnet*/ else if (decodedSmartCashAddress[0]==(unsigned char)193) {decodedSmartCashAddress[0]=(unsigned char)46;}		
-
-		    privateKey = EncodeBase58Check(decodedSmartCashAddress);
-	}
-}
-
 UniValue importprivkey(const JSONRPCRequest& request)
 {
-	bool isSmartCashKey = false;
-	std::string privateKey;
-	
-	std::string strSecret = request.params[0].get_str();
-
-	//Check if it's an SmartCash address
-	if (strSecret[0]=='V')
-	{
-		convertSmartCashAddressToBitcoinConfidential(strSecret);
-		privateKey = strSecret;
-		isSmartCashKey = true;
- 	}
-	
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
@@ -179,7 +138,9 @@ UniValue importprivkey(const JSONRPCRequest& request)
             + HelpExampleRpc("importprivkey", "\"mykey\", \"testing\", false")
         );
 
-
+    CSmartCashSecret scSecret;
+    CBitcoinSecret bcSecret;
+    CBitcoinAddress bcAddress;
     WalletRescanReserver reserver(pwallet);
     bool fRescan = true;
     {
@@ -203,7 +164,21 @@ UniValue importprivkey(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_WALLET_ERROR, "Wallet is currently rescanning. Abort existing rescan or wait.");
         }
 
-        CKey key = DecodeSecret(strSecret);
+        CKey key;
+        std::string strSecret = request.params[0].get_str();
+
+        //Check if it's an SmartCash private key
+        scSecret.SetString(strSecret);
+
+        if( scSecret.IsValid() ){
+            key = scSecret.GetKey();
+        }else{
+            key = DecodeSecret(strSecret);
+        }
+
+        bcSecret.SetKey(key);
+        bcAddress.Set(key.GetPubKey().GetID());
+
         if (!key.IsValid()) throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid private key encoding");
 
         CPubKey pubkey = key.GetPubKey();
@@ -235,14 +210,12 @@ UniValue importprivkey(const JSONRPCRequest& request)
         RescanWallet(*pwallet, reserver);
     }
 
-	if (isSmartCashKey)
-	{
-		std::ostringstream oss;
-		oss << WELCOME_MESSAGE << privateKey;
-		return oss.str(); 
+    // If its a SmartCash private key print a welcome message
+    if( scSecret.IsValid() ){
+        return strprintf(WELCOME_MESSAGE, bcSecret.ToString(), bcAddress.ToString());
 	}
 
-    return NullUniValue;
+    return bcAddress.ToString();
 }
 
 UniValue abortrescan(const JSONRPCRequest& request)
