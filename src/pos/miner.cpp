@@ -128,93 +128,132 @@ bool CheckStake(CBlock *pblock)
     return true;
 };
 
-bool ImportOutputs(CBlockTemplate *pblocktemplate, int nHeight)
+bool ImportAirdropOutputs(CBlockTemplate *pblocktemplate, int nHeight, bool fGenerateHashFile)
 {
-    LogPrint(BCLog::POS, "%s, nHeight %d\n", __func__, nHeight);
-
     CBlock *pblock = &pblocktemplate->block;
+
     if (pblock->vtx.size() < 1)
         return error("%s: Malformed block.", __func__);
+    CMutableTransaction txn;
 
-    fs::path fPath = GetDataDir() / "genesisOutputs.txt";
+    fs::path fPath = GetDataDir() / "airdrop.txt";
+    fs::path fPathOut = GetDataDir() / strprintf("airdrop_hashes_%d.txt", nHeight);
 
     if (!fs::exists(fPath))
-        return error("%s: File not found 'genesisOutputs.txt'.", __func__);
+        return error("%s: File not found 'airdrop.txt'.", __func__);
 
-    const int nMaxOutputsPerTxn = 80;
+    const int nMaxOutputsPerTxn = 1000;
+    const int nMaxTxnPerBlock = 60;
+
     FILE *fp;
     errno = 0;
     if (!(fp = fopen(fPath.string().c_str(), "rb")))
         return error("%s - Can't open file, strerror: %s.", __func__, strerror(errno));
 
-    CMutableTransaction txn;
-    txn.nVersion = BITCOINC_TXN_VERSION;
-    txn.SetType(TXN_COINBASE);
-    txn.nLockTime = 0;
-    txn.vin.push_back(CTxIn()); // null prevout
+    char *pRead;
+    int nOutput = 0;
 
-    // scriptsig len must be > 2
-    const char *s = "import";
-    txn.vin[0].scriptSig = CScript() << std::vector<unsigned char>((const unsigned char*)s, (const unsigned char*)s + strlen(s));
+    while( pblock->vtx.size() < nMaxTxnPerBlock ){
 
-    int nOutput = 0, nAdded = 0;
-    char cLine[512];
-    char *pAddress, *pAmount;
+        LogPrint(BCLog::POS, "%s, nHeight %d\n", __func__, nHeight);
 
-    while (fgets(cLine, 512, fp))
-    {
-        cLine[511] = '\0'; // safety
-        size_t len = strlen(cLine);
-        while (isspace(cLine[len-1]) && len>0)
-            cLine[len-1] = '\0', len--;
+        txn = CMutableTransaction();
+        txn.nVersion = BITCOINC_TXN_VERSION;
+        txn.SetType(TXN_COINBASE);
+        txn.nLockTime = 0;
+        txn.vin.push_back(CTxIn()); // null prevout
 
-        if (!(pAddress = strtok(cLine, ","))
-            || !(pAmount = strtok(nullptr, ",")))
-            continue;
+        // scriptsig len must be > 2
+        const char *s = "smartcash_airdrop";
+        txn.vin[0].scriptSig = CScript() << std::vector<unsigned char>((const unsigned char*)s, (const unsigned char*)s + strlen(s));
 
-        nOutput++;
-        if (nOutput <= nMaxOutputsPerTxn * (nHeight-1))
-            continue;
+        int nAdded = 0;
+        char cLine[512];
+        char *pAddress, *pAmount;
 
-        uint64_t amount;
-        if (!ParseUInt64(std::string(pAmount), &amount) || !MoneyRange(amount))
+        while ( (pRead = fgets(cLine, 512, fp)) )
         {
-            LogPrintf("Warning: %s - Skipping invalid amount: %s, %s\n", __func__, pAmount, strerror(errno));
-            continue;
+            cLine[511] = '\0'; // safety
+            size_t len = strlen(cLine);
+            while (isspace(cLine[len-1]) && len>0)
+                cLine[len-1] = '\0', len--;
+
+            if (!(pAddress = strtok(cLine, ","))
+                || !(pAmount = strtok(nullptr, ",")))
+                continue;
+
+            nOutput++;
+            if (nOutput <= nMaxOutputsPerTxn * (nHeight-1))
+                continue;
+
+            uint64_t amount;
+            if (!ParseUInt64(std::string(pAmount), &amount) || !MoneyRange(amount))
+            {
+                LogPrint(BCLog::POS, "Warning: %s - Skipping invalid amount: %s, %s\n", __func__, pAmount, strerror(errno));
+                continue;
+            };
+
+            std::string addrStr(pAddress);
+            CSmartCashAddress addr(addrStr);
+
+            CTxDestination dest = addr.Get();
+            CScript script;
+
+            if (!addr.IsValid())
+            {
+                LogPrint(BCLog::POS, "Warning: %s - Skipping invalid address: %s\n", __func__, pAddress);
+                continue;
+            };
+
+            if( dest.type() == typeid(CKeyID) ){
+                script = CScript() << OP_DUP << OP_HASH160 << ToByteVector(boost::get<CKeyID>(dest)) << OP_EQUALVERIFY << OP_CHECKSIG;
+            }else if( dest.type() == typeid(CScriptID) ){
+                script = CScript() << OP_HASH160 << ToByteVector(boost::get<CScriptID>(dest)) << OP_EQUAL;
+            }else{
+                LogPrint(BCLog::POS, "Warning: %s - Skipping invalid address type: %s\n", __func__, pAddress);
+                continue;
+            }
+
+            OUTPUT_PTR<CTxOutStandard> txout = MAKE_OUTPUT<CTxOutStandard>();
+            txout->nValue = amount;
+            txout->scriptPubKey = script;
+            txn.vpout.push_back(txout);
+
+            nAdded++;
+            if (nAdded >= nMaxOutputsPerTxn)
+                break;
         };
 
-        std::string addrStr(pAddress);
-        CBitcoinAddress addr(addrStr);
-
-        CKeyID id;
-        if (!addr.IsValid()
-            || !addr.GetKeyID(id))
-        {
-            LogPrintf("Warning: %s - Skipping invalid address: %s\n", __func__, pAddress);
-            continue;
-        };
-
-        CScript script = CScript() << OP_DUP << OP_HASH160 << ToByteVector(id) << OP_EQUALVERIFY << OP_CHECKSIG;
-        OUTPUT_PTR<CTxOutStandard> txout = MAKE_OUTPUT<CTxOutStandard>();
-        txout->nValue = amount;
-        txout->scriptPubKey = script;
-        txn.vpout.push_back(txout);
-
-        nAdded++;
-        if (nAdded >= nMaxOutputsPerTxn)
+        if( txn.vpout.size() ){
+            LogPrint(BCLog::POS, "%s - Add tx: %s\n", __func__, txn.GetHash().ToString());
+            pblock->vtx.insert(pblock->vtx.begin()+1, MakeTransactionRef(txn));
+        }else{
             break;
-    };
+        }
+    }
 
     fclose(fp);
 
-    uint256 hash = txn.GetHash();
-    if (!Params().CheckImportCoinbase(nHeight, hash))
-        return error("%s - Incorrect outputs hash.", __func__);
+    if( fGenerateHashFile ){
+        LogPrintf("%s - Generated transactions: %d\n", __func__, pblock->vtx.size());
 
-    pblock->vtx.insert(pblock->vtx.begin()+1, MakeTransactionRef(txn));
+        if( pblock->vtx.size() ){
 
-    return true;
-};
+            if (!(fp = fopen(fPathOut.string().c_str(), "w"))){
+                return error("%s - Can't create file, strerror: %s.", __func__, strerror(errno));
+            }
+
+            for( int i=1; i<pblock->vtx.size(); i++ ){
+                std::string strOut = strprintf("vImportedCoinbaseTxns.push_back(CImportedCoinbaseTxn(%d,  uint256S(\"%s\")));\n", nHeight, pblock->vtx[i].get()->GetHash().ToString());
+                fwrite(strOut.c_str(), 1, strOut.length(), fp);
+            }
+
+            fclose(fp);
+        }
+    }
+
+    return fGenerateHashFile ? txn.vpout.size() > 0 : true;
+}
 
 void StartThreadStakeMiner()
 {
@@ -437,7 +476,7 @@ void ThreadStakeMiner(size_t nThreadID, std::vector<std::shared_ptr<CWallet>> &v
                 };
 
                 if (nBestHeight+1 <= nLastImportHeight
-                    && !ImportOutputs(pblocktemplate.get(), nBestHeight+1))
+                    && !ImportAirdropOutputs(pblocktemplate.get(), nBestHeight+1, false))
                 {
                     fIsStaking = false;
                     nWaitFor = std::min(nWaitFor, (size_t)30000);
@@ -476,3 +515,18 @@ void ThreadStakeMiner(size_t nThreadID, std::vector<std::shared_ptr<CWallet>> &v
     };
 };
 
+
+void GenerateAirdropHashes()
+{
+    int nHeight = 1;
+
+    CScript coinbaseScript;
+    CBlockTemplate pblocktemplate;
+    pblocktemplate.block.vtx.resize(1);
+
+    while( ImportAirdropOutputs(&pblocktemplate, nHeight, true) ){
+        LogPrintf("Generated block %d with %d transactions", nHeight++, pblocktemplate.block.vtx.size());
+        pblocktemplate.block.vtx.clear();
+        pblocktemplate.block.vtx.resize(1);
+    }
+}

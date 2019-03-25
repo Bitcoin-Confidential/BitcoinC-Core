@@ -53,21 +53,31 @@ int64_t CChainParams::GetProofOfStakeReward(const CBlockIndex *pindexPrev, int64
     return nSubsidy + nFees;
 };
 
-bool CChainParams::CheckImportCoinbase(int nHeight, uint256 &hash) const
+bool CChainParams::CheckAirdropCoinbase( const CBlock *pblock, int nHeight) const
 {
+
+    int nExpected = 0, nFound = 0;
     for (auto &cth : Params().vImportedCoinbaseTxns)
     {
         if (cth.nHeight != (uint32_t)nHeight)
             continue;
 
-        if (hash == cth.hash)
-            return true;
-        return error("%s - Hash mismatch at height %d: %s, expect %s.", __func__, nHeight, hash.ToString(), cth.hash.ToString());
-    };
+        ++nExpected;
 
-    return error("%s - Unknown height.", __func__);
-};
+        bool fTxFound = false;
+        for( int i=0;i<pblock->vtx.size(); i++){
+            if( pblock->vtx[i].get()->GetHash() == cth.hash && pblock->vtx[i].get()->IsCoinBase() ){
+                ++nFound;
+                fTxFound = true;
+            }
+        }
 
+        if (!fTxFound)
+            return error("%s - Airdrop tx missing at height %d: expect tx %s.", __func__, nHeight, cth.hash.ToString());
+    }
+
+    return nFound == nExpected;
+}
 
 const DevFundSettings *CChainParams::GetDevFundSettings(int64_t nTime) const
 {

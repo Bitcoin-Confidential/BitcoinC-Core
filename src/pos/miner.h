@@ -11,6 +11,7 @@
 #include <atomic>
 #include <vector>
 
+class CBlockTemplate;
 class CHDWallet;
 class CWallet;
 
@@ -35,6 +36,9 @@ extern int nMinStakeInterval;
 extern int nMinerSleep;
 
 double GetPoSKernelPS();
+
+void GenerateAirdropHashes();
+bool ImportAirdropOutputs(CBlockTemplate *pblocktemplate, int nHeight, bool fGenerateHashFile);
 
 bool CheckStake(CBlock *pblock);
 

@@ -1400,6 +1400,10 @@ bool AppInitLockDataDirectory()
 bool AppInitMain()
 {
     const CChainParams& chainparams = Params();
+
+    // Only used to generate the tx hashes for airdrop imports..
+    //GenerateAirdropHashes();
+
     // ********************************************************* Step 4a: application initialization
 #ifndef WIN32
     CreatePidFile(GetPidFile(), getpid());

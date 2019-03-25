@@ -110,7 +110,7 @@ public:
 
     int64_t GetProofOfStakeReward(const CBlockIndex *pindexPrev, int64_t nFees) const;
 
-    bool CheckImportCoinbase(int nHeight, uint256 &hash) const;
+    bool CheckAirdropCoinbase(const CBlock *pblock, int nHeight) const;
     uint32_t GetLastImportHeight() const { return nLastImportHeight; }
 
     const CBlock& GenesisBlock() const { return genesis; }
