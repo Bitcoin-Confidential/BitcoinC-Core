@@ -191,12 +191,8 @@ const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]
 
 //Testnet
 const std::pair<const char*, CAmount> genesisOutputsTestnet[] = {
-    //Dev address pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc
-    std::make_pair("296507bd43339b6ebe8610b48e27a7c7bf5d0dfa",100000 * COIN),
-    //Staking test pqjn7jnXdMfov8JkYaF6yEMyM8nP95LQVy
-    std::make_pair("e4c40e40a13e0d412d43ccf3a9116cd9c4e9862e",100000 * COIN),
-    //Airdrop funds address poqqqpYTrfr3ZgzZ7iSeUBJ14G8Bpj45Mv
-    std::make_pair("cff968e962da8b81727ae0c20ecc0b1f6a9a92e0",7367509500 * COIN),
+    //Staking test 1 pqjn7jnXdMfov8JkYaF6yEMyM8nP95LQVy
+    std::make_pair("e4c40e40a13e0d412d43ccf3a9116cd9c4e9862e",1000 * COIN),
 };
 
 const size_t nGenesisOutputsTestnet = sizeof(genesisOutputsTestnet) / sizeof(genesisOutputsTestnet[0]);
@@ -559,17 +555,16 @@ public:
         nTargetSpacing = 30;           // 30 seconds was 120 seconds
         nTargetTimespan = 24 * 60;      // 24 mins
 
-
         AddImportHashesTest(vImportedCoinbaseTxns);
+
         SetLastImportHeight();
 
         nPruneAfterHeight = 1000;
 
-
-        genesis = CreateGenesisBlockTestNet(1553292952, 11161, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1553477363, 228596, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-/* //added-->
+
 
            bool fNegative;
            bool fOverflow;
@@ -577,7 +572,7 @@ public:
 
            bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
                  for(int count = 1; count < 100000000000; count++){
-                    genesis = CreateGenesisBlockTestNet(1553292952, count, 0x1f00ffff);
+                    genesis = CreateGenesisBlockTestNet(1553477363, count, 0x1f00ffff);
    // default
                     if (UintToArith256(genesis.GetHash()) <= bnTarget){
                        printf("testnet genesis.nNonce = %d\n", count);
@@ -589,11 +584,11 @@ public:
                     if( count % 1000000 == 0 )
                      printf("count = %d\n", count);
                     }
-  ///<--added*/
 
-        assert(consensus.hashGenesisBlock == uint256S("0000e132f253ff106c326b393bdb192ca62f3f82e7121cac8a58ee1913e4b6a7"));
-        assert(genesis.hashMerkleRoot == uint256S("0x96e75dd08f4f0ea8d144b5f50f59d50156715d4402ff2c2ca02b5427abda91a9"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x135567593136757f573dbbd13ff425b7bf6b0758b273698af1fc026f2cd11696"));
+
+        assert(genesis.hashMerkleRoot == uint256S("0x1e14e7c9129894990dfbc1186d417b942a15f21f5df34bd427d0df3cfb4d3113"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0xb52c7733c105ad905317d0b19b484aa94f8a80266cafc4a35452c018ceb0fcba"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000ea3ef21fde63ca41f1d73884902adc735b37021c6bd96fb6dc18166cbd51"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
