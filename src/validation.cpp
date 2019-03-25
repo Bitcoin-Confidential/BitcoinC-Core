@@ -2550,7 +2550,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         // * legacy (always)
         // * p2sh (when P2SH enabled in flags and excludes coinbase)
         // * witness (when witness enabled in flags and excludes coinbase)
-        nSigOpsCost += GetTransactionSigOpCost(tx, view, flags);
+        // Dont count sigops for airdrop transactions
+        if( i == 0 || ( i > 0 && !tx.IsCoinBase() ))
+            nSigOpsCost += GetTransactionSigOpCost(tx, view, flags);
+
         if (nSigOpsCost > MAX_BLOCK_SIGOPS_COST) {
             control.Wait();
             return state.DoS(100, error("ConnectBlock(): too many sigops"),
@@ -4074,10 +4077,10 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-missing", false, "first tx is not coinbase");
         }
 
-        // 2nd txn may never be coinstake, remaining txns must not be coinbase/stake
+        // remaining txns must not be coinstake
         for (size_t i = 1; i < block.vtx.size(); i++) {
-            if ((i > 1 && block.vtx[i]->IsCoinBase()) || block.vtx[i]->IsCoinStake()) {
-                return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "more than one coinbase or coinstake");
+            if (block.vtx[i]->IsCoinStake()) {
+                return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "more than one coinstake");
             }
         }
 
@@ -4103,9 +4106,13 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     }
 
     unsigned int nSigOps = 0;
-    for (const auto& tx : block.vtx)
+    for (size_t i = 0; i < block.vtx.size(); i++)
     {
-        nSigOps += GetLegacySigOpCount(*tx);
+        // Allow more sigops for the airdop transactions
+        if( i>0 && block.vtx[i]->IsCoinBase() ){
+            continue;
+        }
+        nSigOps += GetLegacySigOpCount(*block.vtx[i]);
     }
     if (nSigOps * WITNESS_SCALE_FACTOR > MAX_BLOCK_SIGOPS_COST)
         return state.DoS(100, false, REJECT_INVALID, "bad-blk-sigops", false, "out-of-bounds SigOpCount");
@@ -4419,20 +4426,16 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
         if (nHeight > 0 // skip genesis
             && Params().GetLastImportHeight() >= (uint32_t)nHeight)
         {
-            // 2nd txn must be coinbase
-            if (block.vtx.size() < 2 || !block.vtx[1]->IsCoinBase())
-                return state.DoS(100, false, REJECT_INVALID, "bad-cb", false, "Second txn of import block must be coinbase");
-
-            // Check hash of genesis import txn matches expected hash.
-            uint256 txnHash = block.vtx[1]->GetHash();
-            if (!Params().CheckImportCoinbase(nHeight, txnHash))
-                return state.DoS(100, false, REJECT_INVALID, "bad-cb", false, "Incorrect outputs hash.");
+            // Check hash of airdrop import txn matches expected hash.
+            if (!Params().CheckAirdropCoinbase(&block, nHeight))
+                return state.DoS(100, false, REJECT_INVALID, "bad-cb", false, "Invalid airdrop data");
         } else
         {
-            // 2nd txn can't be coinbase if block height > GetLastImportHeight
-            if (block.vtx.size() > 1 && block.vtx[1]->IsCoinBase())
+            for( int i = 1; i<block.vtx.size(); i++){
+                if( block.vtx[i]->IsCoinBase() )
                 return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "unexpected coinbase");
-        };
+            }
+        }
     } else
     {
         if (nHeight >= consensusParams.BIP34Height)
