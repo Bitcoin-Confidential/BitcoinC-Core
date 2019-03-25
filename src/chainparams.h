@@ -85,6 +85,9 @@ public:
         PUBKEY_ADDRESS_256,
         SCRIPT_ADDRESS_256,
         STAKE_ONLY_PKADDR,
+        SC_PUBKEY_ADDRESS,
+        SC_SCRIPT_ADDRESS,
+        SC_SECRET_KEY,
         MAX_BASE58_TYPES
     };
 

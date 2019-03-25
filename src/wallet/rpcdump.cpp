@@ -103,18 +103,6 @@ static void RescanWallet(CWallet& wallet, const WalletRescanReserver& reserver, 
     }
 }
 
-template<typename T1>
-inline uint256 HashKeccak(const T1 pbegin, const T1 pend)
-{        {
-    sph_keccak256_context ctx_keccak;
-    static unsigned char pblank[1];
-    uint256 hash;
-    sph_keccak256_init(&ctx_keccak);
-    sph_keccak256 (&ctx_keccak, (pbegin == pend ? pblank : static_cast<const void*>(&pbegin[0])), (pend - pbegin) * sizeof(pbegin[0]));
-    sph_keccak256_close(&ctx_keccak, static_cast<void*>(&hash));
-    return hash;
-}        }
-
 static bool DecodeBase58CheckSmartCash(const char* psz, std::vector<unsigned char>& vchRet)
 {
     if (!DecodeBase58(psz, vchRet) ||

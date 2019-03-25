@@ -161,3 +161,44 @@ bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRe
     return DecodeBase58Check(str.c_str(), vchRet);
 }
 
+std::string EncodeBase58_SC(const std::vector<unsigned char>& vch)
+{
+    return EncodeBase58_SC(vch.data(), vch.data() + vch.size());
+}
+
+bool DecodeBase58_SC(const std::string& str, std::vector<unsigned char>& vchRet)
+{
+    return DecodeBase58_SC(str.c_str(), vchRet);
+}
+
+std::string EncodeBase58Check_SC(const std::vector<unsigned char>& vchIn)
+{
+    // add 4-byte hash check to the end
+    std::vector<unsigned char> vch(vchIn);
+    uint256 hash = HashKeccak(vch.begin(), vch.end());
+    vch.insert(vch.end(), (unsigned char*)&hash, (unsigned char*)&hash + 4);
+    return EncodeBase58_SC(vch);
+}
+
+bool DecodeBase58Check_SC(const char* psz, std::vector<unsigned char>& vchRet)
+{
+    if (!DecodeBase58(psz, vchRet) ||
+        (vchRet.size() < 4)) {
+        vchRet.clear();
+        return false;
+    }
+    // re-calculate the checksum, ensure it matches the included 4-byte checksum
+    uint256 hash = HashKeccak(vchRet.begin(), vchRet.end() - 4);
+    if (memcmp(&hash, &vchRet[vchRet.size() - 4], 4) != 0) {
+        vchRet.clear();
+        return false;
+    }
+    vchRet.resize(vchRet.size() - 4);
+    return true;
+}
+
+bool DecodeBase58Check_SC(const std::string& str, std::vector<unsigned char>& vchRet)
+{
+    return DecodeBase58Check_SC(str.c_str(), vchRet);
+}
+

@@ -437,6 +437,10 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY_BTC] = {0x04, 0x88, 0xB2, 0x1E}; // xpub
         base58Prefixes[EXT_SECRET_KEY_BTC] = {0x04, 0x88, 0xAD, 0xE4}; // xprv
 
+        base58Prefixes[SC_PUBKEY_ADDRESS]     = {0x3F};
+        base58Prefixes[SC_SCRIPT_ADDRESS]     = {0x12};
+        base58Prefixes[SC_SECRET_KEY]         = {0xBF};
+
         bech32Prefixes[PUBKEY_ADDRESS].assign       ("bh","bh"+2);
         bech32Prefixes[SCRIPT_ADDRESS].assign       ("br","br"+2);
         bech32Prefixes[PUBKEY_ADDRESS_256].assign   ("bl","bl"+2);
@@ -604,6 +608,10 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY_BTC] = {0x04, 0x35, 0x87, 0xCF}; // tpub
         base58Prefixes[EXT_SECRET_KEY_BTC] = {0x04, 0x35, 0x83, 0x94}; // tprv
 
+        base58Prefixes[SC_PUBKEY_ADDRESS]     = {0x3F};
+        base58Prefixes[SC_SCRIPT_ADDRESS]     = {0x12};
+        base58Prefixes[SC_SECRET_KEY]         = {0xBF};
+
         bech32Prefixes[PUBKEY_ADDRESS].assign       ("tph","tph"+3);
         bech32Prefixes[SCRIPT_ADDRESS].assign       ("tpr","tpr"+3);
         bech32Prefixes[PUBKEY_ADDRESS_256].assign   ("tpl","tpl"+3);
@@ -739,6 +747,10 @@ public:
         base58Prefixes[EXT_ACC_HASH]       = {0x53}; // a
         base58Prefixes[EXT_PUBLIC_KEY_BTC] = {0x04, 0x35, 0x87, 0xCF}; // tpub
         base58Prefixes[EXT_SECRET_KEY_BTC] = {0x04, 0x35, 0x83, 0x94}; // tprv
+
+        base58Prefixes[SC_PUBKEY_ADDRESS]     = {0x3F};
+        base58Prefixes[SC_SCRIPT_ADDRESS]     = {0x12};
+        base58Prefixes[SC_SECRET_KEY]         = {0xBF};
 
         bech32Prefixes[PUBKEY_ADDRESS].assign       ("tph","tph"+3);
         bech32Prefixes[SCRIPT_ADDRESS].assign       ("tpr","tpr"+3);

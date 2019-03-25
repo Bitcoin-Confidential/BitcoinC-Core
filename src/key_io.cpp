@@ -801,6 +801,172 @@ bool CBitcoinSecret::SetString(const std::string& strSecret)
     return SetString(strSecret.c_str());
 }
 
+
+CBase58Data_SC::CBase58Data_SC()
+{
+    vchVersion.clear();
+    vchData.clear();
+}
+
+void CBase58Data_SC::SetData(const std::vector<unsigned char>& vchVersionIn, const void* pdata, size_t nSize)
+{
+    vchVersion = vchVersionIn;
+    vchData.resize(nSize);
+    if (!vchData.empty())
+        memcpy(&vchData[0], pdata, nSize);
+}
+
+void CBase58Data_SC::SetData(const std::vector<unsigned char>& vchVersionIn, const unsigned char* pbegin, const unsigned char* pend)
+{
+    SetData(vchVersionIn, (void*)pbegin, pend - pbegin);
+}
+
+bool CBase58Data_SC::SetString(const char* psz, unsigned int nVersionBytes)
+{
+    std::vector<unsigned char> vchTemp;
+    bool rc58 = DecodeBase58Check_SC(psz, vchTemp);
+    if ((!rc58) || (vchTemp.size() < nVersionBytes)) {
+        vchData.clear();
+        vchVersion.clear();
+        return false;
+    }
+    vchVersion.assign(vchTemp.begin(), vchTemp.begin() + nVersionBytes);
+    vchData.resize(vchTemp.size() - nVersionBytes);
+    if (!vchData.empty())
+        memcpy(&vchData[0], &vchTemp[nVersionBytes], vchData.size());
+    memory_cleanse(&vchTemp[0], vchTemp.size());
+    return true;
+}
+
+bool CBase58Data_SC::SetString(const std::string& str)
+{
+    return SetString(str.c_str());
+}
+
+std::string CBase58Data_SC::ToString() const
+{
+    std::vector<unsigned char> vch = vchVersion;
+    vch.insert(vch.end(), vchData.begin(), vchData.end());
+    return EncodeBase58Check_SC(vch);
+}
+
+int CBase58Data_SC::CompareTo(const CBase58Data_SC& b58) const
+{
+    if (vchVersion < b58.vchVersion)
+        return -1;
+    if (vchVersion > b58.vchVersion)
+        return 1;
+    if (vchData < b58.vchData)
+        return -1;
+    if (vchData > b58.vchData)
+        return 1;
+    return 0;
+}
+
+bool CSmartCashAddress::Set(const CKeyID& id)
+{
+    SetData(Params().Base58Prefix(CChainParams::SC_PUBKEY_ADDRESS), &id, 20);
+    return true;
+}
+
+bool CSmartCashAddress::Set(const CScriptID& id)
+{
+    SetData(Params().Base58Prefix(CChainParams::SC_SCRIPT_ADDRESS), &id, 20);
+    return true;
+}
+
+bool CSmartCashAddress::IsValid() const
+{
+    return IsValid(Params());
+}
+
+bool CSmartCashAddress::IsValid(const CChainParams& params) const
+{
+    bool fCorrectSize = vchData.size() == 20;
+    bool fKnownVersion = vchVersion == params.Base58Prefix(CChainParams::SC_PUBKEY_ADDRESS) ||
+                         vchVersion == params.Base58Prefix(CChainParams::SC_SCRIPT_ADDRESS);
+    return fCorrectSize && fKnownVersion;
+}
+
+CTxDestination CSmartCashAddress::Get() const
+{
+    if (!IsValid())
+        return CNoDestination();
+    uint160 id;
+    memcpy(&id, &vchData[0], 20);
+    if (vchVersion == Params().Base58Prefix(CChainParams::SC_PUBKEY_ADDRESS))
+        return CKeyID(id);
+    else if (vchVersion == Params().Base58Prefix(CChainParams::SC_SCRIPT_ADDRESS))
+        return CScriptID(id);
+    else
+        return CNoDestination();
+}
+
+bool CSmartCashAddress::GetIndexKey(uint160& hashBytes, int& type) const
+{
+    if (!IsValid()) {
+        return false;
+    } else if (vchVersion == Params().Base58Prefix(CChainParams::SC_PUBKEY_ADDRESS)) {
+        memcpy(&hashBytes, &vchData[0], 20);
+        type = 1;
+        return true;
+    } else if (vchVersion == Params().Base58Prefix(CChainParams::SC_SCRIPT_ADDRESS)) {
+        memcpy(&hashBytes, &vchData[0], 20);
+        type = 2;
+        return true;
+    }
+
+    return false;
+}
+
+bool CSmartCashAddress::GetKeyID(CKeyID& keyID) const
+{
+    if (!IsValid() || vchVersion != Params().Base58Prefix(CChainParams::SC_PUBKEY_ADDRESS))
+        return false;
+    uint160 id;
+    memcpy(&id, &vchData[0], 20);
+    keyID = CKeyID(id);
+    return true;
+}
+
+bool CSmartCashAddress::IsScript() const
+{
+    return IsValid() && vchVersion == Params().Base58Prefix(CChainParams::SC_SCRIPT_ADDRESS);
+}
+
+void CSmartCashSecret::SetKey(const CKey& vchSecret)
+{
+    assert(vchSecret.IsValid());
+    SetData(Params().Base58Prefix(CChainParams::SC_SECRET_KEY), vchSecret.begin(), vchSecret.size());
+    if (vchSecret.IsCompressed())
+        vchData.push_back(1);
+}
+
+CKey CSmartCashSecret::GetKey()
+{
+    CKey ret;
+    assert(vchData.size() >= 32);
+    ret.Set(vchData.begin(), vchData.begin() + 32, vchData.size() > 32 && vchData[32] == 1);
+    return ret;
+}
+
+bool CSmartCashSecret::IsValid() const
+{
+    bool fExpectedFormat = vchData.size() == 32 || (vchData.size() == 33 && vchData[32] == 1);
+    bool fCorrectVersion = vchVersion == Params().Base58Prefix(CChainParams::SC_SECRET_KEY);
+    return fExpectedFormat && fCorrectVersion;
+}
+
+bool CSmartCashSecret::SetString(const char* pszSecret)
+{
+    return CBase58Data_SC::SetString(pszSecret) && IsValid();
+}
+
+bool CSmartCashSecret::SetString(const std::string& strSecret)
+{
+    return SetString(strSecret.c_str());
+}
+
 int CExtKey58::Set58(const char *base58)
 {
     std::vector<uint8_t> vchBytes;
