@@ -410,7 +410,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Amount staking</string>
+               <string>Available for staking</string>
               </property>
              </widget>
             </item>
