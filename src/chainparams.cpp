@@ -510,7 +510,7 @@ public:
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.OpIsCoinstakeTime = 0;
-        consensus.fAllowOpIsCoinstakeWithP2PKH = true; // TODO: clear for next testnet
+        consensus.fAllowOpIsCoinstakeWithP2PKH = false;
         consensus.nPaidSmsgTime = 0;
         consensus.csp2shHeight = 0x7FFFFFFF;
 
