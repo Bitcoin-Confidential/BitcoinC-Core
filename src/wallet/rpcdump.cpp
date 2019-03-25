@@ -32,7 +32,8 @@
 #define WELCOME_MESSAGE "\nWelcome to Bitcoin Confidential. "\
                         "You can start staking funds right now or you can convert funds to be spendable from the staking tab.\n\n"\
                         "Your Bitcoin Confidential private key: %s\n"\
-                        "Your Bitcoin Confidential address: %s"
+                        "Your Bitcoin Confidential address: %s\n\n"\
+                        "This address contains: %f BC"
 
 int64_t static DecodeDumpTime(const std::string &str) {
     static const boost::posix_time::ptime epoch = boost::posix_time::from_time_t(0);
@@ -141,6 +142,8 @@ UniValue importprivkey(const JSONRPCRequest& request)
     CSmartCashSecret scSecret;
     CBitcoinSecret bcSecret;
     CBitcoinAddress bcAddress;
+    CAmount nAirdropAmount = 0;
+
     WalletRescanReserver reserver(pwallet);
     bool fRescan = true;
     {
@@ -172,14 +175,57 @@ UniValue importprivkey(const JSONRPCRequest& request)
 
         if( scSecret.IsValid() ){
             key = scSecret.GetKey();
+
+            for( uint32_t nHeight=1; nHeight<=Params().GetLastImportHeight(); nHeight++){
+
+                if (chainActive.Height() < static_cast<int>(nHeight))
+                    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
+
+                CBlock block;
+                CBlockIndex* pblockindex = chainActive[nHeight];
+
+                if (fHavePruned && !(pblockindex->nStatus & BLOCK_HAVE_DATA) && pblockindex->nTx > 0)
+                    throw JSONRPCError(RPC_INTERNAL_ERROR, "Block not available (pruned data)");
+
+                if(!ReadBlockFromDisk(block, pblockindex, Params().GetConsensus()))
+                    throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read block from disk");
+
+                for( size_t i=1; i<block.vtx.size(); i++){
+
+                    for( size_t k=0; k<block.vtx[i]->vpout.size(); k++ ){
+
+                        const CTxOutBaseRef &txoutRef = block.vtx[i]->vpout[k];
+                        CScript outScript;
+                        txoutRef->GetScriptPubKey(outScript);
+
+                        CTxDestination outDest;
+                        if(ExtractDestination(outScript, outDest) &&
+                            outDest.type() == typeid(CKeyID) &&
+                            boost::get<CKeyID>(outDest) == key.GetPubKey().GetID()){
+                            nAirdropAmount = txoutRef->GetValue();
+                            LogPrintf("importprivkey - SmartCash Airdrop found %f BC", ValueFromAmount(txoutRef->GetValue()).get_real());
+                            break;
+                        }
+                    }
+
+                    if( nAirdropAmount ){
+                        break;
+                    }
+                }
+
+            }
+
+            if( !nAirdropAmount )
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Sorry, this SmartCash address is not included in the airdrop.");
+
         }else{
             key = DecodeSecret(strSecret);
         }
 
+        if (!key.IsValid()) throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid private key encoding");
+
         bcSecret.SetKey(key);
         bcAddress.Set(key.GetPubKey().GetID());
-
-        if (!key.IsValid()) throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid private key encoding");
 
         CPubKey pubkey = key.GetPubKey();
         assert(key.VerifyPubKey(pubkey));
@@ -193,7 +239,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
 
             // Don't throw error in case a key is already there
             if (pwallet->HaveKey(vchAddress)) {
-                return NullUniValue;
+                return "Key is already available in this wallet";
             }
 
             // whenever a key is imported, we need to scan the whole chain
@@ -212,7 +258,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
 
     // If its a SmartCash private key print a welcome message
     if( scSecret.IsValid() ){
-        return strprintf(WELCOME_MESSAGE, bcSecret.ToString(), bcAddress.ToString());
+        return strprintf(WELCOME_MESSAGE, bcSecret.ToString(), bcAddress.ToString(), ValueFromAmount(nAirdropAmount).get_real());
 	}
 
     return bcAddress.ToString();
