@@ -69,9 +69,15 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     strHTML += "<html><font face='verdana, arial, helvetica, sans-serif'>";
 
     int64_t nTime = wtx.time;
-    CAmount nCredit = wtx.credit;
-    CAmount nDebit = wtx.debit;
-    CAmount nNet = nCredit - nDebit;
+    CAmount nCredit = 0;
+    CAmount nDebit = 0;
+    CAmount nNet = 0;
+
+    if( wtx.tx ){
+        nCredit = wtx.credit;
+        nDebit = wtx.debit;
+        nNet = nCredit - nDebit;
+    }
 
     strHTML += "<b>" + tr("Status") + ":</b> " + FormatTxStatus(wtx, status, inMempool, numBlocks, adjustedTime);
     strHTML += "<br>";
