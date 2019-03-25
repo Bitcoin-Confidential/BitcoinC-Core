@@ -42,6 +42,21 @@
 
 extern CAmount AmountFromValue(const UniValue& value);
 
+void AddThousandsSpaces(QString &input)
+{
+    QChar thin_sp(THIN_SP_CP);
+
+    int seperatorIdx = input.indexOf('.');
+    if( seperatorIdx == -1){
+        seperatorIdx = input.indexOf(',');
+    }
+
+    int q_size = seperatorIdx != -1 ? seperatorIdx : input.size();
+
+    for (int i = 3; i < q_size; i += 3)
+        input.insert(q_size - i, thin_sp);
+}
+
 void StakingStatusUpdate(QLabel *label, bool fEnabled, bool fActive)
 {
     QString strColor, strText;
@@ -188,7 +203,9 @@ void StakingDialog::updateStakingUI()
         }
 
         if (rv["netstakeweight"].isNum()) {
-            ui->lblStakingNetWeight->setText(BitcoinUnits::format(BitcoinUnits::BTC, rv["netstakeweight"].get_real() * COIN));
+            QString strNetWeight = QString("%1").arg(static_cast<int64_t>(rv["netstakeweight"].get_real()));
+            AddThousandsSpaces(strNetWeight);
+            ui->lblStakingNetWeight->setText(strNetWeight);
         }
 
         // Local info
