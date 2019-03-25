@@ -87,24 +87,6 @@ QFont fixedPitchFont()
 #endif
 }
 
-// Just some dummy data to generate a convincing random-looking (but consistent) address
-static const uint8_t dummydata[] = {0xeb,0x15,0x23,0x1d,0xfc,0xeb,0x60,0x92,0x58,0x86,0xb6,0x7d,0x06,0x52,0x99,0x92,0x59,0x15,0xae,0xb1,0x72,0xc0,0x66,0x47};
-
-// Generate a dummy address with invalid CRC, starting with the network prefix.
-static std::string DummyAddress(const CChainParams &params)
-{
-    std::vector<unsigned char> sourcedata = params.Base58Prefix(CChainParams::PUBKEY_ADDRESS);
-    sourcedata.insert(sourcedata.end(), dummydata, dummydata + sizeof(dummydata));
-    for(int i=0; i<256; ++i) { // Try every trailing byte
-        std::string s = EncodeBase58(sourcedata.data(), sourcedata.data() + sourcedata.size());
-        if (!IsValidDestinationString(s)) {
-            return s;
-        }
-        sourcedata[sourcedata.size()-1] += 1;
-    }
-    return "";
-}
-
 void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool allow_stakeonly)
 {
     parent->setFocusProxy(widget);
@@ -112,8 +94,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool allow_
     widget->setFont(fixedPitchFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter Stealth address").arg(
-        QString::fromStdString(DummyAddress(Params()))));
+    widget->setPlaceholderText(QObject::tr("Enter Stealth address"));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, allow_stakeonly));
 }
@@ -125,8 +106,7 @@ void setupColdStakeAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bo
     widget->setFont(fixedPitchFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter Stake address of remote node").arg(
-        QString::fromStdString(DummyAddress(Params()))));
+    widget->setPlaceholderText(QObject::tr("Enter Stake address of remote node"));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, allow_stakeonly));
 }
