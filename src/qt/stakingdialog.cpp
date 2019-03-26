@@ -202,7 +202,7 @@ void StakingDialog::updateStakingUI()
 
         if (rv["difficulty"].isNum()) {
             double dDiff = rv["difficulty"].get_real();
-            std::string strFormat = dDiff > 1 ? dDiff > 100000 ? "%0.00f" : "%0.04f" : "%0.08";
+            std::string strFormat = dDiff > 1 ? dDiff > 100000 ? "%.00f" : "%.04f" : "%.08f";
             QString strDiff = QString::fromStdString(strprintf(strFormat, dDiff));
             AddThousandsSpaces(strDiff);
             ui->lblStakingDiff->setText(strDiff);
@@ -211,7 +211,7 @@ void StakingDialog::updateStakingUI()
         if (rv["netstakeweight"].isNum()) {
 
             double dNetWeight = rv["netstakeweight"].get_real();
-            std::string strFormat = dNetWeight > 1 ? dNetWeight > 1000000 ? "%0.00f" : "%0.04f" : "%0.08";
+            std::string strFormat = dNetWeight > 1 ? dNetWeight > 1000000 ? "%0.00f" : "%0.04f" : "%0.08f";
             QString strNetWeight = QString::fromStdString(strprintf(strFormat, dNetWeight));
             AddThousandsSpaces(strNetWeight);
             ui->lblStakingNetWeight->setText(strNetWeight);
