@@ -201,20 +201,6 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
     ui->labelLockedStaking->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0);
 }
 
-/*
-void OverviewPage::setReservedBalance(CAmount reservedBalance)
-{
-    if (!walletModel || !walletModel->getOptionsModel())
-        return;
-
-    int unit = walletModel->getOptionsModel()->getDisplayUnit();
-    m_reservedBalance = reservedBalance;
-    ui->labelReservedText->setVisible(m_reservedBalance);
-    ui->labelReserved->setVisible(m_reservedBalance);
-    ui->labelReserved->setText(BitcoinUnits::formatWithUnit(unit, m_reservedBalance, false, BitcoinUnits::separatorAlways));
-};
-*/
-
 // show/hide watch-only labels
 void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
 {
@@ -268,9 +254,6 @@ void OverviewPage::setWalletModel(WalletModel *model)
         setBalance(balances);
         connect(model, SIGNAL(balanceChanged(interfaces::WalletBalances)), this, SLOT(setBalance(interfaces::WalletBalances)));
 
-        connect(model, SIGNAL(notifyReservedBalanceChanged(CAmount)), this, SLOT(setReservedBalance(CAmount)));
-        setReservedBalance(wallet.getReserveBalance());
-
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
 
         bool fHaveWatchOnly = balances.balanceWatchSpending || balances.balanceWatchSpendingUnconf || balances.balanceWatchSpendingLocked ||
@@ -291,7 +274,6 @@ void OverviewPage::updateDisplayUnit()
         if (m_balances.balanceSpending != -1) {
             setBalance(m_balances);
         }
-        setReservedBalance(m_reservedBalance);
 
         // Update txdelegate->unit with the current unit
         txdelegate->unit = walletModel->getOptionsModel()->getDisplayUnit();
