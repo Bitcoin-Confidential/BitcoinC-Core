@@ -725,10 +725,16 @@ void SendCoinsDialog::setBalance(const interfaces::WalletBalances& balances)
 {
     if(model && model->getOptionsModel())
     {
-        QString sBalance = BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), balances.balanceStaking) + " Staking";
+        CAmount nBalance;
 
-        if (balances.balanceSpending > 0)
-            sBalance += "\n" + BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), balances.balanceSpending) + " Spending";
+        if( GetCoinControlFlag() == CoinControlDialog::SPENDING || GetCoinControlFlag() == CoinControlDialog::CONVERT_TO_STAKING ){
+            nBalance = balances.balanceSpending;
+        }else{
+            nBalance = balances.balanceStaking;
+        }
+
+        QString sBalance = BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), nBalance);
+
         ui->labelBalance->setText(sBalance);
     }
 }
@@ -977,6 +983,11 @@ void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
     }
 
     updateTabsAndLabels();
+
+    if( model ){
+        interfaces::WalletBalances balances = model->wallet().getBalances();
+        setBalance(balances);
+    }
 }
 
 // Coin Control: copy label "Quantity" to clipboard
