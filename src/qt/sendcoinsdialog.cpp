@@ -565,18 +565,18 @@ void SendCoinsDialog::clear()
     }
 
     updateTabsAndLabels();
+
+    on_addButton_clicked();
 }
 
 void SendCoinsDialog::reject()
 {
     clear();
-    addEntry();
 }
 
 void SendCoinsDialog::accept()
 {
     clear();
-    addEntry();
 }
 
 SendCoinsEntry *SendCoinsDialog::addEntry()
@@ -970,17 +970,6 @@ void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
     clear();
 
     nMode = nNewMode;
-
-    switch(nNewMode){
-    case CoinControlDialog::CONVERT_TO_SPENDING:
-    case CoinControlDialog::CONVERT_TO_STAKING:
-    case CoinControlDialog::SPENDING:
-        addEntry();
-        break;
-    case CoinControlDialog::CONVERT_TO_COLD_STAKE:
-        addEntryCS();
-        break;
-    }
 
     updateTabsAndLabels();
 
