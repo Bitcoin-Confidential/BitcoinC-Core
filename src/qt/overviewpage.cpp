@@ -201,6 +201,7 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
     ui->labelLockedStaking->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0);
 }
 
+/*
 void OverviewPage::setReservedBalance(CAmount reservedBalance)
 {
     if (!walletModel || !walletModel->getOptionsModel())
@@ -212,6 +213,7 @@ void OverviewPage::setReservedBalance(CAmount reservedBalance)
     ui->labelReserved->setVisible(m_reservedBalance);
     ui->labelReserved->setText(BitcoinUnits::formatWithUnit(unit, m_reservedBalance, false, BitcoinUnits::separatorAlways));
 };
+*/
 
 // show/hide watch-only labels
 void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)

@@ -324,14 +324,6 @@
                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
               </property>
              </widget>
-            </item>
-            <item row="12" column="0">
-             <widget class="QLabel" name="labelReservedText">
-              <property name="text">
-               <string>Reserved:</string>
-              </property>
-             </widget>
-            </item>
             <item row="10" column="2">
              <widget class="QLabel" name="labelWatchStaking">
               <property name="font">
