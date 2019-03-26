@@ -2500,33 +2500,34 @@ bool CHDWallet::GetBalances(CHDWalletBalances &bal)
     for (const auto &item : mapWallet) {
         const CWalletTx &wtx = item.second;
 
-        bal.nPartImmature += wtx.GetImmatureCredit();
-
         int depth;
         if (wtx.IsCoinStake()
             && (depth = wtx.GetDepthInMainChainCached()) > 0 // checks for hashunset
             && wtx.GetBlocksToMaturity(&depth) > 0) {
             CAmount nSpendable, nWatchOnly;
             CHDWallet::GetCredit(*wtx.tx, nSpendable, nWatchOnly);
-            bal.nPartStaked += nSpendable;
-            bal.nPartWatchOnlyStaked += nWatchOnly;
+            bal.nStakingLocked += nSpendable;
+            bal.nStakingWatchOnlyLocked += nWatchOnly;
         }
 
         if (wtx.IsTrusted()) {
-            bal.nPart += wtx.GetAvailableCredit();
-            bal.nPartWatchOnly += wtx.GetAvailableCredit(true, ISMINE_WATCH_ONLY);
+            bal.nStaking += wtx.GetAvailableCredit();
+            bal.nStakingWatchOnly += wtx.GetAvailableCredit(true, ISMINE_WATCH_ONLY);
         } else {
             if (wtx.GetDepthInMainChain() == 0 && wtx.InMempool()) {
-                bal.nPartUnconf += wtx.GetAvailableCredit();
-                bal.nPartWatchOnlyUnconf += wtx.GetAvailableCredit(true, ISMINE_WATCH_ONLY);
+                bal.nStakingUnconf += wtx.GetAvailableCredit();
+                bal.nStakingWatchOnly += wtx.GetAvailableCredit(true, ISMINE_WATCH_ONLY);
             }
         }
     }
+
+    int nMinRctConf = Params().GetConsensus().nMinRCTOutputDepth;
 
     for (const auto &ri : mapRecords) {
         const auto &txhash = ri.first;
         const auto &rtx = ri.second;
 
+        int depth = GetDepthInMainChain(rtx.blockHash, rtx.nIndex);
         bool fTrusted = IsTrusted(txhash, rtx.blockHash);
         bool fInMempool = false;
         if (!fTrusted) {
@@ -2543,31 +2544,29 @@ bool CHDWallet::GetBalances(CHDWalletBalances &bal)
                 case OUTPUT_RINGCT:
                     if (!(r.nFlags & ORF_OWNED))
                         continue;
-                    if (fTrusted)
-                        bal.nAnon += r.nValue;
+                    if (fTrusted){
+
+                        if( depth > nMinRctConf ){
+                            bal.nSpending += r.nValue;
+                        }else{
+                            bal.nSpendingLocked += r.nValue;
+                        }
+                    }
                     else if (fInMempool)
-                        bal.nAnonUnconf += r.nValue;
-                    break;
-                case OUTPUT_CT:
-                    if (!(r.nFlags & ORF_OWNED))
-                        continue;
-                    if (fTrusted)
-                        bal.nBlind += r.nValue;
-                    else if (fInMempool)
-                        bal.nBlindUnconf += r.nValue;
+                        bal.nSpendingUnconf += r.nValue;
                     break;
                 case OUTPUT_STANDARD:
                     if (r.nFlags & ORF_OWNED) {
                         if (fTrusted)
-                            bal.nPart += r.nValue;
+                            bal.nStaking += r.nValue;
                         else if (fInMempool)
-                            bal.nPartUnconf += r.nValue;
+                            bal.nStakingUnconf += r.nValue;
                     } else
                     if (r.nFlags & ORF_OWN_WATCH) {
                         if (fTrusted)
-                            bal.nPartWatchOnly += r.nValue;
+                            bal.nStakingWatchOnly += r.nValue;
                         else if (fInMempool)
-                            bal.nPartWatchOnlyUnconf += r.nValue;
+                            bal.nStakingWatchOnlyUnconf += r.nValue;
                     }
                     break;
                 default:

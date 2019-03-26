@@ -119,7 +119,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 {
     ui->setupUi(this);
 
-    m_balances.balance = -1;
+    m_balances.balanceSpending = -1;
 
     // use a SingleColorIcon for the "out of sync warning" icon
     QIcon icon = platformStyle->SingleColorIcon(":/icons/warning");
@@ -161,31 +161,44 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
 {
     int unit = walletModel->getOptionsModel()->getDisplayUnit();
     m_balances = balances;
-    ui->labelBalance->setText(BitcoinUnits::formatWithUnit(unit, balances.balance, false, BitcoinUnits::separatorAlways));
-    ui->labelUnconfirmed->setText(BitcoinUnits::formatWithUnit(unit, balances.unconfirmed_balance, false, BitcoinUnits::separatorAlways));
-    ui->labelImmature->setText(BitcoinUnits::formatWithUnit(unit, balances.immature_balance, false, BitcoinUnits::separatorAlways));
-    ui->labelTotal->setText(BitcoinUnits::formatWithUnit(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance
-        + balances.balanceStaked + balances.balanceBlind + balances.balanceAnon , false, BitcoinUnits::separatorAlways));
-    ui->labelWatchAvailable->setText(BitcoinUnits::formatWithUnit(unit, balances.watch_only_balance, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchPending->setText(BitcoinUnits::formatWithUnit(unit, balances.unconfirmed_watch_only_balance, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchImmature->setText(BitcoinUnits::formatWithUnit(unit, balances.immature_watch_only_balance, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchTotal->setText(BitcoinUnits::formatWithUnit(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance
-        + balances.balanceWatchStaked, false, BitcoinUnits::separatorAlways));
 
-    ui->labelStaked->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStaked, false, BitcoinUnits::separatorAlways));
-    ui->labelAnonBalance->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceAnon, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchStaked->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStaked, false, BitcoinUnits::separatorAlways));
+    // Owned balances
+    ui->labelSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending, false, BitcoinUnits::separatorAlways));
+    ui->labelUnconfirmedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpendingUnconf, false, BitcoinUnits::separatorAlways));
+    ui->labelLockedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpendingLocked, false, BitcoinUnits::separatorAlways));
 
+    ui->labelStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStaking, false, BitcoinUnits::separatorAlways));
+    ui->labelUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingUnconf, false, BitcoinUnits::separatorAlways));
+    ui->labelLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingLocked, false, BitcoinUnits::separatorAlways));
 
-    // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
-    // for the non-mining users
-    bool showImmature = balances.immature_balance != 0;
-    bool showWatchOnlyImmature = balances.immature_watch_only_balance != 0;
+    ui->labelTotal->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending + balances.balanceSpendingUnconf + balances.balanceSpendingLocked
+        + balances.balanceStaking + balances.balanceStakingUnconf + balances.balanceStakingLocked , false, BitcoinUnits::separatorAlways));
 
-    // for symmetry reasons also show immature label when the watch-only one is shown
-    ui->labelImmature->setVisible(showImmature || showWatchOnlyImmature);
-    ui->labelImmatureText->setVisible(showImmature || showWatchOnlyImmature);
-    ui->labelWatchImmature->setVisible(showWatchOnlyImmature); // show watch-only immature balance
+    // Watch balances
+    ui->labelWatchSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpending, false, BitcoinUnits::separatorAlways));
+    ui->labelWatchUnconfirmedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingUnconf, false, BitcoinUnits::separatorAlways));
+    ui->labelWatchLockedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingLocked, false, BitcoinUnits::separatorAlways));
+
+    ui->labelWatchStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStaking, false, BitcoinUnits::separatorAlways));
+    ui->labelWatchUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingUnconf, false, BitcoinUnits::separatorAlways));
+    ui->labelWatchLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
+
+    ui->labelWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
+          balances.balanceWatchSpending + balances.balanceWatchSpendingUnconf + balances.balanceWatchSpendingLocked
+        + balances.balanceWatchStaking + balances.balanceWatchStakingUnconf + balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
+
+    // Show pending on if there is something pending
+    ui->labelUnconfirmedSpendingText->setVisible(balances.balanceSpendingUnconf > 0 || balances.balanceWatchSpendingUnconf > 0);
+    ui->labelUnconfirmedSpending->setVisible(balances.balanceSpendingUnconf > 0 || balances.balanceWatchSpendingUnconf > 0);
+
+    ui->labelLockedSpendingText->setVisible(balances.balanceSpendingLocked > 0 || balances.balanceWatchSpendingLocked > 0);
+    ui->labelLockedSpending->setVisible(balances.balanceSpendingLocked > 0 || balances.balanceWatchSpendingLocked > 0);
+
+    ui->labelUnconfirmedStakingText->setVisible(balances.balanceStakingUnconf > 0 || balances.balanceWatchStakingUnconf > 0);
+    ui->labelUnconfirmedStaking->setVisible(balances.balanceStakingUnconf > 0 || balances.balanceWatchStakingUnconf > 0);
+
+    ui->labelLockedStakingText->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0);
+    ui->labelLockedStaking->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0);
 }
 
 void OverviewPage::setReservedBalance(CAmount reservedBalance)
@@ -205,14 +218,18 @@ void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
 {
     ui->labelSpendable->setVisible(showWatchOnly);      // show spendable label (only when watch-only is active)
     ui->labelWatchonly->setVisible(showWatchOnly);      // show watch-only label
-    ui->lineWatchBalance->setVisible(showWatchOnly);    // show watch-only balance separator line
-    ui->labelWatchAvailable->setVisible(showWatchOnly); // show watch-only available balance
-    ui->labelWatchPending->setVisible(showWatchOnly);   // show watch-only pending balance
-    ui->labelWatchStaked->setVisible(showWatchOnly);    // show watch-only staked balance
-    ui->labelWatchTotal->setVisible(showWatchOnly);     // show watch-only total balance
 
-    if (!showWatchOnly)
-        ui->labelWatchImmature->hide();
+    ui->lineWatchBalance->setVisible(showWatchOnly);    // show watch-only balance separator line
+
+    ui->labelWatchSpending->setVisible(showWatchOnly); // show watch-only available balance
+    ui->labelWatchUnconfirmedSpending->setVisible(showWatchOnly); // show watch-only available balance
+    ui->labelWatchLockedSpending->setVisible(showWatchOnly);   // show watch-only pending balance
+
+    ui->labelWatchStaking->setVisible(showWatchOnly); // show watch-only available balance
+    ui->labelWatchUnconfirmedStaking->setVisible(showWatchOnly); // show watch-only available balance
+    ui->labelWatchLockedStaking->setVisible(showWatchOnly);   // show watch-only pending balance
+
+    ui->labelWatchTotal->setVisible(showWatchOnly);     // show watch-only total balance
 }
 
 void OverviewPage::setClientModel(ClientModel *model)
@@ -254,7 +271,9 @@ void OverviewPage::setWalletModel(WalletModel *model)
 
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
 
-        bool fHaveWatchOnly = balances.watch_only_balance || balances.unconfirmed_watch_only_balance || balances.balanceWatchStaked;
+        bool fHaveWatchOnly = balances.balanceWatchSpending || balances.balanceWatchSpendingUnconf || balances.balanceWatchSpendingLocked ||
+                              balances.balanceWatchStaking || balances.balanceWatchStakingUnconf || balances.balanceWatchStakingLocked;
+
         updateWatchOnlyLabels(wallet.haveWatchOnly() || fHaveWatchOnly);
         connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
     }
@@ -267,7 +286,7 @@ void OverviewPage::updateDisplayUnit()
 {
     if(walletModel && walletModel->getOptionsModel())
     {
-        if (m_balances.balance != -1) {
+        if (m_balances.balanceSpending != -1) {
             setBalance(m_balances);
         }
         setReservedBalance(m_reservedBalance);

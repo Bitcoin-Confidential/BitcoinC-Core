@@ -326,34 +326,38 @@ class CHDWalletBalances
 public:
     void Clear()
     {
-        nPart = 0;
-        nPartUnconf = 0;
-        nPartStaked = 0;
-        nPartImmature = 0;
-        nPartWatchOnly = 0;
-        nPartWatchOnlyUnconf = 0;
-        nPartWatchOnlyStaked = 0;
+        nStaking = 0;
+        nStakingUnconf = 0;
+        nStakingLocked = 0;
 
-        nBlind = 0;
-        nBlindUnconf = 0;
+        nStakingWatchOnly = 0;
+        nStakingWatchOnlyUnconf = 0;
+        nStakingWatchOnlyLocked = 0;
 
-        nAnon = 0;
-        nAnonUnconf = 0;
-    };
+        nSpending = 0;
+        nSpendingUnconf = 0;
+        nSpendingLocked = 0;
 
-    CAmount nPart = 0;
-    CAmount nPartUnconf = 0;
-    CAmount nPartStaked = 0;
-    CAmount nPartImmature = 0;
-    CAmount nPartWatchOnly = 0;
-    CAmount nPartWatchOnlyUnconf = 0;
-    CAmount nPartWatchOnlyStaked = 0;
+        nSpendingWatchOnly = 0;
+        nSpendingWatchOnlyUnconf = 0;
+        nSpendingWatchOnlyLocked = 0;
+    }
 
-    CAmount nBlind = 0;
-    CAmount nBlindUnconf = 0;
+    CAmount nStaking = 0;
+    CAmount nStakingUnconf = 0;
+    CAmount nStakingLocked = 0;
 
-    CAmount nAnon = 0;
-    CAmount nAnonUnconf = 0;
+    CAmount nStakingWatchOnly = 0;
+    CAmount nStakingWatchOnlyUnconf = 0;
+    CAmount nStakingWatchOnlyLocked = 0;
+
+    CAmount nSpending = 0;
+    CAmount nSpendingUnconf = 0;
+    CAmount nSpendingLocked = 0;
+
+    CAmount nSpendingWatchOnly = 0;
+    CAmount nSpendingWatchOnlyUnconf = 0;
+    CAmount nSpendingWatchOnlyLocked = 0;
 };
 
 class CHDWallet : public CWallet

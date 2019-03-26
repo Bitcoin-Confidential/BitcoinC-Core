@@ -3590,36 +3590,44 @@ static UniValue getwalletinfo(const JSONRPCRequest& request)
         CHDWalletBalances bal;
         ((CHDWallet*)pwallet)->GetBalances(bal);
 
-        obj.pushKV("total_balance",         ValueFromAmount(
-            bal.nPart + bal.nPartUnconf + bal.nPartStaked + bal.nPartImmature
-            + bal.nBlind + bal.nBlindUnconf
-            + bal.nAnon + bal.nAnonUnconf));
+        obj.pushKV("balance_total", ValueFromAmount(
+              bal.nStaking + bal.nStakingUnconf + bal.nStakingLocked
+            + bal.nSpending + bal.nSpendingUnconf + bal.nSpendingLocked));
 
-        obj.pushKV("balance",               ValueFromAmount(bal.nPart));
+        UniValue balSpending(UniValue::VOBJ), balStaking(UniValue::VOBJ);
 
-        obj.pushKV("blind_balance",         ValueFromAmount(bal.nBlind));
-        obj.pushKV("anon_balance",          ValueFromAmount(bal.nAnon));
-        obj.pushKV("staked_balance",        ValueFromAmount(bal.nPartStaked));
+        balSpending.pushKV("unconfirmed",  ValueFromAmount(bal.nSpendingUnconf));
+        balSpending.pushKV("locked",       ValueFromAmount(bal.nSpendingLocked));
+        balSpending.pushKV("available",    ValueFromAmount(bal.nSpending));
 
-        obj.pushKV("unconfirmed_balance",   ValueFromAmount(bal.nPartUnconf));
-        obj.pushKV("unconfirmed_blind",     ValueFromAmount(bal.nBlindUnconf));
-        obj.pushKV("unconfirmed_anon",      ValueFromAmount(bal.nAnonUnconf));
-        obj.pushKV("immature_balance",      ValueFromAmount(bal.nPartImmature));
+        balStaking.pushKV("unconfirmed",  ValueFromAmount(bal.nStakingUnconf));
+        balStaking.pushKV("locked",       ValueFromAmount(bal.nStakingLocked));
+        balStaking.pushKV("available",    ValueFromAmount(bal.nStaking));
 
-        if (bal.nPartWatchOnly > 0 || bal.nPartWatchOnlyUnconf > 0 || bal.nPartWatchOnlyStaked > 0)
+        obj.pushKV("balance_spending", balSpending);
+        obj.pushKV("balance_staking",  balStaking);
+
+        if (bal.nStakingWatchOnly > 0 || bal.nStakingWatchOnlyUnconf > 0 || bal.nStakingWatchOnlyLocked > 0 ||
+            bal.nSpendingWatchOnly > 0 || bal.nSpendingWatchOnlyUnconf > 0 || bal.nSpendingWatchOnlyLocked > 0)
         {
-            obj.pushKV("watchonly_balance",                 ValueFromAmount(bal.nPartWatchOnly));
-            obj.pushKV("watchonly_staked_balance",          ValueFromAmount(bal.nPartWatchOnlyStaked));
-            obj.pushKV("watchonly_unconfirmed_balance",     ValueFromAmount(bal.nPartWatchOnlyUnconf));
+            obj.pushKV("watchonly_balance_spending",      ValueFromAmount(bal.nStakingWatchOnly));
+            obj.pushKV("watchonly_unconfirmed_spending",  ValueFromAmount(bal.nStakingWatchOnlyUnconf));
+            obj.pushKV("watchonly_locked_spending",       ValueFromAmount(bal.nStakingWatchOnlyLocked));
+
+            obj.pushKV("watchonly_balance_spending",      ValueFromAmount(bal.nSpendingWatchOnly));
+            obj.pushKV("watchonly_unconfirmed_spending",  ValueFromAmount(bal.nSpendingWatchOnlyUnconf));
+            obj.pushKV("watchonly_locked_spending",       ValueFromAmount(bal.nSpendingWatchOnlyLocked));
+
             obj.pushKV("watchonly_total_balance",
-                ValueFromAmount(bal.nPartWatchOnly + bal.nPartWatchOnlyStaked + bal.nPartWatchOnlyUnconf));
-        };
+                ValueFromAmount(bal.nStakingWatchOnly + bal.nStakingWatchOnlyUnconf + bal.nStakingWatchOnlyLocked +
+                                bal.nSpendingWatchOnly + bal.nSpendingWatchOnlyUnconf + bal.nSpendingWatchOnlyLocked));
+        }
     } else
     {
         obj.pushKV("balance",       ValueFromAmount(pwallet->GetBalance()));
         obj.pushKV("unconfirmed_balance", ValueFromAmount(pwallet->GetUnconfirmedBalance()));
         obj.pushKV("immature_balance",    ValueFromAmount(pwallet->GetImmatureBalance()));
-    };
+    }
 
     int nTxCount = (int)pwallet->mapWallet.size() + (fBitcoinCWallet ? (int)((CHDWallet*)pwallet)->mapRecords.size() : 0);
 

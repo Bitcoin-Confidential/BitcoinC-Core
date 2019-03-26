@@ -113,7 +113,9 @@ void WalletModel::startRescan()
 void WalletModel::checkBalanceChanged(const interfaces::WalletBalances& new_balances)
 {
     if(new_balances.balanceChanged(m_cached_balances)) {
-        bool fHaveWatchOnlyCheck = new_balances.watch_only_balance || new_balances.unconfirmed_watch_only_balance || new_balances.balanceWatchStaked;
+        bool fHaveWatchOnlyCheck = new_balances.balanceWatchSpending || new_balances.balanceWatchSpendingUnconf || new_balances.balanceWatchSpendingLocked ||
+                                   new_balances.balanceWatchStaking || new_balances.balanceWatchStakingUnconf || new_balances.balanceWatchStakingLocked;
+
         if (fHaveWatchOnlyCheck != fHaveWatchOnly)
             updateWatchOnlyFlag(fHaveWatchOnlyCheck);
         m_cached_balances = new_balances;

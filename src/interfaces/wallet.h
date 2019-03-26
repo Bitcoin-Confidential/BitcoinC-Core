@@ -336,30 +336,41 @@ struct WalletAddress
 //! Collection of wallet balances.
 struct WalletBalances
 {
-    CAmount balance = 0;
-    CAmount unconfirmed_balance = 0;
-    CAmount immature_balance = 0;
     bool have_watch_only = false;
-    CAmount watch_only_balance = 0;
-    CAmount unconfirmed_watch_only_balance = 0;
-    CAmount immature_watch_only_balance = 0;
 
-    CAmount balanceStaked = 0;
-    CAmount balanceBlind = 0;
-    CAmount balanceAnon = 0;
-    CAmount balanceWatchStaked = 0;
+    CAmount balanceSpending = 0;
+    CAmount balanceSpendingUnconf = 0;
+    CAmount balanceSpendingLocked = 0;
+
+    CAmount balanceStaking = 0;
+    CAmount balanceStakingUnconf = 0;
+    CAmount balanceStakingLocked = 0;
+
+    CAmount balanceWatchSpending = 0;
+    CAmount balanceWatchSpendingUnconf = 0;
+    CAmount balanceWatchSpendingLocked = 0;
+
+    CAmount balanceWatchStaking = 0;
+    CAmount balanceWatchStakingUnconf = 0;
+    CAmount balanceWatchStakingLocked = 0;
 
     bool balanceChanged(const WalletBalances& prev) const
     {
-        return balance != prev.balance || unconfirmed_balance != prev.unconfirmed_balance ||
-               immature_balance != prev.immature_balance || watch_only_balance != prev.watch_only_balance ||
-               unconfirmed_watch_only_balance != prev.unconfirmed_watch_only_balance ||
-               immature_watch_only_balance != prev.immature_watch_only_balance
+        return balanceSpending != prev.balanceSpending ||
+               balanceSpendingUnconf != prev.balanceSpendingUnconf ||
+               balanceSpendingLocked != prev.balanceSpendingLocked ||
 
-               || balanceStaked != prev.balanceStaked
-               || balanceBlind != prev.balanceBlind
-               || balanceAnon != prev.balanceAnon
-               || balanceWatchStaked != prev.balanceWatchStaked;
+               balanceStaking != prev.balanceStaking ||
+               balanceStakingUnconf != prev.balanceStakingUnconf ||
+               balanceStakingLocked != prev.balanceStakingLocked ||
+
+               balanceWatchSpending != prev.balanceWatchSpending ||
+               balanceWatchSpendingUnconf != prev.balanceWatchSpendingUnconf ||
+               balanceWatchSpendingLocked != prev.balanceWatchSpendingLocked ||
+
+               balanceWatchStaking != prev.balanceWatchStaking ||
+               balanceWatchStakingUnconf != prev.balanceWatchStakingUnconf ||
+               balanceWatchStakingLocked != prev.balanceWatchStakingLocked;
     }
 };
 

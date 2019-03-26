@@ -464,32 +464,25 @@ public:
                 return result;
             }
 
-            result.balance = bal.nPart;
-            result.balanceStaked = bal.nPartStaked;
-            result.balanceBlind = bal.nBlind;
-            result.balanceAnon = bal.nAnon;
-            result.unconfirmed_balance = bal.nPartUnconf + bal.nBlindUnconf + bal.nAnonUnconf;
-            result.immature_balance = bal.nPartImmature;
-            result.have_watch_only = bal.nPartWatchOnly || bal.nPartWatchOnlyUnconf || bal.nPartWatchOnlyStaked;
+            result.balanceStaking = bal.nStaking;
+            result.balanceStakingUnconf = bal.nStakingUnconf;
+            result.balanceStakingLocked = bal.nStakingLocked;
+
+
+            result.balanceSpending = bal.nSpending;
+            result.balanceSpendingUnconf = bal.nSpendingUnconf;
+            result.balanceSpendingLocked = bal.nSpendingLocked;
+
+            result.have_watch_only = bal.nStakingWatchOnly || bal.nStakingWatchOnlyUnconf || bal.nStakingWatchOnlyLocked;
             if (result.have_watch_only) {
-                result.watch_only_balance = bal.nPartWatchOnly;
-                result.unconfirmed_watch_only_balance = bal.nPartWatchOnlyUnconf;
-                //result.immature_watch_only_balance = m_wallet.GetImmatureWatchOnlyBalance();
-                result.balanceWatchStaked = bal.nPartWatchOnlyStaked;
+                result.balanceWatchStaking = bal.nStakingWatchOnly;
+                result.balanceWatchStakingUnconf = bal.nStakingWatchOnlyUnconf;
+                result.balanceWatchStakingLocked = bal.nStakingWatchOnlyLocked;
             }
 
             return result;
         }
 
-        result.balance = m_wallet.GetBalance();
-        result.unconfirmed_balance = m_wallet.GetUnconfirmedBalance();
-        result.immature_balance = m_wallet.GetImmatureBalance();
-        result.have_watch_only = m_wallet.HaveWatchOnly();
-        if (result.have_watch_only) {
-            result.watch_only_balance = m_wallet.GetBalance(ISMINE_WATCH_ONLY);
-            result.unconfirmed_watch_only_balance = m_wallet.GetUnconfirmedWatchOnlyBalance();
-            result.immature_watch_only_balance = m_wallet.GetImmatureWatchOnlyBalance();
-        }
         return result;
     }
     bool tryGetBalances(WalletBalances& balances, bool skip_height_check, int cached_blocks, int& num_blocks) override
