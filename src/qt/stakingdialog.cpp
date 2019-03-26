@@ -128,7 +128,9 @@ void StakingDialog::updateStakingUI()
 
     ui->lblHotStakingReserve->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, model->wallet().getReserveBalance()));
 
-    ui->lblCurrentHeight->setText(QString::number(chainActive.Height()));
+    QString strHeight = QString::number(chainActive.Height());
+    AddThousandsSpaces(strHeight);
+    ui->lblCurrentHeight->setText(strHeight);
     ui->lblTotalSupply->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, chainActive.Tip()->nMoneySupply));
 
     UniValue rv;
@@ -199,11 +201,18 @@ void StakingDialog::updateStakingUI()
         }
 
         if (rv["difficulty"].isNum()) {
-            ui->lblStakingDiff->setText(QString::fromStdString(strprintf("%.08f", rv["difficulty"].get_real())));
+            double dDiff = rv["difficulty"].get_real();
+            std::string strFormat = dDiff > 1 ? dDiff > 100000 ? "%0.00f" : "%0.04f" : "%0.08";
+            QString strDiff = QString::fromStdString(strprintf(strFormat, dDiff));
+            AddThousandsSpaces(strDiff);
+            ui->lblStakingDiff->setText(strDiff);
         }
 
         if (rv["netstakeweight"].isNum()) {
-            QString strNetWeight = QString("%1").arg(static_cast<int64_t>(rv["netstakeweight"].get_real()));
+
+            double dNetWeight = rv["netstakeweight"].get_real();
+            std::string strFormat = dNetWeight > 1 ? dNetWeight > 1000000 ? "%0.00f" : "%0.04f" : "%0.08";
+            QString strNetWeight = QString::fromStdString(strprintf(strFormat, dNetWeight));
             AddThousandsSpaces(strNetWeight);
             ui->lblStakingNetWeight->setText(strNetWeight);
         }
@@ -223,7 +232,9 @@ void StakingDialog::updateStakingUI()
 
         if (rv["weight"].isNum()) {
             nWeight = rv["weight"].get_int64();
-            ui->lblHotStakingWalletWeight->setText(BitcoinUnits::format(BitcoinUnits::BTC, nWeight));
+            QString strWeight = QString("%1").arg(static_cast<int64_t>(nWeight));
+            AddThousandsSpaces(strWeight);
+            ui->lblHotStakingWalletWeight->setText(strWeight);
         }
 
         if ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) {
