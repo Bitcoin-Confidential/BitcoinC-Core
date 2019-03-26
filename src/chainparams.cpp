@@ -564,7 +564,7 @@ public:
         genesis = CreateGenesisBlockTestNet(1553477363, 228596, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-
+/*
 
            bool fNegative;
            bool fOverflow;
@@ -585,6 +585,7 @@ public:
                      printf("count = %d\n", count);
                     }
 
+*/
 
         assert(genesis.hashMerkleRoot == uint256S("0x1e14e7c9129894990dfbc1186d417b942a15f21f5df34bd427d0df3cfb4d3113"));
         assert(genesis.hashWitnessMerkleRoot == uint256S("0xb52c7733c105ad905317d0b19b484aa94f8a80266cafc4a35452c018ceb0fcba"));
