@@ -967,8 +967,6 @@ void SendCoinsDialog::updateSmartFeeLabel()
 
 void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
 {
-    clear();
-
     nMode = nNewMode;
 
     updateTabsAndLabels();
@@ -977,6 +975,8 @@ void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
         interfaces::WalletBalances balances = model->wallet().getBalances();
         setBalance(balances);
     }
+
+    clear();
 }
 
 // Coin Control: copy label "Quantity" to clipboard
