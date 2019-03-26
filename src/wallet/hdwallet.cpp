@@ -10728,7 +10728,7 @@ std::map<CTxDestination, std::vector<COutput>> CHDWallet::ListCoins() const
     std::map<CTxDestination, std::vector<COutput>> result;
     std::vector<COutput> availableCoins;
 
-    AvailableCoins(availableCoins);
+    AvailableCoins(availableCoins, true, nullptr, 1, MAX_MONEY, MAX_MONEY, 0, 0, 0x7FFFFFFF, true);
 
     for (auto& coin : availableCoins) {
         CTxDestination address;
@@ -10790,11 +10790,8 @@ std::map<CTxDestination, std::vector<COutputR>> CHDWallet::ListCoins(OutputTypes
 
     CCoinControl coinControl;
     coinControl.fAllowLocked = true;
-    if (nType == OUTPUT_CT) {
-        AvailableBlindedCoins(availableCoins, true, &coinControl);
-    } else
     if (nType == OUTPUT_RINGCT) {
-        AvailableAnonCoins(availableCoins, true, &coinControl);
+        AvailableAnonCoins(availableCoins, true, &coinControl, 1, MAX_MONEY, MAX_MONEY, 0, 0, 0x7FFFFFFF, true);
     }
 
     for (auto& coin : availableCoins) {

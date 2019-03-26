@@ -216,11 +216,19 @@ void CoinControlDialog::showMenu(const QPoint &point)
     {
         contextMenuItem = item;
 
+        bool fImmature = ControlModeToCbxType(mode) == OUTPUT_STANDARD &&
+                         item->data(COLUMN_CONFIRMATIONS, Qt::UserRole).toLongLong() <= COINBASE_MATURITY;
+
+        lockAction->setVisible(!fImmature);
+        unlockAction->setVisible(!fImmature);
+
         // disable some items (like Copy Transaction ID, lock, unlock) for tree roots in context menu
         if (item->text(COLUMN_TXHASH).length() == 64) // transaction hash is 64 characters (this means it is a child node, so it is not a parent node in tree mode)
         {
             copyTransactionHashAction->setEnabled(true);
-            if (model->wallet().isLockedCoin(COutPoint(uint256S(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt())))
+            if (( model->wallet().isLockedCoin(COutPoint(uint256S(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt())) ) ||
+                  ( ControlModeToCbxType(mode) == OUTPUT_RINGCT &&
+                  item->data(COLUMN_CONFIRMATIONS, Qt::UserRole).toLongLong() <= Params().GetConsensus().nMinRCTOutputDepth ) )
             {
                 lockAction->setEnabled(false);
                 unlockAction->setEnabled(true);
@@ -230,6 +238,7 @@ void CoinControlDialog::showMenu(const QPoint &point)
                 lockAction->setEnabled(true);
                 unlockAction->setEnabled(false);
             }
+
         }
         else // this means click on parent node in tree mode -> disable all
         {
@@ -746,6 +755,17 @@ void CoinControlDialog::updateView()
                 itemOutput->setDisabled(true);
                 itemOutput->setIcon(COLUMN_CHECKBOX, platformStyle->SingleColorIcon(":/icons/lock_closed"));
             };
+
+            if( ControlModeToCbxType(mode) == OUTPUT_STANDARD && out.depth_in_main_chain <= COINBASE_MATURITY){
+                coinControl(mode)->UnSelect(output); // just to be sure
+                itemOutput->setDisabled(true);
+            }
+
+            if( ControlModeToCbxType(mode) == OUTPUT_RINGCT && out.depth_in_main_chain <= Params().GetConsensus().nMinRCTOutputDepth){
+                coinControl(mode)->UnSelect(output); // just to be sure
+                itemOutput->setDisabled(true);
+                itemOutput->setIcon(COLUMN_CHECKBOX, platformStyle->SingleColorIcon(":/icons/lock_closed"));
+            }
 
             // set checkbox
             if (coinControl(mode)->IsSelected(output))
