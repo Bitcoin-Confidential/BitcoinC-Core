@@ -211,8 +211,7 @@ void StakingDialog::updateStakingUI()
         if (rv["netstakeweight"].isNum()) {
 
             double dNetWeight = rv["netstakeweight"].get_real();
-            std::string strFormat = dNetWeight > 1 ? dNetWeight > 1000000 ? "%0.00f" : "%0.04f" : "%0.08f";
-            QString strNetWeight = QString::fromStdString(strprintf(strFormat, dNetWeight));
+            QString strNetWeight = QString::fromStdString(strprintf("%0.00f", dNetWeight / COIN));
             AddThousandsSpaces(strNetWeight);
             ui->lblStakingNetWeight->setText(strNetWeight);
         }
@@ -232,9 +231,7 @@ void StakingDialog::updateStakingUI()
 
         if (rv["weight"].isNum()) {
             nWeight = rv["weight"].get_int64();
-            QString strWeight = QString("%1").arg(static_cast<int64_t>(nWeight));
-            AddThousandsSpaces(strWeight);
-            ui->lblHotStakingWalletWeight->setText(strWeight);
+            ui->lblHotStakingWalletWeight->setText(BitcoinUnits::format(nDisplayUnit, nWeight));
         }
 
         if ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) {
