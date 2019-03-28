@@ -109,7 +109,8 @@ CTxOutStandard::CTxOutStandard(const CAmount& nValueIn, CScript scriptPubKeyIn) 
 {
     nValue = nValueIn;
     scriptPubKey = scriptPubKeyIn;
-};
+    vecSignature.resize(CPubKey::COMPACT_SIGNATURE_SIZE);
+}
 
 void DeepCopy(CTxOutBaseRef &to, const CTxOutBaseRef &from)
 {

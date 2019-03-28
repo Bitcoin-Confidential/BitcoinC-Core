@@ -298,25 +298,28 @@ typedef OUTPUT_PTR<CTxOutBase> CTxOutBaseRef;
 class CTxOutStandard : public CTxOutBase
 {
 public:
-    CTxOutStandard() : CTxOutBase(OUTPUT_STANDARD) {};
+    CTxOutStandard() : CTxOutBase(OUTPUT_STANDARD) {}
     CTxOutStandard(const CAmount& nValueIn, CScript scriptPubKeyIn);
 
     CAmount nValue;
     CScript scriptPubKey;
+    std::vector<unsigned char> vecSignature;
 
     template<typename Stream>
     void Serialize(Stream &s) const
     {
         s << nValue;
         s << *(CScriptBase*)(&scriptPubKey);
-    };
+        s << vecSignature;
+    }
 
     template<typename Stream>
     void Unserialize(Stream &s)
     {
         s >> nValue;
         s >> *(CScriptBase*)(&scriptPubKey);
-    };
+        s >> vecSignature;
+    }
 
 
     bool IsEmpty() const override
