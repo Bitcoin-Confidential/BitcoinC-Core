@@ -566,6 +566,9 @@ inline void UnserializeTransaction(TxType& tx, Stream& s) {
                 case OUTPUT_STANDARD:
                     tx.vpout[k] = MAKE_OUTPUT<CTxOutStandard>();
                     break;
+                case OUTPUT_RINGCT:
+                    tx.vpout[k] = MAKE_OUTPUT<CTxOutRingCT>();
+                    break;
                 case OUTPUT_DATA:
                     tx.vpout[k] = MAKE_OUTPUT<CTxOutData>();
                     break;
