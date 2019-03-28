@@ -849,13 +849,12 @@ struct CCoinsStats
     uint256 hashBlock;
     uint64_t nTransactions;
     uint64_t nTransactionOutputs;
-    uint64_t nBlindedTransactionOutputs;
     uint64_t nBogoSize;
     uint256 hashSerialized;
     uint64_t nDiskSize;
     CAmount nTotalAmount;
 
-    CCoinsStats() : nHeight(0), nTransactions(0), nTransactionOutputs(0), nBlindedTransactionOutputs(0), nBogoSize(0), nDiskSize(0), nTotalAmount(0) {}
+    CCoinsStats() : nHeight(0), nTransactions(0), nTransactionOutputs(0), nBogoSize(0), nDiskSize(0), nTotalAmount(0) {}
 };
 
 static void ApplyStats(CCoinsStats &stats, CHashWriter& ss, const uint256& hash, const std::map<uint32_t, Coin>& outputs)
@@ -873,13 +872,7 @@ static void ApplyStats(CCoinsStats &stats, CHashWriter& ss, const uint256& hash,
             ss << VARINT(output.second.out.nValue, VarIntMode::NONNEGATIVE_SIGNED);
             stats.nTransactionOutputs++;
             stats.nTotalAmount += output.second.out.nValue;
-        } else
-        if (output.second.nType == OUTPUT_CT)
-        {
-            //ss << output.second.commitment;
-            ss.write((char*)&output.second.commitment.data[0], 33);
-            stats.nBlindedTransactionOutputs++;
-        };
+        }
         stats.nBogoSize += 32 /* txid */ + 4 /* vout index */ + 4 /* height + coinbase */ + 8 /* amount */ +
                            2 /* scriptPubKey len */ + output.second.out.scriptPubKey.size() /* scriptPubKey */
                            + (fBitcoinCMode ? 1 /* nType */ + 33 /* commitment */ : 0);
@@ -1007,8 +1000,6 @@ static UniValue gettxoutsetinfo(const JSONRPCRequest& request)
         ret.pushKV("bestblock", stats.hashBlock.GetHex());
         ret.pushKV("transactions", (int64_t)stats.nTransactions);
         ret.pushKV("txouts", (int64_t)stats.nTransactionOutputs);
-        if (fBitcoinCMode)
-            ret.pushKV("txouts_blinded", (int64_t)stats.nBlindedTransactionOutputs);
         ret.pushKV("bogosize", (int64_t)stats.nBogoSize);
         ret.pushKV("hash_serialized_2", stats.hashSerialized.GetHex());
         ret.pushKV("disk_size", stats.nDiskSize);

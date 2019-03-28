@@ -1037,11 +1037,6 @@ UniValue SignTransaction(CMutableTransaction& mtx, const UniValue& prevTxsUnival
             amount = coin.out.nValue;
             vchAmount.resize(8);
             memcpy(vchAmount.data(), &coin.out.nValue, 8);
-        } else
-        if (coin.nType == OUTPUT_CT) {
-            amount = 0; // Bypass amount check
-            vchAmount.resize(33);
-            memcpy(vchAmount.data(), coin.commitment.data, 33);
         } else {
             throw JSONRPCError(RPC_MISC_ERROR, strprintf("Bad input type: %d", coin.nType));
         }

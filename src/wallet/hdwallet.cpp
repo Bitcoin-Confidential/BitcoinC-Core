@@ -2705,23 +2705,6 @@ void CHDWallet::AddOutputRecordMetaData(CTransactionRecord &rtx, std::vector<CTe
             rec.scriptPubKey = r.scriptPubKey;
             rtx.InsertOutput(rec);
         } else
-        if (r.nType == OUTPUT_CT)
-        {
-            COutputRecord rec;
-
-            rec.n = r.n;
-            rec.nType = r.nType;
-            rec.nValue = r.nAmount;
-            rec.nFlags |= ORF_FROM;
-            rec.scriptPubKey = r.scriptPubKey;
-            if (r.fChange && HaveAddress(r.address))
-                rec.nFlags |= ORF_CHANGE;
-            rec.sNarration = r.sNarration;
-
-            ParseAddressForMetaData(r.address, rec);
-
-            rtx.InsertOutput(rec);
-        } else
         if (r.nType == OUTPUT_RINGCT)
         {
             COutputRecord rec;
@@ -2821,83 +2804,6 @@ int CHDWallet::ExpandTempRecipients(std::vector<CTempRecipient> &vecSend, CStore
                 }
             }
         } else
-        if (r.nType == OUTPUT_CT) {
-            CKey sEphem = r.sEphem;
-
-            /*
-            // TODO: Make optional
-            if (0 != pc->DeriveNextKey(sEphem, nChild, true))
-                return errorN(1, sError, __func__, "TryDeriveNext failed.");
-            */
-            if (!sEphem.IsValid()) {
-                sEphem.MakeNewKey(true);
-            }
-
-            if (r.address.type() == typeid(CStealthAddress)) {
-                CStealthAddress sx = boost::get<CStealthAddress>(r.address);
-
-                CKey sShared;
-                ec_point pkSendTo;
-
-                int k, nTries = 24;
-                for (k = 0; k < nTries; ++k) {
-                    if (StealthSecret(sEphem, sx.scan_pubkey, sx.spend_pubkey, sShared, pkSendTo) == 0) {
-                        break;
-                    }
-                    // if StealthSecret fails try again with new ephem key
-                    /* TODO: Make optional
-                    if (0 != pc->DeriveNextKey(sEphem, nChild, true))
-                        return errorN(1, sError, __func__, "DeriveNextKey failed.");
-                    */
-                    sEphem.MakeNewKey(true);
-                }
-                if (k >= nTries) {
-                    return wserrorN(1, sError, __func__, "Could not generate receiving public key.");
-                }
-
-                r.pkTo = CPubKey(pkSendTo);
-                CKeyID idTo = r.pkTo.GetID();
-
-                r.scriptPubKey = GetScriptForDestination(idTo);
-                if (sx.prefix.number_bits > 0) {
-                    r.nStealthPrefix = FillStealthPrefix(sx.prefix.number_bits, sx.prefix.bitfield);
-                }
-
-                if (LogAcceptCategory(BCLog::HDWALLET)) {
-                    WalletLogPrintf("Creating blind output to stealth generated address: %s\n", CBitcoinAddress(idTo).ToString());
-                }
-            } else
-            if (r.address.type() == typeid(CExtKeyPair)) {
-                CExtKeyPair ek = boost::get<CExtKeyPair>(r.address);
-                uint32_t nDestChildKey;
-                if (0 != ExtKeyGetDestination(ek, r.pkTo, nDestChildKey)) {
-                    return wserrorN(1, sError, __func__, "ExtKeyGetDestination failed.");
-                }
-
-                r.nChildKey = nDestChildKey;
-                r.scriptPubKey = GetScriptForDestination(r.pkTo.GetID());
-            } else
-            if (r.address.type() == typeid(CKeyID)) {
-                // Need a matching public key
-                CKeyID idTo = boost::get<CKeyID>(r.address);
-                r.scriptPubKey = GetScriptForDestination(idTo);
-
-                if (!GetPubKey(idTo, r.pkTo)) {
-                    if (0 != smsgModule.GetStoredKey(idTo, r.pkTo)) {
-                        return wserrorN(1, sError, __func__, _("No public key found for address %s."), CBitcoinAddress(idTo).ToString());
-                    }
-                }
-            } else {
-                if (!r.fScriptSet) {
-                    r.scriptPubKey = GetScriptForDestination(r.address);
-                    if (r.scriptPubKey.size() < 1) {
-                        return wserrorN(1, sError, __func__, "Unknown address type and no script set.");
-                    }
-                }
-            }
-
-            r.sEphem = sEphem;
-        } else
         if (r.nType == OUTPUT_RINGCT) {
             CKey sEphem = r.sEphem;
             /*
@@ -2949,7 +2855,7 @@ int CHDWallet::ExpandTempRecipients(std::vector<CTempRecipient> &vecSend, CStore
     }
 
     return 0;
-};
+}
 
 void SetCTOutVData(std::vector<uint8_t> &vData, CPubKey &pkEphem, uint32_t nStealthPrefix)
 {

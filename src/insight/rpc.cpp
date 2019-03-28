@@ -862,14 +862,12 @@ UniValue gettxoutsetinfobyscript(const JSONRPCRequest& request)
     class PerScriptTypeStats {
     public:
         int64_t nPlain = 0;
-        int64_t nBlinded = 0;
         int64_t nPlainValue = 0;
 
         UniValue ToUV()
         {
             UniValue ret(UniValue::VOBJ);
             ret.pushKV("num_plain", nPlain);
-            ret.pushKV("num_blinded", nBlinded);
             ret.pushKV("total_amount", ValueFromAmount(nPlainValue));
             return ret;
         }
@@ -901,11 +899,7 @@ UniValue gettxoutsetinfobyscript(const JSONRPCRequest& request)
             {
                 ps->nPlain++;
                 ps->nPlainValue += coin.out.nValue;
-            } else
-            if (coin.nType == OUTPUT_CT)
-            {
-                ps->nBlinded++;
-            };
+            }
         } else {
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to read UTXO set");
         }

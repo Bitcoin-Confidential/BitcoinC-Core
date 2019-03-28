@@ -101,7 +101,7 @@ std::string CTxOutBase::ToString() const
             }
         default:
             break;
-    };
+    }
     return strprintf("CTxOutBase unknown version %d", nVersion);
 }
 
@@ -109,7 +109,6 @@ CTxOutStandard::CTxOutStandard(const CAmount& nValueIn, CScript scriptPubKeyIn) 
 {
     nValue = nValueIn;
     scriptPubKey = scriptPubKeyIn;
-    vecSignature.resize(CPubKey::COMPACT_SIGNATURE_SIZE);
 }
 
 void DeepCopy(CTxOutBaseRef &to, const CTxOutBaseRef &from)

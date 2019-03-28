@@ -276,17 +276,19 @@ public:
 
     virtual CAmount GetValue() const;
 
-    virtual bool PutValue(std::vector<uint8_t> &vchAmount) const { return false; };
+    virtual bool PutValue(std::vector<uint8_t> &vchAmount) const { return false; }
 
-    virtual bool GetScriptPubKey(CScript &scriptPubKey_) const { return false; };
-    virtual const CScript *GetPScriptPubKey() const { return nullptr; };
+    virtual bool GetScriptPubKey(CScript &scriptPubKey_) const { return false; }
+    virtual const CScript *GetPScriptPubKey() const { return nullptr; }
 
-    virtual secp256k1_pedersen_commitment *GetPCommitment() { return nullptr; };
-    virtual std::vector<uint8_t> *GetPRangeproof() { return nullptr; };
+    virtual secp256k1_pedersen_commitment *GetPCommitment() { return nullptr; }
+    virtual std::vector<uint8_t> *GetPRangeproof() { return nullptr; }
 
 
-    virtual bool GetCTFee(CAmount &nFee) const { return false; };
-    virtual bool GetDevFundCfwd(CAmount &nCfwd) const { return false; };
+    virtual bool GetCTFee(CAmount &nFee) const { return false; }
+    virtual bool GetDevFundCfwd(CAmount &nCfwd) const { return false; }
+
+    virtual const std::vector<unsigned char> *GetSignature() const { return nullptr; }
 
     std::string ToString() const;
 };
@@ -332,23 +334,23 @@ public:
         vchAmount.resize(8);
         memcpy(&vchAmount[0], &nValue, 8);
         return true;
-    };
+    }
 
     CAmount GetValue() const override
     {
         return nValue;
-    };
+    }
 
     bool GetScriptPubKey(CScript &scriptPubKey_) const override
     {
         scriptPubKey_ = scriptPubKey;
         return true;
-    };
+    }
 
     virtual const CScript *GetPScriptPubKey() const override
     {
         return &scriptPubKey;
-    };
+    }
 };
 
 class CTxOutRingCT : public CTxOutBase

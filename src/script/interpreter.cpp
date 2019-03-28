@@ -1708,7 +1708,7 @@ bool HasIsCoinstakeOp(const CScript &script)
         return true;
 
     return false;
-};
+}
 
 bool IsSpendScriptP2PKH(const CScript &script)
 {
@@ -1733,7 +1733,7 @@ bool IsSpendScriptP2PKH(const CScript &script)
     };
 
     return false;
-};
+}
 
 bool GetCoinstakeScriptPath(const CScript &scriptIn, CScript &scriptOut)
 {
@@ -1769,7 +1769,7 @@ bool GetCoinstakeScriptPath(const CScript &scriptIn, CScript &scriptOut)
     };
 
     return false;
-};
+}
 
 bool GetNonCoinstakeScriptPath(const CScript &scriptIn, CScript &scriptOut)
 {
@@ -1803,7 +1803,7 @@ bool GetNonCoinstakeScriptPath(const CScript &scriptIn, CScript &scriptOut)
     };
 
     return false;
-};
+}
 
 bool SplitConditionalCoinstakeScript(const CScript &scriptIn, CScript &scriptOutA, CScript &scriptOutB)
 {
