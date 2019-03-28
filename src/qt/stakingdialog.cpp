@@ -231,7 +231,9 @@ void StakingDialog::updateStakingUI()
 
         if (rv["weight"].isNum()) {
             nWeight = rv["weight"].get_int64();
-            ui->lblHotStakingWalletWeight->setText(BitcoinUnits::format(nDisplayUnit, nWeight));
+            QString strWeight = QString::fromStdString(strprintf("%d", nWeight / COIN));
+            AddThousandsSpaces(strWeight);
+            ui->lblHotStakingWalletWeight->setText(strWeight);
         }
 
         if ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) {
