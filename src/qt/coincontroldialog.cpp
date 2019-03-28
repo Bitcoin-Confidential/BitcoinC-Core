@@ -216,8 +216,10 @@ void CoinControlDialog::showMenu(const QPoint &point)
     {
         contextMenuItem = item;
 
+        int nBlocksToMaturity = std::min(COINBASE_MATURITY, (int)(chainActive.Height() / 2) - 1);
+
         bool fImmature = ControlModeToCbxType(mode) == OUTPUT_STANDARD &&
-                         item->data(COLUMN_CONFIRMATIONS, Qt::UserRole).toLongLong() <= COINBASE_MATURITY;
+                         item->data(COLUMN_CONFIRMATIONS, Qt::UserRole).toLongLong() <= nBlocksToMaturity;
 
         lockAction->setVisible(!fImmature);
         unlockAction->setVisible(!fImmature);
@@ -654,6 +656,8 @@ void CoinControlDialog::updateView()
     if (!model || !model->getOptionsModel() || !model->getAddressTableModel())
         return;
 
+    int nBlocksToMaturity = std::min(COINBASE_MATURITY, (int)(chainActive.Height() / 2) - 1);
+
     bool treeMode = ui->radioTreeMode->isChecked();
 
     ui->treeWidget->clear();
@@ -756,7 +760,7 @@ void CoinControlDialog::updateView()
                 itemOutput->setIcon(COLUMN_CHECKBOX, platformStyle->SingleColorIcon(":/icons/lock_closed"));
             };
 
-            if( ControlModeToCbxType(mode) == OUTPUT_STANDARD && out.depth_in_main_chain <= COINBASE_MATURITY){
+            if( ControlModeToCbxType(mode) == OUTPUT_STANDARD && out.depth_in_main_chain <= nBlocksToMaturity){
                 coinControl(mode)->UnSelect(output); // just to be sure
                 itemOutput->setDisabled(true);
             }
