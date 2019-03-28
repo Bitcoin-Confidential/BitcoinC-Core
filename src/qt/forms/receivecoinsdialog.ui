@@ -12,7 +12,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1">
    <item>
-	<widget class="QLabel" name="sendInfoLabel">
+	<widget class="QLabel" name="receiveTabHeaderLabel">
 	   <property name="text">
 	   <string>All funds sent and received with Stealth addresses use Stealth addresses and require 12 confirmations (24 minutes) before sending.</string>
 	   </property>
