@@ -457,7 +457,7 @@
                <cursorShape>IBeamCursor</cursorShape>
               </property>
               <property name="toolTip">
-               <string>Your current spendable anon balance</string>
+               <string>Your current spendable  balance</string>
               </property>
               <property name="text">
                <string notr="true">0.000 000 00 BC</string>

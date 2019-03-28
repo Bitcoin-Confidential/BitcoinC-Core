@@ -57,7 +57,7 @@ void TxToJSONExpanded(const CTransaction& tx, const uint256 hashBlock, UniValue&
             in.pushKV("coinbase", HexStr(txin.scriptSig.begin(), txin.scriptSig.end()));
         } else
         if (txin.IsAnonInput()) {
-            in.pushKV("type", "anon");
+            in.pushKV("type", "spending");
             in.pushKV("valueSat", -1);
             uint32_t nSigInputs, nSigRingSize;
             txin.GetAnonInfo(nSigInputs, nSigRingSize);
@@ -74,7 +74,7 @@ void TxToJSONExpanded(const CTransaction& tx, const uint256 hashBlock, UniValue&
             CSpentIndexValue spentInfo;
             CSpentIndexKey spentKey(txin.prevout.hash, txin.prevout.n);
             if (GetSpentIndex(spentKey, spentInfo)) {
-                in.pushKV("type", spentInfo.satoshis == -1 ? "blind" : "standard");
+                in.pushKV("type", "staking");
                 in.pushKV("value", ValueFromAmount(spentInfo.satoshis));
                 in.pushKV("valueSat", spentInfo.satoshis);
 

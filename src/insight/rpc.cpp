@@ -684,24 +684,16 @@ static UniValue blockToDeltasJSON(const CBlock& block, const CBlockIndex* blocki
             {
                 case OUTPUT_STANDARD:
                     {
-                    delta.pushKV("type", "standard");
+                    delta.pushKV("type", "staking");
                     CTxOutStandard *s = (CTxOutStandard*) out;
                     delta.pushKV("satoshis", s->nValue);
-                    AddAddress(&s->scriptPubKey, delta);
-                    }
-                    break;
-                case OUTPUT_CT:
-                    {
-                    CTxOutCT *s = (CTxOutCT*) out;
-                    delta.pushKV("type", "blind");
-                    delta.pushKV("valueCommitment", HexStr(&s->commitment.data[0], &s->commitment.data[0]+33));
                     AddAddress(&s->scriptPubKey, delta);
                     }
                     break;
                 case OUTPUT_RINGCT:
                     {
                     CTxOutRingCT *s = (CTxOutRingCT*) out;
-                    delta.pushKV("type", "anon");
+                    delta.pushKV("type", "spending");
                     delta.pushKV("pubkey", HexStr(s->pk.begin(), s->pk.end()));
                     delta.pushKV("valueCommitment", HexStr(&s->commitment.data[0], &s->commitment.data[0]+33));
                     }

@@ -608,8 +608,8 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
         newRequest.fSkipBlock = true; // already blocked in this function
         newRequest.URI = request.URI;
         UniValue params(UniValue::VARR);
-        params.push_back("part");
-        params.push_back("part");
+        params.push_back("spending");
+        params.push_back("spending");
         UniValue arr(UniValue::VARR);
         UniValue out(UniValue::VOBJ);
 
@@ -1357,8 +1357,8 @@ static UniValue sendmany(const JSONRPCRequest& request)
         newRequest.fSkipBlock = true; // already blocked in this function
         newRequest.URI = request.URI;
         UniValue params(UniValue::VARR);
-        params.push_back("part");
-        params.push_back("part");
+        params.push_back("spending");
+        params.push_back("spending");
         UniValue arr(UniValue::VARR);
 
         std::vector<std::string> keys = sendTo.getKeys();
@@ -2231,8 +2231,8 @@ static void ListRecord(CHDWallet *phdw, const uint256 &hash, const CTransactionR
         }
 
         entry.pushKV("category", sCategory);
-        entry.pushKV("type", r.nType == OUTPUT_STANDARD ? "standard"
-                : r.nType == OUTPUT_CT ? "blind" : r.nType == OUTPUT_RINGCT ? "anon" : "unknown");
+        entry.pushKV("type", r.nType == OUTPUT_STANDARD ? "staking"
+                : r.nType == OUTPUT_RINGCT ? "spending" : "unknown");
 
         if (r.nFlags & ORF_OWNED && r.nFlags & ORF_FROM)
             entry.pushKV("fromself", "true");
@@ -3312,7 +3312,7 @@ static UniValue lockunspent(const JSONRPCRequest& request)
             "A locked transaction output will not be chosen by automatic coin selection, when spending " + CURRENCY_UNIT + ".\n"
             "Locks are stored in memory only. Nodes start with zero locked outputs, and the locked output list\n"
             "is always cleared (by virtue of process exit) when a node stops or fails.\n"
-            "Also see the listunspent call\n"
+            "Also see the listunspentstaking call\n"
             "\nArguments:\n"
             "1. unlock            (boolean, required) Whether to unlock (true) or lock (false) the specified transactions\n"
             "2. \"transactions\"  (array, optional) A json array of objects. Each object the txid (string) vout (numeric)\n"
@@ -3329,7 +3329,7 @@ static UniValue lockunspent(const JSONRPCRequest& request)
 
             "\nExamples:\n"
             "\nList the unspent transactions\n"
-            + HelpExampleCli("listunspent", "") +
+            + HelpExampleCli("listunspentstaking", "") +
             "\nLock an unspent transaction\n"
             + HelpExampleCli("lockunspent", "false \"[{\\\"txid\\\":\\\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\\\",\\\"vout\\\":1}]\"") +
             "\nList the locked transactions\n"
@@ -3475,7 +3475,7 @@ static UniValue listlockunspent(const JSONRPCRequest& request)
             "]\n"
             "\nExamples:\n"
             "\nList the unspent transactions\n"
-            + HelpExampleCli("listunspent", "") +
+            + HelpExampleCli("listunspentstaking", "") +
             "\nLock an unspent transaction\n"
             + HelpExampleCli("lockunspent", "false \"[{\\\"txid\\\":\\\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\\\",\\\"vout\\\":1}]\"") +
             "\nList the locked transactions\n"
@@ -3552,13 +3552,17 @@ static UniValue getwalletinfo(const JSONRPCRequest& request)
             "{\n"
             "  \"walletname\": xxxxx,             (string) the wallet name\n"
             "  \"walletversion\": xxxxx,          (numeric) the wallet version\n"
-            "  \"total_balance\": xxxxxxx,        (numeric) the total balance of the wallet in " + CURRENCY_UNIT + "\n"
-            "  \"balance\": xxxxxxx,              (numeric) the total confirmed balance of the wallet in " + CURRENCY_UNIT + "\n"
-            "  \"blind_balance\": xxxxxxx,        (numeric) the total confirmed blinded balance of the wallet in " + CURRENCY_UNIT + "\n"
-            "  \"anon_balance\": xxxxxxx,         (numeric) the total confirmed anon balance of the wallet in " + CURRENCY_UNIT + "\n"
-            "  \"staked_balance\": xxxxxxx,       (numeric) the total staked balance of the wallet in " + CURRENCY_UNIT + " (non-spendable until maturity)\n"
-            "  \"unconfirmed_balance\": xxx,      (numeric) the total unconfirmed balance of the wallet in " + CURRENCY_UNIT + "\n"
-            "  \"immature_balance\": xxxxxx,      (numeric) the total immature balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "  \"balance_total\": xxxxxxx,        (numeric) the total balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "  \"balance_spending\" : {\n"
+            "      \"unconfirmed\": xxxxxxx,      (numeric) the unconfirmed spending balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "      \"locked\": xxxxxxx,           (numeric) the locked spending balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "      \"available\": xxxxxxx,        (numeric) the available spending balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "   }\n"
+            "  \"balance_staking\" : {\n"
+            "      \"unconfirmed\": xxxxxxx,      (numeric) the unconfirmed staking balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "      \"immature\": xxxxxxx,           (numeric) the immature staking balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "      \"available\": xxxxxxx,        (numeric) the available staking balance of the wallet in " + CURRENCY_UNIT + "\n"
+            "   }\n"
             "  \"reserve\": xxxxxx,               (numeric) the reserve balance of the wallet in " + CURRENCY_UNIT + "\n"
             "  \"txcount\": xxxxxxx,              (numeric) the total number of transactions in the wallet\n"
             "  \"keypoololdest\": xxxxxx,         (numeric) the timestamp (seconds since Unix epoch) of the oldest pre-generated key in the key pool\n"
@@ -3601,7 +3605,7 @@ static UniValue getwalletinfo(const JSONRPCRequest& request)
         balSpending.pushKV("available",    ValueFromAmount(bal.nSpending));
 
         balStaking.pushKV("unconfirmed",  ValueFromAmount(bal.nStakingUnconf));
-        balStaking.pushKV("locked",       ValueFromAmount(bal.nStakingLocked));
+        balStaking.pushKV("immature",       ValueFromAmount(bal.nStakingLocked));
         balStaking.pushKV("available",    ValueFromAmount(bal.nStaking));
 
         obj.pushKV("balance_spending", balSpending);
@@ -3610,17 +3614,21 @@ static UniValue getwalletinfo(const JSONRPCRequest& request)
         if (bal.nStakingWatchOnly > 0 || bal.nStakingWatchOnlyUnconf > 0 || bal.nStakingWatchOnlyLocked > 0 ||
             bal.nSpendingWatchOnly > 0 || bal.nSpendingWatchOnlyUnconf > 0 || bal.nSpendingWatchOnlyLocked > 0)
         {
-            obj.pushKV("watchonly_balance_spending",      ValueFromAmount(bal.nStakingWatchOnly));
-            obj.pushKV("watchonly_unconfirmed_spending",  ValueFromAmount(bal.nStakingWatchOnlyUnconf));
-            obj.pushKV("watchonly_locked_spending",       ValueFromAmount(bal.nStakingWatchOnlyLocked));
+            UniValue balSpendingWatch(UniValue::VOBJ), balStakingWatch(UniValue::VOBJ);
 
-            obj.pushKV("watchonly_balance_spending",      ValueFromAmount(bal.nSpendingWatchOnly));
-            obj.pushKV("watchonly_unconfirmed_spending",  ValueFromAmount(bal.nSpendingWatchOnlyUnconf));
-            obj.pushKV("watchonly_locked_spending",       ValueFromAmount(bal.nSpendingWatchOnlyLocked));
+            balSpendingWatch.pushKV("unconfirmed",      ValueFromAmount(bal.nSpendingWatchOnlyUnconf));
+            balSpendingWatch.pushKV("locked",  ValueFromAmount(bal.nSpendingWatchOnlyLocked));
+            balSpendingWatch.pushKV("available",       ValueFromAmount(bal.nSpendingWatchOnly));
 
-            obj.pushKV("watchonly_total_balance",
+            balStakingWatch.pushKV("unconfirmed",      ValueFromAmount(bal.nStakingWatchOnlyUnconf));
+            balStakingWatch.pushKV("immature",  ValueFromAmount(bal.nStakingWatchOnlyLocked));
+            balStakingWatch.pushKV("available",       ValueFromAmount(bal.nStakingWatchOnly));
+
+            obj.pushKV("total_balance_watchonly",
                 ValueFromAmount(bal.nStakingWatchOnly + bal.nStakingWatchOnlyUnconf + bal.nStakingWatchOnlyLocked +
                                 bal.nSpendingWatchOnly + bal.nSpendingWatchOnlyUnconf + bal.nSpendingWatchOnlyLocked));
+            obj.pushKV("balance_spending_watchonly", balSpendingWatch);
+            obj.pushKV("balance_staking_watchonly", balStakingWatch);
         }
     } else
     {
@@ -3919,7 +3927,7 @@ static UniValue resendwallettransactions(const JSONRPCRequest& request)
     return result;
 }
 
-static UniValue listunspent(const JSONRPCRequest& request)
+static UniValue listunspentstaking(const JSONRPCRequest& request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
@@ -3930,7 +3938,7 @@ static UniValue listunspent(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 5)
         throw std::runtime_error(
-            "listunspent ( minconf maxconf  [\"addresses\",...] [include_unsafe] [query_options])\n"
+            "listunspentstaking ( minconf maxconf  [\"addresses\",...] [include_unsafe] [query_options])\n"
             "\nReturns array of unspent transaction outputs\n"
             "with between minconf and maxconf (inclusive) confirmations.\n"
             "Optionally filter to only include txouts paid to specified addresses.\n"
@@ -3977,13 +3985,13 @@ static UniValue listunspent(const JSONRPCRequest& request)
             "]\n"
 
             "\nExamples\n"
-            + HelpExampleCli("listunspent", "")
-            + HelpExampleCli("listunspent", "6 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
-            + HelpExampleRpc("listunspent", "6, 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
-            + HelpExampleCli("listunspent", "6 9999999 '[]' true '{ \"minimumAmount\": 0.005 }'")
-            + HelpExampleRpc("listunspent", "6, 9999999, [] , true, { \"minimumAmount\": 0.005 } ")
-            + HelpExampleCli("listunspent", "1 9999999 '[]' false '{\"include_immature\":true}'")
-            + HelpExampleRpc("listunspent", "1, 9999999, [] , false, {\"include_immature\":true} ")
+            + HelpExampleCli("listunspentstaking", "")
+            + HelpExampleCli("listunspentstaking", "6 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
+            + HelpExampleRpc("listunspentstaking", "6, 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
+            + HelpExampleCli("listunspentstaking", "6 9999999 '[]' true '{ \"minimumAmount\": 0.005 }'")
+            + HelpExampleRpc("listunspentstaking", "6, 9999999, [] , true, { \"minimumAmount\": 0.005 } ")
+            + HelpExampleCli("listunspentstaking", "1 9999999 '[]' false '{\"include_immature\":true}'")
+            + HelpExampleRpc("listunspentstaking", "1, 9999999, [] , false, {\"include_immature\":true} ")
         );
 
     int nMinDepth = 1;
@@ -4311,7 +4319,7 @@ static UniValue fundrawtransaction(const JSONRPCRequest& request)
                             "Note that all existing inputs must have their previous output transaction be in the wallet.\n"
                             "Note that all inputs selected must be of standard form and P2SH scripts must be\n"
                             "in the wallet using importaddress or addmultisigaddress (to calculate fees).\n"
-                            "You can see whether this is the case by checking the \"solvable\" field in the listunspent output.\n"
+                            "You can see whether this is the case by checking the \"solvable\" field in the listunspentstaking output.\n"
                             "Only pay-to-pubkey, multisig, and P2SH versions thereof are currently supported for watch-only\n"
                             "\nArguments:\n"
                             "1. \"hexstring\"           (string, required) The hex string of the raw transaction\n"
@@ -5626,7 +5634,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "listreceivedbyaddress",            &listreceivedbyaddress,         {"minconf","include_empty","include_watchonly","address_filter"} },
     { "wallet",             "listsinceblock",                   &listsinceblock,                {"blockhash","target_confirmations","include_watchonly","include_removed"} },
     { "wallet",             "listtransactions",                 &listtransactions,              {"account|dummy","count","skip","include_watchonly"} },
-    { "wallet",             "listunspent",                      &listunspent,                   {"minconf","maxconf","addresses","include_unsafe","query_options"} },
+    { "wallet",             "listunspentstaking",                      &listunspentstaking,                   {"minconf","maxconf","addresses","include_unsafe","query_options"} },
     { "wallet",             "listwallets",                      &listwallets,                   {} },
     { "wallet",             "loadwallet",                       &loadwallet,                    {"filename"} },
     { "wallet",             "lockunspent",                      &lockunspent,                   {"unlock","transactions","permanent"} },

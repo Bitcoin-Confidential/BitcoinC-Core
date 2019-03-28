@@ -266,7 +266,7 @@ static UniValue smsglocalkeys(const JSONRPCRequest &request)
                 objM.pushKV("address", CBitcoinAddress(keyID).ToString());
                 objM.pushKV("public_key", sPublicKey);
                 objM.pushKV("receive", (it->fReceiveEnabled ? "1" : "0"));
-                objM.pushKV("anon", (it->fReceiveAnon ? "1" : "0"));
+                objM.pushKV("spending", (it->fReceiveAnon ? "1" : "0"));
                 objM.pushKV("label", sLabel);
                 keys.push_back(objM);
 
@@ -285,7 +285,7 @@ static UniValue smsglocalkeys(const JSONRPCRequest &request)
             objM.pushKV("address", CBitcoinAddress(p.first).ToString());
             objM.pushKV("public_key", EncodeBase58(pk.begin(), pk.end()));
             objM.pushKV("receive", (key.nFlags & smsg::SMK_RECEIVE_ON ? "1" : "0"));
-            objM.pushKV("anon", (key.nFlags & smsg::SMK_RECEIVE_ANON ? "1" : "0"));
+            objM.pushKV("spending", (key.nFlags & smsg::SMK_RECEIVE_ANON ? "1" : "0"));
             objM.pushKV("label", key.sLabel);
             keys.push_back(objM);
 
@@ -334,12 +334,12 @@ static UniValue smsglocalkeys(const JSONRPCRequest &request)
         result.pushKV("key", coinAddress.ToString() + " " + sInfo);
         return result;
     } else
-    if (mode == "anon")
+    if (mode == "spending")
     {
         if (request.params.size() < 3)
         {
             result.pushKV("result", "Too few parameters.");
-            result.pushKV("expected", "anon <+/-> <address>");
+            result.pushKV("expected", "spending <+/-> <address>");
             return result;
         };
 
@@ -360,8 +360,8 @@ static UniValue smsglocalkeys(const JSONRPCRequest &request)
         if (!coinAddress.GetKeyID(keyID))
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid address.");
 
-        if (!smsgModule.SetWalletAddressOption(keyID, "anon", fValue)
-            && !smsgModule.SetSmsgAddressOption(keyID, "anon", fValue))
+        if (!smsgModule.SetWalletAddressOption(keyID, "spending", fValue)
+            && !smsgModule.SetSmsgAddressOption(keyID, "spending", fValue))
         {
             result.pushKV("result", "Address not found.");
             return result;
@@ -1395,7 +1395,7 @@ static UniValue smsgview(const JSONRPCRequest &request)
                         mLabelCache[smsgStored.addrTo] = lblTo;
                     };
 
-                    std::string sFrom = kiFrom.IsNull() ? "anon" : CBitcoinAddress(kiFrom).ToString();
+                    std::string sFrom = kiFrom.IsNull() ? "spending" : CBitcoinAddress(kiFrom).ToString();
                     std::string sTo = CBitcoinAddress(smsgStored.addrTo).ToString();
                     if (lblFrom.length() != 0)
                         sFrom += " (" + lblFrom + ")";

@@ -2330,7 +2330,7 @@ int CSMSG::ScanMessage(const uint8_t *pHeader, const uint8_t *pPayload, uint32_t
             {
                 if (LogAcceptCategory(BCLog::SMSG))
                     LogPrintf("Decrypted message with %s.\n", CBitcoinAddress(addressTo).ToString());
-                if (msg.sFromAddress.compare("anon") != 0)
+                if (msg.sFromAddress.compare("spending") != 0)
                     fOwnMessage = true;
                 addressTo = address;
                 break;
@@ -2389,7 +2389,7 @@ int CSMSG::ScanMessage(const uint8_t *pHeader, const uint8_t *pPayload, uint32_t
                 {
                     if (LogAcceptCategory(BCLog::SMSG))
                         LogPrintf("Decrypted message with %s.\n", CBitcoinAddress(addressTo).ToString());
-                    if (msg.sFromAddress.compare("anon") != 0)
+                    if (msg.sFromAddress.compare("spending") != 0)
                         fOwnMessage = true;
                     break;
                 };
@@ -2641,7 +2641,7 @@ bool CSMSG::SetWalletAddressOption(const CKeyID &idk, std::string sOption, bool 
     if (it == addresses.end())
         return false;
 
-    if (sOption == "anon")
+    if (sOption == "spending")
         it->fReceiveAnon = fValue;
     else
     if (sOption == "receive")
@@ -2664,7 +2664,7 @@ bool CSMSG::SetSmsgAddressOption(const CKeyID &idk, std::string sOption, bool fV
     if (!db.ReadKey(idk, key))
         return false;
 
-    if (sOption == "anon")
+    if (sOption == "spending")
     {
         if (fValue)
             key.nFlags |= SMK_RECEIVE_ANON;
@@ -3434,7 +3434,7 @@ int CSMSG::Encrypt(SecureMessage &smsg, const CKeyID &addressFrom, const CKeyID 
     if (LogAcceptCategory(BCLog::SMSG))
     {
         LogPrint(BCLog::SMSG, "SecureMsgEncrypt(%s, %s, ...)\n",
-            fSendAnonymous ? "anon" : CBitcoinAddress(addressFrom).ToString(),
+            fSendAnonymous ? "spending" : CBitcoinAddress(addressFrom).ToString(),
             CBitcoinAddress(addressTo).ToString());
     };
 
@@ -3604,7 +3604,7 @@ int CSMSG::Send(CKeyID &addressFrom, CKeyID &addressTo, std::string &message,
     if (LogAcceptCategory(BCLog::SMSG))
     {
         LogPrintf("SecureMsgSend(%s, %s, ...)\n",
-            fSendAnonymous ? "anon" : CBitcoinAddress(addressFrom).ToString(), CBitcoinAddress(addressTo).ToString());
+            fSendAnonymous ? "spending" : CBitcoinAddress(addressFrom).ToString(), CBitcoinAddress(addressTo).ToString());
     };
 
     if (!pwallet)
@@ -4037,7 +4037,7 @@ int CSMSG::Decrypt(bool fTestOnly, const CKey &keyDest, const CKeyID &address, c
     if (fFromAnonymous)
     {
         // Anonymous sender
-        msg.sFromAddress = "anon";
+        msg.sFromAddress = "spending";
     } else
     {
         std::vector<uint8_t> vchUint160;

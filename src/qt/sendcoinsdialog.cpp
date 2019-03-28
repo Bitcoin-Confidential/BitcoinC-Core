@@ -830,7 +830,7 @@ void SendCoinsDialog::useAvailableBalance(SendCoinsEntry* entry)
     // Calculate available amount to send.
 
     CAmount amount =
-        sTypeFrom == "anon" ? model->wallet().getAvailableAnonBalance(coin_control) :
+        sTypeFrom == "spending" ? model->wallet().getAvailableAnonBalance(coin_control) :
         model->wallet().getAvailableBalance(coin_control);
 
     for (int i = 0; i < ui->entries->count(); ++i) {
@@ -909,10 +909,10 @@ QString SendCoinsDialog::GetFrom()
     switch(GetCoinControlFlag()){
     case CoinControlDialog::CONVERT_TO_SPENDING:
     case CoinControlDialog::CONVERT_TO_COLD_STAKE:
-        return "part";
+        return "staking";
     case CoinControlDialog::SPENDING:
     case CoinControlDialog::CONVERT_TO_STAKING:
-        return "anon";
+        return "spending";
     }
 
     return "error";
@@ -923,10 +923,10 @@ QString SendCoinsDialog::GetTo()
     switch(GetCoinControlFlag()){
     case CoinControlDialog::SPENDING:
     case CoinControlDialog::CONVERT_TO_SPENDING:
-        return "anon";
+        return "spending";
     case CoinControlDialog::CONVERT_TO_STAKING:
     case CoinControlDialog::CONVERT_TO_COLD_STAKE:
-        return "part";
+        return "staking";
     }
 
     return "error";

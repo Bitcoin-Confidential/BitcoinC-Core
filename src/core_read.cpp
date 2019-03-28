@@ -111,7 +111,7 @@ static bool CheckTxScriptsSanity(const CMutableTransaction& tx)
 
     for (unsigned int i = 0; i < tx.vpout.size(); i++) {
         const CScript *pscript = tx.vpout[i]->GetPScriptPubKey();
-        if (!pscript) // anon output
+        if (!pscript) // spending output
             continue;
         if (!pscript->HasValidOps() || pscript->size() > MAX_SCRIPT_SIZE) {
             return false;

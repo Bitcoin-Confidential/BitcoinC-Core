@@ -226,7 +226,7 @@ void OutputToJSON(uint256 &txid, int i,
         case OUTPUT_STANDARD:
             {
             fCanSpend = true;
-            entry.pushKV("type", "standard");
+            entry.pushKV("type", "staking");
             CTxOutStandard *s = (CTxOutStandard*) baseOut;
             entry.pushKV("value", ValueFromAmount(s->nValue));
             entry.pushKV("valueSat", s->nValue);
@@ -247,24 +247,10 @@ void OutputToJSON(uint256 &txid, int i,
                 entry.pushKV("dev_fund_cfwd", ValueFromAmount(nValue));
             }
             break;
-        case OUTPUT_CT:
-            {
-            fCanSpend = true;
-            CTxOutCT *s = (CTxOutCT*) baseOut;
-            entry.pushKV("type", "blind");
-            entry.pushKV("valueCommitment", HexStr(&s->commitment.data[0], &s->commitment.data[0]+33));
-            UniValue o(UniValue::VOBJ);
-            ScriptPubKeyToUniv(s->scriptPubKey, o, true);
-            entry.pushKV("scriptPubKey", o);
-            entry.pushKV("data_hex", HexStr(s->vData.begin(), s->vData.end()));
-
-            AddRangeproof(s->vRangeproof, entry);
-            }
-            break;
         case OUTPUT_RINGCT:
             {
             CTxOutRingCT *s = (CTxOutRingCT*) baseOut;
-            entry.pushKV("type", "anon");
+            entry.pushKV("type", "spending");
             entry.pushKV("pubkey", HexStr(s->pk.begin(), s->pk.end()));
             entry.pushKV("valueCommitment", HexStr(&s->commitment.data[0], &s->commitment.data[0]+33));
             entry.pushKV("data_hex", HexStr(s->vData.begin(), s->vData.end()));
@@ -311,7 +297,7 @@ void TxToUniv(const CTransaction& tx, const uint256& hashBlock, UniValue& entry,
           {
             if (txin.IsAnonInput())
             {
-                in.pushKV("type", "anon");
+                in.pushKV("type", "spending");
                 uint32_t nSigInputs, nSigRingSize;
                 txin.GetAnonInfo(nSigInputs, nSigRingSize);
                 in.pushKV("num_inputs", (int)nSigInputs);

@@ -3050,9 +3050,8 @@ static void ParseRecords(
         }
 
         push(output, "type",
-              record.nType == OUTPUT_STANDARD ? "standard"
-            : record.nType == OUTPUT_CT       ? "blind"
-            : record.nType == OUTPUT_RINGCT   ? "anon"
+              record.nType == OUTPUT_STANDARD ? "staking"
+            : record.nType == OUTPUT_RINGCT   ? "spending"
             : "unknown");
 
         if (!record.sNarration.empty()) {
@@ -3204,7 +3203,7 @@ static UniValue filtertransactions(const JSONRPCRequest &request)
             "                       orphaned_stake, stake, internal_transfer\n"
             "    type:              select only one type of transactions to return\n"
             "                       (string from list)\n"
-            "                       all, standard, anon, blind\n"
+            "                       all, spending, staking\n"
             "    sort:              sort transactions by criteria\n"
             "                       (string from list)\n"
             "                       time          most recent first\n"
@@ -3312,9 +3311,8 @@ static UniValue filtertransactions(const JSONRPCRequest &request)
             type = options["type"].get_str();
             std::vector<std::string> types = {
                 "all",
-                "standard",
-                "anon",
-                "blind"
+                "staking",
+                "spending"
             };
             auto it = std::find(types.begin(), types.end(), type);
             if (it == types.end()) {
@@ -3453,8 +3451,8 @@ static UniValue filtertransactions(const JSONRPCRequest &request)
             // if value's type is not relevant
             if (values[i]["type"].getType() == 0) {
                 // value's type is undefined
-                if (!(type == "all" || type == "standard")) {
-                    // type is not 'all' or 'standard'
+                if (!(type == "all" || type == "staking")) {
+                    // type is not 'all' or 'staking'
                     continue ;
                 }
             } else if (!(values[i]["type"].get_str() == type || type == "all")) {
@@ -4120,7 +4118,7 @@ static UniValue getcoldstakinginfo(const JSONRPCRequest &request)
 };
 
 
-static UniValue listunspentanon(const JSONRPCRequest &request)
+static UniValue listunspent(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -4129,7 +4127,7 @@ static UniValue listunspentanon(const JSONRPCRequest &request)
 
     if (request.fHelp || request.params.size() > 5)
         throw std::runtime_error(
-            "listunspentanon ( minconf maxconf  [\"addresses\",...] [include_unsafe] )\n"
+            "listunspent ( minconf maxconf  [\"addresses\",...] [include_unsafe] )\n"
             "\nReturns array of unspent transaction anon outputs\n"
             "with between minconf and maxconf (inclusive) confirmations.\n"
             "Optionally filter to only include txouts paid to specified addresses.\n"
@@ -4172,9 +4170,9 @@ static UniValue listunspentanon(const JSONRPCRequest &request)
             "]\n"
 
             "\nExamples\n"
-            + HelpExampleCli("listunspentanon", "")
-            + HelpExampleCli("listunspentanon", "6 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
-            + HelpExampleRpc("listunspentanon", "6, 9999999, \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
+            + HelpExampleCli("listunspent", "")
+            + HelpExampleCli("listunspent", "6 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
+            + HelpExampleRpc("listunspent", "6, 9999999, \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
         );
 
     int nMinDepth = 1;
@@ -4736,27 +4734,23 @@ static const char *TypeToWord(OutputTypes type)
     switch (type)
     {
         case OUTPUT_STANDARD:
-            return "part";
-        case OUTPUT_CT:
-            return "blind";
+            return "staking";
         case OUTPUT_RINGCT:
-            return "anon";
+            return "spending";
         default:
             break;
     };
     return "unknown";
-};
+}
 
 static OutputTypes WordToType(std::string &s)
 {
-    if (s == "part")
+    if (s == "staking")
         return OUTPUT_STANDARD;
-    if (s == "blind")
-        return OUTPUT_CT;
-    if (s == "anon")
+    if (s == "spending")
         return OUTPUT_RINGCT;
     return OUTPUT_NULL;
-};
+}
 
 static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes typeOut)
 {
@@ -4770,9 +4764,8 @@ static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes 
     rv += ")\n";
 
     rv += "\nSend an amount of ";
-    rv += typeIn == OUTPUT_RINGCT ? "anon" : typeIn == OUTPUT_CT ? "blinded" : "";
-    rv += std::string(" part in a") + (typeOut == OUTPUT_RINGCT || typeOut == OUTPUT_CT ? " blinded" : "") + " payment to a given address"
-        + (typeOut == OUTPUT_CT ? " in anon part": "") + ".\n";
+    rv += typeIn == OUTPUT_RINGCT ? "spending" : "staking";
+    rv += std::string(" BC in a") + ( typeOut == OUTPUT_RINGCT ? " confidential" : "") + " payment to a given address.\n";
 
     rv += HelpRequiringPassphrase(pwallet);
 
@@ -4801,7 +4794,7 @@ static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes 
             + HelpExampleCli(cmd, "\"SPGyji8uZFip6H15GUfj6bsutRVLsCyBFL3P7k7T7MUDRaYU8GfwUHpfxonLFAvAwr2RkigyGfTgWMfzLAAP8KMRHq7RE8cwpEEekH\" 0.1");
 
     return rv;
-};
+}
 
 static UniValue converttostealth(const JSONRPCRequest &request)
 {
@@ -4813,7 +4806,7 @@ static UniValue converttostealth(const JSONRPCRequest &request)
         throw std::runtime_error(SendHelp(pwallet, OUTPUT_STANDARD, OUTPUT_RINGCT));
 
     return SendToInner(request, OUTPUT_STANDARD, OUTPUT_RINGCT);
-};
+}
 
 static UniValue converttostake(const JSONRPCRequest &request)
 {
@@ -4825,19 +4818,7 @@ static UniValue converttostake(const JSONRPCRequest &request)
         throw std::runtime_error(SendHelp(pwallet, OUTPUT_RINGCT, OUTPUT_STANDARD));
 
     return SendToInner(request, OUTPUT_RINGCT, OUTPUT_STANDARD);
-};
-
-static UniValue sendanontoblind(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 8)
-        throw std::runtime_error(SendHelp(pwallet, OUTPUT_RINGCT, OUTPUT_CT));
-
-    return SendToInner(request, OUTPUT_RINGCT, OUTPUT_CT);
-};
+}
 
 static UniValue sendanontoanon(const JSONRPCRequest &request)
 {
@@ -4863,8 +4844,8 @@ UniValue sendtypeto(const JSONRPCRequest &request)
             "\nSend part to multiple outputs.\n"
             + HelpRequiringPassphrase(pwallet) +
             "\nArguments:\n"
-            "1. \"typein\"          (string, required) part/blind/anon\n"
-            "2. \"typeout\"         (string, required) part/blind/anon\n"
+            "1. \"typein\"          (string, required) spending/staking\n"
+            "2. \"typeout\"         (string, required) spending/staking\n"
             "3. \"outputs\"         (json, required) Array of output objects\n"
             "    3.1 \"address\"    (string, required) The bitcoinc address to send to.\n"
             "    3.2 \"amount\"     (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
@@ -4876,8 +4857,8 @@ UniValue sendtypeto(const JSONRPCRequest &request)
             "5. \"comment_to\"      (string, optional) A comment to store the name of the person or organization \n"
             "                            to which you're sending the transaction. This is not part of the \n"
             "                            transaction, just kept in your wallet.\n"
-            "6. ringsize         (int, optional, default=4) Only applies when typein is anon.\n"
-            "7. inputs_per_sig   (int, optional, default=32) Only applies when typein is anon.\n"
+            "6. ringsize         (int, optional, default=4) Only applies when typein is spending.\n"
+            "7. inputs_per_sig   (int, optional, default=32) Only applies when typein is spending.\n"
             "8. test_fee         (bool, optional, default=false) Only return the fee it would cost to send, txn is discarded.\n"
             "9. coin_control     (json, optional) Coincontrol object.\n"
             "   {\"changeaddress\": ,\n"
@@ -4896,7 +4877,7 @@ UniValue sendtypeto(const JSONRPCRequest &request)
             "\nResult:\n"
             "\"txid\"              (string) The transaction id.\n"
             "\nExamples:\n"
-            + HelpExampleCli("sendtypeto", "anon part \"[{\\\"address\\\":\\\"PbpVcjgYatnkKgveaeqhkeQBFwjqR7jKBR\\\",\\\"amount\\\":0.1}]\""));
+            + HelpExampleCli("sendtypeto", "spending staking \"[{\\\"address\\\":\\\"PbpVcjgYatnkKgveaeqhkeQBFwjqR7jKBR\\\",\\\"amount\\\":0.1}]\""));
 
     std::string sTypeIn = request.params[0].get_str();
     std::string sTypeOut = request.params[1].get_str();
@@ -6370,15 +6351,11 @@ static UniValue createrawparttransaction(const JSONRPCRequest& request)
         const UniValue &typeObj = find_value(o, "type");
         if (typeObj.isStr()) {
             std::string s = typeObj.get_str();
-            if (s == "standard")
+            if (s == "staking")
             {
                 nType = OUTPUT_STANDARD;
             } else
-            if (s == "blind")
-            {
-                nType = OUTPUT_CT;
-            } else
-            if (s == "anon")
+            if (s == "spending")
             {
                 nType = OUTPUT_RINGCT;
             } else
@@ -6516,7 +6493,7 @@ static UniValue createrawparttransaction(const JSONRPCRequest& request)
         UniValue amount(UniValue::VOBJ);
         amount.pushKV("value", ValueFromAmount(r.nAmount));
 
-        if (r.nType == OUTPUT_CT || r.nType == OUTPUT_RINGCT)
+        if (r.nType == OUTPUT_RINGCT)
         {
             uint256 blind(r.vBlind.data(), 32);
             amount.pushKV("blind", blind.ToString());
@@ -6535,8 +6512,7 @@ static UniValue createrawparttransaction(const JSONRPCRequest& request)
     result.pushKV("amounts", amounts);
 
     return result;
-};
-
+}
 
 static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
 {
@@ -6557,7 +6533,7 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
             "Note that all existing inputs must have their previous output transaction be in the wallet or have their amount and blinding factor specified in input_amounts.\n"
             /*"Note that all inputs selected must be of standard form and P2SH scripts must be\n"
             "in the wallet using importaddress or addmultisigaddress (to calculate fees).\n"
-            "You can see whether this is the case by checking the \"solvable\" field in the listunspent output.\n"
+            "You can see whether this is the case by checking the \"solvable\" field in the listunspentstaking output.\n"
             "Only pay-to-pubkey, multisig, and P2SH versions thereof are currently supported for watch-only\n"*/
             "\nArguments:\n"
             "1. \"input_type\"          (string, required) The type of inputs to use standard/anon/blind.\n"
@@ -6632,7 +6608,7 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
 
     std::string sInputType = request.params[0].get_str();
 
-    if (sInputType != "standard" && sInputType != "anon" && sInputType != "blind")
+    if (sInputType != "staking" && sInputType != "spending")
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Unknown input type.");
 
     CCoinControl coinControl;
@@ -6957,12 +6933,12 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
     std::string sError;
     {
         LOCK2(cs_main, pwallet->cs_wallet);
-        if (sInputType == "standard")
+        if (sInputType == "staking")
         {
             if (0 != pwallet->AddStandardInputs(wtx, rtx, vecSend, false, nFee, &coinControl, sError))
                 throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddStandardInputs failed: %s.", sError));
         } else
-        if (sInputType == "anon")
+        if (sInputType == "spending")
         {
             sError = "TODO";
             //if (0 != pwallet->AddAnonInputs(wtx, rtx, vecSend, false, nFee, &coinControl, sError))
@@ -7330,9 +7306,8 @@ static const CRPCCommand commands[] =
     { "wallet",             "getstakinginfo",                   &getstakinginfo,                {} },
     { "wallet",             "getcoldstakinginfo",               &getcoldstakinginfo,            {} },
 
-    { "wallet",             "listunspentanon",                  &listunspentanon,               {"minconf","maxconf","addresses","include_unsafe","query_options"} },
+    { "wallet",             "listunspent",                  &listunspent,               {"minconf","maxconf","addresses","include_unsafe","query_options"} },
 
-    //sendparttopart // normal txn
     { "wallet",             "converttostealth",                 &converttostealth,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
     { "wallet",             "converttostake",                   &converttostake,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
