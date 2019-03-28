@@ -30,10 +30,10 @@
 #include "../crypto/sph_keccak.h"
 
 #define WELCOME_MESSAGE "\nWelcome to Bitcoin Confidential. "\
-                        "You can start staking funds right now or you can convert funds to be spendable from the staking tab.\n\n"\
-                        "Your Bitcoin Confidential private key: %s\n"\
-                        "Your Bitcoin Confidential address: %s\n\n"\
-                        "This address contains: %f BC"
+                        "You can start staking funds right now or you can convert funds to be spendable from the staking tab.\n\n"
+#define WELCOME_SINGLE "Imported address:\n %s => %s - %f BC\n"
+#define WELCOME_WALLET "Imported addresses:\n"
+#define WELCOME_MESSAGE_ADDRESS " %s => %s - %f BC\n"
 
 int64_t static DecodeDumpTime(const std::string &str) {
     static const boost::posix_time::ptime epoch = boost::posix_time::from_time_t(0);
@@ -141,7 +141,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
 
     CSmartCashSecret scSecret;
     CBitcoinSecret bcSecret;
-    CBitcoinAddress bcAddress;
+    CKeyID foundAddress;
     CAmount nAirdropAmount = 0;
 
     WalletRescanReserver reserver(pwallet);
@@ -225,7 +225,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
         if (!key.IsValid()) throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid private key encoding");
 
         bcSecret.SetKey(key);
-        bcAddress.Set(key.GetPubKey().GetID());
+        foundAddress = key.GetPubKey().GetID();
 
         CPubKey pubkey = key.GetPubKey();
         assert(key.VerifyPubKey(pubkey));
@@ -258,10 +258,12 @@ UniValue importprivkey(const JSONRPCRequest& request)
 
     // If its a SmartCash private key print a welcome message
     if( scSecret.IsValid() ){
-        return strprintf(WELCOME_MESSAGE, bcSecret.ToString(), bcAddress.ToString(), ValueFromAmount(nAirdropAmount).get_real());
-	}
+        return WELCOME_MESSAGE + strprintf(WELCOME_SINGLE, CSmartCashAddress(foundAddress).ToString(),
+                                                                             CBitcoinAddress(foundAddress).ToString(),
+                                                                             ValueFromAmount(nAirdropAmount).get_real());
+    }
 
-    return bcAddress.ToString();
+    return CBitcoinAddress(foundAddress).ToString();
 }
 
 UniValue abortrescan(const JSONRPCRequest& request)
@@ -608,69 +610,206 @@ UniValue importwallet(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, "Wallet is currently rescanning. Abort existing rescan or wait.");
     }
 
+    std::vector<CBlock> vecAirdropBlocks;
+    bool fIsScCsvImport = false;
+    bool fIsScElectrumImport = false;
+    int nScKeysFound = 0;
+    int nScKeysAlreadyImported = 0;
+    std::vector<std::pair<CKeyID, CAmount>> vecAirdrops;
     int64_t nTimeBegin = 0;
     bool fGood = true;
     {
-        LOCK2(cs_main, pwallet->cs_wallet);
-
-        EnsureWalletIsUnlocked(pwallet);
+        {
+            LOCK2(cs_main, pwallet->cs_wallet);
+            EnsureWalletIsUnlocked(pwallet);
+        }
 
         std::ifstream file;
         file.open(request.params[0].get_str().c_str(), std::ios::in | std::ios::ate);
         if (!file.is_open()) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot open wallet dump file");
         }
-        nTimeBegin = chainActive.Tip()->GetBlockTime();
+
+        {
+            LOCK(cs_main);
+            nTimeBegin = chainActive.Tip()->GetBlockTime();
+        }
 
         int64_t nFilesize = std::max((int64_t)1, (int64_t)file.tellg());
         file.seekg(0, file.beg);
 
         std::string sJson;
         bool fJson = false;
+        bool fFirstLine = true;
         // Use uiInterface.ShowProgress instead of pwallet.ShowProgress because pwallet.ShowProgress has a cancel button tied to AbortRescan which
         // we don't want for this progress bar showing the import progress. uiInterface.ShowProgress does not have a cancel button.
         uiInterface.ShowProgress(strprintf("%s " + _("Importing..."), pwallet->GetDisplayName()), 0, false); // show progress dialog in GUI
         while (file.good()) {
             uiInterface.ShowProgress("", std::max(1, std::min(99, (int)(((double)file.tellg() / (double)nFilesize) * 100))), false);
+            MilliSleep(50);
             std::string line;
             std::getline(file, line);
+
+            LOCK2(cs_main, pwallet->cs_wallet);
+
+            if( fFirstLine ){
+
+                if( line[0] != '#'){
+                    std::vector<std::string> vstr;
+                    // Check if its an electrum or hdwallet.smartcash.cc CSV import.
+                    boost::split(vstr, line, boost::is_any_of(","));
+                    if (vstr.size() == 2){
+                        fIsScElectrumImport = true;
+                    }else if( vstr.size() == 4){
+                        fIsScCsvImport = true;
+                    }
+                }
+                fFirstLine = false;
+                continue;
+            }
+
             if (line.empty() || line[0] == '#')
                 continue;
 
-            if (line.rfind("# --- Begin JSON ---", 0) == 0)
-            {
-                fJson = true;
-                continue;
-            };
-            if (line.rfind("# --- End JSON ---", 0) == 0)
-            {
-                fJson = false;
+            if( !fIsScElectrumImport && !fIsScCsvImport ){
 
-                if (!sJson.empty())
+                if (line.rfind("# --- Begin JSON ---", 0) == 0)
                 {
-                    std::string sError;
-                    UniValue inj;
-                    inj.read(sJson);
-
-                    if (!IsBitcoinCWallet(pwallet))
-                        throw JSONRPCError(RPC_INVALID_PARAMETER, "Legacy wallet");
-                    if (!GetBitcoinCWallet(pwallet)->LoadJson(inj, sError))
-                        throw JSONRPCError(RPC_WALLET_ERROR, "LoadJson failed " + sError);
+                    fJson = true;
+                    continue;
                 };
+                if (line.rfind("# --- End JSON ---", 0) == 0)
+                {
+                    fJson = false;
 
-                continue;
-            };
-            if (fJson)
-            {
-                sJson += line;
-                continue;
-            };
+                    if (!sJson.empty())
+                    {
+                        std::string sError;
+                        UniValue inj;
+                        inj.read(sJson);
+
+                        if (!IsBitcoinCWallet(pwallet))
+                            throw JSONRPCError(RPC_INVALID_PARAMETER, "Legacy wallet");
+                        if (!GetBitcoinCWallet(pwallet)->LoadJson(inj, sError))
+                            throw JSONRPCError(RPC_WALLET_ERROR, "LoadJson failed " + sError);
+                    };
+
+                    continue;
+                };
+                if (fJson)
+                {
+                    sJson += line;
+                    continue;
+                };
+            }
 
             std::vector<std::string> vstr;
-            boost::split(vstr, line, boost::is_any_of(" "));
-            if (vstr.size() < 2)
-                continue;
-            CKey key = DecodeSecret(vstr[0]);
+
+            if( fIsScElectrumImport || fIsScCsvImport ){
+                boost::split(vstr, line, boost::is_any_of(","));
+
+                if( fIsScElectrumImport && vstr.size() != 2 ){
+                    continue;
+                }
+
+                if( fIsScCsvImport && vstr.size() != 4) {
+                    continue;
+                }
+            }else{
+                boost::split(vstr, line, boost::is_any_of(" "));
+                if (vstr.size() < 2)
+                    continue;
+            }
+
+            CKey key;
+            CSmartCashSecret scSecret;
+
+            if( fIsScElectrumImport ){
+                std::vector<std::string> vstrElectrum;
+                boost::split(vstrElectrum, vstr[1], boost::is_any_of(":"));
+
+                if( vstrElectrum.size() != 2 ){
+                    continue;
+                }
+
+                scSecret.SetString(vstrElectrum[1]);
+            }else if( fIsScCsvImport ){
+                scSecret.SetString(vstr[3]);
+            }else{
+                scSecret.SetString(vstr[0]);
+            }
+
+            //Check if it's an SmartCash private key
+            if( scSecret.IsValid() ){
+
+                CAmount nAirdropAmount = 0;
+
+                ++nScKeysFound;
+
+                key = scSecret.GetKey();
+
+                if (pwallet->HaveKey(key.GetPubKey().GetID())) {
+                    pwallet->WalletLogPrintf("Skipping import of smartcash key, already exists.\n");
+                    ++nScKeysAlreadyImported;
+                    continue;
+                }
+
+                if( !vecAirdropBlocks.size() ){
+
+                    for( uint32_t nHeight=1; nHeight<=Params().GetLastImportHeight(); nHeight++){
+
+                        if (chainActive.Height() < static_cast<int>(nHeight))
+                            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
+
+                        CBlock block;
+                        CBlockIndex* pblockindex = chainActive[nHeight];
+
+                        if (fHavePruned && !(pblockindex->nStatus & BLOCK_HAVE_DATA) && pblockindex->nTx > 0)
+                            throw JSONRPCError(RPC_INTERNAL_ERROR, "Block not available (pruned data)");
+
+                        if(!ReadBlockFromDisk(block, pblockindex, Params().GetConsensus()))
+                            throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read block from disk");
+
+                        vecAirdropBlocks.push_back(block);
+                    }
+                }
+
+                for( auto block : vecAirdropBlocks ){
+
+                    for( size_t i=1; i<block.vtx.size(); i++){
+
+                        CTxDestination outDest;
+
+                        for( size_t k=0; k<block.vtx[i]->vpout.size(); k++ ){
+
+                            const CTxOutBaseRef &txoutRef = block.vtx[i]->vpout[k];
+                            CScript outScript;
+                            txoutRef->GetScriptPubKey(outScript);
+
+                            if(ExtractDestination(outScript, outDest) &&
+                                outDest.type() == typeid(CKeyID) &&
+                                boost::get<CKeyID>(outDest) == key.GetPubKey().GetID()){
+                                nAirdropAmount = txoutRef->GetValue();
+                                LogPrintf("importprivkey - SmartCash Airdrop found %f BC\n", ValueFromAmount(txoutRef->GetValue()).get_real());
+                                break;
+                            }
+                        }
+
+                        if( nAirdropAmount ){
+                            vecAirdrops.push_back(std::make_pair(boost::get<CKeyID>(outDest), nAirdropAmount));
+                            break;
+                        }
+                    }
+                }
+
+                if( !nAirdropAmount ){
+                    continue;
+                }
+
+            }else{
+                key = DecodeSecret(vstr[0]);
+            }
+
             if (key.IsValid()) {
                 CPubKey pubkey = key.GetPubKey();
                 assert(key.VerifyPubKey(pubkey));
@@ -703,6 +842,7 @@ UniValue importwallet(const JSONRPCRequest& request)
                 if (fLabel)
                     pwallet->SetAddressBook(keyid, strLabel, "receive");
                 nTimeBegin = std::min(nTimeBegin, nTime);
+
             } else if(IsHex(vstr[0])) {
                std::vector<unsigned char> vData(ParseHex(vstr[0]));
                CScript script = CScript(vData.begin(), vData.end());
@@ -725,11 +865,32 @@ UniValue importwallet(const JSONRPCRequest& request)
         }
         file.close();
         uiInterface.ShowProgress("", 100, false); // hide progress dialog in GUI
+        LOCK2(cs_main, pwallet->cs_wallet);
         pwallet->UpdateTimeFirstKey(nTimeBegin);
     }
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
     uiInterface.ShowProgress("", 100, false); // hide progress dialog in GUI
     RescanWallet(*pwallet, reserver, nTimeBegin, false /* update */);
     pwallet->MarkDirty();
+
+    if( vecAirdrops.size() ){
+
+        std::string strWelcome = std::string(WELCOME_MESSAGE) + std::string(WELCOME_WALLET);
+
+        for( auto it : vecAirdrops ){
+            strWelcome += strprintf(WELCOME_MESSAGE_ADDRESS, CSmartCashAddress(it.first).ToString(), CBitcoinAddress(it.first).ToString(), ValueFromAmount(it.second).get_real());
+        }
+
+        return strWelcome;
+    }
+
+    if( nScKeysAlreadyImported )
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "This SmartCash wallet was already imported.");
+
+    if( nScKeysFound )
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Sorry, no SmartCash address of this wallet was included in the airdrop.");
 
     if (!fGood)
         throw JSONRPCError(RPC_WALLET_ERROR, "Error adding some keys/scripts to wallet");

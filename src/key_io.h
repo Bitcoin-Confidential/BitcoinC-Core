@@ -181,6 +181,7 @@ public:
     bool IsValid(const CChainParams &params) const;
 
     CSmartCashAddress() {}
+    CSmartCashAddress(const CKeyID& keyId) { Set(keyId); }
     CSmartCashAddress(const std::string& strAddress) { SetString(strAddress); }
     CSmartCashAddress(const char* pszAddress) { SetString(pszAddress); }
 
