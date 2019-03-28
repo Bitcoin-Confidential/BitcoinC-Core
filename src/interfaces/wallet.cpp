@@ -674,13 +674,6 @@ public:
         return m_wallet_part->GetAvailableAnonBalance(&coin_control);
     }
 
-    CAmount getAvailableBlindBalance(const CCoinControl& coin_control) override
-    {
-        if (!m_wallet_part)
-            return 0;
-        return m_wallet_part->GetAvailableBlindBalance(&coin_control);
-    }
-
     CHDWallet *getBitcoinCWallet() override
     {
         return m_wallet_part;

@@ -191,27 +191,13 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "tallyvotes", 1, "height_start" },
     { "tallyvotes", 2, "height_end" },
 
-    { "sendparttoblind", 1, "amount" },
-    { "sendparttoblind", 4, "subtractfeefromamount" },
     { "converttostealth", 1, "amount" },
     { "converttostealth", 4, "subtractfeefromamount" },
-
-    { "sendblindtopart", 1, "amount" },
-    { "sendblindtopart", 4, "subtractfeefromamount" },
-    { "sendblindtoblind", 1, "amount" },
-    { "sendblindtoblind", 4, "subtractfeefromamount" },
-    { "sendblindtoanon", 1, "amount" },
-    { "sendblindtoanon", 4, "subtractfeefromamount" },
 
     { "converttostake", 1, "amount" },
     { "converttostake", 4, "subtractfeefromamount" },
     { "converttostake", 6, "ringsize" },
     { "converttostake", 7, "inputs_per_sig" },
-
-    { "sendanontoblind", 1, "amount" },
-    { "sendanontoblind", 4, "subtractfeefromamount" },
-    { "sendanontoblind", 6, "ringsize" },
-    { "sendanontoblind", 7, "inputs_per_sig" },
 
     { "sendanontoanon", 1, "amount" },
     { "sendanontoanon", 4, "subtractfeefromamount" },
@@ -240,12 +226,6 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "listunspentanon", 2, "addresses" },
     { "listunspentanon", 3, "include_unsafe" },
     { "listunspentanon", 4, "query_options" },
-
-    { "listunspentblind", 0, "minconf" },
-    { "listunspentblind", 1, "maxconf" },
-    { "listunspentblind", 2, "addresses" },
-    { "listunspentblind", 3, "include_unsafe" },
-    { "listunspentblind", 4, "query_options" },
 
     { "rewindchain", 0, "height" },
 

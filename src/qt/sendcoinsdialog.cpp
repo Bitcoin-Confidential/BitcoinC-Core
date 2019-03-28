@@ -831,7 +831,6 @@ void SendCoinsDialog::useAvailableBalance(SendCoinsEntry* entry)
 
     CAmount amount =
         sTypeFrom == "anon" ? model->wallet().getAvailableAnonBalance(coin_control) :
-        sTypeFrom == "blind" ? model->wallet().getAvailableBlindBalance(coin_control) :
         model->wallet().getAvailableBalance(coin_control);
 
     for (int i = 0; i < ui->entries->count(); ++i) {

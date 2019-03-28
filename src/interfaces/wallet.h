@@ -289,7 +289,6 @@ public:
     virtual bool isUnlockForStakingOnlySet() = 0;
 
     virtual CAmount getAvailableAnonBalance(const CCoinControl& coin_control) = 0;
-    virtual CAmount getAvailableBlindBalance(const CCoinControl& coin_control) = 0;
     virtual CHDWallet *getBitcoinCWallet() = 0;
     virtual bool setReserveBalance(CAmount nValue) = 0;
     virtual void lockWallet() = 0;

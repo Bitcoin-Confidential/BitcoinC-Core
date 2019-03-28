@@ -4326,228 +4326,6 @@ static UniValue listunspentanon(const JSONRPCRequest &request)
     return results;
 };
 
-static UniValue listunspentblind(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-
-    if (request.fHelp || request.params.size() > 5)
-        throw std::runtime_error(
-            "listunspentblind ( minconf maxconf  [\"addresses\",...] [include_unsafe] )\n"
-            "\nReturns array of unspent transaction blind outputs\n"
-            "with between minconf and maxconf (inclusive) confirmations.\n"
-            "Optionally filter to only include txouts paid to specified addresses.\n"
-            "\nArguments:\n"
-            "1. minconf          (numeric, optional, default=1) The minimum confirmations to filter\n"
-            "2. maxconf          (numeric, optional, default=9999999) The maximum confirmations to filter\n"
-            "3. \"addresses\"      (string) A json array of bitcoinc addresses to filter\n"
-            "    [\n"
-            "      \"address\"   (string) bitcoinc address\n"
-            "      ,...\n"
-            "    ]\n"
-            "4. include_unsafe (bool, optional, default=true) Include outputs that are not safe to spend\n"
-            "                  because they come from unconfirmed untrusted transactions or unconfirmed\n"
-            "                  replacement transactions (cases where we are less sure that a conflicting\n"
-            "                  transaction won't be mined).\n"
-            "5. query_options    (json, optional) JSON with query options\n"
-            "    {\n"
-            "      \"minimumAmount\"    (numeric or string, default=0) Minimum value of each UTXO in " + CURRENCY_UNIT + "\n"
-            "      \"maximumAmount\"    (numeric or string, default=unlimited) Maximum value of each UTXO in " + CURRENCY_UNIT + "\n"
-            "      \"maximumCount\"     (numeric or string, default=unlimited) Maximum number of UTXOs\n"
-            "      \"minimumSumAmount\" (numeric or string, default=unlimited) Minimum sum value of all UTXOs in " + CURRENCY_UNIT + "\n"
-            "      \"cc_format\"        (bool, default=false) Format for coincontrol\n"
-            "    }\n"
-            "\nResult\n"
-            "[                   (array of json object)\n"
-            "  {\n"
-            "    \"txid\" : \"txid\",          (string) the transaction id \n"
-            "    \"vout\" : n,               (numeric) the vout value\n"
-            "    \"address\" : \"address\",    (string) the bitcoinc address\n"
-            "    \"label\" : \"label\",        (string) The associated label, or \"\" for the default label\n"
-            "    \"scriptPubKey\" : \"key\",   (string) the script key\n"
-            "    \"amount\" : x.xxx,         (numeric) the transaction output amount in " + CURRENCY_UNIT + "\n"
-            "    \"confirmations\" : n,      (numeric) The number of confirmations\n"
-            "    \"redeemScript\" : n        (string) The redeemScript if scriptPubKey is P2SH\n"
-            //"    \"spendable\" : xxx,        (bool) Whether we have the private keys to spend this output\n"
-            //"    \"solvable\" : xxx          (bool) Whether we know how to spend this output, ignoring the lack of keys\n"
-            "  }\n"
-            "  ,...\n"
-            "]\n"
-
-            "\nExamples\n"
-            + HelpExampleCli("listunspentblind", "")
-            + HelpExampleCli("listunspentblind", "6 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
-            + HelpExampleRpc("listunspentblind", "6, 9999999, \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
-        );
-
-    int nMinDepth = 1;
-    if (request.params.size() > 0 && !request.params[0].isNull()) {
-        RPCTypeCheckArgument(request.params[0], UniValue::VNUM);
-        nMinDepth = request.params[0].get_int();
-    }
-
-    int nMaxDepth = 0x7FFFFFFF;
-    if (request.params.size() > 1 && !request.params[1].isNull()) {
-        RPCTypeCheckArgument(request.params[1], UniValue::VNUM);
-        nMaxDepth = request.params[1].get_int();
-    }
-
-    bool fCCFormat = false;
-    CAmount nMinimumAmount = 0;
-    CAmount nMaximumAmount = MAX_MONEY;
-    CAmount nMinimumSumAmount = MAX_MONEY;
-    uint64_t nMaximumCount = 0;
-
-    if (!request.params[4].isNull()) {
-        const UniValue& options = request.params[4].get_obj();
-
-        RPCTypeCheckObj(options,
-            {
-                {"maximumCount",            UniValueType(UniValue::VNUM)},
-                {"cc_format",               UniValueType(UniValue::VBOOL)},
-            }, true, false);
-
-        if (options.exists("minimumAmount"))
-            nMinimumAmount = AmountFromValue(options["minimumAmount"]);
-
-        if (options.exists("maximumAmount"))
-            nMaximumAmount = AmountFromValue(options["maximumAmount"]);
-
-        if (options.exists("minimumSumAmount"))
-            nMinimumSumAmount = AmountFromValue(options["minimumSumAmount"]);
-
-        if (options.exists("maximumCount"))
-            nMaximumCount = options["maximumCount"].get_int64();
-
-        if (options.exists("cc_format"))
-            fCCFormat = options["cc_format"].get_bool();
-    }
-
-    std::set<CBitcoinAddress> setAddress;
-    if (request.params.size() > 2 && !request.params[2].isNull()) {
-        RPCTypeCheckArgument(request.params[2], UniValue::VARR);
-        UniValue inputs = request.params[2].get_array();
-        for (unsigned int idx = 0; idx < inputs.size(); idx++) {
-            const UniValue& input = inputs[idx];
-            CBitcoinAddress address(input.get_str());
-//            if (!address.IsValidStealthAddress())
-//                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitcoinC stealth address: ")+input.get_str());
-            if (setAddress.count(address))
-                throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+input.get_str());
-           setAddress.insert(address);
-        }
-    }
-
-    bool include_unsafe = true;
-    if (request.params.size() > 3 && !request.params[3].isNull()) {
-        RPCTypeCheckArgument(request.params[3], UniValue::VBOOL);
-        include_unsafe = request.params[3].get_bool();
-    }
-
-    // Make sure the results are valid at least up to the most recent block
-    // the user could have gotten from another RPC command prior to now
-    pwallet->BlockUntilSyncedToCurrentChain();
-
-    UniValue results(UniValue::VARR);
-    std::vector<COutputR> vecOutputs;
-    assert(pwallet != nullptr);
-
-    {
-        LOCK2(cs_main, pwallet->cs_wallet);
-        pwallet->AvailableBlindedCoins(vecOutputs, !include_unsafe, nullptr, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth);
-    }
-
-    LOCK(pwallet->cs_wallet);
-
-    for (const auto &out : vecOutputs)
-    {
-        if (out.nDepth < nMinDepth || out.nDepth > nMaxDepth)
-            continue;
-
-        const COutputRecord *pout = out.rtx->second.GetOutput(out.i);
-
-        if (!pout)
-        {
-            LogPrintf("%s: ERROR - Missing output %s %d\n", __func__, out.txhash.ToString(), out.i);
-            continue;
-        };
-
-        CAmount nValue = pout->nValue;
-
-        CTxDestination address;
-        const CScript *scriptPubKey = &pout->scriptPubKey;
-        bool fValidAddress;
-
-        fValidAddress = ExtractDestination(*scriptPubKey, address);
-        if (setAddress.size() && (!fValidAddress || !setAddress.count(address)))
-            continue;
-
-        UniValue entry(UniValue::VOBJ);
-        entry.pushKV("txid", out.txhash.GetHex());
-        entry.pushKV("vout", out.i);
-
-        if (fValidAddress) {
-            entry.pushKV("address", CBitcoinAddress(address).ToString());
-
-            auto i = pwallet->mapAddressBook.find(address);
-            if (i != pwallet->mapAddressBook.end()) {
-                entry.pushKV("label", i->second.name);
-            }
-
-            if (address.type() == typeid(CKeyID))
-            {
-                CStealthAddress sx;
-                CKeyID idk = boost::get<CKeyID>(address);
-                if (pwallet->GetStealthLinked(idk, sx)) {
-                    entry.pushKV("stealth_address", sx.Encoded());
-                    if (!entry.exists("label")) {
-                        auto i = pwallet->mapAddressBook.find(sx);
-                        if (i != pwallet->mapAddressBook.end()) {
-                            entry.pushKV("label", i->second.name);
-                        }
-                    }
-                }
-            };
-
-            if (scriptPubKey->IsPayToScriptHash()) {
-                const CScriptID& hash = boost::get<CScriptID>(address);
-                CScript redeemScript;
-                if (pwallet->GetCScript(hash, redeemScript))
-                    entry.pushKV("redeemScript", HexStr(redeemScript.begin(), redeemScript.end()));
-            } else
-            if (scriptPubKey->IsPayToScriptHash256()) {
-                const CScriptID256& hash = boost::get<CScriptID256>(address);
-                CScriptID scriptID;
-                scriptID.Set(hash);
-                CScript redeemScript;
-                if (pwallet->GetCScript(scriptID, redeemScript))
-                    entry.pushKV("redeemScript", HexStr(redeemScript.begin(), redeemScript.end()));
-            }
-        }
-
-        entry.pushKV("scriptPubKey", HexStr(scriptPubKey->begin(), scriptPubKey->end()));
-
-        if (fCCFormat)
-        {
-            entry.pushKV("time", out.rtx->second.GetTxTime());
-            entry.pushKV("amount", nValue);
-        } else
-        {
-            entry.pushKV("amount", ValueFromAmount(nValue));
-        };
-        entry.pushKV("confirmations", out.nDepth);
-        //entry.pushKV("spendable", out.fSpendable);
-        //entry.pushKV("solvable", out.fSolvable);
-        entry.pushKV("safe", out.fSafe);
-        results.push_back(entry);
-    }
-
-    return results;
-};
-
-
 static int AddOutput(uint8_t nType, std::vector<CTempRecipient> &vecSend, const CTxDestination &address, CAmount nValue,
     bool fSubtractFeeFromAmount, std::string &sNarr, std::string &sError)
 {
@@ -4718,11 +4496,6 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
                 throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient staking funds");
             }
             break;
-        case OUTPUT_CT:
-            if (nTotal > pwallet->GetBlindBalance()) {
-                throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient blinded funds");
-            }
-            break;
         case OUTPUT_RINGCT:
             if (nTotal > pwallet->GetAnonBalance()) {
                 throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient spendable funds");
@@ -4866,10 +4639,6 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
         case OUTPUT_STANDARD:
             if (0 != pwallet->AddStandardInputs(wtx, rtx, vecSend, !fCheckFeeOnly, nFeeRet, &coincontrol, sError))
                 throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddStandardInputs failed: %s.", sError));
-            break;
-        case OUTPUT_CT:
-            if (0 != pwallet->AddBlindedInputs(wtx, rtx, vecSend, !fCheckFeeOnly, nFeeRet, &coincontrol, sError))
-                throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddBlindedInputs failed: %s.", sError));
             break;
         case OUTPUT_RINGCT:
             if (0 != pwallet->AddAnonInputs(wtx, rtx, vecSend, !fCheckFeeOnly, nRingSize, nInputsPerSig, nFeeRet, &coincontrol, sError))
@@ -5034,18 +4803,6 @@ static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes 
     return rv;
 };
 
-static UniValue sendparttoblind(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 6)
-        throw std::runtime_error(SendHelp(pwallet, OUTPUT_STANDARD, OUTPUT_CT));
-
-    return SendToInner(request, OUTPUT_STANDARD, OUTPUT_CT);
-};
-
 static UniValue converttostealth(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
@@ -5057,44 +4814,6 @@ static UniValue converttostealth(const JSONRPCRequest &request)
 
     return SendToInner(request, OUTPUT_STANDARD, OUTPUT_RINGCT);
 };
-
-
-// static UniValue sendblindtopart(const JSONRPCRequest &request)
-// {
-//     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-//     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-//     if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-//         return NullUniValue;
-//     if (request.fHelp || request.params.size() < 2 || request.params.size() > 6)
-//         throw std::runtime_error(SendHelp(pwallet, OUTPUT_CT, OUTPUT_STANDARD));
-//
-//     return SendToInner(request, OUTPUT_CT, OUTPUT_STANDARD);
-// };
-
-static UniValue sendblindtoblind(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 6)
-        throw std::runtime_error(SendHelp(pwallet, OUTPUT_CT, OUTPUT_CT));
-
-    return SendToInner(request, OUTPUT_CT, OUTPUT_CT);
-};
-
-static UniValue sendblindtoanon(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 6)
-        throw std::runtime_error(SendHelp(pwallet, OUTPUT_CT, OUTPUT_RINGCT));
-
-    return SendToInner(request, OUTPUT_CT, OUTPUT_RINGCT);
-};
-
 
 static UniValue converttostake(const JSONRPCRequest &request)
 {
@@ -7249,11 +6968,6 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
             //if (0 != pwallet->AddAnonInputs(wtx, rtx, vecSend, false, nFee, &coinControl, sError))
                 throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddAnonInputs failed: %s.", sError));
         } else
-        if (sInputType == "blind")
-        {
-            if (0 != pwallet->AddBlindedInputs(wtx, rtx, vecSend, false, nFee, &coinControl, sError))
-                throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddBlindedInputs failed: %s.", sError));
-        } else
         {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Unknown input type.");
         };
@@ -7600,7 +7314,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
     { "wallet",             "getnewstakeaddress",               &getnewstakeaddress,            {"label","bech32", "hardened"} },
-    { "wallet",             "getnewreturnaddress",          &getnewreturnaddress,       {"label","bech32", "hardened"} },
+    { "wallet",             "getnewreturnaddress",              &getnewreturnaddress,       {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 
@@ -7617,24 +7331,14 @@ static const CRPCCommand commands[] =
     { "wallet",             "getcoldstakinginfo",               &getcoldstakinginfo,            {} },
 
     { "wallet",             "listunspentanon",                  &listunspentanon,               {"minconf","maxconf","addresses","include_unsafe","query_options"} },
-    { "wallet",             "listunspentblind",                 &listunspentblind,              {"minconf","maxconf","addresses","include_unsafe","query_options"} },
-
 
     //sendparttopart // normal txn
-    { "wallet",             "sendparttoblind",                  &sendparttoblind,               {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
-    { "wallet",             "converttostealth",                   &converttostealth,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
-
-    //{ "wallet",             "sendblindtopart",                  &sendblindtopart,               {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
-    { "wallet",             "sendblindtoblind",                 &sendblindtoblind,              {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
-    { "wallet",             "sendblindtoanon",                  &sendblindtoanon,               {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
+    { "wallet",             "converttostealth",                 &converttostealth,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
     { "wallet",             "converttostake",                   &converttostake,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
-    { "wallet",             "sendanontoblind",                  &sendanontoblind,               {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
     { "wallet",             "sendanontoanon",                   &sendanontoanon,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
 
     { "wallet",             "sendtypeto",                       &sendtypeto,                    {"typein","typeout","outputs","comment","comment_to","ringsize","inputs_per_sig","test_fee","coincontrol"} },
-
-
 
     { "wallet",             "createsignaturewithwallet",        &createsignaturewithwallet,     {"hexstring","prevtx","address","sighashtype"} },
     { "rawtransactions",    "createsignaturewithkey",           &createsignaturewithkey,        {"hexstring","prevtx","privkey","sighashtype"} },

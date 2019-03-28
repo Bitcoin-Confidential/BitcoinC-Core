@@ -469,7 +469,6 @@ public:
     CAmount GetBalance(const isminefilter& filter=ISMINE_SPENDABLE, const int min_depth=0) const override;
     CAmount GetSpendableBalance() const;        // Includes watch_only_cs balance
     CAmount GetUnconfirmedBalance() const override;
-    CAmount GetBlindBalance();
     CAmount GetAnonBalance();
     CAmount GetStaked();
     CAmount GetLegacyBalance(const isminefilter& filter, int minDepth, const std::string* account) const override;
@@ -477,8 +476,6 @@ public:
     bool GetBalances(CHDWalletBalances &bal);
     CAmount GetAvailableBalance(const CCoinControl* coinControl = nullptr) const override;
     CAmount GetAvailableAnonBalance(const CCoinControl* coinControl = nullptr) const;
-    CAmount GetAvailableBlindBalance(const CCoinControl* coinControl = nullptr) const;
-
 
     bool IsChange(const CTxOutBase *txout) const override;
 
@@ -500,14 +497,6 @@ public:
         bool sign, CAmount &nFeeRet, const CCoinControl *coinControl, std::string &sError);
     int AddStandardInputs(CWalletTx &wtx, CTransactionRecord &rtx,
         std::vector<CTempRecipient> &vecSend, bool sign, CAmount &nFeeRet, const CCoinControl *coinControl, std::string &sError);
-
-    int AddBlindedInputs(CWalletTx &wtx, CTransactionRecord &rtx,
-        std::vector<CTempRecipient> &vecSend,
-        CExtKeyAccount *sea, CStoredExtKey *pc,
-        bool sign, CAmount &nFeeRet, const CCoinControl *coinControl, std::string &sError);
-    int AddBlindedInputs(CWalletTx &wtx, CTransactionRecord &rtx,
-        std::vector<CTempRecipient> &vecSend, bool sign, CAmount &nFeeRet, const CCoinControl *coinControl, std::string &sError);
-
 
     int PlaceRealOutputs(std::vector<std::vector<int64_t> > &vMI, size_t &nSecretColumn, size_t nRingSize, std::set<int64_t> &setHave,
         const std::vector<std::pair<MapRecords_t::const_iterator,unsigned int> > &vCoins, std::vector<uint8_t> &vInputBlinds, std::string &sError);
@@ -679,7 +668,6 @@ public:
     bool SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet,
         const CCoinControl& coin_control, CoinSelectionParams& coin_selection_params, bool& bnb_used) const override;
 
-    void AvailableBlindedCoins(std::vector<COutputR>& vCoins, bool fOnlySafe=true, const CCoinControl *coinControl = nullptr, const CAmount& nMinimumAmount = 1, const CAmount& nMaximumAmount = MAX_MONEY, const CAmount& nMinimumSumAmount = MAX_MONEY, const uint64_t& nMaximumCount = 0, const int& nMinDepth = 0, const int& nMaxDepth = 0x7FFFFFFF, bool fIncludeImmature=false) const EXCLUSIVE_LOCKS_REQUIRED(cs_main, cs_wallet);
     bool SelectBlindedCoins(const std::vector<COutputR>& vAvailableCoins, const CAmount& nTargetValue, std::vector<std::pair<MapRecords_t::const_iterator,unsigned int> > &setCoinsRet, CAmount &nValueRet, const CCoinControl *coinControl = nullptr) const;
 
     void AvailableAnonCoins(std::vector<COutputR> &vCoins, bool fOnlySafe=true, const CCoinControl *coinControl = nullptr, const CAmount& nMinimumAmount = 1, const CAmount& nMaximumAmount = MAX_MONEY, const CAmount& nMinimumSumAmount = MAX_MONEY, const uint64_t& nMaximumCount = 0, const int& nMinDepth = 0, const int& nMaxDepth = 0x7FFFFFFF, bool fIncludeImmature=false) const EXCLUSIVE_LOCKS_REQUIRED(cs_main, cs_wallet);
