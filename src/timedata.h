@@ -25,9 +25,10 @@ private:
     std::vector<T> vValues;
     std::vector<T> vSorted;
     unsigned int nSize;
+    T defaultValue;
 
 public:
-    CMedianFilter(unsigned int _size) : nSize(_size)
+    CMedianFilter(unsigned int _size, T _defaultValue) : nSize(_size), defaultValue(_defaultValue)
     {
         vValues.reserve(_size);
         vSorted = vValues;
@@ -37,7 +38,7 @@ public:
     {
     }
     
-    void set(unsigned int size)
+    void set(unsigned int size, T defaultValue)
     {
         nSize = size;
         vValues.reserve(nSize);
@@ -59,7 +60,7 @@ public:
     T median() const
     {
         int vSortedSize = vSorted.size();
-        assert(vSortedSize > 0);
+        if( !vSortedSize ) return defaultValue;
         if (vSortedSize & 1) // Odd number of elements
         {
             return vSorted[vSortedSize / 2];
