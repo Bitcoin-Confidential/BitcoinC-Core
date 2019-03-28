@@ -203,17 +203,13 @@ CAmount CTransaction::GetValueOut() const
     return nValueOut;
 }
 
-CAmount CTransaction::GetPlainValueOut(size_t &nStandard, size_t &nCT, size_t &nRingCT) const
+CAmount CTransaction::GetPlainValueOut(size_t &nStandard, size_t &nRingCT) const
 {
     // accumulators not cleared here intentionally
     CAmount nValueOut = 0;
 
     for (const auto &txout : vpout)
     {
-        if (txout->IsType(OUTPUT_CT))
-        {
-            nCT++;
-        } else
         if (txout->IsType(OUTPUT_RINGCT))
         {
             nRingCT++;

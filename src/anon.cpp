@@ -27,8 +27,8 @@ bool VerifyMLSAG(const CTransaction &tx, CValidationState &state)
     std::set<CCmpPubKey> setHaveKI;
     bool fSplitCommitments = tx.vin.size() > 1;
 
-    size_t nStandard = 0, nCt = 0, nRingCT = 0;
-    CAmount nPlainValueOut = tx.GetPlainValueOut(nStandard, nCt, nRingCT);
+    size_t nStandard = 0, nRingCT = 0;
+    CAmount nPlainValueOut = tx.GetPlainValueOut(nStandard, nRingCT);
     CAmount nTxFee = 0;
     if (!tx.GetCTFee(nTxFee))
         return state.DoS(100, error("%s: bad-fee-output", __func__), REJECT_INVALID, "bad-fee-output");

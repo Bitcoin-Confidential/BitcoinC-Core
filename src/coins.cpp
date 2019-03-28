@@ -254,7 +254,7 @@ unsigned int CCoinsViewCache::GetCacheSize() const {
 }
 
 CAmount CCoinsViewCache::GetPlainValueIn(const CTransaction &tx,
-    size_t &nStandard, size_t &nCT, size_t &nRingCT) const
+    size_t &nStandard, size_t &nRingCT) const
 {
     if (tx.IsCoinBase())
         return 0;
@@ -274,9 +274,6 @@ CAmount CCoinsViewCache::GetPlainValueIn(const CTransaction &tx,
             case OUTPUT_STANDARD:
                 nResult += coin.out.nValue;
                 nStandard++;
-                break;
-            case OUTPUT_CT:
-                nCT++;
                 break;
             default:
                 break;

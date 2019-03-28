@@ -350,7 +350,7 @@ public:
 
 
     CAmount GetPlainValueIn(const CTransaction &tx,
-        size_t &nStandard, size_t &nCT, size_t &nRingCT) const;
+        size_t &nStandard, size_t &nRingCT) const;
 
 
     //! Check whether all prevouts of the transaction are present in the UTXO set represented by this view

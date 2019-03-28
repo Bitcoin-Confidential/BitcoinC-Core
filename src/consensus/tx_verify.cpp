@@ -216,33 +216,21 @@ bool CheckStandardOutput(CValidationState &state, const Consensus::Params& conse
         };
     };
 
-    return true;
-}
+//    CKeyID keyId;
+//    if(!ExtractStakingKeyID(*p->GetPScriptPubKey(), keyId)){
+//        return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-script");
+//    }
 
-bool CheckBlindOutput(CValidationState &state, const CTxOutCT *p)
-{
-    if (p->vData.size() < 33 || p->vData.size() > 33 + 5)
-        return state.DoS(100, false, REJECT_INVALID, "bad-ctout-ephem-size");
+//    uint256 nSigHash = SignatureHashConvertOutput(keyId, p->nValue, tx.vin);
 
-    size_t nRangeProofLen = 5134;
-    if (p->vRangeproof.size() > nRangeProofLen)
-        return state.DoS(100, false, REJECT_INVALID, "bad-ctout-rangeproof-size");
+//    CPubKey pubkey;
+//    if (!pubkey.RecoverCompact(nSigHash, p->vchSig)){
+//        return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-signature");
+//    }
 
-    if ((fBusyImporting) && fSkipRangeproof)
-        return true;
-
-    uint64_t min_value, max_value;
-    int rv = secp256k1_rangeproof_verify(secp256k1_ctx_blind, &min_value, &max_value,
-        &p->commitment, p->vRangeproof.data(), p->vRangeproof.size(),
-        nullptr, 0,
-        secp256k1_generator_h);
-
-    if (LogAcceptCategory(BCLog::RINGCT))
-        LogPrintf("%s: rv, min_value, max_value %d, %s, %s\n", __func__,
-            rv, FormatMoney((CAmount)min_value), FormatMoney((CAmount)max_value));
-
-    if (rv != 1)
-        return state.DoS(100, false, REJECT_INVALID, "bad-ctout-rangeproof-verify");
+//    if(pubkey.GetID() != keyId){
+//        return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-signature-key");
+//    }
 
     return true;
 }
@@ -319,10 +307,6 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
                     if (!CheckStandardOutput(state, consensusParams, (CTxOutStandard*) txout.get(), nValueOut))
                         return false;
                     nStandardOutputs++;
-                    break;
-                case OUTPUT_CT:
-                    if (!CheckBlindOutput(state, (CTxOutCT*) txout.get()))
-                        return false;
                     break;
                 case OUTPUT_RINGCT:
                     if (!CheckAnonOutput(state, (CTxOutRingCT*) txout.get()))
@@ -409,7 +393,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
     }
 
     std::vector<const secp256k1_pedersen_commitment*> vpCommitsIn, vpCommitsOut;
-    size_t nStandard = 0, nCt = 0, nRingCT = 0;
+    size_t nStandard = 0, nRingCT = 0;
     CAmount nValueIn = 0;
     CAmount nFees = 0;
     for (unsigned int i = 0; i < tx.vin.size(); i++)
@@ -456,11 +440,6 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
                     return state.DoS(100, false, REJECT_INVALID, "bad-txns-inputvalues-outofrange");
                 nStandard++;
             } else
-            if (coin.nType == OUTPUT_CT)
-            {
-                vpCommitsIn.push_back(&coin.commitment);
-                nCt++;
-            } else
             {
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-input-type");
             };
@@ -472,12 +451,12 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         };
     }
 
-    if ((nStandard > 0) + (nCt > 0) + (nRingCT > 0) > 1)
+    if ((nStandard > 0) + (nRingCT > 0) > 1)
         return state.DoS(100, false, REJECT_INVALID, "mixed-input-types");
 
     size_t nRingCTInputs = nRingCT;
-    // GetPlainValueOut adds to nStandard, nCt, nRingCT
-    CAmount nPlainValueOut = tx.GetPlainValueOut(nStandard, nCt, nRingCT);
+    // GetPlainValueOut adds to nStandard, nRingCT
+    CAmount nPlainValueOut = tx.GetPlainValueOut(nStandard, nRingCT);
     state.fHasAnonOutput = nRingCT > nRingCTInputs;
 
     nTxFee = 0;
@@ -486,7 +465,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         if (!tx.IsCoinStake())
         {
             // Tally transaction fees
-            if (nCt > 0 || nRingCT > 0)
+            if (nRingCT > 0)
             {
                 if (!tx.GetCTFee(nTxFee))
                     return state.DoS(100, error("%s: bad-fee-output", __func__),
@@ -541,7 +520,7 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         {
             // Return stake reward in nTxFee
             nTxFee = nPlainValueOut - nValueIn;
-            if (nCt > 0 || nRingCT > 0) { // counters track both outputs and inputs
+            if (nRingCT > 0) { // counters track both outputs and inputs
                 return state.DoS(100, error("ConnectBlock(): non-standard elements in coinstake"),
                      REJECT_INVALID, "bad-coinstake-outputs");
             };
@@ -561,47 +540,24 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-fee-outofrange");
     };
 
-    if (nCt > 0 && nRingCT == 0)
-    {
-        nPlainValueOut += nTxFee;
-
-        if (!MoneyRange(nPlainValueOut))
-            return state.DoS(100, false, REJECT_INVALID, "bad-txns-out-outofrange");
-
-        if (!MoneyRange(nValueIn))
-            return state.DoS(100, false, REJECT_INVALID, "bad-txns-in-outofrange");
-
-        // commitments must sum to 0
-        secp256k1_pedersen_commitment plainInCommitment, plainOutCommitment;
-        uint8_t blindPlain[32];
-        memset(blindPlain, 0, 32);
-        if (nValueIn > 0)
-        {
-            if (!secp256k1_pedersen_commit(secp256k1_ctx_blind, &plainInCommitment, blindPlain, (uint64_t) nValueIn, secp256k1_generator_h))
-                return state.Invalid(false, REJECT_INVALID, "commit-failed");
-            vpCommitsIn.push_back(&plainInCommitment);
-        };
-
-        if (nPlainValueOut > 0)
-        {
-            if (!secp256k1_pedersen_commit(secp256k1_ctx_blind, &plainOutCommitment, blindPlain, (uint64_t) nPlainValueOut, secp256k1_generator_h))
-                return state.Invalid(false, REJECT_INVALID, "commit-failed");
-            vpCommitsOut.push_back(&plainOutCommitment);
-        };
-
-        secp256k1_pedersen_commitment *pc;
-        for (auto &txout : tx.vpout)
-        {
-            if ((pc = txout->GetPCommitment()))
-                vpCommitsOut.push_back(pc);
-        };
-
-        int rv = secp256k1_pedersen_verify_tally(secp256k1_ctx_blind,
-            vpCommitsIn.data(), vpCommitsIn.size(), vpCommitsOut.data(), vpCommitsOut.size());
-
-        if (rv != 1)
-            return state.DoS(100, false, REJECT_INVALID, "bad-commitment-sum");
-    };
-
     return true;
+}
+
+
+uint256 SignatureHashStakingOutput(const CKeyID& keyId, const CAmount nAmount, const std::vector<CTxIn>& vin)
+{
+    assert(vin.size());
+
+    CHashWriter ss(SER_GETHASH, 0);
+    // Address of the convert output
+    ss << keyId;
+
+    // Amount of the convert output
+    ss << nAmount;
+
+    for( auto txin : vin ){
+        ss << txin.prevout;
+    }
+
+    return ss.GetHash();
 }

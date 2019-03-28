@@ -10,6 +10,9 @@
 #include <stdint.h>
 #include <vector>
 
+class uint256;
+class CKeyID;
+class CTxIn;
 class CBlockIndex;
 class CCoinsViewCache;
 class CTransaction;
@@ -77,5 +80,7 @@ bool EvaluateSequenceLocks(const CBlockIndex& block, std::pair<int, int64_t> loc
  * Consensus critical. Takes as input a list of heights at which tx's inputs (in order) confirmed.
  */
 bool SequenceLocks(const CTransaction &tx, int flags, std::vector<int>* prevHeights, const CBlockIndex& block);
+
+uint256 SignatureHashStakingOutput(const CKeyID& keyId, const CAmount nAmount, const std::vector<CTxIn>& vin);
 
 #endif // BITCOIN_CONSENSUS_TX_VERIFY_H
