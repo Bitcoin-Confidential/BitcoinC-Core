@@ -132,6 +132,9 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
     ui->customFee->setValue(settings.value("nTransactionFee").toLongLong());
     ui->checkBoxMinimumFee->setChecked(settings.value("fPayOnlyMinFee").toBool());
     minimizeFeeSection(settings.value("fFeeSectionMinimized").toBool());
+
+	if (fStakingDialog)
+		ui->sendTabHeaderLabel->hide();
 }
 
 void SendCoinsDialog::setClientModel(ClientModel *_clientModel)

@@ -78,6 +78,7 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, bool
         ui->labelMessage->hide();
         ui->reqMessage->hide();
         ui->labelInfo->hide();
+		ui->receiveTabHeaderLabel->hide();
     }else{
         ui->cbxAddressType->hide();
     }
