@@ -150,17 +150,6 @@ public:
                     READWRITE(cscript);
                     }
                     break;
-                case OUTPUT_CT:
-                    {
-                    CTxOutCT *p = (CTxOutCT*)txout.get();
-
-                    // TODO: need all fields?
-                    CScriptCompressor cscript(REF(p->scriptPubKey));
-                    READWRITE(cscript);
-
-                    s.write((char*)&p->commitment.data[0], 33);
-                    }
-                    break;
                 default:
                     assert(false);
             };
@@ -185,18 +174,6 @@ public:
 
                     CScriptCompressor cscript(REF(p->scriptPubKey));
                     READWRITE(cscript);
-                    }
-                    break;
-                case OUTPUT_CT:
-                    {
-                    txout = MAKE_OUTPUT<CTxOutCT>();
-                    CTxOutCT *p = (CTxOutCT*)txout.get();
-
-                    // TODO: need all fields?
-                    CScriptCompressor cscript(REF(p->scriptPubKey));
-                    READWRITE(cscript);
-
-                    s.read((char*)&p->commitment.data[0], 33);
                     }
                     break;
                 default:

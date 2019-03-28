@@ -783,52 +783,6 @@ static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
     tx = mergedTx;
 }
 
-static void MutateTxAddOutBlind(CMutableTransaction& tx, const std::string& strInput)
-{
-    if (!tx.IsBitcoinCVersion())
-        throw std::runtime_error("tx not bitcoinc version.");
-    // separate COMMITMENT:SCRIPT:RANGEPROOF[:DATA]
-    std::vector<std::string> vStrInputParts;
-    boost::split(vStrInputParts, strInput, boost::is_any_of(":"));
-    if (vStrInputParts.size() < 3)
-        throw std::runtime_error("TX output missing separator");
-
-    // extract and validate COMMITMENT
-    std::string &strCommitment = vStrInputParts[0];
-    if (!IsHex(strCommitment) || !(strCommitment.size() == 66))
-        throw std::runtime_error("COMMITMENT must be 33 bytes and hex encoded.");
-    std::vector<uint8_t> vchAmount = ParseHex(strCommitment);
-
-    // extract and validate script
-    std::string &strScript = vStrInputParts[1];
-    CScript scriptPubKey = ParseScript(strScript);
-
-    // extract and validate rangeproof
-    std::string &strRP = vStrInputParts[2];
-    if (!IsHex(strRP))
-        throw std::runtime_error("RANGEPROOF must be hex encoded.");
-    std::vector<uint8_t> vRangeproof = ParseHex(strRP);
-
-    std::vector<uint8_t> vData;
-    if (vStrInputParts.size() > 3) {
-        std::string &strData = vStrInputParts[3];
-        if (!IsHex(strData))
-            throw std::runtime_error("DATA must be hex encoded.");
-        vData = ParseHex(strData);
-    }
-
-    // construct TxOut, append to transaction output list
-    auto txbout = MAKE_OUTPUT<CTxOutCT>();
-    CTxOutCT *txout = (CTxOutCT*)txbout.get();
-    memcpy(txout->commitment.data, vchAmount.data(), 33);
-    txout->vData = vData;
-    txout->scriptPubKey = scriptPubKey;
-    txout->vRangeproof = vRangeproof;
-
-    tx.vpout.push_back(txbout);
-    return;
-}
-
 static void MutateTxAddOutDataType(CMutableTransaction& tx, const std::string& strInput)
 {
     if (!tx.IsBitcoinCVersion())
@@ -895,10 +849,6 @@ static void MutateTx(CMutableTransaction& tx, const std::string& command,
     else if (command == "sign") {
         ecc.reset(new Secp256k1Init());
         MutateTxSign(tx, commandVal);
-    }
-
-    else if (command == "outblind") {
-        MutateTxAddOutBlind(tx, commandVal);
     } else if (command == "outdatatype") {
         MutateTxAddOutDataType(tx, commandVal);
     }

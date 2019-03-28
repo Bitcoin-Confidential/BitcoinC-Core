@@ -1149,11 +1149,6 @@ bool CCoinsViewMemPool::GetCoin(const COutPoint &outpoint, Coin &coin) const {
                 if (out->IsType(OUTPUT_STANDARD))
                     txout.nValue = out->GetValue();
                 coin = Coin(txout, MEMPOOL_HEIGHT, false);
-                if (out->IsType(OUTPUT_CT))
-                {
-                    coin.nType = OUTPUT_CT;
-                    coin.commitment = ((CTxOutCT*)out)->commitment;
-                };
                 return true;
             };
             return false;

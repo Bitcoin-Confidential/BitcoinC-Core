@@ -636,7 +636,7 @@ public:
     int CheckForStealthAndNarration(const CTxOutBase *pb, const CTxOutData *pdata, std::string &sNarr);
     bool FindStealthTransactions(const CTransaction &tx, mapValue_t &mapNarr);
 
-    bool ScanForOwnedOutputs(const CTransaction &tx, size_t &nCT, size_t &nRingCT, mapValue_t &mapNarr);
+    bool ScanForOwnedOutputs(const CTransaction &tx, size_t &nRingCT, mapValue_t &mapNarr);
     bool AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate) override EXCLUSIVE_LOCKS_REQUIRED(cs_wallet);
 
     CWalletTx *GetTempWalletTx(const uint256& hash);
@@ -647,8 +647,6 @@ public:
     int InsertTempTxn(const uint256 &txid, const CTransactionRecord *rtx) const;
 
     int OwnStandardOut(const CTxOutStandard *pout, const CTxOutData *pdata, COutputRecord &rout, bool &fUpdated);
-    int OwnBlindOut(CHDWalletDB *pwdb, const uint256 &txhash, const CTxOutCT *pout, const CStoredExtKey *pc, uint32_t &nLastChild,
-        COutputRecord &rout, CStoredTransaction &stx, bool &fUpdated);
     int OwnAnonOut(CHDWalletDB *pwdb, const uint256 &txhash, const CTxOutRingCT *pout, const CStoredExtKey *pc, uint32_t &nLastChild,
         COutputRecord &rout, CStoredTransaction &stx, bool &fUpdated);
 

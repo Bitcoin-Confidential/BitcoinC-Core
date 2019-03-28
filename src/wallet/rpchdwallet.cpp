@@ -6907,9 +6907,6 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
             r.SetAmount(mOutputAmounts[i]);
             r.fSubtractFeeFromAmount = setSubtractFeeFromOutputs.count(i);
 
-            if (txout->IsType(OUTPUT_CT))
-                r.vData = ((CTxOutCT*)txout.get())->vData;
-            else
             if (txout->IsType(OUTPUT_RINGCT))
                 r.vData = ((CTxOutRingCT*)txout.get())->vData;
 

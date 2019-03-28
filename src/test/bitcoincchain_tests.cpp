@@ -326,8 +326,6 @@ BOOST_AUTO_TEST_CASE(mixed_input_types)
     CScript scriptPubKey;
     txnPrev.vpout.push_back(MAKE_OUTPUT<CTxOutStandard>(1 * COIN, scriptPubKey));
     txnPrev.vpout.push_back(MAKE_OUTPUT<CTxOutStandard>(2 * COIN, scriptPubKey));
-    txnPrev.vpout.push_back(MAKE_OUTPUT<CTxOutCT>());
-    txnPrev.vpout.push_back(MAKE_OUTPUT<CTxOutCT>());
 
     CTransaction txnPrev_c(txnPrev);
     AddCoins(inputs, txnPrev_c, 1);

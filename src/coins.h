@@ -61,9 +61,6 @@ public:
         if (nType == OUTPUT_STANDARD
             && out.nValue != txo->GetValue())
             return false;
-        if (nType == OUTPUT_CT
-            && memcmp(commitment.data, ((CTxOutCT*)txo)->commitment.data, 33) != 0)
-            return false;
         return true;
     };
 

@@ -102,14 +102,6 @@ void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, bool 
                 CTxOut txout(out->GetValue(), *out->GetPScriptPubKey());
                 coin = Coin(txout, nHeight, fCoinbase);
             } else
-            if (out->IsType(OUTPUT_CT))
-            {
-                CAmount nV = 0;
-                CTxOut txout(nV, *out->GetPScriptPubKey());
-                coin = Coin(txout, nHeight, fCoinbase);
-                coin.nType = OUTPUT_CT;
-                coin.commitment = ((CTxOutCT*)out)->commitment;
-            } else
             {
                 continue; // Data or anon
             };

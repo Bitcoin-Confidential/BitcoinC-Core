@@ -202,7 +202,6 @@ public:
 };
 
 class CTxOutStandard;
-class CTxOutCT;
 class CTxOutRingCT;
 class CTxOutData;
 
@@ -219,9 +218,6 @@ public:
         {
             case OUTPUT_STANDARD:
                 s << *((CTxOutStandard*) this);
-                break;
-            case OUTPUT_CT:
-                s << *((CTxOutCT*) this);
                 break;
             case OUTPUT_RINGCT:
                 s << *((CTxOutRingCT*) this);
@@ -241,9 +237,6 @@ public:
         {
             case OUTPUT_STANDARD:
                 s >> *((CTxOutStandard*) this);
-                break;
-            case OUTPUT_CT:
-                s >> *((CTxOutCT*) this);
                 break;
             case OUTPUT_RINGCT:
                 s >> *((CTxOutRingCT*) this);
@@ -352,71 +345,6 @@ public:
     virtual const CScript *GetPScriptPubKey() const override
     {
         return &scriptPubKey;
-    };
-};
-
-class CTxOutCT : public CTxOutBase
-{
-public:
-    CTxOutCT() : CTxOutBase(OUTPUT_CT) {};
-    secp256k1_pedersen_commitment commitment;
-    std::vector<uint8_t> vData; // first 33 bytes is always ephemeral pubkey, can contain token for stealth prefix matching
-    CScript scriptPubKey;
-    std::vector<uint8_t> vRangeproof;
-
-    template<typename Stream>
-    void Serialize(Stream &s) const
-    {
-        const bool fAllowWitness = !(s.GetVersion() & SERIALIZE_TRANSACTION_NO_WITNESS);
-        s.write((char*)&commitment.data[0], 33);
-        s << vData;
-        s << *(CScriptBase*)(&scriptPubKey);
-
-        if (fAllowWitness)
-        {
-            s << vRangeproof;
-        } else
-        {
-            WriteCompactSize(s, 0);
-        };
-    };
-
-    template<typename Stream>
-    void Unserialize(Stream &s)
-    {
-        s.read((char*)&commitment.data[0], 33);
-        s >> vData;
-        s >> *(CScriptBase*)(&scriptPubKey);
-
-        s >> vRangeproof;
-    };
-
-    bool PutValue(std::vector<uint8_t> &vchAmount) const override
-    {
-        vchAmount.resize(33);
-        memcpy(&vchAmount[0], commitment.data, 33);
-        return true;
-    };
-
-    bool GetScriptPubKey(CScript &scriptPubKey_) const override
-    {
-        scriptPubKey_ = scriptPubKey;
-        return true;
-    };
-
-    virtual const CScript *GetPScriptPubKey() const override
-    {
-        return &scriptPubKey;
-    };
-
-    secp256k1_pedersen_commitment *GetPCommitment() override
-    {
-        return &commitment;
-    };
-
-    std::vector<uint8_t> *GetPRangeproof() override
-    {
-        return &vRangeproof;
     };
 };
 
@@ -632,12 +560,6 @@ inline void UnserializeTransaction(TxType& tx, Stream& s) {
             {
                 case OUTPUT_STANDARD:
                     tx.vpout[k] = MAKE_OUTPUT<CTxOutStandard>();
-                    break;
-                case OUTPUT_CT:
-                    tx.vpout[k] = MAKE_OUTPUT<CTxOutCT>();
-                    break;
-                case OUTPUT_RINGCT:
-                    tx.vpout[k] = MAKE_OUTPUT<CTxOutRingCT>();
                     break;
                 case OUTPUT_DATA:
                     tx.vpout[k] = MAKE_OUTPUT<CTxOutData>();

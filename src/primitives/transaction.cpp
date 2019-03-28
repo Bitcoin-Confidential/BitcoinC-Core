@@ -94,11 +94,6 @@ std::string CTxOutBase::ToString() const
             CTxOutData *dout = (CTxOutData*)this;
             return strprintf("CTxOutData(data=%s)", HexStr(dout->vData).substr(0, 30));
             }
-        case OUTPUT_CT:
-            {
-            CTxOutCT *cto = (CTxOutCT*)this;
-            return strprintf("CTxOutCT(data=%s, scriptPubKey=%s)", HexStr(cto->vData).substr(0, 30), HexStr(cto->scriptPubKey).substr(0, 30));
-            }
         case OUTPUT_RINGCT:
             {
             CTxOutRingCT *rcto = (CTxOutRingCT*)this;
@@ -122,10 +117,6 @@ void DeepCopy(CTxOutBaseRef &to, const CTxOutBaseRef &from)
         case OUTPUT_STANDARD:
             to = MAKE_OUTPUT<CTxOutStandard>();
             *((CTxOutStandard*)to.get()) = *((CTxOutStandard*)from.get());
-            break;
-        case OUTPUT_CT:
-            to = MAKE_OUTPUT<CTxOutCT>();
-            *((CTxOutCT*)to.get()) = *((CTxOutCT*)from.get());
             break;
         case OUTPUT_RINGCT:
             to = MAKE_OUTPUT<CTxOutRingCT>();

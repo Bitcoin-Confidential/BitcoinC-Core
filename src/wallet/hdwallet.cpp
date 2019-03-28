@@ -1883,7 +1883,7 @@ isminetype CHDWallet::IsMine(const CScript &scriptPubKey, CKeyID &keyID,
         return ISMINE_WATCH_ONLY_;
     }
     return ISMINE_NO;
-};
+}
 
 isminetype CHDWallet::IsMine(const CTxOutBase *txout) const
 {
@@ -1891,18 +1891,15 @@ isminetype CHDWallet::IsMine(const CTxOutBase *txout) const
     {
         case OUTPUT_STANDARD:
             return ::IsMine(*this, ((CTxOutStandard*)txout)->scriptPubKey);
-        case OUTPUT_CT:
-            return ::IsMine(*this, ((CTxOutCT*)txout)->scriptPubKey);
-        case OUTPUT_RINGCT:
-            //CKeyID idk = ((CTxOutRingCT*)txout)->pk.GetID();
-            //return HaveKey(idk);
-            break;
-        default:
+        case OUTPUT_RINGCT:{
+            CKeyID idk = ((CTxOutRingCT*)txout)->pk.GetID();
+            return HaveKey(idk) ? ISMINE_SPENDABLE : ISMINE_NO;
+        }default:
             return ISMINE_NO;
     };
 
     return ISMINE_NO;
-};
+}
 
 bool CHDWallet::IsMine(const CTransaction &tx) const
 {
@@ -2974,24 +2971,6 @@ int CreateOutput(OUTPUT_PTR<CTxOutBase> &txbout, CTempRecipient &r, std::string 
             break;
         case OUTPUT_STANDARD:
             txbout = MAKE_OUTPUT<CTxOutStandard>(r.nAmount, r.scriptPubKey);
-            break;
-        case OUTPUT_CT:
-            {
-            txbout = MAKE_OUTPUT<CTxOutCT>();
-            CTxOutCT *txout = (CTxOutCT*)txbout.get();
-
-            if (r.fNonceSet) {
-                if (r.vData.size() < 33) {
-                    return errorN(1, sError, __func__, "Missing ephemeral value, vData size %d", r.vData.size());
-                }
-                txout->vData = r.vData;
-            } else {
-                CPubKey pkEphem = r.sEphem.GetPubKey();
-                SetCTOutVData(txout->vData, pkEphem, r.nStealthPrefix);
-            }
-
-            txout->scriptPubKey = r.scriptPubKey;
-            }
             break;
         case OUTPUT_RINGCT:
             {
@@ -8201,13 +8180,6 @@ bool CHDWallet::ProcessLockedBlindedOutputs()
         bool fUpdated = false;
         pout->n = op.n;
         switch (txout->nVersion) {
-            case OUTPUT_CT:
-                if (OwnBlindOut(&wdb, op.hash, (CTxOutCT*)txout.get(), nullptr, n, *pout, stx, fUpdated)
-                    && !fHave) {
-                    fUpdated = true;
-                    rtx.InsertOutput(*pout);
-                }
-                break;
             case OUTPUT_RINGCT:
                 if (OwnAnonOut(&wdb, op.hash, (CTxOutRingCT*)txout.get(), nullptr, n, *pout, stx, fUpdated)
                     && !fHave) {
@@ -8621,7 +8593,7 @@ bool CHDWallet::FindStealthTransactions(const CTransaction &tx, mapValue_t &mapN
     return true;
 };
 
-bool CHDWallet::ScanForOwnedOutputs(const CTransaction &tx, size_t &nCT, size_t &nRingCT, mapValue_t &mapNarr)
+bool CHDWallet::ScanForOwnedOutputs(const CTransaction &tx, size_t &nRingCT, mapValue_t &mapNarr)
 {
     AssertLockHeld(cs_wallet);
 
@@ -8631,41 +8603,6 @@ bool CHDWallet::ScanForOwnedOutputs(const CTransaction &tx, size_t &nCT, size_t 
     int32_t nOutputId = -1;
     for (const auto &txout : tx.vpout) {
         nOutputId++;
-        if (txout->IsType(OUTPUT_CT)) {
-            nCT++;
-            const CTxOutCT *ctout = (CTxOutCT*) txout.get();
-
-            CTxDestination address;
-            if (!ExtractDestination(ctout->scriptPubKey, address)
-                || address.type() != typeid(CKeyID)) {
-                WalletLogPrintf("%s: ExtractDestination failed.\n", __func__);
-                continue;
-            }
-
-            // Uncover stealth
-            uint32_t prefix = 0;
-            bool fHavePrefix = false;
-            if (ctout->vData.size() != 33) {
-                if (ctout->vData.size() == 38 // Have prefix
-                    && ctout->vData[33] == DO_STEALTH_PREFIX) {
-                    fHavePrefix = true;
-                    memcpy(&prefix, &ctout->vData[34], 4);
-                } else {
-                    LogPrint(BCLog::HDWALLET, "Bad blind output data size.\n");
-                    continue;
-                }
-            }
-
-            CKey sShared;
-            std::vector<uint8_t> vchEphemPK;
-            vchEphemPK.resize(33);
-            memcpy(&vchEphemPK[0], &ctout->vData[0], 33);
-
-            if (ProcessStealthOutput(address, vchEphemPK, prefix, fHavePrefix, sShared)) {
-                fIsMine = true;
-            }
-            continue;
-        } else
         if (txout->IsType(OUTPUT_RINGCT)) {
             nRingCT++;
             const CTxOutRingCT *rctout = (CTxOutRingCT*) txout.get();
@@ -8756,8 +8693,8 @@ bool CHDWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CBloc
         };
 
         mapValue_t mapNarr;
-        size_t nCT = 0, nRingCT = 0;
-        bool fIsMine = ScanForOwnedOutputs(tx, nCT, nRingCT, mapNarr);
+        size_t nRingCT = 0;
+        bool fIsMine = ScanForOwnedOutputs(tx, nRingCT, mapNarr);
 
         bool fIsFromMe = false;
         MapWallet_t::const_iterator miw;
@@ -8820,7 +8757,7 @@ bool CHDWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CBloc
             };
         };
 
-        if (nCT > 0 || nRingCT > 0) {
+        if (nRingCT > 0) {
             bool fExisted = mapRecords.count(tx.GetHash()) != 0;
             if (fExisted && !fUpdate) return false;
 
@@ -8981,113 +8918,6 @@ int CHDWallet::OwnStandardOut(const CTxOutStandard *pout, const CTxOutData *pdat
     rout.nValue = pout->nValue;
     rout.scriptPubKey = pout->scriptPubKey;
     rout.nFlags &= ~ORF_LOCKED;
-
-    return 1;
-};
-
-int CHDWallet::OwnBlindOut(CHDWalletDB *pwdb, const uint256 &txhash, const CTxOutCT *pout, const CStoredExtKey *pc, uint32_t &nLastChild,
-    COutputRecord &rout, CStoredTransaction &stx, bool &fUpdated)
-{
-    /*
-    bool fDecoded = false;
-    if (pc && !IsLocked()) // check if output is from this wallet
-    {
-        CKey keyEphem;
-        uint32_t nChildOut;
-        if (0 == pc->DeriveKey(keyEphem, nLastChild, nChildOut, true))
-        {
-            // regenerate nonce
-            //uint256 nonce = keyEphem.ECDH(pkto_outs[k]);
-            //CSHA256().Write(nonce.begin(), 32).Finalize(nonce.begin());
-        };
-    };
-    */
-
-    CKeyID idk;
-    const CEKAKey *pak = nullptr;
-    const CEKASCKey *pasc = nullptr;
-    CExtKeyAccount *pa = nullptr;
-    bool isInvalid;
-    isminetype mine = IsMine(pout->scriptPubKey, idk, pak, pasc, pa, isInvalid);
-    if (!(mine & ISMINE_ALL)) {
-        return 0;
-    }
-
-    if (pa && pak && pa->nActiveInternal == pak->nParent) {
-        rout.nFlags |= ORF_CHANGE | ORF_FROM;
-    }
-
-    rout.nType = OUTPUT_CT;
-
-    if (mine & ISMINE_SPENDABLE) {
-        rout.nFlags |= ORF_OWNED;
-    } else {
-        rout.nFlags |= ORF_WATCHONLY;
-    }
-
-    if (mine & ISMINE_HARDWARE_DEVICE) {
-        rout.nFlags |= ORF_HARDWARE_DEVICE;
-    }
-
-    if (IsLocked()) {
-        COutPoint op(txhash, rout.n);
-        if ((rout.nFlags & ORF_LOCKED)
-            && !pwdb->HaveLockedAnonOut(op)) {
-            rout.nValue = 0;
-            fUpdated = true;
-            if (LogAcceptCategory(BCLog::HDWALLET)) WalletLogPrintf("%s: Adding locked output %s, %d.\n", __func__, txhash.ToString(), rout.n);
-            if (!pwdb->WriteLockedAnonOut(op)) {
-                WalletLogPrintf("Error: %s - WriteLockedAnonOut failed.\n", __func__);
-            }
-        }
-        return 1;
-    }
-
-    CKey key;
-    if (!GetKey(idk, key)) {
-        return werrorN(0, "%s: GetKey failed.", __func__);
-    }
-
-    if (pout->vData.size() < 33) {
-        return werrorN(0, "%s: vData.size() < 33.", __func__);
-    }
-
-
-    CPubKey pkEphem;
-    pkEphem.Set(pout->vData.begin(), pout->vData.begin() + 33);
-
-    // Regenerate nonce
-    uint256 nonce = key.ECDH(pkEphem);
-    CSHA256().Write(nonce.begin(), 32).Finalize(nonce.begin());
-
-    uint64_t min_value, max_value;
-    uint8_t blindOut[32];
-    unsigned char msg[256]; // Currently narration is capped at 32 bytes
-    size_t mlen = sizeof(msg);
-    memset(msg, 0, mlen);
-    uint64_t amountOut;
-    if (1 != secp256k1_rangeproof_rewind(secp256k1_ctx_blind,
-        blindOut, &amountOut, msg, &mlen, nonce.begin(),
-        &min_value, &max_value,
-        &pout->commitment, pout->vRangeproof.data(), pout->vRangeproof.size(),
-        nullptr, 0,
-        secp256k1_generator_h)) {
-        return werrorN(0, "%s: secp256k1_rangeproof_rewind failed.", __func__);
-    }
-
-    msg[mlen-1] = '\0';
-
-    size_t nNarr = strlen((const char*)msg);
-    if (nNarr > 0) {
-        rout.sNarration.assign((const char*)msg, nNarr);
-    }
-
-    rout.nValue = amountOut;
-    rout.scriptPubKey = pout->scriptPubKey;
-    rout.nFlags &= ~ORF_LOCKED;
-
-    stx.InsertBlind(rout.n, blindOut);
-    fUpdated = true;
 
     return 1;
 };
@@ -9433,13 +9263,6 @@ bool CHDWallet::AddToRecord(CTransactionRecord &rtxIn, const CTransaction &tx,
                     fUpdated = true;
                     rtx.InsertOutput(*pout);
                 }
-                }
-                break;
-            case OUTPUT_CT:
-                if (OwnBlindOut(&wdb, txhash, (CTxOutCT*)txout.get(), pcC, nCTStart, *pout, stx, fUpdated)
-                    && !fHave) {
-                    fUpdated = true;
-                    rtx.InsertOutput(*pout);
                 }
                 break;
             case OUTPUT_RINGCT:
