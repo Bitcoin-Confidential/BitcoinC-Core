@@ -11,7 +11,7 @@
 #include <atomic>
 #include <vector>
 
-class CBlockTemplate;
+struct CBlockTemplate;
 class CHDWallet;
 class CWallet;
 
