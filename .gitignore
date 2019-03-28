@@ -88,6 +88,11 @@ src/qt/bitcoinc-qt.includes
 Makefile
 bitcoinc-qt
 BitcoinC-Qt.app
+BitcoinC-Core.creator
+BitcoinC-Core.creator.*
+BitcoinC-Core.config
+BitcoinC-Core.files
+BitcoinC-Core.includes
 background.tiff*
 
 # Unit-tests
