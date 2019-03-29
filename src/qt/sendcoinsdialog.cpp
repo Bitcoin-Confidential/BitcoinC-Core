@@ -15,6 +15,7 @@
 #include <qt/sendcoinsentry.h>
 #include <qt/sendcoinsdialog.h>
 
+#include <anon.h>
 #include <chainparams.h>
 #include <interfaces/node.h>
 #include <key_io.h>
@@ -325,7 +326,7 @@ void SendCoinsDialog::on_sendButton_clicked()
         nRecipient++;
     }
 
-    int nRingSize = 4;
+    int nRingSize = MIN_RINGSIZE; //GetRandInt(MAX_RINGSIZE - MIN_RINGSIZE) + MIN_RINGSIZE;
     int nMaxInputs = 32;
 
     sCommand += "] \"\" \"\" "+QString::number(nRingSize)+" "+QString::number(nMaxInputs);
