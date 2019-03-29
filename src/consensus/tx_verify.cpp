@@ -200,37 +200,77 @@ bool CheckValue(CValidationState &state, CAmount nValue, CAmount &nValueOut)
     return true;
 }
 
-bool CheckStandardOutput(CValidationState &state, const Consensus::Params& consensusParams, const CTxOutStandard *p, CAmount &nValueOut)
+bool CheckStandardOutput(CValidationState &state, const Consensus::Params& consensusParams, int nTime, const CTransaction &tx, const CTxOutStandard *p, CAmount &nValueOut)
 {
     if (!CheckValue(state, p->nValue, nValueOut))
         return false;
 
+    if( p->vecSignature.size() > CPubKey::COMPACT_SIGNATURE_SIZE ){
+        return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-signature-size");
+    }
+
+    bool fIsCoinStake = false;
+
     if (HasIsCoinstakeOp(p->scriptPubKey))
     {
+        fIsCoinStake = true;
         if (GetAdjustedTime() < consensusParams.OpIsCoinstakeTime)
             return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-opiscoinstake");
         if (!consensusParams.fAllowOpIsCoinstakeWithP2PKH)
         {
             if (IsSpendScriptP2PKH(p->scriptPubKey))
                 return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-opiscoinstake-spend-p2pkh");
-        };
-    };
+        }
+    }
 
-//    CKeyID keyId;
-//    if(!ExtractStakingKeyID(*p->GetPScriptPubKey(), keyId)){
-//        return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-script");
-//    }
+    if( !tx.IsCoinBase() ){
+        CKeyID keyId1, keyId2;
+        CScript script1, script2;
+        uint256 nSigHash1;
+        uint256 nSigHash2;
 
-//    uint256 nSigHash = SignatureHashConvertOutput(keyId, p->nValue, tx.vin);
+        if( fIsCoinStake ){
 
-//    CPubKey pubkey;
-//    if (!pubkey.RecoverCompact(nSigHash, p->vchSig)){
-//        return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-signature");
-//    }
+            if(!SplitConditionalCoinstakeScript(*p->GetPScriptPubKey(), script1, script2)){
+                return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-script-coinstake");
+            }
 
-//    if(pubkey.GetID() != keyId){
-//        return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-signature-key");
-//    }
+            if(!ExtractStakingKeyID(script1, keyId1)){
+                return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-script-coinstake-dest1");
+            }
+
+            if(!ExtractStakingKeyID(script2, keyId2)){
+                return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-script-coinstake-dest2");
+            }
+
+            nSigHash1 = SignatureHashStakingOutput(keyId1, p->nValue, tx.vin);
+            nSigHash2 = SignatureHashStakingOutput(keyId2, p->nValue, tx.vin);
+
+        }else if(ExtractStakingKeyID(*p->GetPScriptPubKey(), keyId1)){
+
+            const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTime);
+            CKeyID keyIdDev;
+            if(CBitcoinAddress(pDevFundSettings->sDevFundAddresses).GetKeyID(keyIdDev) &&
+               keyId1 == keyIdDev){
+                return true;;
+            }
+
+            nSigHash1 = SignatureHashStakingOutput(keyId1, p->nValue, tx.vin);
+        }else{
+            return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-script-dest");
+        }
+
+        CPubKey pubKey1, pubKey2;
+        bool fP1 = pubKey1.RecoverCompact(nSigHash1, p->vecSignature);
+        bool fP2 = pubKey2.RecoverCompact(nSigHash2, p->vecSignature);
+        if (!fP1 && !fP2 ){
+            return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-signature");
+        }
+
+        if( pubKey1.GetID() != keyId1 && pubKey2.GetID() != keyId2 ){
+            return state.DoS(100, false, REJECT_INVALID, "bad-staking-out-signature-key");
+        }
+    }
 
     return true;
 }
@@ -299,12 +339,13 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
         size_t nStandardOutputs = 0;
         CAmount nValueOut = 0;
         size_t nDataOutputs = 0;
+        int nTime = GetAdjustedTime();
         for (const auto &txout : tx.vpout)
         {
             switch (txout->nVersion)
             {
                 case OUTPUT_STANDARD:
-                    if (!CheckStandardOutput(state, consensusParams, (CTxOutStandard*) txout.get(), nValueOut))
+                    if (!CheckStandardOutput(state, consensusParams, nTime, tx, (CTxOutStandard*) txout.get(), nValueOut))
                         return false;
                     nStandardOutputs++;
                     break;
