@@ -36,7 +36,7 @@ class SendCoinsDialog : public QDialog
 
 public:
 
-    explicit SendCoinsDialog(const PlatformStyle *platformStyle, bool fStakingDialog = false, QWidget *parent = 0);
+    explicit SendCoinsDialog(const PlatformStyle *platformStyle, bool fStakingDialog = false, bool isConvertToTab = false, QWidget *parent = 0);
     ~SendCoinsDialog();
 
     void setClientModel(ClientModel *clientModel);

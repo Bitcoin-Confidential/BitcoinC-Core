@@ -56,7 +56,7 @@ static int getIndexForConfTarget(int target) {
     return confTargets.size() - 1;
 }
 
-SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStakingDialog, QWidget *parent) :
+SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStakingDialog, bool isConvertToTab, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SendCoinsDialog),
     clientModel(0),
@@ -136,6 +136,9 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
 
 	if (fStakingDialog)
 		ui->sendTabHeaderLabel->hide();
+	  
+    if (!isConvertToTab)
+		ui->convertToHeaderLabel->hide();
 }
 
 void SendCoinsDialog::setClientModel(ClientModel *_clientModel)
