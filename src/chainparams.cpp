@@ -65,7 +65,7 @@ bool CChainParams::CheckAirdropCoinbase( const CBlock *pblock, int nHeight) cons
         ++nExpected;
 
         bool fTxFound = false;
-        for( int i=0;i<pblock->vtx.size(); i++){
+        for( size_t i=0;i<pblock->vtx.size(); i++){
             if( pblock->vtx[i].get()->GetHash() == cth.hash && pblock->vtx[i].get()->IsCoinBase() ){
                 ++nFound;
                 fTxFound = true;
@@ -181,10 +181,7 @@ const size_t nGenesisOutputsRegtest = sizeof(regTestOutputs) / sizeof(regTestOut
 //Mainnet
 const std::pair<const char*, CAmount> genesisOutputs[] = {
          //Dev address bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ
-    std::make_pair("fff85dd28a712f821414fabec2a58395858ff7ae",100000 * COIN),
-
-         //Airdrop funds address baUw2uoeZTjrPjuj2YTRwiLpEuhEKSRb4S
-    std::make_pair("ee9c88287db0e48d56e4776b6bd5a762c4dbb22e",7367509500 * COIN),
+    std::make_pair("fff85dd28a712f821414fabec2a58395858ff7ae",1000 * COIN),
 };
 
 const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]);
@@ -284,14 +281,7 @@ static CBlock CreateGenesisBlockMainNet(uint32_t nTime, uint32_t nNonce, uint32_
         out->scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex(genesisOutputs[k].first) << OP_EQUALVERIFY << OP_CHECKSIG;
         txNew.vpout[k] = out;
     }
-/*
-    // Airdrop Address
-    // bH54zbnXUHUhcvyP8fTboMVUXoPfTAjU6E
-    OUTPUT_PTR<CTxOutStandard> out = MAKE_OUTPUT<CTxOutStandard>();
-    out->nValue = 7367509500 * COIN;
-    out->scriptPubKey = CScript() << OP_DUP << OP_HASH160 << ParseHex("2f9f0e260ed2e09956109d62603312968a19642f") << OP_EQUALVERIFY << OP_CHECKSIG;
-    txNew.vpout.push_back(out);
-*/
+
     CBlock genesis;
     genesis.nTime    = nTime;
     genesis.nBits    = nBits;
@@ -387,10 +377,9 @@ public:
 
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlockMainNet(1551128292, 59115, 0x1f00ffff); // 2018-12-12
+        genesis = CreateGenesisBlockMainNet(1551128292, 36140, 0x1f00ffff); // 2018-12-12
         consensus.hashGenesisBlock = genesis.GetHash();
-
-/* //added-->
+/*
             bool fNegative;
             bool fOverflow;
             arith_uint256 bnTarget;
@@ -401,21 +390,18 @@ public:
     // default
                      if (UintToArith256(genesis.GetHash()) <= bnTarget){
                         printf("new mainnet genesis.nNonce = %d\n", count);
+                        printf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
                         printf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
                         printf("new mainnet genesis Witness merkle root: %s\n", genesis.hashWitnessMerkleRoot.ToString().c_str());
-                        printf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
                         break;
                     }
                      if( count % 1000000 == 0 )
                       printf("count = %d\n", count);
                      }
-   ///<--added*/
-
-
-
-        assert(consensus.hashGenesisBlock == uint256S("0x0000a019b8be2cd848ad659473a32251b6f79403d5cfbd34777e9dfbba64f9e5"));
-        assert(genesis.hashMerkleRoot == uint256S("0x8d47c652109492c2fc66e54e43f2ec458341ec764931a9fb54cd259918c3be57"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x3c8664b4554698ef489407145df6268be19387ed09734421e04c854835e20432"));
+*/
+        assert(consensus.hashGenesisBlock == uint256S("0x0000c1bed1b5d0905a9e0629859444c8102d220f79d49d38806fcfc3b5fbdea1"));
+        assert(genesis.hashMerkleRoot == uint256S("0x55f4623c823f63ea4bbdb678de0fcbacc95eef94b679a1bb8ca2b89d1049a053"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x88cac0b7df946812ec8fcbbb8a9547151b070067c5417c84a0247329d93d7624"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -561,11 +547,9 @@ public:
 
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlockTestNet(1553477363, 228596, 0x1f00ffff);
+        genesis = CreateGenesisBlockTestNet(1553477363, 21886, 0x1f00ffff);
         consensus.hashGenesisBlock = genesis.GetHash();
-
 /*
-
            bool fNegative;
            bool fOverflow;
            arith_uint256 bnTarget;
@@ -584,12 +568,10 @@ public:
                     if( count % 1000000 == 0 )
                      printf("count = %d\n", count);
                     }
-
 */
-
-        assert(genesis.hashMerkleRoot == uint256S("0x1e14e7c9129894990dfbc1186d417b942a15f21f5df34bd427d0df3cfb4d3113"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0xb52c7733c105ad905317d0b19b484aa94f8a80266cafc4a35452c018ceb0fcba"));
-        assert(consensus.hashGenesisBlock == uint256S("0x0000ea3ef21fde63ca41f1d73884902adc735b37021c6bd96fb6dc18166cbd51"));
+        assert(genesis.hashMerkleRoot == uint256S("0xb52c7733c105ad905317d0b19b484aa94f8a80266cafc4a35452c018ceb0fcba"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x521af469e7f698c81551a3e81e6096d52bdc1880ecd73e31bed8430cbeb199e5"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000d7129ea60ca9e251546298ca7bb36b7a1e00c149dade2b8efe89fef14ed7"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -640,7 +622,7 @@ public:
 
         checkpointData = {
             {
-/*                {127620, uint256S("0xe5ab909fc029b253bad300ccf859eb509e03897e7853e8bfdde2710dbf248dd1")},
+/*              {127620, uint256S("0xe5ab909fc029b253bad300ccf859eb509e03897e7853e8bfdde2710dbf248dd1")},
                 {210920, uint256S("0x5534f546c3b5a264ca034703b9694fabf36d749d66e0659eef5f0734479b9802")},
                 {259290, uint256S("0x58267bdf935a2e0716cb910d055b8cdaa019089a5f71c3db90765dc7101dc5dc")},
 */            }
