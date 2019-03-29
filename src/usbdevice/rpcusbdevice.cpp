@@ -401,7 +401,7 @@ static UniValue devicesignrawtransaction(const JSONRPCRequest &request)
             {
             const Coin& coin = view.AccessCoin(out);
 
-            if (coin.nType != OUTPUT_STANDARD && coin.nType != OUTPUT_CT) {
+            if (coin.nType != OUTPUT_STANDARD) {
                 throw JSONRPCError(RPC_MISC_ERROR, strprintf("Bad input type: %d", coin.nType));
             }
 
@@ -501,7 +501,7 @@ static UniValue devicesignrawtransaction(const JSONRPCRequest &request)
             TxInErrorToJSON(txin, vErrors, "Input not found or already spent");
             continue;
         }
-        if (coin.nType != OUTPUT_STANDARD && coin.nType != OUTPUT_CT) {
+        if (coin.nType != OUTPUT_STANDARD) {
             pDevice->Close();
             throw JSONRPCError(RPC_MISC_ERROR, strprintf("Bad input type: %d", coin.nType));
         }

@@ -439,13 +439,13 @@ void CTxMemPool::addAddressIndex(const CTxMemPoolEntry &entry, const CCoinsViewC
 
         const Coin &coin = view.AccessCoin(input.prevout);
 
-        // prevout should only ever be OUTPUT_STANDARD or OUTPUT_CT
-        assert(coin.nType == OUTPUT_STANDARD || coin.nType == OUTPUT_CT);
+        // prevout should only ever be OUTPUT_STANDARD
+        assert(coin.nType == OUTPUT_STANDARD);
 
         std::vector<uint8_t> hashBytes;
         const CScript *pScript = &coin.out.scriptPubKey;
         int scriptType = 0;
-        CAmount nValue = coin.nType == OUTPUT_CT ? 0 : coin.out.nValue;
+        CAmount nValue = coin.out.nValue;
 
         if (!ExtractIndexInfo(pScript, scriptType, hashBytes)
             || scriptType == 0)
@@ -461,8 +461,7 @@ void CTxMemPool::addAddressIndex(const CTxMemPoolEntry &entry, const CCoinsViewC
     {
         const CTxOutBase *out = tx.vpout[k].get();
 
-        if (!out->IsType(OUTPUT_STANDARD)
-            && !out->IsType(OUTPUT_CT))
+        if (!out->IsType(OUTPUT_STANDARD))
             continue;
 
         const CScript *pScript;
@@ -471,7 +470,7 @@ void CTxMemPool::addAddressIndex(const CTxMemPoolEntry &entry, const CCoinsViewC
             LogPrintf("ERROR: %s - expected script pointer.\n", __func__);
             continue;
         };
-        CAmount nValue = out->IsType(OUTPUT_STANDARD) ? out->GetValue() : 0;
+        CAmount nValue = out->GetValue();
 
         std::vector<uint8_t> hashBytes;
         int scriptType = 0;
@@ -537,12 +536,12 @@ void CTxMemPool::addSpentIndex(const CTxMemPoolEntry &entry, const CCoinsViewCac
             continue;
 
         const Coin &coin = view.AccessCoin(input.prevout);
-        assert(coin.nType == OUTPUT_STANDARD || coin.nType == OUTPUT_CT);
+        assert(coin.nType == OUTPUT_STANDARD);
 
         std::vector<uint8_t> hashBytes;
         const CScript *pScript = &coin.out.scriptPubKey;
         int scriptType = 0;
-        CAmount nValue = coin.nType == OUTPUT_CT ? -1 : coin.out.nValue;
+        CAmount nValue = coin.out.nValue;
 
         if (!ExtractIndexInfo(pScript, scriptType, hashBytes))
             continue;
@@ -872,7 +871,7 @@ void CTxMemPool::check(const CCoinsViewCache *pcoins) const
 
                 if (fBitcoinCMode)
                     assert(tx2.vpout.size() > txin.prevout.n && tx2.vpout[txin.prevout.n] != nullptr
-                        && (tx2.vpout[txin.prevout.n]->IsStandardOutput() || tx2.vpout[txin.prevout.n]->IsType(OUTPUT_CT)));
+                        && (tx2.vpout[txin.prevout.n]->IsStandardOutput()));
                 else
                     assert(tx2.vout.size() > txin.prevout.n && !tx2.vout[txin.prevout.n].IsNull());
 

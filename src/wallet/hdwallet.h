@@ -41,7 +41,6 @@ enum OutputRecordFlags
     ORF_OWN_WATCH           = ORF_STAKEONLY | ORF_WATCHONLY,
     ORF_OWN_ANY             = ORF_OWNED | ORF_OWN_WATCH,
 
-    ORF_BLIND_IN            = (1 << 14),
     ORF_ANON_IN             = (1 << 15),
 };
 

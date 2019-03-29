@@ -86,8 +86,6 @@ public:
         ::Serialize(s, CTxOutCompressor(REF(out)));
         if (!fBitcoinCMode) return;
         ::Serialize(s, nType);
-        if (nType == OUTPUT_CT)
-            s.write((char*)&commitment.data[0], 33);
     }
 
     template<typename Stream>
@@ -99,8 +97,6 @@ public:
         ::Unserialize(s, CTxOutCompressor(out));
         if (!fBitcoinCMode) return;
         ::Unserialize(s, nType);
-        if (nType == OUTPUT_CT)
-            s.read((char*)&commitment.data[0], 33);
     }
 
     bool IsSpent() const {

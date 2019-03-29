@@ -1647,12 +1647,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
                 {
                     vchAmount.resize(8);
                     memcpy(vchAmount.data(), &amount, sizeof(amount));
-                } else
-                if (coin.nType == OUTPUT_CT)
-                {
-                    vchAmount.resize(33);
-                    memcpy(vchAmount.data(), coin.commitment.data, 33);
-                };
+                }
 
                 // Verify signature
                 CScriptCheck check(scriptPubKey, vchAmount, tx, i, flags, cacheSigStore, &txdata);
@@ -1913,7 +1908,7 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
 
             // Check that all outputs are available and match the outputs in the block itself
             // exactly.
-            if (out->IsType(OUTPUT_STANDARD) || out->IsType(OUTPUT_CT))
+            if (out->IsType(OUTPUT_STANDARD))
             {
                 const CScript *pScript = out->GetPScriptPubKey();
                 if (!pScript->IsUnspendable()) {
@@ -1922,8 +1917,8 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
 
                     CTxOut txout(0, *pScript);
 
-                    if (out->IsType(OUTPUT_STANDARD))
-                        txout.nValue = out->GetValue();
+                    txout.nValue = out->GetValue();
+
                     bool is_spent = view.SpendCoin(op, &coin);
                     if (!is_spent || txout != coin.out || pindex->nHeight != coin.nHeight || is_coinbase != coin.fCoinBase) {
                         fClean = false; // transaction output mismatch
@@ -1932,8 +1927,7 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
             };
 
             if (!fAddressIndex
-                || (!out->IsType(OUTPUT_STANDARD)
-                && !out->IsType(OUTPUT_CT)))
+                || (!out->IsType(OUTPUT_STANDARD)))
                 continue;
 
             const CScript *pScript;
@@ -1993,7 +1987,7 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
                         const Coin &coin = view.AccessCoin(tx.vin[j].prevout);
                         const CScript *pScript = &coin.out.scriptPubKey;
 
-                        CAmount nValue = coin.nType == OUTPUT_CT ? 0 : coin.out.nValue;
+                        CAmount nValue = coin.out.nValue;
                         std::vector<uint8_t> hashBytes;
                         int scriptType = 0;
                         if (!ExtractIndexInfo(pScript, scriptType, hashBytes)
@@ -2515,7 +2509,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                     const Coin &coin = view.AccessCoin(input.prevout);
                     const CScript *pScript = &coin.out.scriptPubKey;
 
-                    CAmount nValue = coin.nType == OUTPUT_CT ? 0 : coin.out.nValue;
+                    CAmount nValue = coin.out.nValue;
                     std::vector<uint8_t> hashBytes;
                     int scriptType = 0;
 
@@ -2537,7 +2531,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
                     if (fSpentIndex)
                     {
-                        CAmount nValue = coin.nType == OUTPUT_CT ? -1 : coin.out.nValue;
+                        CAmount nValue = coin.out.nValue;
                         // add the spent index to determine the txid and input that spent an output
                         // and to find the amount and address from an input
                         view.spentIndex.push_back(std::make_pair(CSpentIndexKey(input.prevout.hash, input.prevout.n), CSpentIndexValue(txhash, j, pindex->nHeight, nValue, scriptType, hashAddress)));
@@ -2655,8 +2649,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             {
                 const CTxOutBase *out = tx.vpout[k].get();
 
-                if (!out->IsType(OUTPUT_STANDARD)
-                    && !out->IsType(OUTPUT_CT))
+                if (!out->IsType(OUTPUT_STANDARD))
                     continue;
 
                 const CScript *pScript;

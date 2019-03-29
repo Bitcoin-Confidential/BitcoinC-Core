@@ -192,7 +192,7 @@ bool IsStandardTx(const CTransaction& tx, std::string& reason)
     for (const auto &txout : tx.vpout) {
         const CTxOutBase *p = txout.get();
 
-        if (!p->IsType(OUTPUT_STANDARD) && !p->IsType(OUTPUT_CT))
+        if (!p->IsType(OUTPUT_STANDARD))
             continue;
 
         if (!::IsStandard(*p->GetPScriptPubKey(), whichType)) {
@@ -251,7 +251,7 @@ bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs)
             const Coin& coin = mapInputs.AccessCoin(tx.vin[i].prevout);
             const CTxOut& prev = coin.out;
 
-            if (coin.nType != OUTPUT_STANDARD && coin.nType != OUTPUT_CT)
+            if (coin.nType != OUTPUT_STANDARD)
                 return false;
 
             txnouttype whichType;

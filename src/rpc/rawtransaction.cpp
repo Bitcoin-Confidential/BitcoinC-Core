@@ -971,7 +971,7 @@ UniValue SignTransaction(CMutableTransaction& mtx, const UniValue& prevTxsUnival
             {
             const Coin& coin = view.AccessCoin(out);
 
-            if (coin.nType != OUTPUT_STANDARD && coin.nType != OUTPUT_CT)
+            if (coin.nType != OUTPUT_STANDARD)
                 throw JSONRPCError(RPC_MISC_ERROR, strprintf("Bad input type: %d", coin.nType));
 
             if (!coin.IsSpent() && coin.out.scriptPubKey != scriptPubKey) {

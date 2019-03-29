@@ -5318,7 +5318,7 @@ static UniValue debugwallet(const JSONRPCRequest &request)
 
                 for (const auto &r : rtx.vout)
                 {
-                    if ((r.nType == OUTPUT_CT || r.nType == OUTPUT_RINGCT)
+                    if ((r.nType == OUTPUT_RINGCT)
                         && (r.nFlags & ORF_OWNED || r.nFlags & ORF_STAKEONLY)
                         && !pwallet->IsSpent(txhash, r.n))
                     {
@@ -6437,7 +6437,7 @@ static UniValue createrawparttransaction(const JSONRPCRequest& request)
         r.sNarration = sNarr;
 
         // Need to know the fee before calulating the blind sum
-        if (r.nType == OUTPUT_CT || r.nType == OUTPUT_RINGCT)
+        if (r.nType == OUTPUT_RINGCT)
         {
             r.vBlind.resize(32);
             if (o["blindingfactor"].isStr())
@@ -6483,9 +6483,6 @@ static UniValue createrawparttransaction(const JSONRPCRequest& request)
         /*
         if (r.nType == OUTPUT_STANDARD)
             nValueOutPlain += r.nAmount;
-
-        if (r.fChange && r.nType == OUTPUT_CT)
-            nChangePosInOut = i;
         */
         r.n = rawTx.vpout.size();
         rawTx.vpout.push_back(txbout);
@@ -6751,18 +6748,6 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Input offset too large for output record.");
         r.n = tx.vin[n].prevout.n;
 
-        uint256 blind;
-        if (inputAmounts[sKey]["blind"].isStr())
-        {
-            std::string s = inputAmounts[sKey]["blind"].get_str();
-            if (!IsHex(s) || !(s.size() == 64))
-                throw JSONRPCError(RPC_INVALID_PARAMETER, "Blinding factor must be 32 bytes and hex encoded.");
-
-            blind.SetHex(s);
-            mInputBlinds[n] = blind;
-            r.nType = OUTPUT_CT;
-        };
-
         if (inputAmounts[sKey]["value"].isNull())
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Missing 'value' for input.");
 
@@ -6789,7 +6774,6 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
         ret.first->second.InsertOutput(r);
 
         im.nValue = r.nValue;
-        im.blind = blind;
 
         coinControl.m_inputData[tx.vin[n].prevout] = im;
     };
@@ -6867,7 +6851,7 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
         const auto &txout = tx.vpout[i];
         CTempRecipient &r = vecSend[i];
 
-        if (txout->IsType(OUTPUT_CT) || txout->IsType(OUTPUT_RINGCT))
+        if (txout->IsType(OUTPUT_RINGCT))
         {
             // Check commitment matches
             std::map<int, CAmount>::iterator ita = mOutputAmounts.find(i);
@@ -7169,7 +7153,7 @@ static UniValue verifyrawtransaction(const JSONRPCRequest &request)
             {
             const Coin& coin = view.AccessCoin(out);
 
-            if (coin.nType != OUTPUT_STANDARD && coin.nType != OUTPUT_CT)
+            if (coin.nType != OUTPUT_STANDARD)
                 throw JSONRPCError(RPC_MISC_ERROR, strprintf("Bad input type: %d", coin.nType));
 
             if (!coin.IsSpent() && coin.out.scriptPubKey != scriptPubKey) {
@@ -7186,15 +7170,6 @@ static UniValue verifyrawtransaction(const JSONRPCRequest &request)
                     throw JSONRPCError(RPC_INVALID_PARAMETER, "Both \"amount\" and \"amount_commitment\" found.");
                 newcoin.nType = OUTPUT_STANDARD;
                 newcoin.out.nValue = AmountFromValue(find_value(prevOut, "amount"));
-            } else
-            if (prevOut.exists("amount_commitment")) {
-                std::string s = prevOut["amount_commitment"].get_str();
-                if (!IsHex(s) || !(s.size() == 66))
-                    throw JSONRPCError(RPC_INVALID_PARAMETER, "\"amount_commitment\" must be 33 bytes and hex encoded.");
-                std::vector<uint8_t> vchCommitment = ParseHex(s);
-                assert(vchCommitment.size() == 33);
-                memcpy(newcoin.commitment.data, vchCommitment.data(), 33);
-                newcoin.nType = OUTPUT_CT;
             } else
             {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "\"amount\" or \"amount_commitment\" is required");
@@ -7244,11 +7219,6 @@ static UniValue verifyrawtransaction(const JSONRPCRequest &request)
         {
             vchAmount.resize(8);
             memcpy(vchAmount.data(), &coin.out.nValue, 8);
-        } else
-        if (coin.nType == OUTPUT_CT)
-        {
-            vchAmount.resize(33);
-            memcpy(vchAmount.data(), coin.commitment.data, 33);
         } else
         {
             throw JSONRPCError(RPC_MISC_ERROR, strprintf("Bad input type: %d", coin.nType));

@@ -257,18 +257,18 @@ public:
     bool IsType(uint8_t nType) const
     {
         return nVersion == nType;
-    };
+    }
 
     bool IsStandardOutput() const
     {
         return nVersion == OUTPUT_STANDARD;
-    };
+    }
 
     const CTxOutStandard *GetStandardOutput() const
     {
         assert(nVersion == OUTPUT_STANDARD);
         return (CTxOutStandard*)this;
-    };
+    }
 
     virtual bool IsEmpty() const { return false;}
 
@@ -287,8 +287,6 @@ public:
 
     virtual bool GetCTFee(CAmount &nFee) const { return false; }
     virtual bool GetDevFundCfwd(CAmount &nCfwd) const { return false; }
-
-    virtual const std::vector<unsigned char> *GetSignature() const { return nullptr; }
 
     std::string ToString() const;
 };
@@ -723,7 +721,7 @@ private:
 public:
     /** Construct a CTransaction that qualifies as IsNull() */
     CTransaction();
-    ~CTransaction() {};
+    ~CTransaction(){};
 
     /** Convert a CMutableTransaction into a CTransaction. */
     CTransaction(const CMutableTransaction &tx);
