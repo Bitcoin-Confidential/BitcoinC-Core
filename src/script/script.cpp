@@ -320,7 +320,7 @@ bool CScript::IsPayToPublicKeyHash256_CS() const
         && (*this)[27] == OP_ELSE
         && MatchPayToPublicKeyHash256(28)
         && (*this)[65] == OP_ENDIF;
-};
+}
 
 bool CScript::IsPayToScriptHash256_CS() const
 {

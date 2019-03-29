@@ -10,8 +10,9 @@
 
 #include <random.h>
 #include <validation.h>
-#include <consensus/validation.h>
 #include <consensus/merkle.h>
+#include <consensus/tx_verify.h>
+#include <consensus/validation.h>
 #include <smsg/smessage.h>
 #include <smsg/crypter.h>
 #include <pos/kernel.h>
@@ -32,6 +33,7 @@
 #include <wallet/fees.h>
 #include <walletinitinterface.h>
 #include <wallet/walletutil.h>
+
 
 #if ENABLE_USBDEVICE
 #include <usbdevice/usbdevice.h>
@@ -3644,6 +3646,12 @@ int CHDWallet::AddStandardInputs(CWalletTx &wtx, CTransactionRecord &rtx,
         };
 
         if (sign) {
+
+            std::string strError;
+            if( !SignOutputs(txNew, pindexBestHeader->nTime, strError) ){
+                return wserrorN(1, sError, __func__, strError);
+            }
+
             int nIn = 0;
             for (const auto &coin : setCoins) {
                 const CScript& scriptPubKey = coin.txout.scriptPubKey;
@@ -4346,6 +4354,12 @@ int CHDWallet::AddAnonInputs(CWalletTx &wtx, CTransactionRecord &rtx,
         }
 
         if (sign) {
+
+            std::string strError;
+            if( !SignOutputs(txNew, pindexBestHeader->nTime, strError) ){
+                return wserrorN(1, sError, __func__, strError);
+            }
+
             std::vector<CKey> vSplitCommitBlindingKeys(txNew.vin.size()); // input amount commitment when > 1 mlsag
             int rv;
             size_t nTotalInputs = 0;
@@ -4487,7 +4501,6 @@ int CHDWallet::AddAnonInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                         nCommitValue, secp256k1_generator_h)) {
                         return wserrorN(1, sError, __func__, "secp256k1_pedersen_commit failed.");
                     }
-
 
                     memcpy(&vDL[(1 + (nSigInputs+1) * nSigRingSize) * 32], splitInputCommit.data, 33);
 
@@ -11085,6 +11098,12 @@ bool CHDWallet::CreateCoinStake(unsigned int nBits, int64_t nTime, int nBlockHei
 
 
     // Sign
+
+    std::string strError;
+    if( !SignOutputs(txNew, nTime, strError) ){
+        return werror("%s: %s", __func__, strError);
+    }
+
     int nIn = 0;
     for (const auto &pcoin : vwtxPrev) {
         uint32_t nPrev = txNew.vin[nIn].prevout.n;
@@ -11167,6 +11186,87 @@ bool CHDWallet::SignBlock(CBlockTemplate *pblocktemplate, int nHeight, int64_t n
 
     return false;
 };
+
+
+bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &strError )
+{
+    // Create the output signatures if needed
+    for( CTxOutBaseRef &out : tx.vpout ){
+
+        if( out->nVersion == OUTPUT_STANDARD ){
+
+            CTxOutStandard *pout = (CTxOutStandard*)out.get();
+            pout->vecSignature.clear();
+
+            bool fIsCoinStake = false;
+            CKeyID keyId1, keyId2;
+            CScript script1, script2;
+
+            if( HasIsCoinstakeOp(pout->scriptPubKey) ){
+
+                fIsCoinStake = true;
+                if(!SplitConditionalCoinstakeScript(*pout->GetPScriptPubKey(), script1, script2)){
+                    strError = "Invalid coinstake script";
+                    return false;
+                }
+
+                if(!ExtractStakingKeyID(script1, keyId1)){
+                    strError = "Failed to extract keyId1";
+                    return false;
+                }
+
+                if(!ExtractStakingKeyID(script2, keyId2)){
+                    strError = "Failed to extract keyId2";
+                    return false;
+                }
+
+            }else if(!ExtractStakingKeyID(*pout->GetPScriptPubKey(), keyId1)){
+                strError = "Failed to extract keyId";
+                return false;
+            }else{
+                const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTime);
+                CKeyID keyIdDev;
+                if(CBitcoinAddress(pDevFundSettings->sDevFundAddresses).GetKeyID(keyIdDev) &&
+                   keyId1 == keyIdDev){
+                    continue;
+                }
+            }
+
+            CKeyID *pKeyId;
+            CKey key;
+            bool fHaveKey = false;
+            if( !( fHaveKey = HaveKey(keyId1) ) ){
+                strError = "Staking address must be from wallet";
+            }
+
+            if( fIsCoinStake && !fHaveKey &&  !( fHaveKey = HaveKey(keyId2) ) ){
+                strError = "ColdStaking address must be from your wallet";
+            }
+
+            if( !fHaveKey ){
+                return false;
+            }
+
+            if( GetKey(keyId1, key) ){
+                pKeyId = &keyId1;
+            }else if( GetKey(keyId2, key) ){
+                pKeyId = &keyId2;
+            }else{
+                strError = "Staking output - Failed to get a key";
+                return false;
+            }
+
+            uint256 nOutSigHash = SignatureHashStakingOutput(*pKeyId, pout->GetValue(), tx.vin);
+
+            if( !key.SignCompact(nOutSigHash, pout->vecSignature) ){
+                strError = "Staking output - Failed to sign";
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
 
 int LoopExtKeysInDB(CHDWallet *pwallet, bool fInactive, bool fInAccount, LoopExtKeyCallback &callback)
 {
