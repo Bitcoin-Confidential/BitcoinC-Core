@@ -62,32 +62,28 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                         CStealthAddress sx;
                         if (wtx.partWallet->GetStealthByIndex(sidx, sx))
                             address = sx;
-                    };
-                };
+                    }
+                }
             } else
             {
                 if (address.type() == typeid(CNoDestination))
                     ExtractDestination(r.scriptPubKey, address);
-            };
+            }
 
             if (r.nType == OUTPUT_STANDARD)
             {
-                sub.typeOut = 'P';
-            } else
-            if (r.nType == OUTPUT_CT)
-            {
-                sub.typeOut = 'B';
+                sub.typeOut = "S";
             } else
             if (r.nType == OUTPUT_RINGCT)
             {
-                sub.typeOut = 'A';
-            };
+                sub.typeOut = "BC";
+            }
 
             if (nFlags & ORF_OWNED)
                 sub.credit += r.nValue;
             if (nFlags & ORF_FROM)
                 sub.debit -= r.nValue;
-        };
+        }
 
         if (address.type() != typeid(CNoDestination))
             sub.address = CBitcoinAddress(address).ToString();
@@ -111,10 +107,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
         };
 
         if (rtx.nFlags & ORF_ANON_IN)
-            sub.typeIn = 'A';
-        else
-        if (rtx.nFlags & ORF_BLIND_IN)
             sub.typeIn = 'B';
+        else
+            sub.typeIn = 'S';
 
         sub.involvesWatchAddress = nFlags & ORF_OWN_WATCH;
         parts.append(sub);

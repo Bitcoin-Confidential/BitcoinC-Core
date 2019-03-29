@@ -90,13 +90,13 @@ public:
 
     TransactionRecord():
             hash(), time(0), type(Other), address(""), debit(0), credit(0),
-            typeIn('P'), typeOut('P'), idx(0)
+            typeIn("S"), typeOut("S"), idx(0)
     {
     }
 
     TransactionRecord(uint256 _hash, qint64 _time):
             hash(_hash), time(_time), type(Other), address(""), debit(0), credit(0),
-            typeIn('P'), typeOut('P'), idx(0)
+            typeIn("S"), typeOut("S"), idx(0)
     {
     }
 
@@ -104,7 +104,7 @@ public:
                 Type _type, const std::string &_address,
                 const CAmount& _debit, const CAmount& _credit):
             hash(_hash), time(_time), type(_type), address(_address), debit(_debit), credit(_credit),
-            typeIn('P'), typeOut('P'), idx(0)
+            typeIn("S"), typeOut("S"), idx(0)
     {
     }
 
@@ -122,8 +122,8 @@ public:
     CAmount debit;
     CAmount credit;
 
-    char typeIn;
-    char typeOut;
+    std::string typeIn;
+    std::string typeOut;
 
 
     /**@}*/

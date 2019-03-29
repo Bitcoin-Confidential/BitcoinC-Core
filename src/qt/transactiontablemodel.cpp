@@ -548,9 +548,9 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
         case ToAddress:
             return formatTxToAddress(rec, false);
         case TypeIn:
-            return QString(QChar(rec->typeIn));
+            return QString::fromStdString(rec->typeIn);
         case TypeOut:
-            return QString(QChar(rec->typeOut));
+            return QString::fromStdString(rec->typeOut);
         case Amount:
             return formatTxAmount(rec, true, BitcoinUnits::separatorAlways);
         }
@@ -570,9 +570,9 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
         case ToAddress:
             return formatTxToAddress(rec, true);
         case TypeIn:
-            return QString(QChar(rec->typeIn));
+            return QString::fromStdString(rec->typeIn);
         case TypeOut:
-            return QString(QChar(rec->typeOut));
+            return QString::fromStdString(rec->typeOut);
         case Amount:
             return qint64(rec->credit + rec->debit);
         }
