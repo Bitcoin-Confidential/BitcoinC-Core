@@ -62,8 +62,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     stakingPage = new StakingDialog(platformStyle);
 
     ReceiveCoinsDialog *addressPage = new ReceiveCoinsDialog(platformStyle, true);
-    SendCoinsDialog *toStealth = new SendCoinsDialog(platformStyle, true);
-    SendCoinsDialog *toStake = new SendCoinsDialog(platformStyle, true);
+    SendCoinsDialog *toStealth = new SendCoinsDialog(platformStyle, true, true);
+    SendCoinsDialog *toStake = new SendCoinsDialog(platformStyle, true, true);
     SendCoinsDialog *activateCold = new SendCoinsDialog(platformStyle, true);
 
     toStealth->setMode(CoinControlDialog::CONVERT_TO_SPENDING);
