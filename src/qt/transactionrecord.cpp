@@ -107,9 +107,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
         };
 
         if (rtx.nFlags & ORF_ANON_IN)
-            sub.typeIn = 'B';
+            sub.typeIn = "BC";
         else
-            sub.typeIn = 'S';
+            sub.typeIn = "S";
 
         sub.involvesWatchAddress = nFlags & ORF_OWN_WATCH;
         parts.append(sub);
