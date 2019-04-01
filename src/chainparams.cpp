@@ -417,7 +417,7 @@ public:
 
         base58Prefixes[PUBKEY_ADDRESS]     = {0x55}; // b ColdStake
         base58Prefixes[SCRIPT_ADDRESS]     = {0x0A}; // 5
-        base58Prefixes[PUBKEY_ADDRESS_256] = {0xA5,0x00}; // Return R
+        base58Prefixes[PUBKEY_ADDRESS_256] = {0x99}; // 6 Contract
         base58Prefixes[SCRIPT_ADDRESS_256] = {0x3d}; // 7
         base58Prefixes[SECRET_KEY]         = {0x4B}; // C
         base58Prefixes[EXT_PUBLIC_KEY]     = {0x02, 0xD4, 0x13, 0xFF}; // bpub
