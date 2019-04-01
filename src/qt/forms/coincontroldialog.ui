@@ -426,7 +426,7 @@
      </attribute>
      <column>
       <property name="text">
-       <string/>
+       <string>&#032;</string>
       </property>
      </column>
      <column>
