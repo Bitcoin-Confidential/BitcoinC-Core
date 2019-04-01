@@ -78,8 +78,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
         ui->sendButton->setIcon(_platformStyle->SingleColorIcon(":/icons/send"));
     }
 
-    GUIUtil::setupAddressWidget(ui->lineEditCoinControlChange, this);
-
     addEntry();
 
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
@@ -974,6 +972,15 @@ void SendCoinsDialog::updateSmartFeeLabel()
 void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
 {
     nMode = nNewMode;
+
+    switch(GetCoinControlFlag() ){
+    case CoinControlDialog::SPENDING:
+    case CoinControlDialog::CONVERT_TO_STAKING:
+        GUIUtil::setupAddressWidget(ui->lineEditCoinControlChange, this);
+        break;
+    default:
+        GUIUtil::setupStakeAddressWidget(ui->lineEditCoinControlChange, this);
+    }
 
     updateTabsAndLabels();
 
