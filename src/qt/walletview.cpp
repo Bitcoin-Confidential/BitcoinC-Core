@@ -62,15 +62,15 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     stakingPage = new StakingDialog(platformStyle);
 
     ReceiveCoinsDialog *addressPage = new ReceiveCoinsDialog(platformStyle, true);
-    SendCoinsDialog *toStealth = new SendCoinsDialog(platformStyle, true, true);
-    SendCoinsDialog *toStake = new SendCoinsDialog(platformStyle, true, true);
-    SendCoinsDialog *activateCold = new SendCoinsDialog(platformStyle, true);
+    sendToStealth = new SendCoinsDialog(platformStyle, true, true);
+    sendToStake = new SendCoinsDialog(platformStyle, true, true);
+    activateColdStake = new SendCoinsDialog(platformStyle, true);
 
-    toStealth->setMode(CoinControlDialog::CONVERT_TO_SPENDING);
-    toStake->setMode(CoinControlDialog::CONVERT_TO_STAKING);
-    activateCold->setMode(CoinControlDialog::CONVERT_TO_COLD_STAKE);
+    sendToStealth->setMode(CoinControlDialog::CONVERT_TO_SPENDING);
+    sendToStake->setMode(CoinControlDialog::CONVERT_TO_STAKING);
+    activateColdStake->setMode(CoinControlDialog::CONVERT_TO_COLD_STAKE);
 
-    stakingPage->setPages(addressPage, toStealth, toStake, activateCold);
+    stakingPage->setPages(addressPage, sendToStealth, sendToStake, activateColdStake);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);
@@ -87,6 +87,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     // Highlight transaction after send
     connect(sendCoinsPage, SIGNAL(coinsSent(uint256)), transactionView, SLOT(focusTransaction(uint256)));
+    connect(sendToStealth, SIGNAL(coinsSent(uint256)), transactionView, SLOT(focusTransaction(uint256)));
+    connect(sendToStake, SIGNAL(coinsSent(uint256)), transactionView, SLOT(focusTransaction(uint256)));
+    connect(activateColdStake, SIGNAL(coinsSent(uint256)), transactionView, SLOT(focusTransaction(uint256)));
 
     // Double-clicking on a transaction on the transaction history page shows details
     connect(transactionView, SIGNAL(doubleClicked(QModelIndex)), transactionView, SLOT(showDetails()));
@@ -100,6 +103,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     connect(transactionView, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     // Pass through messages from stakingPage
     connect(stakingPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    connect(sendToStealth, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    connect(sendToStake, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    connect(activateColdStake, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
 }
 
 WalletView::~WalletView()
@@ -115,6 +121,9 @@ void WalletView::setBitcoinGUI(BitcoinGUI *gui)
 
         // Navigate to transaction history page after send
         connect(sendCoinsPage, SIGNAL(coinsSent(uint256)), gui, SLOT(gotoHistoryPage()));
+        connect(sendToStealth, SIGNAL(coinsSent(uint256)), gui, SLOT(gotoHistoryPage()));
+        connect(sendToStake, SIGNAL(coinsSent(uint256)), gui, SLOT(gotoHistoryPage()));
+        connect(activateColdStake, SIGNAL(coinsSent(uint256)), gui, SLOT(gotoHistoryPage()));
 
         // Receive and report messages
         connect(this, SIGNAL(message(QString,QString,unsigned int)), gui, SLOT(message(QString,QString,unsigned int)));

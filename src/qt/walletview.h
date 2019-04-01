@@ -66,6 +66,9 @@ private:
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
     StakingDialog *stakingPage;
+    SendCoinsDialog *sendToStealth;
+    SendCoinsDialog *sendToStake;
+    SendCoinsDialog *activateColdStake;
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
 
