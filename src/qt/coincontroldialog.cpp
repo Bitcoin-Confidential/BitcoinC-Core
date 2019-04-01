@@ -722,9 +722,16 @@ void CoinControlDialog::updateView()
             // label
             if (!(sAddress == sWalletAddress)) // change
             {
-                // tooltip from where the change comes from
-                itemOutput->setToolTip(COLUMN_LABEL, tr("change from %1 (%2)").arg(sWalletLabel).arg(sWalletAddress));
-                itemOutput->setText(COLUMN_LABEL, tr("(change)"));
+                if( ControlModeToCbxType(mode) == OUTPUT_STANDARD ){
+                    // tooltip from where the change comes from
+                    itemOutput->setToolTip(COLUMN_LABEL, tr("change from %1 (%2)").arg(sWalletLabel).arg(sWalletAddress));
+                    itemOutput->setText(COLUMN_LABEL, tr("(change)"));
+                }else{
+                    itemOutput->setText(COLUMN_ADDRESS, sWalletAddress);
+                    itemOutput->setToolTip(COLUMN_LABEL, tr("spending from %1 (%2)").arg(sWalletLabel).arg(sWalletAddress));
+                    itemOutput->setText(COLUMN_LABEL, tr("(spending)"));
+                }
+
             }
             else if (!treeMode)
             {
