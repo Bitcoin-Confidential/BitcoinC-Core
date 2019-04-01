@@ -4421,6 +4421,16 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
                 fSubtractFeeFromAmount = obj["subfee"].get_bool();
             }
 
+            {
+                LOCK(pwallet->cs_wallet);
+                CStealthAddress stealthAddress;
+                if( !(typeIn == OUTPUT_RINGCT && typeOut == OUTPUT_RINGCT) &&
+                    address.IsValidStealthAddress() &&
+                    ( !stealthAddress.SetEncoded(sAddress) || !pwallet->HaveStealthAddress(stealthAddress))){
+                    throw JSONRPCError(RPC_TYPE_ERROR, "All stealth addresses must be from your wallet.");
+                }
+            }
+
             std::string sNarr;
             if (obj.exists("narr")) {
                 sNarr = obj["narr"].get_str();
@@ -4458,6 +4468,16 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
         if (typeOut == OUTPUT_RINGCT
             && !address.IsValidStealthAddress()) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid stealth address");
+        }
+
+        {
+            LOCK(pwallet->cs_wallet);
+            CStealthAddress stealthAddress;
+            if( !(typeIn == OUTPUT_RINGCT && typeOut == OUTPUT_RINGCT) &&
+                address.IsValidStealthAddress() &&
+                ( !stealthAddress.SetEncoded(sAddress) || !pwallet->HaveStealthAddress(stealthAddress))){
+                throw JSONRPCError(RPC_TYPE_ERROR, "Stealth address must be from your wallet.");
+            }
         }
 
         if (!address.IsValid()) {
