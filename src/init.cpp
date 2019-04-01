@@ -1469,6 +1469,10 @@ bool AppInitMain()
     RegisterZMQRPCCommands(tableRPC);
 #endif
 
+    if( !gArgs.GetBoolArg("-testnet", true) ){
+        return InitError(_("Sorry, MainNet isn't yet."));
+    }
+
     /* Start the RPC server already.  It will be started in "warmup" mode
      * and not really process calls already (but it will signify connections
      * that the server is there and will be ready later).  Warmup mode will
@@ -1596,6 +1600,36 @@ bool AppInitMain()
     if (gArgs.IsArgSet("-maxuploadtarget")) {
         nMaxOutboundLimit = gArgs.GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET)*1024*1024;
     }
+
+
+//    class Test : public CBase58Data{
+//    public:
+//        Test(unsigned char prefix, uint256 d){
+//            SetData({prefix, 0x00}, d.begin(), d.end());
+//        }
+//    };
+
+
+//    std::map<int, char> mapChars;
+
+//    for( int  y=0; y<2000; y++){
+//    for( int i=0;i<=255;i++){
+//        uint256 h = GetRandHash();
+//        std::string s = Test(i, h).ToString();
+
+//        if( !mapChars.count(i) ){
+//            mapChars.insert(std::make_pair(i,s[0]));
+//        }else if( mapChars[i] != s[0]){
+//            mapChars[i] = '#';
+//        }
+//    }
+//    }
+
+//    for( auto it : mapChars ){
+
+//        if( it.second != '#')
+//            LogPrintf("%02X => %s\n", it.first, it.second);
+//    }
 
     // ********************************************************* Step 7: load block chain
 
