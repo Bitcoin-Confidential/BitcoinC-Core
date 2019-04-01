@@ -302,6 +302,15 @@ void SendCoinsDialog::on_sendButton_clicked()
             sCommand += ",";
 
         if (rcp.m_coldstake) {
+
+            CBitcoinAddress stakeAddress(rcp.stake_address.toStdString());
+
+            if (model->wallet().ownDestination(stakeAddress.Get())) // Unknown change address
+            {
+                QMessageBox::critical(this, tr("Error Remote Staking Address"), tr("The remote stake address can't be part of this wallet."));
+                return;
+            }
+
             QString build_script = "buildscript {\"recipe\":\"ifcoinstake\",\"addrstake\":\""
                 + rcp.stake_address + "\",\"addrspend\":\"" + rcp.spend_address + "\"}";
             UniValue rv;
