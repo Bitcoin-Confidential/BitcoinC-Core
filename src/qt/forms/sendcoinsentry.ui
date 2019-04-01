@@ -388,7 +388,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="stakeAddrLabel">
       <property name="text">
-       <string>Stake Address:</string>
+       <string>Remote Stake Address:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -419,7 +419,7 @@
       <item>
        <widget class="QValidatedLineEdit" name="stakeAddr">
         <property name="toolTip">
-         <string>The ColdStake address on the remote node (cannot be in this wallet)</string>
+         <string>The stake address on the remote node (cannot be in this wallet)</string>
         </property>
        </widget>
       </item>
