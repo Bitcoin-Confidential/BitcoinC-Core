@@ -253,7 +253,7 @@ bool CHDWallet::Initialise()
     }
 
     if (!pEKMaster) {
-        if (gArgs.GetBoolArg("-createdefaultmasterkey", false)) {
+        if (gArgs.GetBoolArg("-createdefaultmasterkey", true)) {
             std::string sMsg = "Generating random HD keys for wallet " + GetName();
             #ifndef ENABLE_QT
             fprintf(stdout, "%s\n", sMsg.c_str());
@@ -10631,6 +10631,17 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
                 }
 
                 COutPoint kernel(wtxid, i);
+
+//                if (!CheckStakeUnused(kernel)){
+//                    LogPrintf("kernel used %s\n", kernel.ToString());
+//                }
+//                if(IsSpent(wtxid, i) ){
+//                    LogPrintf("kernel spent %s\n", kernel.ToString());
+//                }
+//                if(IsLockedCoin(wtxid, i)) {
+//                    LogPrintf("coins locked %s\n", kernel.ToString());
+//                }
+
                 if (!CheckStakeUnused(kernel)
                      || IsSpent(wtxid, i)
                      || IsLockedCoin(wtxid, i)) {
@@ -10643,8 +10654,12 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
                     continue;
                 }
 
+                CBitcoinAddress addr(keyID);
+//                LogPrintf("Address %s, kernel %s\n", addr.ToString(), kernel.ToString());
+
                 isminetype mine = IsMine(keyID);
                 if (!(mine & ISMINE_SPENDABLE)) {
+//                    LogPrintf("Address %s -- not mine \n", addr.ToString());
                     continue;
                 }
 

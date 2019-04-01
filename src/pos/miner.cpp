@@ -35,7 +35,6 @@ std::atomic<bool> fStopMinerProc(false);
 std::atomic<bool> fTryToSync(false);
 std::atomic<bool> fIsStaking(false);
 
-
 int nMinStakeInterval = 0;  // min stake interval in seconds
 int nMinerSleep = 500;
 std::atomic<int64_t> nTimeLastStake(0);
@@ -243,7 +242,7 @@ bool ImportAirdropOutputs(CBlockTemplate *pblocktemplate, int nHeight, bool fGen
                 return error("%s - Can't create file, strerror: %s.", __func__, strerror(errno));
             }
 
-            for( int i=1; i<pblock->vtx.size(); i++ ){
+            for( size_t i=1; i<pblock->vtx.size(); i++ ){
                 std::string strOut = strprintf("vImportedCoinbaseTxns.push_back(CImportedCoinbaseTxn(%d,  uint256S(\"%s\")));\n", nHeight, pblock->vtx[i].get()->GetHash().ToString());
                 fwrite(strOut.c_str(), 1, strOut.length(), fp);
             }

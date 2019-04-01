@@ -3926,6 +3926,13 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
         nMoneySupply = chainActive.Tip()->nMoneySupply;
     }
 
+    UniValue stakingstatus;
+    bool fStakingPaused = false;
+
+    if( pwallet->GetSetting("stakingstatus", stakingstatus) ){
+        fStakingPaused = stakingstatus["paused"].getBool();
+    }
+
     uint64_t nWeight = pwallet->GetStakeWeight();
 
     double nNetworkWeight = GetPoSKernelPS();
@@ -3933,7 +3940,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     bool fStaking = nWeight && fIsStaking;
     uint64_t nExpectedTime = fStaking ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nWeight) : 0;
 
-    obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true)); // enabled on node, vs enabled on wallet
+    obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && !fStakingPaused); // enabled on node, vs enabled on wallet
     obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
     switch (pwallet->nIsStaking) {
         case CHDWallet::NOT_STAKING_BALANCE:
@@ -5681,6 +5688,42 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             }
         } else {
             throw JSONRPCError(RPC_INVALID_PARAMETER, _("Must be json object."));
+        }
+
+        WakeThreadStakeMiner(pwallet);
+    }
+    if (sSetting == "stakingstatus") {
+        bool fCurrentState;
+        UniValue json;
+
+        if( !pwallet->GetSetting(sSetting, json) || !json.isObject() ){
+            json = UniValue(UniValue::VOBJ);
+            json.pushKV("paused", true);
+            pwallet->SetSetting(sSetting, json);
+        }
+
+        fCurrentState = json["paused"].get_bool();
+
+        if (request.params.size() == 1) {
+            return json;
+        }
+
+        if (request.params[1].isBool()) {
+            bool fNewState = request.params[1].getBool();
+
+            json = UniValue(UniValue::VOBJ);
+            json.pushKV("paused", fNewState);
+
+            pwallet->SetSetting(sSetting, json);
+
+            if( !fCurrentState && fNewState && ThreadStakeMinerStopped() ){
+                StartThreadStakeMiner();
+            }else if( fCurrentState && !fNewState ){
+                StopThreadStakeMiner();
+            }
+
+        } else {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, _("New state must be bool."));
         }
 
         WakeThreadStakeMiner(pwallet);
