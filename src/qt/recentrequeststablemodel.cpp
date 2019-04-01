@@ -13,7 +13,7 @@
 
 
 RecentRequestsTableModel::RecentRequestsTableModel(bool fStaking, WalletModel *parent) :
-    QAbstractTableModel(parent), fStaking(fStaking), walletModel(parent)
+    QAbstractTableModel(parent), walletModel(parent), fStaking(fStaking)
 {
     nReceiveRequestsMaxId = 0;
 
