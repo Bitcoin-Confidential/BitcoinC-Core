@@ -87,28 +87,35 @@ QFont fixedPitchFont()
 #endif
 }
 
-void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool allow_stakeonly)
+void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
 {
     parent->setFocusProxy(widget);
 
     widget->setFont(fixedPitchFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter Stealth address"));
+    widget->setPlaceholderText(QObject::tr("Enter stealth address"));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
-    widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, allow_stakeonly));
+    widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, false));
 }
 
-void setupColdStakeAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool allow_stakeonly)
+void setupStakeAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool f256Only, bool fColdStake)
 {
     parent->setFocusProxy(widget);
 
     widget->setFont(fixedPitchFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter Stake address of remote node"));
+    if( f256Only ){
+        widget->setPlaceholderText(QObject::tr("Enter contract address"));
+    }else if( fColdStake ){
+        widget->setPlaceholderText(QObject::tr("Enter stake address of remote node"));
+    }else{
+        widget->setPlaceholderText(QObject::tr("Enter stake address"));
+    }
+
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
-    widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, allow_stakeonly));
+    widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, true, f256Only));
 }
 
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)

@@ -20,7 +20,7 @@ BitcoinAddressEntryValidator::BitcoinAddressEntryValidator(QObject *parent) :
 {
 }
 
-QValidator::State BitcoinAddressEntryValidator::validate(QString &input, int &pos) const
+QValidator::State BitcoinAddressEntryValidator::    validate(QString &input, int &pos) const
 {
     Q_UNUSED(pos);
 
@@ -80,8 +80,8 @@ QValidator::State BitcoinAddressEntryValidator::validate(QString &input, int &po
     return state;
 }
 
-BitcoinAddressCheckValidator::BitcoinAddressCheckValidator(QObject *parent, bool allow_stakeonly) :
-    QValidator(parent), m_allow_stakeonly(allow_stakeonly)
+BitcoinAddressCheckValidator::BitcoinAddressCheckValidator(QObject *parent, bool allow_stakeonly, bool f256Only) :
+    QValidator(parent), m_allow_stakeonly(allow_stakeonly), f256Only(f256Only)
 {
 }
 
@@ -89,7 +89,18 @@ QValidator::State BitcoinAddressCheckValidator::validate(QString &input, int &po
 {
     Q_UNUSED(pos);
     // Validate the passed Bitcoin address
-    if (IsValidDestinationString(input.toStdString(), m_allow_stakeonly)) {
+    CBitcoinAddress addr(input.toStdString());
+
+    if( !m_allow_stakeonly && addr.IsValid(CChainParams::STEALTH_ADDRESS) ){
+        return QValidator::Acceptable;
+    }
+
+    if( m_allow_stakeonly && f256Only &&
+        addr.IsValid(CChainParams::PUBKEY_ADDRESS_256)){
+        return QValidator::Acceptable;
+    }
+
+    if( m_allow_stakeonly && !f256Only && addr.IsValid(CChainParams::PUBKEY_ADDRESS) ){
         return QValidator::Acceptable;
     }
 

@@ -33,14 +33,11 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
         setCurrentWidget(ui->SendCoins_cs);
 
         // normal bitcoin address field
-        GUIUtil::setupAddressWidget(ui->stakeAddr, this, true);
-        GUIUtil::setupAddressWidget(ui->spendAddr, this);
+        GUIUtil::setupStakeAddressWidget(ui->stakeAddr, this, false, true);
+        GUIUtil::setupStakeAddressWidget(ui->spendAddr, this, true);
         // just a label for displaying bitcoin address(es)
         ui->stakeAddr->setFont(GUIUtil::fixedPitchFont());
         ui->spendAddr->setFont(GUIUtil::fixedPitchFont());
-
-        ui->stakeAddr->setPlaceholderText("Enter Stake address");
-        ui->spendAddr->setPlaceholderText("Enter Return address");
 
         // Connect signals
         connect(ui->payAmount_cs, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
@@ -64,12 +61,14 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
     ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
 
     // normal bitcoin address field
-    GUIUtil::setupAddressWidget(ui->payTo, this);
+
     // just a label for displaying bitcoin address(es)
     ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
 
-    if( !fSpending ){
-        ui->payTo->setPlaceholderText("Enter Stake address");
+    if( fSpending ){
+        GUIUtil::setupAddressWidget(ui->payTo, this);
+    }else{
+        GUIUtil::setupStakeAddressWidget(ui->payTo, this);
     }
 
     // Connect signals
