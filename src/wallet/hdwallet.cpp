@@ -3939,7 +3939,7 @@ int CHDWallet::PickHidingOutputs(std::vector<std::vector<int64_t> > &vMI, size_t
     }
 
     if (nLastRCTOutIndex < (int64_t)(nInputs * nRingSize)) {
-        return wserrorN(1, sError, __func__, _("Not enough anon outputs exist, last: %d, required: %d"), nLastRCTOutIndex, nInputs * nRingSize);
+        return wserrorN(1, sError, __func__, _("Not enough spending outputs available in the blockchain for privacy mixing. There are currently %d. For this transaction required: %d"), nLastRCTOutIndex, nInputs * nRingSize);
     }
 
     int nExtraDepth = gArgs.GetBoolArg("-regtest", false) ? -1 : 2; // if not on regtest pick outputs deeper than consensus checks to prevent banning
@@ -3964,7 +3964,7 @@ int CHDWallet::PickHidingOutputs(std::vector<std::vector<int64_t> > &vMI, size_t
         const static size_t nMaxTries = 1000;
         for (j = 0; j < nMaxTries; ++j) {
             if (nLastRCTOutIndex <= nMinIndex) {
-                return wserrorN(1, sError, __func__, _("Not enough anon outputs exist, min: %d lastpick: %d, required: %d"), nMinIndex, nLastRCTOutIndex, nInputs * nRingSize);
+                return wserrorN(1, sError, __func__, _("Not enough spending outputs available in the blockchain for privacy mixing. There are currently %d. For this transaction required: %d, lastpick: %d"), nLastRCTOutIndex, nInputs * nRingSize, nMinIndex);
             }
 
             int64_t nDecoy = nMinIndex + GetRand((nLastRCTOutIndex - nMinIndex) + 1);
