@@ -94,7 +94,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
     widget->setFont(fixedPitchFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter stealth address"));
+    widget->setPlaceholderText(QObject::tr("Enter spending address"));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, false));
 }
