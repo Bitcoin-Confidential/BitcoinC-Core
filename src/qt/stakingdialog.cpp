@@ -267,7 +267,7 @@ void StakingDialog::updateStakingUI()
             if( fLocked ){
                 strError = "Your wallet is locked. To start staking unlock the wallet for staking only. To do the unlock you can click on the lock icon in the bottom bar.";
             }else if( strError == "" ){
-                strError = "No suitable staking outputs";
+                strError = "No suitable staking outputs available. Your staking funds need to have 225 confirmations to be eligible for staking";
             }
 
             ui->lblHotStakingError->setText(strError);
