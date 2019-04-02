@@ -79,6 +79,7 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, bool
         ui->reqMessage->hide();
         ui->labelInfo->hide();
 		ui->receiveTabHeaderLabel->hide();
+		ui->receiveButton->setText("Create address");
     }else{
         ui->cbxAddressType->hide();
     }
