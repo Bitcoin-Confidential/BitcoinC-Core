@@ -6030,7 +6030,7 @@ static UniValue buildscript(const JSONRPCRequest &request)
     return obj;
 };
 
-static UniValue createrawparttransaction(const JSONRPCRequest& request)
+static UniValue createrawbctransaction(const JSONRPCRequest& request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -6039,7 +6039,7 @@ static UniValue createrawparttransaction(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
         throw std::runtime_error(
-            "createrawparttransaction [{\"txid\":\"id\",\"vout\":n},...] [{\"address\":amount,\"data\":\"hex\",...}] ( locktime replaceable \"fundfrombalance\" )\n"
+            "createrawbctransaction [{\"txid\":\"id\",\"vout\":n},...] [{\"address\":amount,\"data\":\"hex\",...}] ( locktime replaceable \"fundfrombalance\" )\n"
             "\nCreate a transaction spending the given inputs and creating new confidential outputs.\n"
             "Outputs can be addresses or data.\n"
             "Returns hex-encoded raw transaction.\n"
@@ -6084,10 +6084,10 @@ static UniValue createrawparttransaction(const JSONRPCRequest& request)
             "  \"amounts\"          (json) Coin values of outputs with blinding factors of blinded outputs.\n"
             "}\n"
             "\nExamples:\n"
-            + HelpExampleCli("createrawparttransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\" \"{\\\"address\\\":0.01}\"")
-            + HelpExampleCli("createrawparttransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\" \"{\\\"data\\\":\\\"00010203\\\"}\"")
-            + HelpExampleRpc("createrawparttransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\", \"{\\\"address\\\":0.01}\"")
-            + HelpExampleRpc("createrawparttransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\", \"{\\\"data\\\":\\\"00010203\\\"}\"")
+            + HelpExampleCli("createrawbctransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\" \"{\\\"address\\\":0.01}\"")
+            + HelpExampleCli("createrawbctransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\" \"{\\\"data\\\":\\\"00010203\\\"}\"")
+            + HelpExampleRpc("createrawbctransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\", \"{\\\"address\\\":0.01}\"")
+            + HelpExampleRpc("createrawbctransaction", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\", \"{\\\"data\\\":\\\"00010203\\\"}\"")
         );
 
     EnsureWalletIsUnlocked(pwallet);
@@ -7114,7 +7114,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "derivefromstealthaddress",         &derivefromstealthaddress,      {"stealthaddress","ephempubkey"} },
 
     { "rawtransactions",    "buildscript",                      &buildscript,                   {"json"} },
-    { "rawtransactions",    "createrawparttransaction",         &createrawparttransaction,      {"inputs","outputs","locktime","replaceable"} },
+    { "rawtransactions",    "createrawbctransaction",         &createrawbctransaction,      {"inputs","outputs","locktime","replaceable"} },
     { "rawtransactions",    "fundrawtransactionfrom",           &fundrawtransactionfrom,        {"input_type","hexstring","input_amounts","output_amounts","options"} },
     { "rawtransactions",    "verifycommitment",                 &verifycommitment,              {"commitment","blind","amount"} },
     { "rawtransactions",    "verifyrawtransaction",             &verifyrawtransaction,          {"hexstring","prevtxs","options"} },
