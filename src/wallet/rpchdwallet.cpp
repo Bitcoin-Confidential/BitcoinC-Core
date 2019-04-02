@@ -4117,7 +4117,7 @@ static UniValue getcoldstakinginfo(const JSONRPCRequest &request)
     obj.pushKV("coin_in_coldstakeable_script", ValueFromAmount(nColdStakeable));
     CAmount nTotal = nColdStakeable + nStakeable;
     obj.pushKV("percent_in_coldstakeable_script",
-        UniValue(UniValue::VNUM, strprintf("%.2f", nTotal == 0 ? 0.0 : (nColdStakeable * 10000 / nTotal) / 100.0)));
+        UniValue(UniValue::VNUM, strprintf("%.2f", nTotal == 0 ? 0.0 : (static_cast<double>(nColdStakeable) * 10000 / nTotal) / 100.0)));
     obj.pushKV("currently_staking", ValueFromAmount(nWalletStaking));
 
     return obj;
