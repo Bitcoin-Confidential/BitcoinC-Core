@@ -5576,8 +5576,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, _("Must be json object."));
         }
         result.pushKV(sSetting, json);
-    } else
-    if (sSetting == "stakingoptions") {
+    }else if (sSetting == "stakingoptions") {
         UniValue json;
         UniValue warnings(UniValue::VARR);
 
@@ -5661,8 +5660,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, _("Must be json object."));
         }
         result.pushKV(sSetting, json);
-    } else
-    if (sSetting == "stakelimit") {
+    }else if (sSetting == "stakelimit") {
         UniValue json;
         UniValue warnings(UniValue::VARR);
 
@@ -5702,8 +5700,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
         }
 
         WakeThreadStakeMiner(pwallet);
-    }
-    if (sSetting == "stakingstatus") {
+    }else if (sSetting == "stakingstatus") {
         bool fCurrentState;
         UniValue json;
 
@@ -5743,7 +5740,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
     }
 
     return result;
-};
+}
 
 static UniValue transactionblinds(const JSONRPCRequest &request)
 {
