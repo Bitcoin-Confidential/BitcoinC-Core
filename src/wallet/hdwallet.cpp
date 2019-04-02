@@ -10956,32 +10956,27 @@ bool CHDWallet::CreateCoinStake(unsigned int nBits, int64_t nTime, int nBlockHei
 
     // Process development fund
     CAmount nRewardOut;
+    CAmount nDevReward = 0;
     const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTime);
     if (!pDevFundSettings || pDevFundSettings->nMinDevStakePercent <= 0) {
         nRewardOut = nReward;
     } else {
-        int64_t nStakeSplit = std::max(pDevFundSettings->nMinDevStakePercent, nWalletDevFundCedePercent);
 
-        CAmount nDevPart = (pDevFundSettings->nDevOutputPeriod * nReward * nStakeSplit) / 100;
-        nRewardOut = nReward - (nDevPart / pDevFundSettings->nDevOutputPeriod);
+        nRewardOut = nReward * (100 - pDevFundSettings->nMinDevStakePercent) / 100;
 
-        CAmount nDevBfwd = 0;
-        if (nBlockHeight > 1) { // genesis block is pow
-            CTransactionRef txPrevCoinstake;
-            if (!coinStakeCache.GetCoinStake(pindexPrev->GetBlockHash(), txPrevCoinstake)) {
-                return werror("%s: Failed to get previous coinstake: %s.", __func__, pindexPrev->GetBlockHash().ToString());
-            }
-
-            if (!txPrevCoinstake->GetDevFundCfwd(nDevBfwd)) {
-                nDevBfwd = 0;
-            }
-        }
-
-        CAmount nDevCfwd = nDevBfwd + nDevPart;
         if (nBlockHeight % pDevFundSettings->nDevOutputPeriod == 0) {
+
+            CBlockIndex *pIndexDev = pindexPrev;
+
+            while( pIndexDev && pIndexDev->nHeight >= nBlockHeight - pDevFundSettings->nDevOutputPeriod){
+                nDevReward += (Params().GetProofOfStakeReward(pIndexDev, 0) * pDevFundSettings->nMinDevStakePercent)  / 100;
+                pIndexDev = pIndexDev->pprev;
+                if( !pIndexDev ) break;
+            }
+
             // Place dev fund output
             OUTPUT_PTR<CTxOutStandard> outDevSplit = MAKE_OUTPUT<CTxOutStandard>();
-            outDevSplit->nValue = nDevCfwd;
+            outDevSplit->nValue = nDevReward;
 
             CTxDestination dfDest = CBitcoinAddress(pDevFundSettings->sDevFundAddresses).Get();
             if (dfDest.type() == typeid(CNoDestination)) {
