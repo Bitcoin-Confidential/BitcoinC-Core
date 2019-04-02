@@ -199,7 +199,6 @@ bool CHDWallet::Initialise()
 
         LoadAddressBook(&wdb);
         LoadTxRecords(&wdb);
-        LoadVoteTokens(&wdb);
     }
 
     LOCK(cs_main);
@@ -686,63 +685,6 @@ bool CHDWallet::LoadAddressBook(CHDWalletDB *pwdb)
     pcursor->close();
 
     return true;
-};
-
-bool CHDWallet::LoadVoteTokens(CHDWalletDB *pwdb)
-{
-    LogPrint(BCLog::HDWALLET, "%s Loading vote tokens.\n", GetDisplayName());
-
-    LOCK(cs_wallet);
-
-    vVoteTokens.clear();
-
-    std::vector<CVoteToken> vVoteTokensRead;
-
-    if (!pwdb->ReadVoteTokens(vVoteTokensRead))
-        return false;
-
-    int nBestHeight = chainActive.Height();
-
-    for (auto &v : vVoteTokensRead)
-    {
-        if (v.nEnd > nBestHeight - 1000) // 1000 block buffer in case of reorg etc
-        {
-            vVoteTokens.push_back(v);
-            if (LogAcceptCategory(BCLog::HDWALLET))
-            {
-                if ((v.nToken >> 16) < 1
-                    || (v.nToken & 0xFFFF) < 1)
-                    WalletLogPrintf(_("Clearing vote from block %d to %d.\n").c_str(),
-                        v.nStart, v.nEnd);
-                else
-                    WalletLogPrintf( _("Voting for option %u on proposal %u from block %d to %d.\n").c_str(),
-                        v.nToken >> 16, v.nToken & 0xFFFF, v.nStart, v.nEnd);
-            };
-        };
-    };
-
-    return true;
-};
-
-bool CHDWallet::GetVote(int nHeight, uint32_t &token)
-{
-    for (auto i = vVoteTokens.size(); i-- > 0; )
-    {
-        auto &v = vVoteTokens[i];
-
-        if (v.nEnd < nHeight
-            || v.nStart > nHeight)
-            continue;
-
-        if ((v.nToken >> 16) < 1
-            || (v.nToken & 0xFFFF) < 1)
-            continue;
-
-        token = v.nToken;
-        return true;
-    };
-
-    return false;
 };
 
 bool CHDWallet::LoadTxRecords(CHDWalletDB *pwdb)
@@ -10933,14 +10875,6 @@ bool CHDWallet::CreateCoinStake(unsigned int nBits, int64_t nTime, int nBlockHei
             out0->vData.resize(4);
             memcpy(&out0->vData[0], &nBlockHeight, 4);
 
-            uint32_t voteToken = 0;
-            if (GetVote(nBlockHeight, voteToken)) {
-                size_t origSize = out0->vData.size();
-                out0->vData.resize(origSize + 5);
-                out0->vData[origSize] = DO_VOTE;
-                memcpy(&out0->vData[origSize+1], &voteToken, 4);
-            }
-
             txNew.vpout.push_back(out0);
 
             OUTPUT_PTR<CTxOutStandard> out1 = MAKE_OUTPUT<CTxOutStandard>();
@@ -11056,22 +10990,11 @@ bool CHDWallet::CreateCoinStake(unsigned int nBits, int64_t nTime, int nBlockHei
             outDevSplit->scriptPubKey = GetScriptForDestination(dfDest);
 
             txNew.vpout.insert(txNew.vpout.begin()+1, outDevSplit);
-        } else {
-            // Add to carried forward
-            std::vector<uint8_t> &vData = ((CTxOutData*)txNew.vpout[0].get())->vData;
-
-            std::vector<uint8_t> vCfwd(1);
-            vCfwd[0] = DO_DEV_FUND_CFWD;
-            if (0 != PutVarInt(vCfwd, nDevCfwd)) {
-                return werror("%s: PutVarInt failed: %d.", __func__, nDevCfwd);
-            }
-
-            vData.insert(vData.end(), vCfwd.begin(), vCfwd.end());
         }
 
         if (LogAcceptCategory(BCLog::POS)) {
             WalletLogPrintf("%s: Coinstake reward split %d%%, foundation %s, reward %s.\n",
-                __func__, nStakeSplit, FormatMoney(nDevPart), FormatMoney(nRewardOut));
+                __func__, pDevFundSettings->nMinDevStakePercent, FormatMoney(nDevReward), FormatMoney(nRewardOut));
         }
     }
 

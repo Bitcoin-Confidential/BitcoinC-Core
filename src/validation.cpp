@@ -4361,15 +4361,6 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
                 return state.DoS(100, false, REJECT_INVALID, "bad-cs-height", false, "block height mismatch in coinstake");
             }
 
-            std::vector<uint8_t> &vData = ((CTxOutData*)block.vtx[0]->vpout[0].get())->vData;
-            if (vData.size() > 8 && vData[4] == DO_VOTE) {
-                uint32_t voteToken;
-                memcpy(&voteToken, &vData[5], 4);
-
-                LogPrint(BCLog::HDWALLET, _("Block %d casts vote for option %u of proposal %u.\n").c_str(),
-                    nHeight, voteToken >> 16, voteToken & 0xFFFF);
-            }
-
             // check witness merkleroot, TODO: should witnessmerkleroot be hashed?
             bool malleated = false;
             uint256 hashWitness = BlockWitnessMerkleRoot(block, &malleated);
@@ -4424,7 +4415,7 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
                 return state.DoS(100, false, REJECT_INVALID, "bad-cb", false, "Invalid airdrop data");
         } else
         {
-            for( int i = 1; i<block.vtx.size(); i++){
+            for( size_t i = 1; i<block.vtx.size(); i++){
                 if( block.vtx[i]->IsCoinBase() )
                 return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "unexpected coinbase");
             }

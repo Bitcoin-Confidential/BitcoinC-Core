@@ -187,17 +187,6 @@ bool CHDWalletDB::EraseAddressBookEntry(const std::string &sKey)
 };
 
 
-bool CHDWalletDB::ReadVoteTokens(std::vector<CVoteToken> &vVoteTokens, uint32_t nFlags)
-{
-    return m_batch.Read(std::string("votes"), vVoteTokens, nFlags);
-};
-
-bool CHDWalletDB::WriteVoteTokens(const std::vector<CVoteToken> &vVoteTokens)
-{
-    return WriteIC(std::string("votes"), vVoteTokens, true);
-};
-
-
 bool CHDWalletDB::WriteTxRecord(const uint256 &hash, const CTransactionRecord &rtx)
 {
     return WriteIC(std::make_pair(std::string("rtx"), hash), rtx, true);

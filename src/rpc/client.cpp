@@ -183,13 +183,6 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "filtertransactions", 0, "options" },
     { "filteraddresses", 0, "offset" },
     { "filteraddresses", 1, "count" },
-    { "setvote", 0, "proposal" },
-    { "setvote", 1, "option" },
-    { "setvote", 2, "height_start" },
-    { "setvote", 3, "height_end" },
-    { "tallyvotes", 0, "proposal" },
-    { "tallyvotes", 1, "height_start" },
-    { "tallyvotes", 2, "height_end" },
 
     { "converttostealth", 1, "amount" },
     { "converttostealth", 4, "subtractfeefromamount" },

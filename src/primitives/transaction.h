@@ -47,10 +47,7 @@ enum DataOutputTypes
     DO_NARR_CRYPT           = 2,
     DO_STEALTH              = 3,
     DO_STEALTH_PREFIX       = 4,
-    DO_VOTE                 = 5,
-    DO_FEE                  = 6,
-    DO_DEV_FUND_CFWD        = 7,
-    DO_FUND_MSG             = 8,
+    DO_FEE                  = 5,
 };
 
 inline bool IsBitcoinCTxVersion(int nVersion)
@@ -286,7 +283,6 @@ public:
 
 
     virtual bool GetCTFee(CAmount &nFee) const { return false; }
-    virtual bool GetDevFundCfwd(CAmount &nCfwd) const { return false; }
 
     std::string ToString() const;
 };
@@ -416,13 +412,13 @@ public:
     void Serialize(Stream &s) const
     {
         s << vData;
-    };
+    }
 
     template<typename Stream>
     void Unserialize(Stream &s)
     {
         s >> vData;
-    };
+    }
 
     bool GetCTFee(CAmount &nFee) const override
     {
@@ -431,32 +427,7 @@ public:
 
         size_t nb;
         return (0 == GetVarInt(vData, 1, (uint64_t&)nFee, nb));
-    };
-
-    bool GetDevFundCfwd(CAmount &nCfwd) const override
-    {
-        if (vData.size() < 5)
-            return false;
-
-        size_t ofs = 4; // first 4 bytes will be height
-        while (ofs < vData.size())
-        {
-            if (vData[ofs] == DO_VOTE)
-            {
-                ofs += 5;
-                continue;
-            };
-            if (vData[ofs] == DO_DEV_FUND_CFWD)
-            {
-                ofs++;
-                size_t nb;
-                return (0 == GetVarInt(vData, ofs, (uint64_t&)nCfwd, nb));
-            };
-            break;
-        };
-
-        return false;
-    };
+    }
 };
 
 
@@ -809,14 +780,6 @@ public:
             return false;
 
         return vpout[0]->GetCTFee(nFee);
-    }
-
-    bool GetDevFundCfwd(CAmount &nCfwd) const
-    {
-        if (vpout.size() < 1 || vpout[0]->nVersion != OUTPUT_DATA)
-            return false;
-
-        return vpout[0]->GetDevFundCfwd(nCfwd);
     }
 
     friend bool operator==(const CTransaction& a, const CTransaction& b)

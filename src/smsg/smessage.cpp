@@ -3258,38 +3258,7 @@ int CSMSG::Validate(const uint8_t *pHeader, const uint8_t *pPayload, uint32_t nP
             if (blockDepth < 1)
                 return errorN(SMSG_GENERAL_ERROR, "%s: Transaction %s for message %s, low depth %d.\n", __func__, txid.ToString(), msgId.ToString(), blockDepth);
 
-            bool fFound = false;
-            // Find all msg pairs
-            // Message funding is enforced in tx_verify.cpp
-            for (const auto &v : txOut->vpout)
-            {
-                if (!v->IsType(OUTPUT_DATA))
-                    continue;
-                CTxOutData *txd = (CTxOutData*) v.get();
-                if (txd->vData.size() < 25 || txd->vData[0] != DO_FUND_MSG)
-                    continue;
-
-                size_t n = (txd->vData.size()-1) / 24;
-
-                for (size_t k = 0; k < n; ++k)
-                {
-                    uint160 *pMsgIdTx = (uint160*)&txd->vData[1+k*24];
-                    uint32_t *nAmount = (uint32_t*)&txd->vData[1+k*24+20];
-
-                    if (*pMsgIdTx == msgId)
-                    {
-                        if (*nAmount < nExpectFee)
-                        {
-                            LogPrintf("%s: Transaction %s underfunded message %s, expected %d paid %d.\n", __func__, txid.ToString(), msgId.ToString(), nExpectFee, *nAmount);
-                            return SMSG_FUND_FAILED;
-                        };
-                        fFound = true;
-                    };
-                };
-            };
-
-            if (!fFound)
-                return errorN(SMSG_FUND_FAILED, "%s: Transaction %s does not fund message %s.\n", __func__, txid.ToString(), msgId.ToString());
+            return errorN(SMSG_FUND_FAILED, "%s: Transaction %s does not fund message %s.\n", __func__, txid.ToString(), msgId.ToString());
 
         } // cs_main
 
@@ -3668,9 +3637,6 @@ int CSMSG::Send(CKeyID &addressFrom, CKeyID &addressTo, std::string &message,
 
     if (fPaid)
     {
-        if (0 != FundMsg(smsg, sError, fTestFee, nFee))
-            return errorN(SMSG_FUND_FAILED, "%s: SecureMsgFund failed %s.", __func__, sError);
-
         if (fTestFee)
             return SMSG_NO_ERROR;
     } else
@@ -3815,87 +3781,6 @@ int CSMSG::HashMsg(const SecureMessage &smsg, const uint8_t *pPayload, uint32_t 
         .Write(pPayload, nPayload)
         .Finalize(hash.begin());
 
-    return SMSG_NO_ERROR;
-};
-
-int CSMSG::FundMsg(SecureMessage &smsg, std::string &sError, bool fTestFee, CAmount *nFee)
-{
-    // smsg.pPayload must have smsg.nPayload + 32 bytes allocated
-#ifdef ENABLE_WALLET
-    if (!pwallet)
-        return SMSG_WALLET_UNSET;
-
-    if (smsg.version[0] != 3)
-        return errorN(SMSG_UNKNOWN_VERSION, sError, __func__, "Bad message version.");
-
-    size_t nDaysRetention = smsg.nonce[0];
-    if (nDaysRetention < 1 || nDaysRetention > 31)
-        return errorN(SMSG_GENERAL_ERROR, sError, __func__, "Bad message ttl.");
-
-    uint256 txfundId;
-    uint160 msgId;
-    CMutableTransaction txFund;
-
-    if (0 != HashMsg(smsg, smsg.pPayload, smsg.nPayload-32, msgId))
-        return errorN(SMSG_GENERAL_ERROR, sError, __func__, "Message hash failed.");
-
-    txFund.nVersion = BITCOINC_TXN_VERSION;
-
-    size_t nMsgBytes = SMSG_HDR_LEN + smsg.nPayload;
-
-    CCoinControl coinControl;
-    coinControl.m_feerate = CFeeRate(nFundingTxnFeePerK);
-    coinControl.fOverrideFeeRate = true;
-    coinControl.m_extrafee = ((nMsgFeePerKPerDay * nMsgBytes) / 1000) * nDaysRetention;
-
-    assert(coinControl.m_extrafee <= std::numeric_limits<uint32_t>::max());
-    uint32_t msgFee = coinControl.m_extrafee;
-
-    OUTPUT_PTR<CTxOutData> out0 = MAKE_OUTPUT<CTxOutData>();
-    out0->vData.resize(25); // 4 byte fee, max 42.94967295
-    out0->vData[0] = DO_FUND_MSG;
-    memcpy(&out0->vData[1], msgId.begin(), 20);
-    memcpy(&out0->vData[21], &msgFee, 4);
-    txFund.vpout.push_back(out0);
-
-    int nChangePosInOut;
-    CAmount nFeeRet;
-    const std::set<int> setSubtractFeeFromOutputs;
-
-    {
-        LOCK2(cs_main, pwallet->cs_wallet);
-        if (!pwallet->FundTransaction(txFund, nFeeRet, nChangePosInOut, sError, false, setSubtractFeeFromOutputs, coinControl))
-            return errorN(SMSG_GENERAL_ERROR, "%s: FundTransaction failed.\n", __func__);
-
-        if (nFee)
-            *nFee = pwallet->GetDebit(txFund, ISMINE_ALL) - pwallet->GetCredit(txFund, ISMINE_ALL);
-
-        if (fTestFee)
-            return SMSG_NO_ERROR;
-
-        if (!pwallet->SignTransaction(txFund))
-            return errorN(SMSG_GENERAL_ERROR, sError, __func__, "SignTransaction failed.");
-
-        txfundId = txFund.GetHash();
-
-        if (!pwallet->GetBroadcastTransactions())
-            return errorN(SMSG_GENERAL_ERROR, sError, __func__, "Broadcast transactions disabled.");
-
-        CWalletTx wtx(pwallet.get(), MakeTransactionRef(txFund));
-
-        CAmount maxTxFee = 1 * COIN;
-
-        CValidationState state;
-        if (!wtx.AcceptToMemoryPool(maxTxFee, state))
-            return errorN(SMSG_GENERAL_ERROR, sError, __func__, "Transaction cannot be broadcast immediately: %s.", state.GetRejectReason());
-
-        pwallet->AddToWallet(wtx);
-        wtx.RelayWalletTransaction(g_connman.get());
-    }
-    memcpy(smsg.pPayload+(smsg.nPayload-32), txfundId.begin(), 32);
-#else
-    return SMSG_WALLET_UNSET;
-#endif
     return SMSG_NO_ERROR;
 };
 
