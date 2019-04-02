@@ -110,6 +110,9 @@ public:
 
     int64_t GetProofOfStakeReward(const CBlockIndex *pindexPrev, int64_t nFees) const;
 
+    int GetLaunchPhaseEndHeight() const { return nLaunchPhaseEndHeight; }
+    double GetLaunchPhaseRewardRatio() const { return dLaunchPhaseRewardRatio; }
+
     bool CheckAirdropCoinbase(const CBlock *pblock, int nHeight) const;
     uint32_t GetLastImportHeight() const { return nLastImportHeight; }
 
@@ -172,6 +175,9 @@ protected:
 
     std::vector<CImportedCoinbaseTxn> vImportedCoinbaseTxns;
     uint32_t nLastImportHeight;       // set from vImportedCoinbaseTxns
+
+    int nLaunchPhaseEndHeight;
+    double dLaunchPhaseRewardRatio;
 
     std::vector<std::pair<int64_t, DevFundSettings> > vDevFundSettings;
 

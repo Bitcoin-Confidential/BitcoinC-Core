@@ -39,13 +39,17 @@ int64_t CChainParams::GetCoinYearReward(int64_t nTime) const
     };
 
     return nCoinYearReward;
-};
+}
 
 int64_t CChainParams::GetProofOfStakeReward(const CBlockIndex *pindexPrev, int64_t nFees) const
 {
     int64_t nSubsidy;
 
     nSubsidy = (pindexPrev->nMoneySupply / COIN) * GetCoinYearReward(pindexPrev->nTime) / (365 * 24 * (60 * 60 / nTargetSpacing));
+
+    if( pindexPrev->nHeight < Params().GetLaunchPhaseEndHeight() ){
+        nSubsidy *= Params().GetLaunchPhaseRewardRatio();
+    }
 
     if (LogAcceptCategory(BCLog::POS) && gArgs.GetBoolArg("-printcreation", false))
         LogPrintf("GetProofOfStakeReward(): create=%s\n", FormatMoney(nSubsidy).c_str());
@@ -375,6 +379,9 @@ public:
         AddImportHashesMain(vImportedCoinbaseTxns);
         SetLastImportHeight();
 
+        nLaunchPhaseEndHeight = 5040; // 7 days
+        dLaunchPhaseRewardRatio = 0.05; // 5% of the actual reward
+
         nPruneAfterHeight = 100000;
 
         genesis = CreateGenesisBlockMainNet(1551128292, 36140, 0x1f00ffff); // 2018-12-12
@@ -545,6 +552,9 @@ public:
 
         SetLastImportHeight();
 
+        nLaunchPhaseEndHeight = 20;
+        dLaunchPhaseRewardRatio = 0.05; // 5% of the actual reward
+
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlockTestNet(1553477363, 21886, 0x1f00ffff);
@@ -699,8 +709,10 @@ public:
 
         SetLastImportHeight();
 
-        nPruneAfterHeight = 1000;
+        nLaunchPhaseEndHeight = 5040; // 7 days
+        dLaunchPhaseRewardRatio = 0.05; // 5% of the actual reward
 
+        nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlockRegTest(1544595191, 4, 0x207fffff);
         consensus.hashGenesisBlock = genesis.GetHash();
