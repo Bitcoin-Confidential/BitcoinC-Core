@@ -408,7 +408,7 @@
     <Image Include="..\..\src\qtes\icons\address-book.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
-    <Image Include="..\..\src\qtes\icons\bitcoin.ico">
+    <Image Include="..\..\src\qtes\icons\bitcoinc.ico">
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="..\..\src\qtes\icons\bitcoin.png">
