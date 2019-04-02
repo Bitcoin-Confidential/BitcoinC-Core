@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(stealth_key_serialise)
     sxAddr.spend_pubkey.resize(EC_COMPRESSED_SIZE);
     memcpy(&sxAddr.spend_pubkey[0], pkTemp.begin(), EC_COMPRESSED_SIZE);
 
-    const char *testAddr = "SPGyji8uZFip6H15GUfj6bsutRVLsCyBFL3P7k7T7MUDRaYU8GfwUHpfxonLFAvAwr2RkigyGfTgWMfzLAAP8KMRHq7RE8cwpEEekH";
+    const char *testAddr = "B9ux1AAtp9E3LyfoMj5pXS2WMj6b1cDbGU2mzPxtSwZKgKFPgsMoQXxhdXDTWgSh3swNJYGncTswLdzfhAFqRexAeaqEdhFraNF7N6";
     BOOST_CHECK(sxAddr.Encoded() == testAddr);
 
     sxAddr.prefix.number_bits = 8;

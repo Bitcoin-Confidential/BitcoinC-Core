@@ -1744,8 +1744,8 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
             "\nResult:\n"
             "\"address\"              (string) The new bitcoinc address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewaddress", "\"lblTestSxAddrPrefix\" 3 \"0b101\"")
-            + HelpExampleRpc("getnewaddress", "\"lblTestSxAddrPrefix\", 3, \"0b101\""));
+            + HelpExampleCli("getnewaddress", "\"lblTestAddrPrefix\" 3 \"0b101\"")
+            + HelpExampleRpc("getnewaddress", "\"lblTestAddrPrefix\", 3, \"0b101\""));
 
     EnsureWalletIsUnlocked(pwallet);
 
@@ -1878,7 +1878,7 @@ static UniValue getnewstakeaddress(const JSONRPCRequest& request)
     return getnewstandardaddress(pwallet, label, fBech32, fHardened, false);
 }
 
-static UniValue getnewreturnaddress(const JSONRPCRequest& request)
+static UniValue getnewcontractaddress(const JSONRPCRequest& request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
@@ -1889,7 +1889,7 @@ static UniValue getnewreturnaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
-            "getnewreturnaddress ( \"label\" bech32 hardened 256bit )\n"
+            "getnewcontractaddress ( \"label\" bech32 hardened 256bit )\n"
             "\nReturns a new BitcoinC address for cold stake return address, key is saved in wallet.\n"
             "\nArguments:\n"
             "1. \"label\"          (string, optional) If specified the key is added to the address book.\n"
@@ -1898,8 +1898,8 @@ static UniValue getnewreturnaddress(const JSONRPCRequest& request)
             "\nResult:\n"
             "\"address\"           (string) The new cold return address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewreturnaddress", "")
-            + HelpExampleRpc("getnewreturnaddress", "")
+            + HelpExampleCli("getnewcontractaddress", "")
+            + HelpExampleRpc("getnewcontractaddress", "")
         );
 
     if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
@@ -4177,8 +4177,8 @@ static UniValue listunspent(const JSONRPCRequest &request)
 
             "\nExamples\n"
             + HelpExampleCli("listunspent", "")
-            + HelpExampleCli("listunspent", "6 9999999 \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
-            + HelpExampleRpc("listunspent", "6, 9999999, \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"Pka9M2Bva8WetQhQ4ngC255HAbMJf5P5Dc\\\"]\"")
+            + HelpExampleCli("listunspent", "6 9999999 \"[\\\"B9ux1AAtp9E3LyfoMj5pXS2WMj6b1cDbGU2mzPxtSwZKgKFPgsMoQXxhdXDTWgSh3swNJYGncTswLdzfhAFqRexAeaqEdhFraNF7N6\\\",\\\"B9ur1736ANjBSC3gnE6RRkFXZLSpKZtQHcMc5KizazWQVUBuHnrPG8F1dGubyQptNXLMSDhNiry1vzWAyzF7DH9tuvoaRWtP9dEDkz\\\"]\"")
+            + HelpExampleRpc("listunspent", "6, 9999999, \"[\\\"PfqK97PXYfqRFtdYcZw82x3dzPrZbEAcYa\\\",\\\"B9ux1AAtp9E3LyfoMj5pXS2WMj6b1cDbGU2mzPxtSwZKgKFPgsMoQXxhdXDTWgSh3swNJYGncTswLdzfhAFqRexAeaqEdhFraNF7N6\\\"]\"")
         );
 
     int nMinDepth = 1;
@@ -4829,7 +4829,7 @@ static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes 
             "\"txid\"           (string) The transaction id.\n";
 
     rv +=   "\nExamples:\n"
-            + HelpExampleCli(cmd, "\"SPGyji8uZFip6H15GUfj6bsutRVLsCyBFL3P7k7T7MUDRaYU8GfwUHpfxonLFAvAwr2RkigyGfTgWMfzLAAP8KMRHq7RE8cwpEEekH\" 0.1");
+            + HelpExampleCli(cmd, "\"B9ux1AAtp9E3LyfoMj5pXS2WMj6b1cDbGU2mzPxtSwZKgKFPgsMoQXxhdXDTWgSh3swNJYGncTswLdzfhAFqRexAeaqEdhFraNF7N6\" 0.1");
 
     return rv;
 }
@@ -4915,7 +4915,7 @@ UniValue sendtypeto(const JSONRPCRequest &request)
             "\nResult:\n"
             "\"txid\"              (string) The transaction id.\n"
             "\nExamples:\n"
-            + HelpExampleCli("sendtypeto", "spending staking \"[{\\\"address\\\":\\\"PbpVcjgYatnkKgveaeqhkeQBFwjqR7jKBR\\\",\\\"amount\\\":0.1}]\""));
+            + HelpExampleCli("sendtypeto", "spending staking \"[{\\\"address\\\":\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\",\\\"amount\\\":0.1}]\""));
 
     std::string sTypeIn = request.params[0].get_str();
     std::string sTypeOut = request.params[1].get_str();
@@ -5795,7 +5795,7 @@ static UniValue transactionblinds(const JSONRPCRequest &request)
     return result;
 };
 
-static UniValue derivefromstealthaddress(const JSONRPCRequest &request)
+static UniValue derivefromspendingaddress(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -5804,10 +5804,10 @@ static UniValue derivefromstealthaddress(const JSONRPCRequest &request)
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
-            "derivefromstealthaddress \"stealthaddress\" (\"ephempubkey\")\n"
+            "derivefromspendingaddress \"spendingaddress\" (\"ephempubkey\")\n"
             "\nDerive a pubkey from a stealth address and random value.\n"
             "\nArguments:\n"
-            "1. \"stealthaddress\"                 (string, required) The stealth address\n"
+            "1. \"spendingaddress\"                 (string, required) The stealth address\n"
             "2. \"ephemeralvalue\"                 (string, optional) The ephemeral value, interpreted as private key if 32 bytes or public key if 33.\n"
             "   If an ephemeral public key is provided the spending private key will be derived, wallet must be unlocked\n"
             "\nResult:\n"
@@ -5818,8 +5818,8 @@ static UniValue derivefromstealthaddress(const JSONRPCRequest &request)
             "     \"privatekey\":\"wif\",            (string) The derived privatekey, if \"ephempubkey\" is provided\n"
             "   }\n"
             "\nExamples:\n"
-            + HelpExampleCli("derivefromstealthaddress", "\"stealthaddress\"")
-            + HelpExampleRpc("derivefromstealthaddress", "\"stealthaddress\"")
+            + HelpExampleCli("derivefromspendingaddress", "\"spendingaddress\"")
+            + HelpExampleRpc("derivefromspendingaddress", "\"spendingaddress\"")
         );
 
     CBitcoinAddress addr(request.params[0].get_str());
@@ -7077,7 +7077,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
     { "wallet",             "getnewstakeaddress",               &getnewstakeaddress,            {"label","bech32", "hardened"} },
-    { "wallet",             "getnewreturnaddress",              &getnewreturnaddress,       {"label","bech32", "hardened"} },
+    { "wallet",             "getnewcontractaddress",              &getnewcontractaddress,       {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 
@@ -7111,7 +7111,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "walletsettings",                   &walletsettings,                {"setting","json"} },
 
     { "wallet",             "transactionblinds",                &transactionblinds,             {"txnid"} },
-    { "wallet",             "derivefromstealthaddress",         &derivefromstealthaddress,      {"stealthaddress","ephempubkey"} },
+    { "wallet",             "derivefromspendingaddress",         &derivefromspendingaddress,      {"spendingaddress","ephempubkey"} },
 
     { "rawtransactions",    "buildscript",                      &buildscript,                   {"json"} },
     { "rawtransactions",    "createrawbctransaction",         &createrawbctransaction,      {"inputs","outputs","locktime","replaceable"} },

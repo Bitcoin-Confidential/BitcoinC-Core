@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(stealth)
 
     ECC_Start_Stealth();
     CStealthAddress sx;
-    BOOST_CHECK(true == sx.SetEncoded("SPGyji8uZFip6H15GUfj6bsutRVLsCyBFL3P7k7T7MUDRaYU8GfwUHpfxonLFAvAwr2RkigyGfTgWMfzLAAP8KMRHq7RE8cwpEEekH"));
+    BOOST_CHECK(true == sx.SetEncoded("B9ux1AAtp9E3LyfoMj5pXS2WMj6b1cDbGU2mzPxtSwZKgKFPgsMoQXxhdXDTWgSh3swNJYGncTswLdzfhAFqRexAeaqEdhFraNF7N6"));
 
     CAmount nValue = 1;
 
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(stealth_key_index)
 
     //ECC_Start_Stealth();
     CStealthAddress sx;
-    BOOST_CHECK(sx.SetEncoded("SPGyji8uZFip6H15GUfj6bsutRVLsCyBFL3P7k7T7MUDRaYU8GfwUHpfxonLFAvAwr2RkigyGfTgWMfzLAAP8KMRHq7RE8cwpEEekH"));
+    BOOST_CHECK(sx.SetEncoded("B9ux1AAtp9E3LyfoMj5pXS2WMj6b1cDbGU2mzPxtSwZKgKFPgsMoQXxhdXDTWgSh3swNJYGncTswLdzfhAFqRexAeaqEdhFraNF7N6"));
 
     CStealthAddressIndexed sxi;
     uint32_t sxId;
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(stealth_key_index)
     BOOST_CHECK(sxOut.ToString() == "SPGx7SrLpMcMUjJhQkMp7D8eRAxzVj34StgQdYHr9887nCNBAiUTr4eiJKunzDaBxUqTWGX1sCCJxvUH9WG1JkJw9o15Xn2JSjnpD9");
 
 
-    BOOST_CHECK(sx.SetEncoded("SPGyji8uZFip6H15GUfj6bsutRVLsCyBFL3P7k7T7MUDRaYU8GfwUHpfxonLFAvAwr2RkigyGfTgWMfzLAAP8KMRHq7RE8cwpEEekH"));
+    BOOST_CHECK(sx.SetEncoded("B9ux1AAtp9E3LyfoMj5pXS2WMj6b1cDbGU2mzPxtSwZKgKFPgsMoQXxhdXDTWgSh3swNJYGncTswLdzfhAFqRexAeaqEdhFraNF7N6"));
     sx.ToRaw(sxi.addrRaw);
     BOOST_CHECK(pwallet->GetStealthKeyIndex(sxi, sxId));
     BOOST_CHECK(sxId == 1);
