@@ -1456,7 +1456,6 @@ bool AppInitMain()
      * available in the GUI RPC console even if external calls are disabled.
      */
     RegisterAllCoreRPCCommands(tableRPC);
-    RegisterSmsgRPCCommands(tableRPC);
     RegisterInsightRPCCommands(tableRPC);
 #ifdef ENABLE_WALLET
     RegisterHDWalletRPCCommands(tableRPC);
