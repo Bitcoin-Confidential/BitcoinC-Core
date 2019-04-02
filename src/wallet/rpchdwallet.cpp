@@ -1950,7 +1950,7 @@ static UniValue importstealthaddress(const JSONRPCRequest &request)
             "           Stealth addresses with prefixes will scan only incoming stealth transactions with a matching prefix.\n"
             "6. bech32              (bool, optional) Use Bech32 encoding.\n"
             "\nResult:\n"
-            "\"address\"              (string) The new bitcoinc stealth address\n"
+            "\"address\"              (string) The new spending address\n"
             "\nExamples:\n"
             + HelpExampleCli("importstealthaddress", "scan_secret spend_secret \"label\" 3 \"0b101\"")
             + HelpExampleRpc("importstealthaddress", "scan_secret, spend_secret, \"label\", 3, \"0b101\""));
@@ -2177,7 +2177,6 @@ static UniValue liststealthaddresses(const JSONRPCRequest &request)
             "    ]\n"
             "  }...\n"
             "]\n"
-            "\"address\"              (string) The new bitcoinc stealth address\n"
             "\nExamples:\n"
             + HelpExampleCli("liststealthaddresses", "")
             + HelpExampleRpc("liststealthaddresses", ""));
@@ -4201,8 +4200,8 @@ static UniValue listunspent(const JSONRPCRequest &request)
         for (unsigned int idx = 0; idx < inputs.size(); idx++) {
             const UniValue& input = inputs[idx];
             CBitcoinAddress address(input.get_str());
-//            if (!address.IsValidStealthAddress())
-//                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid BitcoinC stealth address: ")+input.get_str());
+            if (!address.IsValidStealthAddress())
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid spending address: ")+input.get_str());
             if (setAddress.count(address))
                 throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+input.get_str());
            setAddress.insert(address);
@@ -4678,8 +4677,8 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
                 throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddStandardInputs failed: %s.", sError));
             break;
         case OUTPUT_RINGCT:
-            if (0 != pwallet->AddAnonInputs(wtx, rtx, vecSend, !fCheckFeeOnly, nRingSize, nInputsPerSig, nFeeRet, &coincontrol, sError))
-                throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddAnonInputs failed: %s.", sError));
+            if (0 != pwallet->AddSpendingInputs(wtx, rtx, vecSend, !fCheckFeeOnly, nRingSize, nInputsPerSig, nFeeRet, &coincontrol, sError))
+                throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddSpendingInputs failed: %s.", sError));
             break;
         default:
             throw JSONRPCError(RPC_WALLET_ERROR, strprintf("Unknown input type: %d.", typeIn));
@@ -6997,8 +6996,8 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
         if (sInputType == "spending")
         {
             sError = "TODO";
-            //if (0 != pwallet->AddAnonInputs(wtx, rtx, vecSend, false, nFee, &coinControl, sError))
-                throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddAnonInputs failed: %s.", sError));
+            //if (0 != pwallet->AddSpendingInputs(wtx, rtx, vecSend, false, nFee, &coinControl, sError))
+                throw JSONRPCError(RPC_WALLET_ERROR, strprintf("AddSpendingInputs failed: %s.", sError));
         } else
         {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Unknown input type.");

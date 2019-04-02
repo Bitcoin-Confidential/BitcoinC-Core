@@ -809,7 +809,7 @@ static UniValue devicegetnewstealthaddress(const JSONRPCRequest &request)
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "devicegetnewstealthaddress [label] [num_prefix_bits] [prefix_num] [bech32]\n"
-            "Returns a new BitcoinC stealth address for receiving payments."
+            "Returns a new spending address for receiving payments."
             + HelpRequiringPassphrase(pwallet) +
             "\nArguments:\n"
             "1. \"label\"             (string, optional) If specified the key is added to the address book.\n"
@@ -821,7 +821,7 @@ static UniValue devicegetnewstealthaddress(const JSONRPCRequest &request)
             "           Stealth addresses with prefixes will scan only incoming stealth transactions with a matching prefix.\n"
             "4. bech32              (bool, optional) Use Bech32 encoding, default true.\n"
             "\nResult:\n"
-            "\"address\"              (string) The new bitcoinc stealth address\n"
+            "\"address\"              (string) The new spending address\n"
             "\nExamples:\n"
             + HelpExampleCli("devicegetnewstealthaddress", "\"lblTestSxAddrPrefix\" 3 \"0b101\"")
             + HelpExampleRpc("devicegetnewstealthaddress", "\"lblTestSxAddrPrefix\", 3, \"0b101\""));
