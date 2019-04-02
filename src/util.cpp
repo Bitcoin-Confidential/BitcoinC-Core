@@ -1116,6 +1116,16 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
     const std::string confPath = GetArg("-conf", BITCOIN_CONF_FILENAME);
     fs::ifstream stream(GetConfigFile(confPath));
 
+    if (!stream.good()){
+        FILE* configFile = fopen(GetConfigFile(confPath).string().c_str(), "w");
+        if (configFile != NULL) {
+            std::string strHeader = "# Bitcoin Confidential wallet config file\n\n";
+            fwrite(strHeader.c_str(), std::strlen(strHeader.c_str()), 1, configFile);
+            fclose(configFile);
+        }
+        return true;
+    }
+
     // ok to not have a config file
     if (stream.good()) {
         if (!ReadConfigStream(stream, error, ignore_invalid_keys)) {
