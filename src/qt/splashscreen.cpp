@@ -28,12 +28,13 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     QWidget(0, f), curAlignment(0), m_node(node)
 {
     // set reference point, paddings
-    int paddingRight            = 25;
+    int paddingRight            = 50;
     int paddingTop              = 50;
     int titleVersionVSpace      = 17;
     int titleCopyrightVSpace    = 40;
 
-    float fontFactor            = 7610.0;
+    float fontFactor            = 0.8;
+    float fontFactorTitle       = 1.0;
     float devicePixelRatio      = 1.0;
 #if QT_VERSION > 0x050100
 	devicePixelRatio = static_cast<QGuiApplication*>(QCoreApplication::instance())->devicePixelRatio();
@@ -67,7 +68,7 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     pixPaint.fillRect(rGradient, gradient);
 
     // draw the bitcoin icon, expected size of PNG: 1024x1024
-    QRect rectIcon(QPoint(-150,-122), QSize(430,430));
+    QRect rectIcon(QPoint(-170,-122), QSize(430,430));
 
     const QSize requiredSize(1024,1024);
     QPixmap icon(networkStyle->getAppIcon().pixmap(requiredSize));
@@ -75,14 +76,14 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     pixPaint.drawPixmap(rectIcon, icon);
 
     // check font size and drawing with
-    pixPaint.setFont(QFont(font, 33*fontFactor));
+    pixPaint.setFont(QFont(font, 33*fontFactorTitle));
     QFontMetrics fm = pixPaint.fontMetrics();
     int titleTextWidth = fm.width(titleText);
     if (titleTextWidth > 176) {
-        fontFactor = fontFactor * 176 / titleTextWidth;
+        fontFactorTitle = fontFactorTitle * 176 / titleTextWidth;
     }
 
-    pixPaint.setFont(QFont(font, 33*fontFactor));
+    pixPaint.setFont(QFont(font, 33*fontFactorTitle));
     fm = pixPaint.fontMetrics();
     titleTextWidth  = fm.width(titleText);
     pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop,titleText);
