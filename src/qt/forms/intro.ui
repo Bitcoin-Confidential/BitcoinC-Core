@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>674</width>
-    <height>415</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>15</height>
+       <height>10</height>
       </size>
      </property>
     </spacer>
@@ -106,12 +106,19 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLineEdit" name="dataDirectory"/>
+          <widget class="QLineEdit" name="dataDirectory">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="ellipsisButton">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
