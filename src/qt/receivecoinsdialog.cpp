@@ -177,6 +177,13 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     QString address;
     QString label = ui->reqLabel->text();
 
+    WalletModel::UnlockContext ctx(model->requestUnlock());
+    if(!ctx.isValid())
+    {
+        // Unlock wallet was cancelled
+        return;
+    }
+
     /* Generate new receiving address
     OutputType address_type;
     if (ui->useBech32->isChecked()) {
