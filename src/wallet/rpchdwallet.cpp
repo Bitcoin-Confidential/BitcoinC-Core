@@ -4401,7 +4401,13 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
 
             if (typeOut == OUTPUT_RINGCT
                 && !address.IsValidStealthAddress()) {
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid BitcoinC stealth address");
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid spending address");
+            }
+
+            if (typeOut == OUTPUT_STANDARD
+                && !address.IsValid(CChainParams::PUBKEY_ADDRESS)
+                && !address.IsValid(CChainParams::PUBKEY_ADDRESS_256)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid stake address");
             }
 
             if (!obj.exists("script") && !address.IsValid()) {
@@ -4474,7 +4480,13 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
 
         if (typeOut == OUTPUT_RINGCT
             && !address.IsValidStealthAddress()) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid stealth address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid spendings address");
+        }
+
+        if (typeOut == OUTPUT_STANDARD
+            && !address.IsValid(CChainParams::PUBKEY_ADDRESS)
+            && !address.IsValid(CChainParams::PUBKEY_ADDRESS_256)) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid stake address");
         }
 
         {
