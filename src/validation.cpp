@@ -2673,7 +2673,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     if (!control.Wait())
         return state.DoS(100, error("%s: CheckQueue failed", __func__), REJECT_INVALID, "block-validation-failed");
-/*
+
     if (fBitcoinCMode)
     {
         if (block.IsProofOfStake()) // only the genesis block isn't proof of stake
@@ -2682,7 +2682,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(block.nTime);
 
             CAmount nCalculatedStakeReward = Params().GetProofOfStakeReward(pindex->pprev, nFees);
-
+            CAmount nDevReward =  0;
             if (!pDevFundSettings || pDevFundSettings->nMinDevStakePercent <= 0)
             {
                 if (nStakeReward < 0 || nStakeReward > nCalculatedStakeReward)
@@ -2691,13 +2691,8 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             {
                 assert(pDevFundSettings->nMinDevStakePercent <= 100);
 
-                CAmount nMinDevPart = (pDevFundSettings->nDevOutputPeriod * nCalculatedStakeReward * pDevFundSettings->nMinDevStakePercent) / 100;
-                CAmount nMaxHolderPart = nCalculatedStakeReward - nMinDevPart;
-                if (nMinDevPart < 0 || nMaxHolderPart < 0)
-                    return state.DoS(100, error("%s: bad coinstake split amount (foundation=%d vs reward=%d)", __func__, nMinDevPart, nMaxHolderPart), REJECT_INVALID, "bad-cs-amount");
+                nCalculatedStakeReward = nCalculatedStakeReward * (100 - pDevFundSettings->nMinDevStakePercent) / 100;
 
-
-                CAmount nDevBfwd = 0, nDevCfwdCheck = 0;
                 if (pindex->pprev->nHeight > 0) // genesis block is pow
                 {
                     CTransactionRef txPrevCoinstake;
@@ -2705,18 +2700,20 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                         return state.DoS(100, error("%s: Failed to get previous coinstake.", __func__), REJECT_INVALID, "bad-cs-amount");
 
                     assert(txPrevCoinstake->IsCoinStake()); // Sanity check
-
-                    if (!txPrevCoinstake->GetDevFundCfwd(nDevBfwd))
-                        nDevBfwd = 0;
                 };
 
                 if (pindex->nHeight % pDevFundSettings->nDevOutputPeriod == 0)
                 {
-                    // Fund output must exist and match cfwd, cfwd data output must be unset
-                    // nStakeReward must == nDevBfwd + nCalculatedStakeReward
+                    CBlockIndex *pIndexDev = pindex->pprev;
 
-                    if (nStakeReward != nDevBfwd + nCalculatedStakeReward)
-                        return state.DoS(100, error("%s: bad stake-reward (actual=%d vs expected=%d)", __func__, nStakeReward, nDevBfwd + nCalculatedStakeReward), REJECT_INVALID, "bad-cs-amount");
+                    while( pIndexDev && pIndexDev->nHeight >= pindex->nHeight - pDevFundSettings->nDevOutputPeriod){
+                        nDevReward += (Params().GetProofOfStakeReward(pIndexDev, 0) * pDevFundSettings->nMinDevStakePercent)  / 100;
+                        pIndexDev = pIndexDev->pprev;
+                        if( !pIndexDev ) break;
+                    }
+
+                    if (nStakeReward != nDevReward + nCalculatedStakeReward)
+                        return state.DoS(100, error("%s: bad stake-reward-dev (actual=%d vs expected=%d)", __func__, nStakeReward, nDevReward + nCalculatedStakeReward), REJECT_INVALID, "bad-cs-amount");
 
                     CTxDestination dfDest = CBitcoinAddress(pDevFundSettings->sDevFundAddresses).Get();
                     if (dfDest.type() == typeid(CNoDestination))
@@ -2731,24 +2728,12 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                     if (outputDF->scriptPubKey != devFundScriptPubKey)
                         return state.DoS(100, error("%s: Bad foundation fund output script.", __func__), REJECT_INVALID, "bad-cs");
 
-                    if (outputDF->nValue < nDevBfwd + nMinDevPart) // max value is clamped already
-                        return state.DoS(100, error("%s: Bad foundation-reward (actual=%d vs minfundpart=%d)", __func__, nStakeReward, nDevBfwd + nMinDevPart), REJECT_INVALID, "bad-cs-fund-amount");
-
-
-                    if (txCoinstake->GetDevFundCfwd(nDevCfwdCheck))
-                        return state.DoS(100, error("%s: Coinstake foundation cfwd must be unset.", __func__), REJECT_INVALID, "bad-cs-cfwd");
+                    if (outputDF->nValue != nDevReward) // max value is clamped already
+                        return state.DoS(100, error("%s: Bad foundation-reward (actual=%d vs expected=%d)", __func__, outputDF->nValue, nDevReward), REJECT_INVALID, "bad-cs-fund-amount");
                 } else
                 {
-                    // Ensure cfwd data output is correct and nStakeReward is <= nHolderPart
-                    // cfwd must == nDevBfwd + (nCalculatedStakeReward - nStakeReward) // allowing users to set a higher split
-
-                    if (nStakeReward < 0 || nStakeReward > nMaxHolderPart)
-                        return state.DoS(100, error("%s: Bad stake-reward (actual=%d vs maxholderpart=%d)", __func__, nStakeReward, nMaxHolderPart), REJECT_INVALID, "bad-cs-amount");
-
-                    CAmount nDevCfwd = nDevBfwd + nCalculatedStakeReward - nStakeReward;
-                    if (!txCoinstake->GetDevFundCfwd(nDevCfwdCheck)
-                        || nDevCfwdCheck != nDevCfwd)
-                        return state.DoS(100, error("%s: Coinstake foundation fund carried forward mismatch (actual=%d vs expected=%d)", __func__, nDevCfwdCheck, nDevCfwd), REJECT_INVALID, "bad-cs-cfwd");
+                    if (nStakeReward < 0 || nStakeReward > nCalculatedStakeReward)
+                        return state.DoS(100, error("%s: Bad stake-reward (actual=%d vs expected=%d)", __func__, nStakeReward, nCalculatedStakeReward), REJECT_INVALID, "bad-cs-amount");
                 };
 
                 coinStakeCache.InsertCoinStake(blockHash, txCoinstake);
@@ -2767,7 +2752,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                                    block.vtx[0]->GetValueOut(), blockReward),
                                    REJECT_INVALID, "bad-cb-amount");
     };
-*/
+
     int64_t nTime4 = GetTimeMicros(); nTimeVerify += nTime4 - nTime2;
     LogPrint(BCLog::BENCH, "    - Verify %u txins: %.2fms (%.3fms/txin) [%.2fs (%.2fms/blk)]\n", nInputs - 1, MILLI * (nTime4 - nTime2), nInputs <= 1 ? 0 : MILLI * (nTime4 - nTime2) / (nInputs-1), nTimeVerify * MICRO, nTimeVerify * MILLI / nBlocksTotal);
 
