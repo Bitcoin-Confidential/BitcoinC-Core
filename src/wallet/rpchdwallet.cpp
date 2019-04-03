@@ -4404,8 +4404,8 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
             }
 
             if (typeOut == OUTPUT_STANDARD
-                && !address.IsValid(CChainParams::PUBKEY_ADDRESS)
-                && !address.IsValid(CChainParams::PUBKEY_ADDRESS_256)) {
+                && sAddress != "script"
+                && !address.IsValid(CChainParams::PUBKEY_ADDRESS)) {
                 throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid stake address");
             }
 
