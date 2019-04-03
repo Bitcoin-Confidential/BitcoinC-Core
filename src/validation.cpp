@@ -1388,7 +1388,6 @@ bool IsInitialBlockDownload()
         return true;
     if (fBitcoinCMode
         && (GetNumPeers() < 1
-            || GetNumBlocksOfPeers() <= 0
             || chainActive.Tip()->nHeight < GetNumBlocksOfPeers()-10))
         return true;
 
