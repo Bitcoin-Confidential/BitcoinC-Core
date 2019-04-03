@@ -1383,12 +1383,12 @@ bool IsInitialBlockDownload()
         return true;
     if (chainActive.Tip()->nChainWork < nMinimumChainWork)
         return true;
-    if (fRequireStandard // fRequireStandard is false on testnet
-        && chainActive.Tip()->nHeight > COINBASE_MATURITY
-        && chainActive.Tip()->GetBlockTime() < (GetTime() - nMaxTipAge))
+    if (chainActive.Tip()->nHeight > COINBASE_MATURITY &&
+        chainActive.Tip()->GetBlockTime() < (GetTime() - nMaxTipAge))
         return true;
     if (fBitcoinCMode
         && (GetNumPeers() < 1
+            || GetNumBlocksOfPeers() <= 0
             || chainActive.Tip()->nHeight < GetNumBlocksOfPeers()-10))
         return true;
 
