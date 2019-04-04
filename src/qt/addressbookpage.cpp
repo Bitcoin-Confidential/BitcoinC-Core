@@ -143,7 +143,8 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
             break;
         case ForEditing:
             setWindowTitle(tr("Stake and ColdStake addresses"));
-            ui->labelExplanation->setText(tr("These are your Bitcoin Confidential Stake and ColdStake addresses.\n\nStake addresses are used to convert your spending funds into staking funds. After doing that you can hot stake your funds on the Stake addresses.\n\nColdStake addresses are needed to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses if you use the automated ColdStaking activation from the Staking Status page."));
+            ui->labelExplanation->setText(tr("Stake addresses are used to convert spending funds into staking funds in the \"Convert to Staking\" tab. Funds in Stake addresses can be either used for hot staking or the activation of ColdStaking.\n\n"
+                                             "ColdStake addresses are used to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses when the automated ColdStaking activation from the Staking Status page is used."));
             ui->closeButton->hide();
             break;
         }
