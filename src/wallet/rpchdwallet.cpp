@@ -1878,7 +1878,7 @@ static UniValue getnewstakeaddress(const JSONRPCRequest& request)
     return getnewstandardaddress(pwallet, label, fBech32, fHardened, false);
 }
 
-static UniValue getnewcontractaddress(const JSONRPCRequest& request)
+static UniValue getnewcoldstakeaddress(const JSONRPCRequest& request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
@@ -1889,7 +1889,7 @@ static UniValue getnewcontractaddress(const JSONRPCRequest& request)
 
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
-            "getnewcontractaddress ( \"label\" bech32 hardened 256bit )\n"
+            "getnewcoldstakeaddress ( \"label\" bech32 hardened 256bit )\n"
             "\nReturns a new BitcoinC address for cold stake return address, key is saved in wallet.\n"
             "\nArguments:\n"
             "1. \"label\"          (string, optional) If specified the key is added to the address book.\n"
@@ -1898,8 +1898,8 @@ static UniValue getnewcontractaddress(const JSONRPCRequest& request)
             "\nResult:\n"
             "\"address\"           (string) The new cold return address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewcontractaddress", "")
-            + HelpExampleRpc("getnewcontractaddress", "")
+            + HelpExampleCli("getnewcoldstakeaddress", "")
+            + HelpExampleRpc("getnewcoldstakeaddress", "")
         );
 
     if (pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
@@ -7074,7 +7074,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
     { "wallet",             "getnewstakeaddress",               &getnewstakeaddress,            {"label","bech32", "hardened"} },
-    { "wallet",             "getnewcontractaddress",              &getnewcontractaddress,       {"label","bech32", "hardened"} },
+    { "wallet",             "getnewcoldstakeaddress",              &getnewcoldstakeaddress,       {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 
