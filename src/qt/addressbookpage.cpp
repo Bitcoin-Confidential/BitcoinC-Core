@@ -154,7 +154,7 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
 
             setWindowTitle(tr("Stake and ColdStake addresses"));
             ui->labelExplanation->setText(tr("Stake addresses, starting with \"%1\", are used to convert spending funds into staking funds in the \"Convert to Staking\" tab. Funds in Stake addresses can be either used for hot staking or the activation of ColdStaking.\n\n"
-                                             "ColdStake addresses, starting with \"%2\" are used to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses when the automated ColdStaking activation from the Staking Status page is used.")
+                                             "ColdStake addresses, starting with \"%2\", are used to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses when the automated ColdStaking activation from the Staking Status page is used.")
                                              .arg(exampleStake.ToString()[0]).arg(exampleColdStake.ToString()[0]));
             ui->closeButton->hide();
             break;
