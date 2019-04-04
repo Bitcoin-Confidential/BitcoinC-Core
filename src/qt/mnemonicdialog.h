@@ -43,7 +43,7 @@ public:
     ~MnemonicDialog();
 
 public Q_SLOTS:
-    void hwImportComplete(bool passed);
+//    void hwImportComplete(bool passed);
 
 Q_SIGNALS:
     // Rescan blockchain for transactions
@@ -53,7 +53,7 @@ private Q_SLOTS:
     void on_btnCancel_clicked();
     void on_btnImport_clicked();
     void on_btnGenerate_clicked();
-    void on_btnImportFromHwd_clicked();
+//    void on_btnImportFromHwd_clicked();
 
 private:
     Ui::MnemonicDialog *ui;

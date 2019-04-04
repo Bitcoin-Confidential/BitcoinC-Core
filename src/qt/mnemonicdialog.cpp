@@ -33,12 +33,12 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
     ui->setupUi(this);
 
     QObject::connect(ui->btnCancel2, SIGNAL(clicked()), this, SLOT(on_btnCancel_clicked()));
-    QObject::connect(ui->btnCancel3, SIGNAL(clicked()), this, SLOT(on_btnCancel_clicked()));
+//    QObject::connect(ui->btnCancel3, SIGNAL(clicked()), this, SLOT(on_btnCancel_clicked()));
 
     QObject::connect(this, SIGNAL(startRescan()), walletModel, SLOT(startRescan()), Qt::QueuedConnection);
 
     setWindowTitle(QString("HD Wallet Setup - %1").arg(QString::fromStdString(wm->wallet().getWalletName())));
-    ui->edtPath->setPlaceholderText(tr("Path to derive account from, if not using default. (optional, default=%1)").arg(QString::fromStdString(GetDefaultAccountPath())));
+//    ui->edtPath->setPlaceholderText(tr("Path to derive account from, if not using default. (optional, default=%1)").arg(QString::fromStdString(GetDefaultAccountPath())));
     ui->edtPassword->setPlaceholderText(tr("Enter a passphrase to protect your Recovery Phrase. (optional)"));
 #if QT_VERSION >= 0x050200
     ui->tbxMnemonic->setPlaceholderText(tr("Enter your BIP39 compliant Recovery Phrase/Mnemonic."));
@@ -123,57 +123,57 @@ void MnemonicDialog::on_btnGenerate_clicked()
     return;
 };
 
-void MnemonicDialog::on_btnImportFromHwd_clicked()
-{
-    if (m_thread) {
-        qWarning() << "MnemonicDialog hwd thread exists.";
-        return;
-    }
-    QString sCommand = "initaccountfromdevice \"From Hardware Device\"";
+//void MnemonicDialog::on_btnImportFromHwd_clicked()
+//{
+//    if (m_thread) {
+//        qWarning() << "MnemonicDialog hwd thread exists.";
+//        return;
+//    }
+//    QString sCommand = "initaccountfromdevice \"From Hardware Device\"";
 
-    QString sPath = ui->edtPath->text();
-    sCommand += " \"" + sPath + "\" true -1";
+//    QString sPath = ui->edtPath->text();
+//    sCommand += " \"" + sPath + "\" true -1";
 
-    ui->tbxHwdOut->appendPlainText("Waiting for device.");
-    setEnabled(false);
+//    ui->tbxHwdOut->appendPlainText("Waiting for device.");
+//    setEnabled(false);
 
-    m_thread = new RPCThread(sCommand, walletModel->getWalletName(), &m_rv);
-    connect(m_thread, SIGNAL(complete(bool)), this, SLOT(hwImportComplete(bool)));
-    m_thread->setObjectName("bitcoinc-hwImport");
-    m_thread->start();
+//    m_thread = new RPCThread(sCommand, walletModel->getWalletName(), &m_rv);
+//    connect(m_thread, SIGNAL(complete(bool)), this, SLOT(hwImportComplete(bool)));
+//    m_thread->setObjectName("bitcoinc-hwImport");
+//    m_thread->start();
 
-    return;
-};
+//    return;
+//};
 
-void MnemonicDialog::hwImportComplete(bool passed)
-{
-    setEnabled(true);
+//void MnemonicDialog::hwImportComplete(bool passed)
+//{
+//    setEnabled(true);
 
-    m_thread->wait();
-    delete m_thread;
-    m_thread = nullptr;
+//    m_thread->wait();
+//    delete m_thread;
+//    m_thread = nullptr;
 
-    if (!passed) {
-        QString sError;
-        if (m_rv["Error"].isStr()) {
-            sError = QString::fromStdString(m_rv["Error"].get_str());
-        } else {
-            sError = QString::fromStdString(m_rv.write(1));
-        }
+//    if (!passed) {
+//        QString sError;
+//        if (m_rv["Error"].isStr()) {
+//            sError = QString::fromStdString(m_rv["Error"].get_str());
+//        } else {
+//            sError = QString::fromStdString(m_rv.write(1));
+//        }
 
-        ui->tbxHwdOut->appendPlainText(sError);
-        if (sError == "No device found."
-            || sError.indexOf("6982") > -1) {
-            ui->tbxHwdOut->appendPlainText("Open bitcoinc app on device before importing.");
-        }
-    } else {
-        UniValue rv;
-        QString sCommand = "devicegetnewstealthaddress \"default stealth\"";
-        walletModel->tryCallRpc(sCommand, rv);
-        close();
+//        ui->tbxHwdOut->appendPlainText(sError);
+//        if (sError == "No device found."
+//            || sError.indexOf("6982") > -1) {
+//            ui->tbxHwdOut->appendPlainText("Open bitcoinc app on device before importing.");
+//        }
+//    } else {
+//        UniValue rv;
+//        QString sCommand = "devicegetnewstealthaddress \"default stealth\"";
+//        walletModel->tryCallRpc(sCommand, rv);
+//        close();
 
-        startRescan();
-    }
+//        startRescan();
+//    }
 
-    return;
-};
+//    return;
+//};
