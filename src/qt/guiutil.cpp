@@ -94,7 +94,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
     widget->setFont(fixedPitchFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter spending address"));
+    widget->setPlaceholderText(QObject::tr("Enter Spending address"));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent, false));
 }
@@ -107,11 +107,11 @@ void setupStakeAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool f
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
     if( f256Only ){
-        widget->setPlaceholderText(QObject::tr("Enter contract address"));
+        widget->setPlaceholderText(QObject::tr("Enter ColdStake address"));
     }else if( fColdStake ){
-        widget->setPlaceholderText(QObject::tr("Enter stake address of remote node"));
+        widget->setPlaceholderText(QObject::tr("Enter Stake address of remote node"));
     }else{
-        widget->setPlaceholderText(QObject::tr("Enter stake address"));
+        widget->setPlaceholderText(QObject::tr("Enter Stake address"));
     }
 
     widget->setValidator(new BitcoinAddressEntryValidator(parent));

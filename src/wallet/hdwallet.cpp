@@ -11173,7 +11173,7 @@ bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &st
             }
 
             if( fIsCoinStake && !fHaveKey &&  !( fHaveKey = HaveKey(keyId2) ) ){
-                strError = "Convert address must be from your wallet";
+                strError = "ColdStake address must be from your wallet";
             }
 
             if( !fHaveKey ){
