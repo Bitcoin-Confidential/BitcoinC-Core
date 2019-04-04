@@ -105,10 +105,13 @@ private Q_SLOTS:
     void updateWatchOnlyColumn(bool fHaveWatchOnly);
     void abandonTx();
     void bumpFee();
+    void computeSelectedSum();
 
 Q_SIGNALS:
     void doubleClicked(const QModelIndex&);
 
+    /** Send computed sum back to wallet-view */
+    void selectedAmount(const QString &amount);
     /**  Fired when a message should be reported to the user */
     void message(const QString &title, const QString &message, unsigned int style);
 

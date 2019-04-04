@@ -25,6 +25,7 @@ class AddressBookPage;
 QT_BEGIN_NAMESPACE
 class QModelIndex;
 class QProgressDialog;
+class QLabel;
 QT_END_NAMESPACE
 
 /*
@@ -73,6 +74,7 @@ private:
     AddressBookPage *usedReceivingAddressesPage;
 
     TransactionView *transactionView;
+    QLabel *transactionSum;
 
     QProgressDialog *progressDialog;
     const PlatformStyle *platformStyle;
@@ -123,6 +125,9 @@ public Q_SLOTS:
 
     /** User has requested more information about the out of sync state */
     void requestedSyncWarningInfo();
+
+    /** Update selected BC amount from transactionview */
+    void selectedAmount(const QString &strAmount);
 
 Q_SIGNALS:
     /** Signal that we want to show the main window */
