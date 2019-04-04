@@ -231,21 +231,36 @@ void TransactionView::setModel(WalletModel *_model)
         transactionView->setAlternatingRowColors(true);
         transactionView->setSelectionBehavior(QAbstractItemView::SelectRows);
         transactionView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        transactionView->sortByColumn(TransactionTableModel::Date, Qt::DescendingOrder);
+        if( fStaking ){
+            transactionView->sortByColumn(TransactionTableModel::DateStaking, Qt::DescendingOrder);
+        }else{
+            transactionView->sortByColumn(TransactionTableModel::Date, Qt::DescendingOrder);
+        }
         transactionView->setSortingEnabled(true);
         transactionView->verticalHeader()->hide();
 
-        transactionView->setColumnWidth(TransactionTableModel::Status, STATUS_COLUMN_WIDTH);
-        transactionView->setColumnWidth(TransactionTableModel::Watchonly, WATCHONLY_COLUMN_WIDTH);
-        transactionView->setColumnWidth(TransactionTableModel::Date, DATE_COLUMN_WIDTH);
-        transactionView->setColumnWidth(TransactionTableModel::Type, TYPE_COLUMN_WIDTH);
-        transactionView->setColumnWidth(TransactionTableModel::TypeIn, IN_TYPE_COLUMN_WIDTH);
-        transactionView->setColumnWidth(TransactionTableModel::TypeOut, OUT_TYPE_COLUMN_WIDTH);
-        transactionView->setColumnWidth(TransactionTableModel::Amount, AMOUNT_MINIMUM_COLUMN_WIDTH);
+        if( fStaking ){
+            transactionView->setColumnWidth(TransactionTableModel::StatusStaking, STATUS_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::WatchonlyStaking, WATCHONLY_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::DateStaking, DATE_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::AmountStaking, AMOUNT_MINIMUM_COLUMN_WIDTH);
+        }else{
+            transactionView->setColumnWidth(TransactionTableModel::Status, STATUS_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::Watchonly, WATCHONLY_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::Date, DATE_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::Type, TYPE_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::TypeIn, IN_TYPE_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::TypeOut, OUT_TYPE_COLUMN_WIDTH);
+            transactionView->setColumnWidth(TransactionTableModel::Amount, AMOUNT_MINIMUM_COLUMN_WIDTH);
+        }
 
         connect(transactionView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(computeSelectedSum()));
 
-        columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(transactionView, AMOUNT_MINIMUM_COLUMN_WIDTH, MINIMUM_COLUMN_WIDTH, this, 4);
+        if( fStaking ){
+            columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(transactionView, AMOUNT_MINIMUM_COLUMN_WIDTH, MINIMUM_COLUMN_WIDTH, this, 2);
+        }else{
+            columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(transactionView, AMOUNT_MINIMUM_COLUMN_WIDTH, MINIMUM_COLUMN_WIDTH, this, 4);
+        }
 
         if (_model->getOptionsModel())
         {
@@ -667,11 +682,10 @@ void TransactionView::focusTransaction(const uint256& txid)
 // sizes as the tables width is proportional to the dialogs width.
 void TransactionView::resizeEvent(QResizeEvent* event)
 {
-    if( fStaking ){
-        QWidget::resizeEvent(event);
+    QWidget::resizeEvent(event);
+    if( fStaking ){ 
         columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddressStaking);
     }else{
-        QWidget::resizeEvent(event);
         columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddress);
     }
 }
