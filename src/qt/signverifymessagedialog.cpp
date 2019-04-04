@@ -92,8 +92,8 @@ void SignVerifyMessageDialog::on_addressBookButton_SM_clicked()
 {
     if (model && model->getAddressTableModel())
     {
-        AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::ReceivingTab, this);
-        dlg.setModel(model->getAddressTableModel());
+        AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::StakingTab, this);
+        dlg.setModel(model->getStakingAddressTableModel());
         if (dlg.exec())
         {
             setAddress_SM(dlg.getReturnValue());
@@ -181,8 +181,8 @@ void SignVerifyMessageDialog::on_addressBookButton_VM_clicked()
 {
     if (model && model->getAddressTableModel())
     {
-        AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::SendingTab, this);
-        dlg.setModel(model->getAddressTableModel());
+        AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::StakingTab, this);
+        dlg.setModel(model->getStakingAddressTableModel());
         if (dlg.exec())
         {
             setAddress_VM(dlg.getReturnValue());

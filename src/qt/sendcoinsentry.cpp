@@ -19,7 +19,8 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
     ui(new Ui::SendCoinsEntry),
     model(0),
     platformStyle(_platformStyle),
-    m_coldstake(coldstake)
+    m_coldstake(coldstake),
+    fSpending(fSpending)
 {
     ui->setupUi(this);
 
@@ -95,8 +96,11 @@ void SendCoinsEntry::on_addressBookButton_clicked()
 {
     if(!model)
         return;
-    AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::SendingTab, this);
-    dlg.setModel(model->getAddressTableModel());
+    AddressBookPage dlg(platformStyle,
+                        AddressBookPage::ForSelection,
+                        fSpending ? AddressBookPage::SendingTab : AddressBookPage::StakingTab,
+                        this);
+    dlg.setModel(fSpending ? model->getAddressTableModel() : model->getStakingAddressTableModel());
     if(dlg.exec())
     {
         ui->payTo->setText(dlg.getReturnValue());
@@ -119,8 +123,11 @@ void SendCoinsEntry::on_addressBookButton_cs_clicked()
 {
     if(!model)
         return;
-    AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::SendingTab, this);
-    dlg.setModel(model->getAddressTableModel());
+    AddressBookPage dlg(platformStyle,
+                        AddressBookPage::ForSelection,
+                        AddressBookPage::StakingTab,
+                        this);
+    dlg.setModel(model->getStakingAddressTableModel());
     if(dlg.exec())
     {
         ui->stakeAddr->setText(dlg.getReturnValue());
@@ -138,8 +145,11 @@ void SendCoinsEntry::on_addressBookButton2_cs_clicked()
 {
     if(!model)
         return;
-    AddressBookPage dlg(platformStyle, AddressBookPage::ForSelection, AddressBookPage::SendingTab, this);
-    dlg.setModel(model->getAddressTableModel());
+    AddressBookPage dlg(platformStyle,
+                        AddressBookPage::ForSelection,
+                        AddressBookPage::StakingTab,
+                        this);
+    dlg.setModel(model->getStakingAddressTableModel());
     if(dlg.exec())
     {
         ui->spendAddr->setText(dlg.getReturnValue());

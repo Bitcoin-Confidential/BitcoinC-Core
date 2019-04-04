@@ -23,24 +23,25 @@ EditAddressDialog::EditAddressDialog(Mode _mode, QWidget *parent) :
 
     GUIUtil::setupAddressWidget(ui->addressEdit, this);
 
-    ui->cbxType->setCurrentIndex(ui->cbxType->findText("Stealth"));
-    if (mode == NewReceivingAddress)
-    {
-        ui->lblType->show();
-        ui->cbxType->show();
-    } else
-    {
-        ui->lblType->hide();
-        ui->cbxType->hide();
-    };
-
     switch(mode)
     {
     case NewReceivingAddress:
         setWindowTitle(tr("New receiving address"));
+        ui->lblAddressText->hide();
+        ui->addressEdit->hide();
         break;
     case NewSendingAddress:
         setWindowTitle(tr("New sending address"));
+        break;
+    case NewStakeAddress:
+        setWindowTitle(tr("New Stake address"));
+        ui->lblAddressText->hide();
+        ui->addressEdit->hide();
+        break;
+    case NewColdStakeAddress:
+        setWindowTitle(tr("New ColdStake address"));
+        ui->lblAddressText->hide();
+        ui->addressEdit->hide();
         break;
     case EditReceivingAddress:
         setWindowTitle(tr("Edit receiving address"));
@@ -88,14 +89,16 @@ bool EditAddressDialog::saveCurrentRow()
     switch(mode)
     {
     case NewReceivingAddress:
+    case NewStakeAddress:
+    case NewColdStakeAddress:
         address = model->addRow(
                 AddressTableModel::Receive,
                 ui->labelEdit->text(),
                 ui->addressEdit->text(),
                 model->GetDefaultAddressType(),
-                ui->cbxType->currentText() == "Stealth" ? AddressTableModel::ADDR_STEALTH
-                    : ui->cbxType->currentText() == "Contract" ? AddressTableModel::ADDR_STANDARD256
-                    : AddressTableModel::ADDR_STANDARD);
+                    mode == NewReceivingAddress ? AddressTableModel::ADDR_STEALTH :
+                    mode == NewStakeAddress     ? AddressTableModel::ADDR_STANDARD :
+                    AddressTableModel::ADDR_STANDARD256);
         break;
     case NewSendingAddress:
         address = model->addRow(

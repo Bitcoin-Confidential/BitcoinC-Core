@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
+    <width>781</width>
     <height>380</height>
    </rect>
   </property>
@@ -65,6 +65,40 @@
        </property>
        <property name="text">
         <string>&amp;New</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/add</normaloff>:/icons/add</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnNewStakeAddress">
+       <property name="toolTip">
+        <string>Create a new address</string>
+       </property>
+       <property name="text">
+        <string>&amp;New Stake address</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/add</normaloff>:/icons/add</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnNewColdStakeAddress">
+       <property name="toolTip">
+        <string>Create a new address</string>
+       </property>
+       <property name="text">
+        <string>&amp;New ColdStake address</string>
        </property>
        <property name="icon">
         <iconset resource="../bitcoin.qrc">

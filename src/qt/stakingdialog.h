@@ -13,9 +13,10 @@
 #include <QMessageBox>
 #include <QString>
 #include <QTimer>
+#include <QWidget>
 
+class AddressBookPage;
 class ClientModel;
-class ReceiveCoinsDialog;
 class SendCoinsDialog;
 class PlatformStyle;
 class UniValue;
@@ -41,7 +42,7 @@ public:
     void setClientModel(ClientModel *clientModel);
     void setModel(WalletModel *model);
 
-    void setPages(ReceiveCoinsDialog *addressPage, SendCoinsDialog *toStealth, SendCoinsDialog *toStake, SendCoinsDialog *activateCold );
+    void setPages(QWidget *transactionPage, AddressBookPage *addressPage, SendCoinsDialog *toStealth, SendCoinsDialog *toStake, SendCoinsDialog *activateCold );
 
 private:
 
@@ -59,7 +60,8 @@ private:
     const PlatformStyle *platformStyle;
     QTimer updateStakingTimer;
 
-    ReceiveCoinsDialog *addressPage;
+    QWidget *transactionPage;
+    AddressBookPage *addressPage;
     SendCoinsDialog *toStealth;
     SendCoinsDialog *toStake;
     SendCoinsDialog *activateCold;
@@ -67,6 +69,9 @@ private:
     QString m_coldStakeChangeAddress;
 
     bool getChangeSettings(QString &change_spend, QString &change_stake);
+
+public Q_SLOTS:
+    void updateStakingRewards(const QString& strCountVisible, const QString& strAmountVisible, const QString& strCount, const QString& strAmount);
 
 private Q_SLOTS:
 

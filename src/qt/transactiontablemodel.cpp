@@ -61,12 +61,13 @@ struct TxLessThan
 class TransactionTablePriv
 {
 public:
-    TransactionTablePriv(TransactionTableModel *_parent) :
-        parent(_parent)
+    TransactionTablePriv(TransactionTableModel *_parent, bool fStaking) :
+        parent(_parent), fStaking(fStaking)
     {
     }
 
     TransactionTableModel *parent;
+    bool fStaking;
 
     /* Local cache of wallet.
      * As it is in the same order as the CWallet, by definition
@@ -83,7 +84,10 @@ public:
         {
             for (const auto& wtx : wallet.getWalletTxs()) {
                 if (TransactionRecord::showTransaction()) {
-                    cachedWallet.append(TransactionRecord::decomposeTransaction(wtx));
+
+                    if( (fStaking && wtx.is_coinstake ) ||
+                        (!fStaking && !wtx.is_coinstake ) )
+                        cachedWallet.append(TransactionRecord::decomposeTransaction(wtx));
                 }
             }
         }
@@ -148,6 +152,11 @@ public:
             {
                 // Find transaction in wallet
                 interfaces::WalletTx wtx = wallet.getWalletTx(hash);
+
+                if( !((fStaking && wtx.is_coinstake ) ||
+                    (!fStaking && !wtx.is_coinstake )) )
+                    return;
+
                 if(!wtx.tx && !wtx.is_record)
                 {
                     qWarning() << "TransactionTablePriv::updateWallet: Warning: Got CT_NEW, but transaction is not in wallet";
@@ -236,14 +245,25 @@ public:
     }
 };
 
-TransactionTableModel::TransactionTableModel(const PlatformStyle *_platformStyle, WalletModel *parent):
+TransactionTableModel::TransactionTableModel(const PlatformStyle *_platformStyle, bool fStaking, WalletModel *parent):
         QAbstractTableModel(parent),
         walletModel(parent),
-        priv(new TransactionTablePriv(this)),
+        priv(new TransactionTablePriv(this, fStaking)),
         fProcessingQueuedTransactions(false),
-        platformStyle(_platformStyle)
+        platformStyle(_platformStyle),
+        fStaking(fStaking)
 {
-    columns << QString() << QString() << tr("Date") << tr("Type") << tr("Label") << tr("In") << tr("Out") << BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
+
+    columns << QString() << QString() << tr("Date");
+    if( !fStaking ){
+        columns << tr("Type");
+    }
+    columns << tr("Label");
+
+    if( !fStaking ){
+        columns  << tr("In") << tr("Out");
+    }
+    columns << BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
     priv->refreshWallet(walletModel->wallet());
 
     connect(walletModel->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
@@ -260,8 +280,13 @@ TransactionTableModel::~TransactionTableModel()
 /** Updates the column title to "Amount (DisplayUnit)" and emits headerDataChanged() signal for table headers to react. */
 void TransactionTableModel::updateAmountColumnTitle()
 {
-    columns[Amount] = BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
-    Q_EMIT headerDataChanged(Qt::Horizontal,Amount,Amount);
+    if( fStaking ){
+        columns[AmountStaking] = BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
+        Q_EMIT headerDataChanged(Qt::Horizontal,AmountStaking,AmountStaking);
+    }else{
+        columns[Amount] = BitcoinUnits::getAmountColumnTitle(walletModel->getOptionsModel()->getDisplayUnit());
+        Q_EMIT headerDataChanged(Qt::Horizontal,Amount,Amount);
+    }
 }
 
 void TransactionTableModel::updateTransaction(const QString &hash, int status, bool showTransaction)
@@ -270,6 +295,8 @@ void TransactionTableModel::updateTransaction(const QString &hash, int status, b
     updated.SetHex(hash.toStdString());
 
     priv->updateWallet(walletModel->wallet(), updated, status, showTransaction);
+
+    Q_EMIT transactionsChanged();
 }
 
 void TransactionTableModel::updateConfirmations()
@@ -278,8 +305,14 @@ void TransactionTableModel::updateConfirmations()
     // Invalidate status (number of confirmations) and (possibly) description
     //  for all rows. Qt is smart enough to only actually request the data for the
     //  visible rows.
-    Q_EMIT dataChanged(index(0, Status), index(priv->size()-1, Status));
-    Q_EMIT dataChanged(index(0, ToAddress), index(priv->size()-1, ToAddress));
+    if( fStaking  ){
+        Q_EMIT dataChanged(index(0, StatusStaking), index(priv->size()-1, StatusStaking));
+        Q_EMIT dataChanged(index(0, ToAddressStaking), index(priv->size()-1, ToAddressStaking));
+    }else{
+        Q_EMIT dataChanged(index(0, Status), index(priv->size()-1, Status));
+        Q_EMIT dataChanged(index(0, ToAddress), index(priv->size()-1, ToAddress));
+    }
+
 }
 
 int TransactionTableModel::rowCount(const QModelIndex &parent) const
@@ -310,11 +343,33 @@ QString TransactionTableModel::formatTxStatus(const TransactionRecord *wtx) cons
         status = tr("Unconfirmed");
         break;
     case TransactionStatus::Abandoned:
-        status = tr("Abandoned");
+        if( fStaking ){
+            status = tr("Orphaned");
+        }else{
+            status = tr("Abandoned");
+        }
         break;
-    case TransactionStatus::Confirming:
-        status = tr("Confirming (%1 of %2 recommended confirmations)").arg(wtx->status.depth).arg(TransactionRecord::RecommendedNumConfirmations);
-        break;
+    case TransactionStatus::Confirming:{
+
+        int nConfirmations = TransactionRecord::RecommendedNumConfirmations;
+
+        if( wtx->typeIn == "S" && wtx->typeOut == "S" ){
+
+            if( fStaking ) {
+                nConfirmations = COINBASE_MATURITY + 1;
+            }else{
+                nConfirmations = TransactionRecord::RecommendedNumConfirmations;
+            }
+        }else if( wtx->typeIn == "BC" && wtx->typeOut == "BC" ){
+            nConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
+        }else if(wtx->typeIn == "S" && wtx->typeOut == "BC"){
+            nConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
+        }else if(wtx->typeIn == "BC" && wtx->typeOut == "S"){
+            nConfirmations = TransactionRecord::RecommendedNumConfirmations;
+        }
+
+        status = tr("Confirming (%1 of %2 recommended confirmations)").arg(wtx->status.depth).arg(nConfirmations);
+    }break;
     case TransactionStatus::Confirmed:
         status = tr("Confirmed (%1 confirmations)").arg(wtx->status.depth);
         break;
@@ -373,7 +428,7 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
     case TransactionRecord::SendToSelf:
         return tr("Payment to yourself");
     case TransactionRecord::Generated:
-        return tr("Mined");
+        return tr("Airdrop");
     case TransactionRecord::Staked:
         return tr("Staked");
     default:
@@ -470,8 +525,29 @@ QVariant TransactionTableModel::txStatusDecoration(const TransactionRecord *wtx)
         return QIcon(":/icons/transaction_0");
     case TransactionStatus::Abandoned:
         return QIcon(":/icons/transaction_abandoned");
-    case TransactionStatus::Confirming:
-        switch(wtx->status.depth)
+    case TransactionStatus::Confirming:{
+
+        int nConfirmations = TransactionRecord::RecommendedNumConfirmations;
+
+        if( wtx->typeIn == "S" && wtx->typeOut == "S" ){
+
+            if( fStaking ) {
+                nConfirmations = COINBASE_MATURITY + 1;
+            }else{
+                nConfirmations = TransactionRecord::RecommendedNumConfirmations;
+            }
+        }else if( wtx->typeIn == "BC" && wtx->typeOut == "BC" ){
+            nConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
+        }else if(wtx->typeIn == "S" && wtx->typeOut == "BC"){
+            nConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
+        }else if(wtx->typeIn == "BC" && wtx->typeOut == "S"){
+            nConfirmations = TransactionRecord::RecommendedNumConfirmations;
+        }
+
+        // Break the depth down to 5 steps
+        nConfirmations = wtx->status.depth / (nConfirmations / 5);
+
+        switch(nConfirmations)
         {
         case 1: return QIcon(":/icons/transaction_1");
         case 2: return QIcon(":/icons/transaction_2");
@@ -479,7 +555,7 @@ QVariant TransactionTableModel::txStatusDecoration(const TransactionRecord *wtx)
         case 4: return QIcon(":/icons/transaction_4");
         default: return QIcon(":/icons/transaction_5");
         };
-    case TransactionStatus::Confirmed:
+    }case TransactionStatus::Confirmed:
         return QIcon(":/icons/transaction_confirmed");
     case TransactionStatus::Conflicted:
         return QIcon(":/icons/transaction_conflicted");
@@ -523,58 +599,101 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
     switch(role)
     {
     case RawDecorationRole:
-        switch(index.column())
-        {
-        case Status:
-            return txStatusDecoration(rec);
-        case Watchonly:
-            return txWatchonlyDecoration(rec);
-        case ToAddress:
-            return txAddressDecoration(rec);
+
+        if( fStaking ){
+            switch(index.column())
+            {
+            case StatusStaking:
+                return txStatusDecoration(rec);
+            case WatchonlyStaking:
+                return txWatchonlyDecoration(rec);
+            case ToAddressStaking:
+                return txAddressDecoration(rec);
+            }
+        }else{
+            switch(index.column())
+            {
+            case Status:
+                return txStatusDecoration(rec);
+            case Watchonly:
+                return txWatchonlyDecoration(rec);
+            case ToAddress:
+                return txAddressDecoration(rec);
+            }
         }
-        break;
+    break;
     case Qt::DecorationRole:
     {
         QIcon icon = qvariant_cast<QIcon>(index.data(RawDecorationRole));
         return platformStyle->TextColorIcon(icon);
     }
     case Qt::DisplayRole:
-        switch(index.column())
-        {
-        case Date:
-            return formatTxDate(rec);
-        case Type:
-            return formatTxType(rec);
-        case ToAddress:
-            return formatTxToAddress(rec, false);
-        case TypeIn:
-            return QString::fromStdString(rec->typeIn);
-        case TypeOut:
-            return QString::fromStdString(rec->typeOut);
-        case Amount:
-            return formatTxAmount(rec, true, BitcoinUnits::separatorAlways);
+
+        if( fStaking ){
+            switch(index.column())
+            {
+            case DateStaking:
+                return formatTxDate(rec);
+            case ToAddressStaking:
+                return formatTxToAddress(rec, false);
+            case AmountStaking:
+                return formatTxAmount(rec, true, BitcoinUnits::separatorAlways);
+            }
+        }else{
+            switch(index.column())
+            {
+            case Date:
+                return formatTxDate(rec);
+            case Type:
+                return formatTxType(rec);
+            case ToAddress:
+                return formatTxToAddress(rec, false);
+            case TypeIn:
+                return QString::fromStdString(rec->typeIn);
+            case TypeOut:
+                return QString::fromStdString(rec->typeOut);
+            case Amount:
+                return formatTxAmount(rec, true, BitcoinUnits::separatorAlways);
+            }
         }
-        break;
+    break;
     case Qt::EditRole:
         // Edit role is used for sorting, so return the unformatted values
-        switch(index.column())
-        {
-        case Status:
-            return QString::fromStdString(rec->status.sortKey);
-        case Date:
-            return rec->time;
-        case Type:
-            return formatTxType(rec);
-        case Watchonly:
-            return (rec->involvesWatchAddress ? 1 : 0);
-        case ToAddress:
-            return formatTxToAddress(rec, true);
-        case TypeIn:
-            return QString::fromStdString(rec->typeIn);
-        case TypeOut:
-            return QString::fromStdString(rec->typeOut);
-        case Amount:
-            return qint64(rec->credit + rec->debit);
+
+        if( fStaking ){
+            switch(index.column())
+            {
+            case StatusStaking:
+                return QString::fromStdString(rec->status.sortKey);
+            case DateStaking:
+                return rec->time;
+            case WatchonlyStaking:
+                return (rec->involvesWatchAddress ? 1 : 0);
+            case ToAddressStaking:
+                return formatTxToAddress(rec, true);
+            case AmountStaking:
+                return qint64(rec->credit + rec->debit);
+            }
+        }else{
+            switch(index.column())
+            {
+            case Status:
+                return QString::fromStdString(rec->status.sortKey);
+            case Date:
+                return rec->time;
+            case Type:
+                return formatTxType(rec);
+            case Watchonly:
+                return (rec->involvesWatchAddress ? 1 : 0);
+            case ToAddress:
+                return formatTxToAddress(rec, true);
+            case TypeIn:
+                return QString::fromStdString(rec->typeIn);
+            case TypeOut:
+                return QString::fromStdString(rec->typeOut);
+            case Amount:
+                return qint64(rec->credit + rec->debit);
+            }
         }
         break;
     case Qt::ToolTipRole:
@@ -592,11 +711,11 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
         {
             return COLOR_UNCONFIRMED;
         }
-        if(index.column() == Amount && (rec->credit+rec->debit) < 0)
+        if( ( ( fStaking && index.column() == AmountStaking) || (!fStaking && index.column() == Amount) ) && (rec->credit+rec->debit) < 0)
         {
             return COLOR_NEGATIVE;
         }
-        if(index.column() == ToAddress)
+        if( ( fStaking && index.column() == ToAddressStaking) || (!fStaking && index.column() == ToAddress) )
         {
             return addressColor(rec);
         }
@@ -673,24 +792,40 @@ QVariant TransactionTableModel::headerData(int section, Qt::Orientation orientat
             return column_alignments[section];
         } else if (role == Qt::ToolTipRole)
         {
-            switch(section)
-            {
-            case Status:
-                return tr("Transaction status. Hover over this field to show number of confirmations.");
-            case Date:
-                return tr("Date and time that the transaction was received.");
-            case Type:
-                return tr("Type of transaction.");
-            case Watchonly:
-                return tr("Whether or not a watch-only address is involved in this transaction.");
-            case ToAddress:
-                return tr("User-defined intent/purpose of the transaction.");
-            case TypeIn:
-                return tr("Type of input coin.");
-            case TypeOut:
-                return tr("Type of output coin.");
-            case Amount:
-                return tr("Amount removed from or added to balance.");
+            if( fStaking ){
+                switch(section)
+                {
+                case Status:
+                    return tr("Transaction status. Hover over this field to show number of confirmations.");
+                case Date:
+                    return tr("Date and time that the reward was received.");
+                case Watchonly:
+                    return tr("Whether or not a watch-only address is involved in this transaction.");
+                case ToAddress:
+                    return tr("Address used for the block solving");
+                case Amount:
+                    return tr("Staking reward.");
+                }
+            }else{
+                switch(section)
+                {
+                case Status:
+                    return tr("Transaction status. Hover over this field to show number of confirmations.");
+                case Date:
+                    return tr("Date and time that the transaction was received.");
+                case Type:
+                    return tr("Type of transaction.");
+                case Watchonly:
+                    return tr("Whether or not a watch-only address is involved in this transaction.");
+                case ToAddress:
+                    return tr("User-defined intent/purpose of the transaction.");
+                case TypeIn:
+                    return tr("Type of input coin.");
+                case TypeOut:
+                    return tr("Type of output coin.");
+                case Amount:
+                    return tr("Amount removed from or added to balance.");
+                }
             }
         }
     }
@@ -711,8 +846,13 @@ QModelIndex TransactionTableModel::index(int row, int column, const QModelIndex 
 void TransactionTableModel::updateDisplayUnit()
 {
     // emit dataChanged to update Amount column with the current unit
-    updateAmountColumnTitle();
-    Q_EMIT dataChanged(index(0, Amount), index(priv->size()-1, Amount));
+    if( fStaking ){
+        updateAmountColumnTitle();
+        Q_EMIT dataChanged(index(0, AmountStaking), index(priv->size()-1, AmountStaking));
+    }else{
+        updateAmountColumnTitle();
+        Q_EMIT dataChanged(index(0, Amount), index(priv->size()-1, Amount));
+    }
 }
 
 // queue notifications to show a non freezing progress dialog e.g. for rescan

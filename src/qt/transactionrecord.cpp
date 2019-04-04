@@ -330,7 +330,7 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
         }
     }
     // For generated transactions, determine maturity
-    else if(type == TransactionRecord::Generated)
+    else if(type == TransactionRecord::Generated || type == TransactionRecord::Staked)
     {
         if (wtx.blocks_to_maturity > 0)
         {
@@ -349,6 +349,9 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
         {
             status.status = TransactionStatus::Confirmed;
         }
+
+        if (wtx.is_abandoned)
+            status.status = TransactionStatus::Abandoned;
     }
     else
     {

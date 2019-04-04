@@ -27,6 +27,8 @@ public:
     enum Mode {
         NewReceivingAddress,
         NewSendingAddress,
+        NewStakeAddress,
+        NewColdStakeAddress,
         EditReceivingAddress,
         EditSendingAddress
     };

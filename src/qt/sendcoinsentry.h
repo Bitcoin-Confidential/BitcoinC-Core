@@ -82,6 +82,7 @@ private:
     bool updateLabel(const QString &address);
 public:
     bool m_coldstake;
+    bool fSpending;
 };
 
 #endif // BITCOIN_QT_SENDCOINSENTRY_H

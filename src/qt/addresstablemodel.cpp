@@ -23,6 +23,7 @@
 
 const QString AddressTableModel::Send = "S";
 const QString AddressTableModel::Receive = "R";
+const QString AddressTableModel::All = "A";
 
 struct AddressTableEntry
 {
@@ -77,9 +78,10 @@ class AddressTablePriv
 public:
     QList<AddressTableEntry> cachedAddressTable;
     AddressTableModel *parent;
+    bool fStaking;
 
-    AddressTablePriv(AddressTableModel *_parent):
-        parent(_parent) {}
+    AddressTablePriv(AddressTableModel *_parent, bool fStaking):
+        parent(_parent), fStaking(fStaking) {}
 
     void refreshAddressTable(interfaces::Wallet& wallet)
     {
@@ -88,6 +90,12 @@ public:
             for (const auto& address : wallet.getAddresses())
             {
                 const CBitcoinAddress addr(address.dest, address.fBech32);
+
+                if( ( fStaking && addr.IsValidStealthAddress() ) ||
+                    ( !fStaking && !addr.IsValidStealthAddress() ) ){
+                    continue;
+                }
+
                 AddressTableEntry::Type addressType = translateTransactionType(
                         QString::fromStdString(address.purpose), address.is_mine);
                 cachedAddressTable.append(AddressTableEntry(addressType,
@@ -104,6 +112,13 @@ public:
 
     void updateEntry(const QString &address, const QString &label, bool isMine, const QString &purpose, int status)
     {
+        CBitcoinAddress addr(address.toStdString());
+
+        if( ( fStaking && addr.IsValidStealthAddress() ) ||
+            ( !fStaking && !addr.IsValidStealthAddress() ) ){
+            return;
+        }
+
         // Find address / label in model
         QList<AddressTableEntry>::iterator lower = qLowerBound(
             cachedAddressTable.begin(), cachedAddressTable.end(), address, AddressTableEntryLessThan());
@@ -168,11 +183,11 @@ public:
     }
 };
 
-AddressTableModel::AddressTableModel(WalletModel *parent) :
-    QAbstractTableModel(parent), walletModel(parent)
+AddressTableModel::AddressTableModel(WalletModel *parent, bool fStaking) :
+    QAbstractTableModel(parent), fStaking(fStaking), walletModel(parent)
 {
     columns << tr("Label") << tr("Address");
-    priv = new AddressTablePriv(this);
+    priv = new AddressTablePriv(this, fStaking);
     priv->refreshAddressTable(parent->wallet());
 }
 

@@ -41,7 +41,7 @@ protected:
         auto model = sourceModel();
         auto label = model->index(row, AddressTableModel::Label, parent);
 
-        if (model->data(label, AddressTableModel::TypeRole).toString() != m_type) {
+        if (m_type != AddressTableModel::All && model->data(label, AddressTableModel::TypeRole).toString() != m_type) {
             return false;
         }
 
@@ -65,51 +65,88 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
 {
     ui->setupUi(this);
 
-    if (!platformStyle->getImagesOnButtons()) {
-        ui->newAddress->setIcon(QIcon());
-        ui->copyAddress->setIcon(QIcon());
-        ui->deleteAddress->setIcon(QIcon());
-        ui->exportButton->setIcon(QIcon());
-    } else {
+    if (platformStyle->getImagesOnButtons()) {
         ui->newAddress->setIcon(platformStyle->SingleColorIcon(":/icons/add"));
+        ui->btnNewStakeAddress->setIcon(platformStyle->SingleColorIcon(":/icons/add"));
+        ui->btnNewColdStakeAddress->setIcon(platformStyle->SingleColorIcon(":/icons/add"));
         ui->copyAddress->setIcon(platformStyle->SingleColorIcon(":/icons/editcopy"));
         ui->deleteAddress->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
         ui->exportButton->setIcon(platformStyle->SingleColorIcon(":/icons/export"));
     }
 
-    switch(mode)
-    {
-    case ForSelection:
-        switch(tab)
-        {
-        case SendingTab: setWindowTitle(tr("Choose the address to send coins to")); break;
-        case ReceivingTab: setWindowTitle(tr("Choose the address to receive coins with")); break;
-        }
-        connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
-        ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        ui->tableView->setFocus();
-        ui->closeButton->setText(tr("C&hoose"));
-        ui->exportButton->hide();
-        break;
-    case ForEditing:
-        switch(tab)
-        {
-        case SendingTab: setWindowTitle(tr("Sending addresses")); break;
-        case ReceivingTab: setWindowTitle(tr("Receiving addresses")); break;
-        }
-        break;
-    }
     switch(tab)
     {
     case SendingTab:
         ui->labelExplanation->setText(tr("These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins."));
-        ui->deleteAddress->setVisible(true);
-        ui->newAddress->setVisible(true);
+        ui->deleteAddress->setVisible(false);
+        ui->btnNewStakeAddress->hide();
+        ui->btnNewColdStakeAddress->hide();
+
+        switch(mode)
+        {
+        case ForSelection:
+            setWindowTitle(tr("Choose the address to send coins to"));
+            connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+            ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+            ui->tableView->setFocus();
+            ui->closeButton->setText(tr("C&hoose"));
+            ui->exportButton->hide();
+            ui->newAddress->hide();
+            ui->copyAddress->hide();
+            break;
+        case ForEditing:
+            setWindowTitle(tr("Sending addresses"));
+            break;
+        }
         break;
     case ReceivingTab:
-        ui->labelExplanation->setText(tr("These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction."));
         ui->deleteAddress->setVisible(false);
-        ui->newAddress->setVisible(false);
+        ui->btnNewStakeAddress->hide();
+        ui->btnNewColdStakeAddress->hide();
+
+        switch(mode)
+        {
+        case ForSelection:
+            setWindowTitle(tr("Choose the address to receive coins with"));
+            connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+            ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+            ui->tableView->setFocus();
+            ui->closeButton->setText(tr("C&hoose"));
+            ui->exportButton->hide();
+            ui->newAddress->hide();
+            ui->copyAddress->hide();
+            break;
+        case ForEditing:
+            setWindowTitle(tr("Receiving addresses"));
+            ui->labelExplanation->setText(tr("These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction."));
+            break;
+        }
+        break;
+    case StakingTab:
+
+        ui->newAddress->hide();
+        ui->copyAddress->hide();
+        ui->deleteAddress->hide();
+
+        switch(mode)
+        {
+        case ForSelection:
+            setWindowTitle(tr("Choose the Stake or ColdStake address"));
+            ui->labelExplanation->setText(tr("These are your Bitcoin Confidential Stake and ColdStake addresses."));
+            ui->btnNewStakeAddress->hide();
+            ui->btnNewColdStakeAddress->hide();
+            ui->exportButton->hide();
+            connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+            ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+            ui->tableView->setFocus();
+            ui->closeButton->setText(tr("C&hoose"));
+            break;
+        case ForEditing:
+            setWindowTitle(tr("Stake and ColdStake addresses"));
+            ui->labelExplanation->setText(tr("These are your Bitcoin Confidential Stake and ColdStake addresses.\n\nStake addresses are used to convert your spending funds into staking funds. After doing that you can hot stake your funds on the Stake addresses.\n\nColdStake addresses are needed to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses if you use the automated ColdStaking activation from the Staking Status page."));
+            ui->closeButton->hide();
+            break;
+        }
         break;
     }
 
@@ -124,8 +161,8 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
     contextMenu->addAction(copyAddressAction);
     contextMenu->addAction(copyLabelAction);
     contextMenu->addAction(editAction);
-    if(tab == SendingTab)
-        contextMenu->addAction(deleteAction);
+//    if(tab == StakingTab)
+//        contextMenu->addAction(deleteAction);
     contextMenu->addSeparator();
 
     // Connect signals for context menu actions
@@ -150,7 +187,8 @@ void AddressBookPage::setModel(AddressTableModel *_model)
     if(!_model)
         return;
 
-    auto type = tab == ReceivingTab ? AddressTableModel::Receive : AddressTableModel::Send;
+
+    auto type = tab == ReceivingTab ? AddressTableModel::Receive : StakingTab ? AddressTableModel::All : AddressTableModel::Send;
     proxyModel = new AddressBookSortFilterProxyModel(type, this);
     proxyModel->setSourceModel(_model);
 
@@ -208,11 +246,17 @@ void AddressBookPage::on_newAddress_clicked()
     if(!model)
         return;
 
-    if (tab == ReceivingTab) {
+    EditAddressDialog::Mode mode;
+
+    if( tab == ReceivingTab ){
+        mode = EditAddressDialog::NewReceivingAddress;
+    }else if( tab == SendingTab ){
+        mode = EditAddressDialog::NewSendingAddress;
+    }else{
         return;
     }
 
-    EditAddressDialog dlg(EditAddressDialog::NewSendingAddress, this);
+    EditAddressDialog dlg(mode, this);
     dlg.setModel(model);
     if(dlg.exec())
     {
@@ -246,8 +290,8 @@ void AddressBookPage::selectionChanged()
         {
         case SendingTab:
             // In sending tab, allow deletion of selection
-            ui->deleteAddress->setEnabled(true);
-            ui->deleteAddress->setVisible(true);
+            ui->deleteAddress->setEnabled(false);
+            ui->deleteAddress->setVisible(false);
             deleteAction->setEnabled(true);
             break;
         case ReceivingTab:
@@ -255,6 +299,8 @@ void AddressBookPage::selectionChanged()
             ui->deleteAddress->setEnabled(false);
             ui->deleteAddress->setVisible(false);
             deleteAction->setEnabled(false);
+            break;
+        default:
             break;
         }
         ui->copyAddress->setEnabled(true);
@@ -309,6 +355,32 @@ void AddressBookPage::on_exportButton_clicked()
     if(!writer.write()) {
         QMessageBox::critical(this, tr("Exporting Failed"),
             tr("There was an error trying to save the address list to %1. Please try again.").arg(filename));
+    }
+}
+
+void AddressBookPage::on_btnNewStakeAddress_clicked()
+{
+    if(!model)
+        return;
+
+    EditAddressDialog dlg(EditAddressDialog::NewStakeAddress, this);
+    dlg.setModel(model);
+    if(dlg.exec())
+    {
+        newAddressToSelect = dlg.getAddress();
+    }
+}
+
+void AddressBookPage::on_btnNewColdStakeAddress_clicked()
+{
+    if(!model)
+        return;
+
+    EditAddressDialog dlg(EditAddressDialog::NewColdStakeAddress, this);
+    dlg.setModel(model);
+    if(dlg.exec())
+    {
+        newAddressToSelect = dlg.getAddress();
     }
 }
 

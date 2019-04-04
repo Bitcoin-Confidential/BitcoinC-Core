@@ -6,13 +6,13 @@
 #include <qt/forms/ui_stakingdialog.h>
 
 #include <qt/addresstablemodel.h>
+#include <qt/addressbookpage.h>
 #include <qt/bitcoinunits.h>
 #include <qt/clientmodel.h>
 #include <qt/coincontroldialog.h>
 #include <qt/guiutil.h>
 #include <qt/optionsmodel.h>
 #include <qt/platformstyle.h>
-#include <qt/receivecoinsdialog.h>
 #include <qt/sendcoinsentry.h>
 #include <qt/sendcoinsdialog.h>
 
@@ -294,6 +294,14 @@ void StakingDialog::updateStakingUI()
     }
 }
 
+void StakingDialog::updateStakingRewards(const QString& strCountVisible, const QString& strAmountVisible, const QString& strCount, const QString& strAmount)
+{
+    ui->lblBlocksSelected->setText(strCountVisible);
+    ui->lblRewardSelected->setText(strAmountVisible);
+    ui->lblBlocksTotal->setText(strCount);
+    ui->lblRewardTotal->setText(strAmount);
+}
+
 bool StakingDialog::getChangeSettings(QString &change_spend, QString &change_stake)
 {
     UniValue rv;
@@ -373,7 +381,7 @@ void StakingDialog::setModel(WalletModel *_model)
         updateStakingUI();
 
         if( addressPage ){
-            addressPage->setModel(_model);
+            addressPage->setModel(_model->getStakingAddressTableModel());
         }
 
         if( toStealth ){
@@ -404,19 +412,21 @@ void StakingDialog::setModel(WalletModel *_model)
     }
 }
 
-void StakingDialog::setPages(ReceiveCoinsDialog *addressPage, SendCoinsDialog *toStealth, SendCoinsDialog *toStake, SendCoinsDialog *activateCold )
+void StakingDialog::setPages(QWidget *transactionPage, AddressBookPage *addressPage, SendCoinsDialog *toStealth, SendCoinsDialog *toStake, SendCoinsDialog *activateCold )
 {
-    if( addressPage && toStealth && toStake && activateCold ){
+    if( transactionPage && addressPage && toStealth && toStake && activateCold ){
 
+        this->transactionPage = transactionPage;
         this->addressPage = addressPage;
         this->toStealth = toStealth;
         this->toStake = toStake;
         this->activateCold = activateCold;
 
-        ui->tabWidget->insertTab(1, addressPage, "Stake Addresses");
-        ui->tabWidget->insertTab(2, toStealth, "Convert to Spending");
-        ui->tabWidget->insertTab(3, toStake, "Convert to Staking");
-        ui->tabWidget->insertTab(4, activateCold, "Activate ColdStaking");
+        delete ui->rewardsTab->layout()->replaceWidget(ui->stakingRewards, transactionPage);
+        ui->tabWidget->insertTab(2, addressPage, tr("Addresses"));
+        ui->tabWidget->insertTab(3, toStealth, tr("Convert to Spending"));
+        ui->tabWidget->insertTab(4, toStake, tr("Convert to Staking"));
+        ui->tabWidget->insertTab(5, activateCold, tr("Activate ColdStaking"));
     }
 
 }
@@ -424,6 +434,7 @@ void StakingDialog::setPages(ReceiveCoinsDialog *addressPage, SendCoinsDialog *t
 StakingDialog::~StakingDialog()
 {
     delete ui;
+    delete transactionPage;
     delete addressPage;
     delete toStealth;
     delete toStake;

@@ -29,7 +29,7 @@ class TransactionTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit TransactionTableModel(const PlatformStyle *platformStyle, WalletModel *parent = 0);
+    explicit TransactionTableModel(const PlatformStyle *platformStyle, bool fStaking, WalletModel *parent = 0);
     ~TransactionTableModel();
 
     enum ColumnIndex {
@@ -41,6 +41,13 @@ public:
         TypeIn = 5,
         TypeOut = 6,
         Amount = 7
+    };
+    enum ColumnIndexStaking {
+        StatusStaking = 0,
+        WatchonlyStaking = 1,
+        DateStaking = 2,
+        ToAddressStaking = 3,
+        AmountStaking = 4
     };
 
     /** Roles to get specific information from a transaction row.
@@ -90,6 +97,8 @@ public:
     QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
     bool processingQueuedTransactions() const { return fProcessingQueuedTransactions; }
 
+    void getSelected();
+
 private:
     WalletModel *walletModel;
     std::unique_ptr<interfaces::Handler> m_handler_transaction_changed;
@@ -98,6 +107,7 @@ private:
     TransactionTablePriv *priv;
     bool fProcessingQueuedTransactions;
     const PlatformStyle *platformStyle;
+    bool fStaking;
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();
@@ -113,6 +123,9 @@ private:
     QVariant txStatusDecoration(const TransactionRecord *wtx) const;
     QVariant txWatchonlyDecoration(const TransactionRecord *wtx) const;
     QVariant txAddressDecoration(const TransactionRecord *wtx) const;
+
+Q_SIGNALS:
+    void transactionsChanged();
 
 public Q_SLOTS:
     /* New transaction, or transaction changed status */

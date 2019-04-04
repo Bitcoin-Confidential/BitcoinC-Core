@@ -30,7 +30,8 @@ class AddressBookPage : public QDialog
 public:
     enum Tabs {
         SendingTab = 0,
-        ReceivingTab = 1
+        ReceivingTab = 1,
+        StakingTab = 2
     };
 
     enum Mode {
@@ -38,7 +39,7 @@ public:
         ForEditing  /**< Open address book for editing */
     };
 
-    explicit AddressBookPage(const PlatformStyle *platformStyle, Mode mode, Tabs tab, QWidget *parent = 0);
+    explicit AddressBookPage(const PlatformStyle *platformStyle, Mode _mode, Tabs _tab, QWidget *parent = 0);
     ~AddressBookPage();
 
     void setModel(AddressTableModel *model);
@@ -71,6 +72,10 @@ private Q_SLOTS:
     void onEditAction();
     /** Export button clicked */
     void on_exportButton_clicked();
+    /** New stake address button clicked */
+    void on_btnNewStakeAddress_clicked();
+    /** New cold stake address button clicked */
+    void on_btnNewColdStakeAddress_clicked();
 
     /** Set button states based on selected tab and selection */
     void selectionChanged();

@@ -64,6 +64,7 @@ private:
 
     OverviewPage *overviewPage;
     QWidget *transactionsPage;
+    QWidget *stakingTransactionsPage;
     ReceiveCoinsDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
     StakingDialog *stakingPage;
@@ -74,6 +75,8 @@ private:
     AddressBookPage *usedReceivingAddressesPage;
 
     TransactionView *transactionView;
+    TransactionView *stakingTransactionView;
+
     QLabel *transactionSum;
 
     QProgressDialog *progressDialog;

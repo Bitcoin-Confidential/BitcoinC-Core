@@ -35,7 +35,7 @@ class TransactionView : public QWidget
     Q_OBJECT
 
 public:
-    explicit TransactionView(const PlatformStyle *platformStyle, QWidget *parent = 0);
+    explicit TransactionView(const PlatformStyle *platformStyle, bool fStaking, QWidget *parent = 0);
 
     void setModel(WalletModel *model);
 
@@ -86,6 +86,8 @@ private:
 
     GUIUtil::TableViewLastColumnResizingFixer *columnResizingFixer;
 
+    bool fStaking;
+
     virtual void resizeEvent(QResizeEvent* event);
 
     bool eventFilter(QObject *obj, QEvent *event);
@@ -106,12 +108,16 @@ private Q_SLOTS:
     void abandonTx();
     void bumpFee();
     void computeSelectedSum();
+    void computeTotalSum();
 
 Q_SIGNALS:
     void doubleClicked(const QModelIndex&);
 
     /** Send computed sum back to wallet-view */
     void selectedAmount(const QString &amount);
+    /** Send computed sum back to wallet-view */
+    void totalAmount(const QString &strCountVisible, const QString &strAmountVisible, const QString &strCount, const QString &strAmount);
+
     /**  Fired when a message should be reported to the user */
     void message(const QString &title, const QString &message, unsigned int style);
 

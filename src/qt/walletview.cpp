@@ -40,14 +40,15 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     platformStyle(_platformStyle)
 {
     // Create tabs
+    QPushButton *exportButton = new QPushButton(tr("&Export"), this);
+    QPushButton *stakingExportButton = new QPushButton(tr("&Export"), this);
     overviewPage = new OverviewPage(platformStyle);
 
     transactionsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
     QHBoxLayout *hbox_buttons = new QHBoxLayout();
-    transactionView = new TransactionView(platformStyle, this);
+    transactionView = new TransactionView(platformStyle, false, this);
     vbox->addWidget(transactionView);
-    QPushButton *exportButton = new QPushButton(tr("&Export"), this);
     exportButton->setToolTip(tr("Export the data in the current tab to a file"));
     if (platformStyle->getImagesOnButtons()) {
         exportButton->setIcon(platformStyle->SingleColorIcon(":/icons/export"));
@@ -70,11 +71,26 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     vbox->addLayout(hbox_buttons);
     transactionsPage->setLayout(vbox);
 
-    receiveCoinsPage = new ReceiveCoinsDialog(platformStyle, false);
+    stakingTransactionsPage = new QWidget(this);
+    vbox = new QVBoxLayout();
+    vbox->setContentsMargins(0,0,0,0);
+    hbox_buttons = new QHBoxLayout();
+    stakingTransactionView = new TransactionView(platformStyle, true, this);
+    vbox->addWidget(stakingTransactionView);
+    stakingExportButton->setToolTip(tr("Export the data in the current tab to a file"));
+    if (platformStyle->getImagesOnButtons()) {
+        stakingExportButton->setIcon(platformStyle->SingleColorIcon(":/icons/export"));
+    }
+    hbox_buttons->addStretch();
+    hbox_buttons->addWidget(stakingExportButton);
+    vbox->addLayout(hbox_buttons);
+    stakingTransactionsPage->setLayout(vbox);
+
+    receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
     sendCoinsPage = new SendCoinsDialog(platformStyle);
     stakingPage = new StakingDialog(platformStyle);
 
-    ReceiveCoinsDialog *addressPage = new ReceiveCoinsDialog(platformStyle, true);
+    AddressBookPage *addressPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::StakingTab, sendCoinsPage);
     sendToStealth = new SendCoinsDialog(platformStyle, true, true);
     sendToStake = new SendCoinsDialog(platformStyle, true, true);
     activateColdStake = new SendCoinsDialog(platformStyle, true);
@@ -83,7 +99,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     sendToStake->setMode(CoinControlDialog::CONVERT_TO_STAKING);
     activateColdStake->setMode(CoinControlDialog::CONVERT_TO_COLD_STAKE);
 
-    stakingPage->setPages(addressPage, sendToStealth, sendToStake, activateColdStake);
+    stakingPage->setPages(stakingTransactionsPage, addressPage, sendToStealth, sendToStake, activateColdStake);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);
@@ -106,14 +122,19 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     // Double-clicking on a transaction on the transaction history page shows details
     connect(transactionView, SIGNAL(doubleClicked(QModelIndex)), transactionView, SLOT(showDetails()));
+    // Double-clicking on a transaction on the transaction history page shows details
+    connect(stakingTransactionView, SIGNAL(doubleClicked(QModelIndex)), stakingTransactionView, SLOT(showDetails()));
 
     // Clicking on "Export" allows to export the transaction list
     connect(exportButton, SIGNAL(clicked()), transactionView, SLOT(exportClicked()));
+    // Clicking on "Export" allows to export the transaction list
+    connect(stakingExportButton, SIGNAL(clicked()), stakingTransactionView, SLOT(exportClicked()));
 
     // Pass through messages from sendCoinsPage
     connect(sendCoinsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     // Pass through messages from transactionView
     connect(transactionView, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    connect(stakingTransactionView, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     // Pass through messages from stakingPage
     connect(stakingPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     connect(sendToStealth, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
@@ -122,6 +143,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     // Update selected transactions amount
     connect(transactionView, SIGNAL(selectedAmount(const QString&)), this, SLOT(selectedAmount(const QString&)));
+
+    connect(stakingTransactionView, SIGNAL(totalAmount(const QString&, const QString&, const QString&, const QString&)),
+            stakingPage, SLOT(updateStakingRewards(const QString&, const QString&, const QString&, const QString&)));
 }
 
 WalletView::~WalletView()
@@ -169,6 +193,7 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
 
     // Put transaction list in tabs
     transactionView->setModel(_walletModel);
+    stakingTransactionView->setModel(_walletModel);
     overviewPage->setWalletModel(_walletModel);
     receiveCoinsPage->setModel(_walletModel);
     sendCoinsPage->setModel(_walletModel);
@@ -191,6 +216,8 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
         // Balloon pop-up for new transaction
         connect(_walletModel->getTransactionTableModel(), SIGNAL(rowsInserted(QModelIndex,int,int)),
                 this, SLOT(processNewTransaction(QModelIndex,int,int)));
+        connect(_walletModel->getStakingTransactionTableModel(), SIGNAL(rowsInserted(QModelIndex,int,int)),
+                this, SLOT(processNewTransaction(QModelIndex,int,int)));
 
         // Ask for passphrase if needed
         connect(_walletModel, SIGNAL(requireUnlock()), this, SLOT(unlockWallet()));
@@ -206,22 +233,33 @@ void WalletView::processNewTransaction(const QModelIndex& parent, int start, int
     if (!walletModel || !clientModel || clientModel->node().isInitialBlockDownload())
         return;
 
-    TransactionTableModel *ttm = walletModel->getTransactionTableModel();
-    if (!ttm || ttm->processingQueuedTransactions())
+    TransactionTableModel *ttm = (TransactionTableModel*)QWidget::sender();
+
+    if ( (!ttm || ttm->processingQueuedTransactions() ))
         return;
 
-    QString date = ttm->index(start, TransactionTableModel::Date, parent).data().toString();
-    qint64 amount = ttm->index(start, TransactionTableModel::Amount, parent).data(Qt::EditRole).toULongLong();
-    QString type = ttm->index(start, TransactionTableModel::Type, parent).data().toString();
-    QModelIndex index = ttm->index(start, 0, parent);
-    QString address = ttm->data(index, TransactionTableModel::AddressRole).toString();
-    QString label = ttm->data(index, TransactionTableModel::LabelRole).toString();
+    if(  ttm == walletModel->getTransactionTableModel() ){
+        QString date = ttm->index(start, TransactionTableModel::Date, parent).data().toString();
+        qint64 amount = ttm->index(start, TransactionTableModel::Amount, parent).data(Qt::EditRole).toULongLong();
+        QString type = ttm->index(start, TransactionTableModel::Type, parent).data().toString();
+        QModelIndex index = ttm->index(start, 0, parent);
+        QString address = ttm->data(index, TransactionTableModel::AddressRole).toString();
+        QString label = ttm->data(index, TransactionTableModel::LabelRole).toString();
 
-    if (!clientModel->getOptionsModel()->getShowIncomingStakeNotifications()
-        && ttm->data(index, TransactionTableModel::TypeRole) == TransactionRecord::Staked)
-        return;
+        Q_EMIT incomingTransaction(date, walletModel->getOptionsModel()->getDisplayUnit(), amount, type, address, label, walletModel->getWalletName());
+    }
+    if( ttm == walletModel->getStakingTransactionTableModel() ){
+        QString date = ttm->index(start, TransactionTableModel::DateStaking, parent).data().toString();
+        qint64 amount = ttm->index(start, TransactionTableModel::AmountStaking, parent).data(Qt::EditRole).toULongLong();
+        QModelIndex index = ttm->index(start, 0, parent);
+        QString address = ttm->data(index, TransactionTableModel::AddressRole).toString();
+        QString label = ttm->data(index, TransactionTableModel::LabelRole).toString();
 
-    Q_EMIT incomingTransaction(date, walletModel->getOptionsModel()->getDisplayUnit(), amount, type, address, label, walletModel->getWalletName());
+        if (!clientModel->getOptionsModel()->getShowIncomingStakeNotifications())
+            return;
+
+        Q_EMIT incomingTransaction(date, walletModel->getOptionsModel()->getDisplayUnit(), amount, "Staked", address, label, walletModel->getWalletName());
+    }
 }
 
 void WalletView::gotoOverviewPage()

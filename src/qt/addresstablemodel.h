@@ -25,7 +25,7 @@ class AddressTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit AddressTableModel(WalletModel *parent = 0);
+    explicit AddressTableModel(WalletModel *parent, bool fStaking);
     ~AddressTableModel();
 
     enum ColumnIndex {
@@ -56,6 +56,9 @@ public:
 
     static const QString Send;      /**< Specifies send address */
     static const QString Receive;   /**< Specifies receive address */
+    static const QString All;   /**< Specifies receive address */
+
+    bool fStaking;
 
     /** @name Methods overridden from QAbstractTableModel
         @{*/

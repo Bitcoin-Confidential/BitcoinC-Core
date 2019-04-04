@@ -36,9 +36,9 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *parent) :
+TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaking, QWidget *parent) :
     QWidget(parent), model(0), transactionProxyModel(0),
-    transactionView(0), abandonAction(0), bumpFeeAction(0), columnResizingFixer(0)
+    transactionView(0), abandonAction(0), bumpFeeAction(0), columnResizingFixer(0), fStaking(fStaking)
 {
     // Build filter row
     setContentsMargins(0,0,0,0);
@@ -76,39 +76,41 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     dateWidget->addItem(tr("Range..."), Range);
     hlayout->addWidget(dateWidget);
 
-    typeWidget = new QComboBox(this);
-    if (platformStyle->getUseExtraSpacing()) {
-        typeWidget->setFixedWidth(121);
-    } else {
-        typeWidget->setFixedWidth(120);
+    if( !fStaking ){
+
+        typeWidget = new QComboBox(this);
+        if (platformStyle->getUseExtraSpacing()) {
+            typeWidget->setFixedWidth(121);
+        } else {
+            typeWidget->setFixedWidth(120);
+        }
+
+        typeWidget->addItem(tr("All"), TransactionFilterProxy::ALL_TYPES);
+        typeWidget->addItem(tr("Received with"), TransactionFilterProxy::TYPE(TransactionRecord::RecvWithAddress) |
+                                            TransactionFilterProxy::TYPE(TransactionRecord::RecvFromOther));
+        typeWidget->addItem(tr("Sent to"), TransactionFilterProxy::TYPE(TransactionRecord::SendToAddress) |
+                                      TransactionFilterProxy::TYPE(TransactionRecord::SendToOther));
+        typeWidget->addItem(tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf));
+        typeWidget->addItem(tr("Other"), TransactionFilterProxy::TYPE(TransactionRecord::Other));
+        typeWidget->addItem(tr("Airdrop"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
+        hlayout->addWidget(typeWidget);
     }
-
-    typeWidget->addItem(tr("All"), TransactionFilterProxy::ALL_TYPES);
-    typeWidget->addItem(tr("Received with"), TransactionFilterProxy::TYPE(TransactionRecord::RecvWithAddress) |
-                                        TransactionFilterProxy::TYPE(TransactionRecord::RecvFromOther));
-    typeWidget->addItem(tr("Sent to"), TransactionFilterProxy::TYPE(TransactionRecord::SendToAddress) |
-                                  TransactionFilterProxy::TYPE(TransactionRecord::SendToOther));
-    typeWidget->addItem(tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf));
-    typeWidget->addItem(tr("Mined"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
-    typeWidget->addItem(tr("Other"), TransactionFilterProxy::TYPE(TransactionRecord::Other));
-    typeWidget->addItem(tr("Staked"), TransactionFilterProxy::TYPE(TransactionRecord::Staked));
-
-    hlayout->addWidget(typeWidget);
 
     search_widget = new QLineEdit(this);
     search_widget->setPlaceholderText(tr("Enter address, transaction id, or label to search"));
     hlayout->addWidget(search_widget);
 
-    amountWidget = new QLineEdit(this);
-    amountWidget->setPlaceholderText(tr("Min amount"));
-    if (platformStyle->getUseExtraSpacing()) {
-        amountWidget->setFixedWidth(97);
-    } else {
-        amountWidget->setFixedWidth(100);
+    if( !fStaking ){
+        amountWidget = new QLineEdit(this);
+        amountWidget->setPlaceholderText(tr("Min amount"));
+        if (platformStyle->getUseExtraSpacing()) {
+            amountWidget->setFixedWidth(97);
+        } else {
+            amountWidget->setFixedWidth(100);
+        }
+        amountWidget->setValidator(new QDoubleValidator(0, 1e20, 8, this));
+        hlayout->addWidget(amountWidget);
     }
-    amountWidget->setValidator(new QDoubleValidator(0, 1e20, 8, this));
-    hlayout->addWidget(amountWidget);
-
     // Delay before filtering transactions in ms
     static const int input_filter_delay = 200;
 
@@ -179,10 +181,14 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     connect(mapperThirdPartyTxUrls, SIGNAL(mapped(QString)), this, SLOT(openThirdPartyTxUrl(QString)));
 
     connect(dateWidget, SIGNAL(activated(int)), this, SLOT(chooseDate(int)));
-    connect(typeWidget, SIGNAL(activated(int)), this, SLOT(chooseType(int)));
+    if( !fStaking ){
+        connect(typeWidget, SIGNAL(activated(int)), this, SLOT(chooseType(int)));
+    }
     connect(watchOnlyWidget, SIGNAL(activated(int)), this, SLOT(chooseWatchonly(int)));
-    connect(amountWidget, SIGNAL(textChanged(QString)), amount_typing_delay, SLOT(start()));
-    connect(amount_typing_delay, SIGNAL(timeout()), this, SLOT(changedAmount()));
+    if( !fStaking ){
+        connect(amountWidget, SIGNAL(textChanged(QString)), amount_typing_delay, SLOT(start()));
+        connect(amount_typing_delay, SIGNAL(timeout()), this, SLOT(changedAmount()));
+    }
     connect(search_widget, SIGNAL(textChanged(QString)), prefix_typing_delay, SLOT(start()));
     connect(prefix_typing_delay, SIGNAL(timeout()), this, SLOT(changedSearch()));
 
@@ -199,6 +205,7 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     connect(copyTxPlainText, SIGNAL(triggered()), this, SLOT(copyTxPlainText()));
     connect(editLabelAction, SIGNAL(triggered()), this, SLOT(editLabel()));
     connect(showDetailsAction, SIGNAL(triggered()), this, SLOT(showDetails()));
+    connect(transactionView, SIGNAL(clicked(QModelIndex)), this, SLOT(computeSelectedSum()));
 }
 
 void TransactionView::setModel(WalletModel *_model)
@@ -207,7 +214,12 @@ void TransactionView::setModel(WalletModel *_model)
     if(_model)
     {
         transactionProxyModel = new TransactionFilterProxy(this);
-        transactionProxyModel->setSourceModel(_model->getTransactionTableModel());
+        if( fStaking ){
+            transactionProxyModel->setSourceModel(_model->getStakingTransactionTableModel());
+            connect(_model->getStakingTransactionTableModel(), SIGNAL(transactionsChanged()), this, SLOT(computeTotalSum()));
+        }else{
+            transactionProxyModel->setSourceModel(_model->getTransactionTableModel());
+        }
         transactionProxyModel->setDynamicSortFilter(true);
         transactionProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
         transactionProxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -230,6 +242,8 @@ void TransactionView::setModel(WalletModel *_model)
         transactionView->setColumnWidth(TransactionTableModel::TypeIn, IN_TYPE_COLUMN_WIDTH);
         transactionView->setColumnWidth(TransactionTableModel::TypeOut, OUT_TYPE_COLUMN_WIDTH);
         transactionView->setColumnWidth(TransactionTableModel::Amount, AMOUNT_MINIMUM_COLUMN_WIDTH);
+
+        connect(transactionView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(computeSelectedSum()));
 
         columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(transactionView, AMOUNT_MINIMUM_COLUMN_WIDTH, MINIMUM_COLUMN_WIDTH, this, 4);
 
@@ -257,6 +271,15 @@ void TransactionView::setModel(WalletModel *_model)
 
         // Watch-only signal
         connect(_model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyColumn(bool)));
+
+        computeSelectedSum();
+        if( fStaking ){
+            computeTotalSum();
+            chooseDate(3);
+            dateWidget->setCurrentIndex(3);
+        }
+
+        this->resize(this->geometry().width(), this->geometry().height());
     }
 }
 
@@ -305,6 +328,8 @@ void TransactionView::chooseDate(int idx)
         dateRangeChanged();
         break;
     }
+
+    computeTotalSum();
 }
 
 void TransactionView::chooseType(int idx)
@@ -328,6 +353,8 @@ void TransactionView::changedSearch()
     if(!transactionProxyModel)
         return;
     transactionProxyModel->setSearchString(search_widget->text());
+
+    computeTotalSum();
 }
 
 void TransactionView::changedAmount()
@@ -366,7 +393,9 @@ void TransactionView::exportClicked()
     if (model->wallet().haveWatchOnly())
         writer.addColumn(tr("Watch-only"), TransactionTableModel::Watchonly);
     writer.addColumn(tr("Date"), 0, TransactionTableModel::DateRole);
-    writer.addColumn(tr("Type"), TransactionTableModel::Type, Qt::EditRole);
+    if( !fStaking ){
+        writer.addColumn(tr("Type"), TransactionTableModel::Type, Qt::EditRole);
+    }
     writer.addColumn(tr("Label"), 0, TransactionTableModel::LabelRole);
     writer.addColumn(tr("Address"), 0, TransactionTableModel::AddressRole);
     writer.addColumn(BitcoinUnits::getAmountColumnTitle(model->getOptionsModel()->getDisplayUnit()), 0, TransactionTableModel::FormattedAmountRole);
@@ -416,7 +445,11 @@ void TransactionView::abandonTx()
     model->wallet().abandonTransaction(hash);
 
     // Update the table
-    model->getTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, false);
+    if( fStaking ){
+        model->getStakingTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, false);
+    }else{
+        model->getTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, false);
+    }
 }
 
 void TransactionView::bumpFee()
@@ -433,7 +466,12 @@ void TransactionView::bumpFee()
     // Bump tx fee over the walletModel
     if (model->bumpFee(hash)) {
         // Update the table
-        model->getTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, true);
+        if( fStaking ){
+            model->getStakingTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, true);
+        }else{
+            model->getTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, true);
+        }
+
     }
 }
 
@@ -595,10 +633,19 @@ void TransactionView::focusTransaction(const uint256& txid)
     if (!transactionProxyModel)
         return;
 
-    const QModelIndexList results = this->model->getTransactionTableModel()->match(
-        this->model->getTransactionTableModel()->index(0,0),
-        TransactionTableModel::TxHashRole,
-        QString::fromStdString(txid.ToString()), -1);
+    QModelIndexList results;
+
+    if( fStaking ){
+        results = this->model->getStakingTransactionTableModel()->match(
+                    this->model->getStakingTransactionTableModel()->index(0,0),
+                    TransactionTableModel::TxHashRole,
+                    QString::fromStdString(txid.ToString()), -1);
+    }else{
+        results = this->model->getTransactionTableModel()->match(
+                    this->model->getTransactionTableModel()->index(0,0),
+                    TransactionTableModel::TxHashRole,
+                    QString::fromStdString(txid.ToString()), -1);
+    }
 
     transactionView->setFocus();
     transactionView->selectionModel()->clearSelection();
@@ -620,9 +667,13 @@ void TransactionView::focusTransaction(const uint256& txid)
 // sizes as the tables width is proportional to the dialogs width.
 void TransactionView::resizeEvent(QResizeEvent* event)
 {
-    QWidget::resizeEvent(event);
-    columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddress);
-
+    if( fStaking ){
+        QWidget::resizeEvent(event);
+        columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddressStaking);
+    }else{
+        QWidget::resizeEvent(event);
+        columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddress);
+    }
 }
 
 // Need to override default Ctrl+C action for amount as default behaviour is just to copy DisplayRole text
@@ -662,4 +713,49 @@ void TransactionView::computeSelectedSum()
     QString strAmount(BitcoinUnits::formatWithUnit(nDisplayUnit, amount, true, BitcoinUnits::separatorAlways));
     if (amount < 0) strAmount = "<span style='color:red;'>" + strAmount + "</span>";
     Q_EMIT selectedAmount(strAmount);
+}
+
+/** Compute sum of all selected transactions */
+void TransactionView::computeTotalSum()
+{
+    qint64 nAmount = 0, nAmountVisible = 0;
+    int nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
+    if(!model || (fStaking && !model->getStakingTransactionTableModel()) || (!fStaking && !model->getTransactionTableModel()))
+        return;
+
+    TransactionTableModel *txModel;
+
+    if( fStaking ){
+        txModel = model->getStakingTransactionTableModel();
+    }else{
+        txModel = model->getTransactionTableModel();
+    }
+
+    int nColumn, nRowsVisible = 0;
+
+    if( fStaking ){
+        nColumn = TransactionTableModel::AmountStaking;
+    }else{
+        nColumn = TransactionTableModel::Amount;
+    }
+
+    for ( int nRow = 0; nRow < txModel->rowCount(QModelIndex()); ++nRow ){
+        QModelIndex index = txModel->index(nRow, nColumn);
+        nAmount += index.data(TransactionTableModel::AmountRole).toLongLong();
+        QModelIndex indexFiltered = transactionProxyModel->mapFromSource(index);
+        if( !indexFiltered.isValid() ){
+            continue;
+        }
+        ++nRowsVisible;
+        nAmountVisible += indexFiltered.data(TransactionTableModel::AmountRole).toLongLong();
+    }
+
+    bool fShowSign = fStaking ? false : true;
+
+    QString strCount = QString::number(txModel->rowCount(QModelIndex()));
+    QString strCountVisible = QString::number(nRowsVisible);
+    QString strAmount(BitcoinUnits::formatWithUnit(nDisplayUnit, nAmount, fShowSign, BitcoinUnits::separatorAlways));
+    QString strAmountVisible(BitcoinUnits::formatWithUnit(nDisplayUnit, nAmountVisible, fShowSign   , BitcoinUnits::separatorAlways));
+
+    Q_EMIT totalAmount(strCountVisible, strAmountVisible, strCount, strAmount);
 }

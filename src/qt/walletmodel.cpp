@@ -35,18 +35,19 @@
 WalletModel::WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces::Node& node, const PlatformStyle *platformStyle, OptionsModel *_optionsModel, QObject *parent) :
     QObject(parent), m_wallet(std::move(wallet)), m_node(node), optionsModel(_optionsModel), addressTableModel(0),
     transactionTableModel(0),
+    stakingTransactionTableModel(0),
     recentRequestsTableModel(0),
-    recentStakingRequestsTableModel(0),
     cachedEncryptionStatus(Unencrypted),
     cachedNumBlocks(0)
 {
     fHaveWatchOnly = m_wallet->haveWatchOnly();
     fForceCheckBalanceChanged = false;
 
-    addressTableModel = new AddressTableModel(this);
-    transactionTableModel = new TransactionTableModel(platformStyle, this);
+    addressTableModel = new AddressTableModel(this, false);
+    stakingAddressTableModel = new AddressTableModel(this, true);
+    transactionTableModel = new TransactionTableModel(platformStyle, false, this);
+    stakingTransactionTableModel = new TransactionTableModel(platformStyle, true, this);
     recentRequestsTableModel = new RecentRequestsTableModel(false, this);
-    recentStakingRequestsTableModel = new RecentRequestsTableModel(true, this);
 
     // This timer will be fired repeatedly to update the balance
     pollTimer = new QTimer(this);
@@ -92,6 +93,9 @@ void WalletModel::pollBalanceChanged()
     if (transactionTableModel) {
         transactionTableModel->updateConfirmations();
     }
+    if (stakingTransactionTableModel) {
+        stakingTransactionTableModel->updateConfirmations();
+    }
 }
 
 void WalletModel::setReserveBalance(CAmount nReserveBalanceNew)
@@ -134,6 +138,8 @@ void WalletModel::updateAddressBook(const QString &address, const QString &label
 {
     if(addressTableModel)
         addressTableModel->updateEntry(address, label, isMine, purpose, status);
+    if(stakingAddressTableModel)
+        stakingAddressTableModel->updateEntry(address, label, isMine, purpose, status);
 }
 
 void WalletModel::updateWatchOnlyFlag(bool fHaveWatchonly)
@@ -346,19 +352,24 @@ AddressTableModel *WalletModel::getAddressTableModel()
     return addressTableModel;
 }
 
+AddressTableModel *WalletModel::getStakingAddressTableModel()
+{
+    return stakingAddressTableModel;
+}
+
 TransactionTableModel *WalletModel::getTransactionTableModel()
 {
     return transactionTableModel;
 }
 
+TransactionTableModel *WalletModel::getStakingTransactionTableModel()
+{
+    return stakingTransactionTableModel;
+}
+
 RecentRequestsTableModel *WalletModel::getRecentRequestsTableModel()
 {
     return recentRequestsTableModel;
-}
-
-RecentRequestsTableModel *WalletModel::getRecentStakingRequestsTableModel()
-{
-    return recentStakingRequestsTableModel;
 }
 
 WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const

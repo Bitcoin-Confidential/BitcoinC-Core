@@ -148,9 +148,11 @@ public:
 
     OptionsModel *getOptionsModel();
     AddressTableModel *getAddressTableModel();
+    AddressTableModel *getStakingAddressTableModel();
+    AddressTableModel *getColdStakingAddressTableModel();
     TransactionTableModel *getTransactionTableModel();
+    TransactionTableModel *getStakingTransactionTableModel();
     RecentRequestsTableModel *getRecentRequestsTableModel();
-    RecentRequestsTableModel *getRecentStakingRequestsTableModel();
 
     EncryptionStatus getEncryptionStatus() const;
 
@@ -250,9 +252,11 @@ private:
     OptionsModel *optionsModel;
 
     AddressTableModel *addressTableModel;
+    AddressTableModel *stakingAddressTableModel;
+    AddressTableModel *coldStakingAddressTableModel;
     TransactionTableModel *transactionTableModel;
+    TransactionTableModel *stakingTransactionTableModel;
     RecentRequestsTableModel *recentRequestsTableModel;
-    RecentRequestsTableModel *recentStakingRequestsTableModel;
 
     // Cache some values to be able to detect changes
     interfaces::WalletBalances m_cached_balances;

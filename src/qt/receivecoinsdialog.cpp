@@ -22,13 +22,12 @@
 #include <QScrollBar>
 #include <QTextDocument>
 
-ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, bool fStaking, QWidget *parent) :
+ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ReceiveCoinsDialog),
     columnResizingFixer(0),
     model(0),
-    platformStyle(_platformStyle),
-    fStaking(fStaking)
+    platformStyle(_platformStyle)
 {
     ui->setupUi(this);
 
@@ -54,11 +53,9 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, bool
     contextMenu = new QMenu(this);
 
     contextMenu->addAction(copyLabelAction);
-    if( !fStaking ){
-        contextMenu->addAction(copyURIAction);
-        contextMenu->addAction(copyMessageAction);
-        contextMenu->addAction(copyAmountAction);
-    }
+    contextMenu->addAction(copyURIAction);
+    contextMenu->addAction(copyMessageAction);
+    contextMenu->addAction(copyAmountAction);
 
     // context menu signals
     connect(ui->recentRequestsView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMenu(QPoint)));
@@ -69,20 +66,7 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, bool
 
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
-    if( fStaking ){
-        ui->cbxAddressType->show();
-
-        ui->labelAmount->hide();
-        ui->reqAmount->hide();
-        ui->useBech32->hide();
-        ui->labelMessage->hide();
-        ui->reqMessage->hide();
-        ui->labelInfo->hide();
-		ui->receiveTabHeaderLabel->hide();
-		ui->receiveButton->setText("Create address");
-    }else{
-        ui->cbxAddressType->hide();
-    }
+    ui->cbxAddressType->hide();
 }
 
 void ReceiveCoinsDialog::setModel(WalletModel *_model)
@@ -104,24 +88,15 @@ void ReceiveCoinsDialog::setModel(WalletModel *_model)
         tableView->setColumnWidth(RecentRequestsTableModel::Date, DATE_COLUMN_WIDTH);
         tableView->setColumnWidth(RecentRequestsTableModel::Label, LABEL_COLUMN_WIDTH);
 
-        if( fStaking){
-            _model->getRecentStakingRequestsTableModel()->sort(RecentRequestsTableModel::Date, Qt::DescendingOrder);
-            tableView->setModel(_model->getRecentStakingRequestsTableModel());
-        }else{
-            _model->getRecentRequestsTableModel()->sort(RecentRequestsTableModel::Date, Qt::DescendingOrder);
-            tableView->setModel(_model->getRecentRequestsTableModel());
-            tableView->setColumnWidth(RecentRequestsTableModel::Amount, AMOUNT_MINIMUM_COLUMN_WIDTH);
-        }
+        _model->getRecentRequestsTableModel()->sort(RecentRequestsTableModel::Date, Qt::DescendingOrder);
+        tableView->setModel(_model->getRecentRequestsTableModel());
+        tableView->setColumnWidth(RecentRequestsTableModel::Amount, AMOUNT_MINIMUM_COLUMN_WIDTH);
 
         connect(tableView->selectionModel(),
-            SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
-            SLOT(recentRequestsView_selectionChanged(QItemSelection, QItemSelection)));
-        // Last 2 columns are set by the columnResizingFixer, when the table geometry is ready.
-        if( fStaking ){
-            tableView->horizontalHeader()->setStretchLastSection(true);
-        }else{
-            columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(tableView, AMOUNT_MINIMUM_COLUMN_WIDTH, DATE_COLUMN_WIDTH, this);
-        }
+        SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
+        SLOT(recentRequestsView_selectionChanged(QItemSelection, QItemSelection)));
+        columnResizingFixer = new GUIUtil::TableViewLastColumnResizingFixer(tableView, AMOUNT_MINIMUM_COLUMN_WIDTH, DATE_COLUMN_WIDTH, this);
+
         if (model->wallet().getDefaultAddressType() == OutputType::BECH32) {
             ui->useBech32->setCheckState(Qt::Checked);
         } else {
@@ -143,9 +118,7 @@ void ReceiveCoinsDialog::clear()
     ui->reqAmount->clear();
     ui->reqLabel->setText("");
     ui->reqMessage->setText("");
-    if( fStaking ){
-        ui->cbxAddressType->setCurrentIndex(ui->cbxAddressType->findText("Stake"));
-    }
+
     updateDisplayUnit();
 }
 
@@ -172,7 +145,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     if(!model || !model->getOptionsModel() || !model->getAddressTableModel() )
         return;
 
-    if( ( fStaking && !model->getRecentStakingRequestsTableModel() ) || ( !fStaking && !model->getRecentRequestsTableModel() ) )
+    if( !model->getRecentRequestsTableModel() )
         return;
 
     QString address;
@@ -198,25 +171,7 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     */
     OutputType address_type = ui->useBech32->isChecked() ? OutputType::BECH32 : OutputType::LEGACY;
 
-    /* Generate new receiving address*/
-    AddressTableModel::AddrType addrType = AddressTableModel::ADDR_STEALTH;
-
-    bool fIsStakingAddress;
-
-    if( fStaking ){
-        if (ui->cbxAddressType->currentText() == "Stake"){
-            addrType = AddressTableModel::ADDR_STANDARD;
-            fIsStakingAddress = true;
-        }else if (ui->cbxAddressType->currentText() == "Contract"){
-            addrType = AddressTableModel::ADDR_STANDARD256;
-            fIsStakingAddress = true;
-        }
-    }else{
-        addrType = AddressTableModel::ADDR_STEALTH;
-        fIsStakingAddress = false;
-    }
-
-    address = model->getAddressTableModel()->addRow(AddressTableModel::Receive, label, "", address_type, addrType);
+    address = model->getAddressTableModel()->addRow(AddressTableModel::Receive, label, "", address_type, AddressTableModel::ADDR_STEALTH);
 
     if (address == "")
         return;
@@ -231,22 +186,14 @@ void ReceiveCoinsDialog::on_receiveButton_clicked()
     clear();
 
     /* Store request for later reference */
-    if( fIsStakingAddress ){
-        model->getRecentStakingRequestsTableModel()->addNewRequest(info);
-    }else{
-        model->getRecentRequestsTableModel()->addNewRequest(info);
-    }
+    model->getRecentRequestsTableModel()->addNewRequest(info);
 }
 
 void ReceiveCoinsDialog::on_recentRequestsView_doubleClicked(const QModelIndex &index)
 {
     RecentRequestsTableModel *submodel;
 
-    if( fStaking ){
-        submodel = model->getRecentStakingRequestsTableModel();
-    }else{
-        submodel = model->getRecentRequestsTableModel();
-    }
+    submodel = model->getRecentRequestsTableModel();
 
     ReceiveRequestDialog *dialog = new ReceiveRequestDialog(this);
     dialog->setModel(model);
@@ -268,7 +215,7 @@ void ReceiveCoinsDialog::on_showRequestButton_clicked()
     if(!model || !ui->recentRequestsView->selectionModel())
         return;
 
-    if( ( fStaking && !model->getRecentStakingRequestsTableModel() ) || ( !fStaking && !model->getRecentRequestsTableModel() ) )
+    if(!model->getRecentRequestsTableModel())
         return;
 
     QModelIndexList selection = ui->recentRequestsView->selectionModel()->selectedRows();
@@ -283,7 +230,7 @@ void ReceiveCoinsDialog::on_removeRequestButton_clicked()
     if(!model || !ui->recentRequestsView->selectionModel())
         return;
 
-    if( ( fStaking && !model->getRecentStakingRequestsTableModel() ) || ( !fStaking && !model->getRecentRequestsTableModel() ) )
+    if(!model->getRecentRequestsTableModel())
         return;
 
     QModelIndexList selection = ui->recentRequestsView->selectionModel()->selectedRows();
@@ -292,11 +239,7 @@ void ReceiveCoinsDialog::on_removeRequestButton_clicked()
     // correct for selection mode ContiguousSelection
     QModelIndex firstIndex = selection.at(0);
 
-    if( fStaking ){
-        model->getRecentStakingRequestsTableModel()->removeRows(firstIndex.row(), selection.length(), firstIndex.parent());
-    }else{
-        model->getRecentRequestsTableModel()->removeRows(firstIndex.row(), selection.length(), firstIndex.parent());
-    }
+    model->getRecentRequestsTableModel()->removeRows(firstIndex.row(), selection.length(), firstIndex.parent());
 }
 
 // We override the virtual resizeEvent of the QWidget to adjust tables column
@@ -304,9 +247,8 @@ void ReceiveCoinsDialog::on_removeRequestButton_clicked()
 void ReceiveCoinsDialog::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-    if( !fStaking ){
-        columnResizingFixer->stretchColumnWidth(RecentRequestsTableModel::Label);
-    }
+
+    columnResizingFixer->stretchColumnWidth(RecentRequestsTableModel::Label);
 }
 
 void ReceiveCoinsDialog::keyPressEvent(QKeyEvent *event)
@@ -330,7 +272,7 @@ QModelIndex ReceiveCoinsDialog::selectedRow()
     if(!model || !ui->recentRequestsView->selectionModel())
         return QModelIndex();
 
-    if( ( fStaking && !model->getRecentStakingRequestsTableModel() ) || ( !fStaking && !model->getRecentRequestsTableModel() ) )
+    if(!model->getRecentRequestsTableModel())
         return QModelIndex();
 
     QModelIndexList selection = ui->recentRequestsView->selectionModel()->selectedRows();
@@ -348,13 +290,7 @@ void ReceiveCoinsDialog::copyColumnToClipboard(int column)
     if (!firstIndex.isValid()) {
         return;
     }
-    RecentRequestsTableModel * requestModel;
-
-    if( fStaking ){
-        requestModel = model->getRecentStakingRequestsTableModel();
-    }else{
-        requestModel = model->getRecentRequestsTableModel();
-    }
+    RecentRequestsTableModel * requestModel =model->getRecentRequestsTableModel();
 
     GUIUtil::setClipboard(requestModel->data(firstIndex.child(firstIndex.row(), column), Qt::EditRole).toString());
 }
@@ -376,13 +312,7 @@ void ReceiveCoinsDialog::copyURI()
         return;
     }
 
-    RecentRequestsTableModel * submodel;
-
-    if( fStaking ){
-        submodel = model->getRecentStakingRequestsTableModel();
-    }else{
-        submodel = model->getRecentRequestsTableModel();
-    }
+    RecentRequestsTableModel * submodel = model->getRecentRequestsTableModel();
 
     const QString uri = GUIUtil::formatBitcoinURI(submodel->entry(sel.row()).recipient);
     GUIUtil::setClipboard(uri);
