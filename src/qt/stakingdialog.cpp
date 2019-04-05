@@ -115,6 +115,14 @@ void StakingDialog::updateStakingUI()
         return;
     }
 
+    QString strHeight = QString::number(chainActive.Height());
+    AddThousandsSpaces(strHeight);
+    ui->lblCurrentHeight->setText(strHeight);
+
+    if( QWidget::sender() == clientModel && IsInitialBlockDownload() ){
+        return;
+    }
+
     bool fLocked = model->wallet().isLocked();
 
     int nDisplayUnit = BitcoinUnits::BTC;
@@ -147,12 +155,7 @@ void StakingDialog::updateStakingUI()
     }
 
     ui->lblColdStakingAddress->setText(change_stake);
-
     ui->lblHotStakingReserve->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, model->wallet().getReserveBalance()));
-
-    QString strHeight = QString::number(chainActive.Height());
-    AddThousandsSpaces(strHeight);
-    ui->lblCurrentHeight->setText(strHeight);
     ui->lblTotalSupply->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, chainActive.Tip()->nMoneySupply));
 
     sCommand = QString("getblockreward %1").arg(chainActive.Tip()->nHeight);
@@ -356,6 +359,10 @@ void StakingDialog::on_btnChangeStakingStatus_clicked()
 
 void StakingDialog::setClientModel(ClientModel *_clientModel)
 {
+    if( !clientModel ){
+        return;
+    }
+
     this->clientModel = _clientModel;
 
     if( toStealth ){
@@ -370,6 +377,7 @@ void StakingDialog::setClientModel(ClientModel *_clientModel)
         activateCold->setClientModel(_clientModel);
     }
 
+    connect(_clientModel, SIGNAL(numBlocksChanged(int,QDateTime,double,bool)), this, SLOT(updateStakingUI()));
 }
 
 void StakingDialog::setModel(WalletModel *_model)
