@@ -39,7 +39,7 @@
 #include <QApplication>
 #include <QInputDialog>
 
-#define STAKING_UI_UPDATE_MS 5000
+#define STAKING_UI_UPDATE_MS 10000
 
 extern CAmount AmountFromValue(const UniValue& value);
 
