@@ -104,6 +104,17 @@ StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *paren
     updateStakingTimer.start(STAKING_UI_UPDATE_MS);
 }
 
+StakingDialog::~StakingDialog()
+{
+    updateStakingTimer.stop();
+    delete ui;
+    delete transactionPage;
+    delete addressPage;
+    delete toStealth;
+    delete toStake;
+    delete activateCold;
+}
+
 void StakingDialog::updateStakingUI()
 {
     if( ShutdownRequested() ){
@@ -423,17 +434,6 @@ void StakingDialog::setPages(QWidget *transactionPage, AddressBookPage *addressP
         ui->tabWidget->insertTab(5, activateCold, tr("Activate ColdStaking"));
     }
 
-}
-
-StakingDialog::~StakingDialog()
-{
-    updateStakingTimer.stop();
-    delete ui;
-    delete transactionPage;
-    delete addressPage;
-    delete toStealth;
-    delete toStake;
-    delete activateCold;
 }
 
 void StakingDialog::on_btnChangeColdStakingAddress_clicked()
