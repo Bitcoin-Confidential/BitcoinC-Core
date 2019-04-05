@@ -3926,10 +3926,10 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     }
 
     UniValue stakingstatus;
-    bool fStakingPaused = false;
+    bool fStakingEnabled = false;
 
     if( pwallet->GetSetting("stakingstatus", stakingstatus) ){
-        fStakingPaused = stakingstatus["paused"].getBool();
+        fStakingEnabled = stakingstatus["enabled"].getBool();
     }
 
     uint64_t nWeight = pwallet->GetStakeWeight();
@@ -3939,7 +3939,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     bool fStaking = nWeight && fIsStaking;
     uint64_t nExpectedTime = fStaking ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nWeight) : 0;
 
-    obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && !fStakingPaused); // enabled on node, vs enabled on wallet
+    obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && fStakingEnabled); // enabled on node, vs enabled on wallet
     obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
     switch (pwallet->nIsStaking) {
         case CHDWallet::NOT_STAKING_BALANCE:
@@ -5701,32 +5701,31 @@ static UniValue walletsettings(const JSONRPCRequest &request)
 
         WakeThreadStakeMiner(pwallet);
     }else if (sSetting == "stakingstatus") {
-        bool fCurrentState;
+        bool fIsEnabled;
         UniValue json;
 
-        if( !pwallet->GetSetting(sSetting, json) || !json.isObject() ){
+        if( !pwallet->GetSetting(sSetting, json) || !json.isObject() || !json.exists("enabled") ){
             json = UniValue(UniValue::VOBJ);
-            json.pushKV("paused", true);
+            json.pushKV("enabled", false);
             pwallet->SetSetting(sSetting, json);
         }
 
-        fCurrentState = json["paused"].get_bool();
+        fIsEnabled = json["enabled"].get_bool();
 
         if (request.params.size() == 1) {
             return json;
         }
 
         if (request.params[1].isBool()) {
-            bool fNewState = request.params[1].getBool();
+            bool fEnable = request.params[1].getBool();
 
             json = UniValue(UniValue::VOBJ);
-            json.pushKV("paused", fNewState);
-
+            json.pushKV("enabled", fEnable);
             pwallet->SetSetting(sSetting, json);
 
-            if( !fCurrentState && fNewState && ThreadStakeMinerStopped() ){
+            if( !fIsEnabled && fEnable ){
                 StartThreadStakeMiner();
-            }else if( fCurrentState && !fNewState ){
+            }else if( fIsEnabled && !fEnable ){
                 StopThreadStakeMiner();
             }
 
