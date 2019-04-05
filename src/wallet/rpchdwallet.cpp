@@ -5733,7 +5733,6 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, _("New state must be bool."));
         }
 
-        WakeThreadStakeMiner(pwallet);
     } else {
         throw JSONRPCError(RPC_INVALID_PARAMETER, _("Unknown setting"));
     }
