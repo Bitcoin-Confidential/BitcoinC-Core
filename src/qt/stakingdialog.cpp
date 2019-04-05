@@ -427,6 +427,7 @@ void StakingDialog::setPages(QWidget *transactionPage, AddressBookPage *addressP
 
 StakingDialog::~StakingDialog()
 {
+    updateStakingTimer.stop();
     delete ui;
     delete transactionPage;
     delete addressPage;
