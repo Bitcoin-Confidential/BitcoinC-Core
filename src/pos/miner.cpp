@@ -17,6 +17,7 @@
 #include <base58.h>
 #include <crypto/sha256.h>
 
+#include "univalue.h"
 #include <wallet/hdwallet.h>
 
 #include <stdint.h>
@@ -259,6 +260,8 @@ void StartThreadStakeMiner()
     nMinStakeInterval = gArgs.GetArg("-minstakeinterval", 0);
     nMinerSleep = gArgs.GetArg("-minersleep", 500);
 
+    fStopMinerProc = false;
+
     if (!gArgs.GetBoolArg("-staking", true)) {
         LogPrintf("Staking disabled\n");
     } else {
@@ -268,17 +271,23 @@ void StartThreadStakeMiner()
         if (nWallets < 1) {
             return;
         }
-        size_t nThreads = std::min(nWallets, (size_t)gArgs.GetArg("-stakingthreads", 1));
 
+        UniValue rv(UniValue::VOBJ);
+
+        size_t nThreads = std::min(nWallets, (size_t)gArgs.GetArg("-stakingthreads", 1));
         size_t nPerThread = nWallets / nThreads;
+
         for (size_t i = 0; i < nThreads; ++i) {
             size_t nStart = nPerThread * i;
             size_t nEnd = (i == nThreads-1) ? nWallets : nPerThread * (i+1);
             StakeThread *t = new StakeThread();
             vStakeThreads.push_back(t);
-            GetBitcoinCWallet(vpwallets[i].get())->nStakeThread = i;
-            t->sName = strprintf("miner%d", i);
-            t->thread = std::thread(&TraceThread<std::function<void()> >, t->sName.c_str(), std::function<void()>(std::bind(&ThreadStakeMiner, i, vpwallets, nStart, nEnd)));
+            CHDWallet *pwallet = GetBitcoinCWallet(vpwallets[i].get());
+            if( pwallet->GetSetting("stakingstatus", rv) && rv.isObject() && rv.exists("enabled") && rv["enabled"].getBool()){
+                pwallet->nStakeThread = i;
+                t->sName = strprintf("miner%d", i);
+                t->thread = std::thread(&TraceThread<std::function<void()> >, t->sName.c_str(), std::function<void()>(std::bind(&ThreadStakeMiner, i, vpwallets, nStart, nEnd)));
+            }
         }
     }
 };
@@ -289,7 +298,9 @@ void StopThreadStakeMiner()
         || fStopMinerProc)
         return;
     LogPrint(BCLog::POS, "StopThreadStakeMiner\n");
+
     fStopMinerProc = true;
+    fIsStaking = false;
 
     for (auto t : vStakeThreads)
     {
