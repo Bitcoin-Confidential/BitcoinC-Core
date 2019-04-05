@@ -58,7 +58,7 @@ void AddThousandsSpaces(QString &input)
         input.insert(q_size - i, thin_sp);
 }
 
-void StakingStatusUpdate(QLabel *label, bool fEnabled, bool fActive, bool fPaused = false)
+void StakingStatusUpdate(QLabel *label, bool fEnabled, bool fActive, bool fEnabledInSettings = true)
 {
     QString strColor, strText;
 
@@ -69,7 +69,7 @@ void StakingStatusUpdate(QLabel *label, bool fEnabled, bool fActive, bool fPause
         strText = "INACTIVE";
         strColor = "#d6660a";
     }else{
-        if( fPaused ){
+        if( !fEnabledInSettings ){
             strText = "STOPPED";
         }else{
             strText = "DISABLED";
@@ -131,17 +131,17 @@ void StakingDialog::updateStakingUI()
         ui->btnChangeColdStakingAddress->setText("Enable");
     }
 
-    bool fStakingPaused = false;
+    bool fStakingEnabled = false;
     UniValue rv;
     QString sCommand = QString("walletsettings stakingstatus");
     if (model->tryCallRpc(sCommand, rv)) {
 
         if(rv.isObject()){
-            fStakingPaused = rv["paused"].getBool();
-            if( fStakingPaused ){
-                ui->btnChangeStakingStatus->setText("Start");
-            }else{
+            fStakingEnabled = rv["enabled"].getBool();
+            if( fStakingEnabled ){
                 ui->btnChangeStakingStatus->setText("Stop");
+            }else{
+                ui->btnChangeStakingStatus->setText("Start");
             }
         }
     }
@@ -257,7 +257,7 @@ void StakingDialog::updateStakingUI()
             ui->lblHotStakingWalletWeight->setText(strWeight);
         }
 
-        if ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) {
+        if ( fStakingEnabled && ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) ) {
 
             ui->lblHotStakingErrorLabel->show();
             ui->lblHotStakingError->show();
@@ -290,7 +290,7 @@ void StakingDialog::updateStakingUI()
         ui->lblHotStakingWalletWeight->setVisible(fShowHotStakingElements);
         ui->lblHotStakingExpectedTime->setVisible(fShowHotStakingElements);
 
-        StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive, fStakingPaused);
+        StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive, fStakingEnabled);
     }
 }
 
@@ -341,7 +341,7 @@ void StakingDialog::on_btnChangeStakingStatus_clicked()
     if (model->tryCallRpc(sCommand, rv)) {
 
         if(rv.isObject()){
-            if( rv["paused"].getBool() ){
+            if( rv["enabled"].getBool() ){
                 sCommand += " false";
             }else{
                 sCommand += " true";
@@ -395,20 +395,6 @@ void StakingDialog::setModel(WalletModel *_model)
         if( activateCold ){
             activateCold->setModel(_model);
         }
-
-        UniValue rv;
-        QString sCommand = QString("walletsettings stakingstatus");
-        if (model->tryCallRpc(sCommand, rv)) {
-
-            if(rv.isObject()){
-                if( rv["paused"].getBool() ){
-                    StopThreadStakeMiner();
-                }else{
-                    StartThreadStakeMiner();
-                }
-            }
-        }
-
     }
 }
 
