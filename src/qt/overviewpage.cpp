@@ -162,30 +162,46 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
     int unit = walletModel->getOptionsModel()->getDisplayUnit();
     m_balances = balances;
 
-    // Owned balances
-    ui->labelSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending, false, BitcoinUnits::separatorAlways));
-    ui->labelUnconfirmedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpendingUnconf, false, BitcoinUnits::separatorAlways));
-    ui->labelLockedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpendingLocked, false, BitcoinUnits::separatorAlways));
+    if (walletModel->privateKeysDisabled()) {
+        // Watch balances
+        ui->labelWatchSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpending, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchUnconfirmedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingUnconf, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchLockedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingLocked, false, BitcoinUnits::separatorAlways));
 
-    ui->labelStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStaking, false, BitcoinUnits::separatorAlways));
-    ui->labelUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingUnconf, false, BitcoinUnits::separatorAlways));
-    ui->labelLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingLocked, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStaking, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingUnconf, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
 
-    ui->labelTotal->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending + balances.balanceSpendingUnconf + balances.balanceSpendingLocked
-        + balances.balanceStaking + balances.balanceStakingUnconf + balances.balanceStakingLocked , false, BitcoinUnits::separatorAlways));
+        ui->labelWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
+              balances.balanceWatchSpending + balances.balanceWatchSpendingUnconf + balances.balanceWatchSpendingLocked
+            + balances.balanceWatchStaking + balances.balanceWatchStakingUnconf + balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
+    } else {
+        // Owned balances
+        ui->labelSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending, false, BitcoinUnits::separatorAlways));
+        ui->labelUnconfirmedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpendingUnconf, false, BitcoinUnits::separatorAlways));
+        ui->labelLockedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpendingLocked, false, BitcoinUnits::separatorAlways));
 
-    // Watch balances
-    ui->labelWatchSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpending, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchUnconfirmedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingUnconf, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchLockedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingLocked, false, BitcoinUnits::separatorAlways));
+        ui->labelStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStaking, false, BitcoinUnits::separatorAlways));
+        ui->labelUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingUnconf, false, BitcoinUnits::separatorAlways));
+        ui->labelLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingLocked, false, BitcoinUnits::separatorAlways));
 
-    ui->labelWatchStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStaking, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingUnconf, false, BitcoinUnits::separatorAlways));
-    ui->labelWatchLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
+        ui->labelTotal->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending + balances.balanceSpendingUnconf + balances.balanceSpendingLocked
+            + balances.balanceStaking + balances.balanceStakingUnconf + balances.balanceStakingLocked , false, BitcoinUnits::separatorAlways));
 
-    ui->labelWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
-          balances.balanceWatchSpending + balances.balanceWatchSpendingUnconf + balances.balanceWatchSpendingLocked
-        + balances.balanceWatchStaking + balances.balanceWatchStakingUnconf + balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
+        // Watch balances
+        ui->labelWatchSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpending, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchUnconfirmedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingUnconf, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchLockedSpending->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchSpendingLocked, false, BitcoinUnits::separatorAlways));
+
+        ui->labelWatchStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStaking, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingUnconf, false, BitcoinUnits::separatorAlways));
+        ui->labelWatchLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
+
+        ui->labelWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
+              balances.balanceWatchSpending + balances.balanceWatchSpendingUnconf + balances.balanceWatchSpendingLocked
+            + balances.balanceWatchStaking + balances.balanceWatchStakingUnconf + balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
+
+    }
 
     // Show pending on if there is something pending
     ui->labelUnconfirmedSpendingText->setVisible(balances.balanceSpendingUnconf > 0 || balances.balanceWatchSpendingUnconf > 0);
@@ -218,6 +234,20 @@ void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
     ui->labelWatchLockedStaking->setVisible(showWatchOnly);   // show watch-only pending balance
 
     ui->labelWatchTotal->setVisible(showWatchOnly);     // show watch-only total balance
+
+    if( showWatchOnly ){
+        ui->labelUnconfirmedSpendingText->setVisible(true);
+        ui->labelUnconfirmedSpending->setVisible(true);
+
+        ui->labelLockedSpendingText->setVisible(true);
+        ui->labelLockedSpending->setVisible(true);
+
+        ui->labelUnconfirmedStakingText->setVisible(true);
+        ui->labelUnconfirmedStaking->setVisible(true);
+
+        ui->labelLockedStakingText->setVisible(true);
+        ui->labelLockedStaking->setVisible(true);
+    }
 }
 
 void OverviewPage::setClientModel(ClientModel *model)
