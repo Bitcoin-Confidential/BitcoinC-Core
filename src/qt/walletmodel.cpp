@@ -24,6 +24,7 @@
 #include <util.h>
 #include <univalue.h>
 
+#include "shutdown.h"
 
 #include <stdint.h>
 
@@ -566,6 +567,10 @@ void WalletModel::UnlockContext::CopyFrom(const UnlockContext& rhs)
 
 bool WalletModel::tryCallRpc(const QString &sCommand, UniValue &rv, bool returnError) const
 {
+    if( ShutdownRequested() ){
+        return false;
+    }
+
     try {
         rv = CallRPC(sCommand.toStdString(), m_wallet->getWalletName());
     } catch (UniValue& objError)
