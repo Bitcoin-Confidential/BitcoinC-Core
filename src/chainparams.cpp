@@ -540,7 +540,7 @@ public:
         pchMessageStart[1] = 0x15;
         pchMessageStart[2] = 0xab;
         pchMessageStart[3] = 0x1e;
-        nDefaultPort = 12345;
+        nDefaultPort = 19789;
         nBIP44ID = 0x80000001;
 
         nModifierInterval = 1 * 60;    // was 10 minutes
