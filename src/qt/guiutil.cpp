@@ -958,12 +958,16 @@ QString loadStyleSheet()
         styleSheet.replace("#FEC60D", "#1C94F0");
         styleSheet.replace("#D8A80A", "#78B0DC");
         styleSheet.replace("#F6C746", "#78B0DC");
-        styleSheet.replace("#bc9427", "#417B99");
+        styleSheet.replace("#BC9427", "#417B99");
+        styleSheet.replace("#C6C5AB", "#ABBDC6");
+        styleSheet.replace("#F9E08B", "#7EB8D6");
     }else if(chainName == CBaseChainParams::REGTEST){
         styleSheet.replace("#FEC60D", "#F469D8");
         styleSheet.replace("#D8A80A", "#D33DB5");
         styleSheet.replace("#F6C746", "#D33DB5");
-        styleSheet.replace("#bc9427", "#8C2878");
+        styleSheet.replace("#BC9427", "#8C2878");
+        styleSheet.replace("#C6C5AB", "#D0AFD6");
+        styleSheet.replace("#F9E08B", "#D38DE0");
     }
 
     return styleSheet;

@@ -2,14 +2,16 @@
 
     Used colors:
         Default icon yellow #FEC60D
-        #bc9427
+        #BC9427
         #D8A80A
-        #E0B233
 
         Dark grey #232323
         Grey #434343
         Light grey #727272
         Lightest grey #E0E0E0
+
+        scroll bar #C6C5AB
+        scroll bar hover #F9E08B
 
     Used fonts:
         Montserrat
@@ -264,7 +266,7 @@ QAbstractSpinBox,
 .QValidatedLineEdit:focus{
 	outline: 0;
 	background-color: rgba(255, 255, 255, 0.1);
-	border:3px solid #bc9427;
+	border:3px solid #BC9427;
 }
 
 
@@ -288,7 +290,7 @@ QPushButton {
 	text-transform: uppercase;
 }
 QPushButton:hover {
-        background-color: #bc9427;
+        background-color: #BC9427;
         color: #DCDCDC;
 }
 QPushButton:focus {
@@ -312,7 +314,7 @@ QComboBox {
 
 QComboBox:checked {
 	background-color: rgba(255, 255, 255, 0.1);
-	border:3px solid #bc9427;
+	border:3px solid #BC9427;
 }
 QComboBox:editable {
     background: #FEC60D;
@@ -467,7 +469,7 @@ QScrollBar:horizontal {
 }
 
 QScrollBar::handle:vertical {
-	background: #f9e08b;
+	background: #C6C5AB;
     border-radius: 4px;
     min-height:50px;
     width:3px;
@@ -475,20 +477,20 @@ QScrollBar::handle:vertical {
 }
 
 QScrollBar::handle:horizontal {
-	background: #f9e08b;
+	background: #C6C5AB;
     /* min-width: 50px; */
     border-radius: 4px;
     width: 2px;
 }
 
 QScrollBar::handle:vertical:hover {
-	background: #f9e08b;
+	background: #F9E08B;
     border-radius: 4px;
     width:3px;
 }
 
 QScrollBar::handle:horizontal:hover {
-	background: #f9e08b;
+	background: #F9E08B;
     min-width: 50px;
     border-radius: 4px;
     width: 3px;
