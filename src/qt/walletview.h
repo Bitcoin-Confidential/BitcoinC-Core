@@ -130,7 +130,7 @@ public Q_SLOTS:
     void requestedSyncWarningInfo();
 
     /** Update selected BC amount from transactionview */
-    void selectedAmount(const QString &strAmount);
+    void selectedAmount(const qint64 amount);
 
 Q_SIGNALS:
     /** Signal that we want to show the main window */

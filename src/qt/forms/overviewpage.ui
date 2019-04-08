@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1">
    <item>
     <widget class="QWidget" name="widgetLogo" native="true">
      <property name="minimumSize">
@@ -638,7 +638,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QFrame" name="frame_2">
+        <widget class="QFrame" name="frameRecentTransactions">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>

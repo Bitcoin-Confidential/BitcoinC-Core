@@ -46,13 +46,8 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setContentsMargins(0,0,0,0);
 
-    if (platformStyle->getUseExtraSpacing()) {
-        hlayout->setSpacing(5);
-        hlayout->addSpacing(26);
-    } else {
-        hlayout->setSpacing(0);
-        hlayout->addSpacing(23);
-    }
+    hlayout->setSpacing(5);
+    hlayout->addSpacing(26);
 
     watchOnlyWidget = new QComboBox(this);
     watchOnlyWidget->setFixedWidth(24);
@@ -126,9 +121,14 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     vlayout->setContentsMargins(0,0,0,0);
     vlayout->setSpacing(0);
 
+    QWidget *spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+    spacer->setFixedHeight(10);
+
     QTableView *view = new QTableView(this);
     vlayout->addLayout(hlayout);
     vlayout->addWidget(createDateRangeWidget());
+    vlayout->addWidget(spacer);
     vlayout->addWidget(view);
     vlayout->setSpacing(0);
     int width = view->verticalScrollBar()->sizeHint().width();
@@ -722,7 +722,7 @@ void TransactionView::updateWatchOnlyColumn(bool fHaveWatchOnly)
 void TransactionView::computeSelectedSum()
 {
     qint64 amount = 0;
-    int nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
+
     if(!transactionView->selectionModel())
         return;
     QModelIndexList selection = transactionView->selectionModel()->selectedRows();
@@ -730,9 +730,7 @@ void TransactionView::computeSelectedSum()
     Q_FOREACH (const QModelIndex &index, selection){
         amount += index.data(TransactionTableModel::AmountRole).toLongLong();
     }
-    QString strAmount(BitcoinUnits::formatWithUnit(nDisplayUnit, amount, true, BitcoinUnits::separatorAlways));
-    if (amount < 0) strAmount = "<span style='color:red;'>" + strAmount + "</span>";
-    Q_EMIT selectedAmount(strAmount);
+    Q_EMIT selectedAmount(amount);
 }
 
 /** Compute sum of all selected transactions */

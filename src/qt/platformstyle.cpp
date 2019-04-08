@@ -4,7 +4,9 @@
 
 #include <qt/platformstyle.h>
 
+#include <chainparams.h>
 #include <qt/guiconstants.h>
+#include <util.h>
 
 #include <QApplication>
 #include <QColor>
@@ -20,7 +22,7 @@ static const struct {
     /** Extra padding/spacing in transactionview */
     const bool useExtraSpacing;
 } platform_styles[] = {
-    {"macosx", true, false, true},
+    {"macosx", true, false, false},
     {"windows", true, false, false},
     /* Other: linux, unix, ... */
     {"other", true, false, false}
@@ -91,7 +93,16 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
             colorbase = colorHighlightFg;
         singleColor = colorbase;
     }
-    bitcoinCColor = QColor(224, 178, 51);
+
+    std::string chainName = gArgs.GetChainName();
+    if( chainName == CBaseChainParams::TESTNET){
+        bitcoinCColor = QColor("#1C94F0");
+    }else if(chainName == CBaseChainParams::REGTEST){
+        bitcoinCColor = QColor("#F469D8");
+    }else{
+        bitcoinCColor = QColor("#E0B233");
+    }
+
     // Determine text color
     textColor = QColor(QApplication::palette().color(QPalette::WindowText));
 }

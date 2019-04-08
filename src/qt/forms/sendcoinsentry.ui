@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>526</width>
+    <width>636</width>
     <height>229</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
    <bool>false</bool>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>1</number>
   </property>
   <widget class="QFrame" name="SendCoins">
    <property name="toolTip">
@@ -64,6 +64,12 @@
            </item>
            <item>
             <widget class="QCheckBox" name="checkboxSubtractFeeFromAmount">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Substract fee from amount</string>
              </property>
@@ -280,6 +286,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
              <property name="toolTip">
               <string>Enter a label for this address to add it to the list of used addresses</string>
              </property>
@@ -328,7 +337,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>The address to returns funds when stopped (must be Return in your wallet)</string>
+         <string>ColdStake address used by your remote staking node to stake your funds.</string>
         </property>
        </widget>
       </item>
@@ -423,11 +432,11 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayoutAmount" stretch="0,1,0">
+     <layout class="QHBoxLayout" name="horizontalLayoutAmount" stretch="0,0,0,0">
       <item>
        <widget class="BitcoinAmountField" name="payAmount_cs">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -468,6 +477,19 @@
          <string>Use available balance</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>

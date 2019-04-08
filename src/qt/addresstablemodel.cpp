@@ -16,7 +16,6 @@
 #include <util.h>
 #include <univalue.h>
 
-#include <QFont>
 #include <QDebug>
 
 #include <QMessageBox>
@@ -231,15 +230,6 @@ QVariant AddressTableModel::data(const QModelIndex &index, int role) const
         case Address:
             return rec->address;
         }
-    }
-    else if (role == Qt::FontRole)
-    {
-        QFont font;
-        if(index.column() == Address)
-        {
-            font = GUIUtil::fixedPitchFont();
-        }
-        return font;
     }
     else if (role == TypeRole)
     {

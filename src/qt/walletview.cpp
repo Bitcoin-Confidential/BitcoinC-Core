@@ -148,7 +148,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     connect(activateColdStake, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
 
     // Update selected transactions amount
-    connect(transactionView, SIGNAL(selectedAmount(const QString&)), this, SLOT(selectedAmount(const QString&)));
+    connect(transactionView, SIGNAL(selectedAmount(const qint64)), this, SLOT(selectedAmount(const qint64)));
 
     connect(stakingTransactionView, SIGNAL(totalAmount(const QString&, const QString&, const QString&, const QString&)),
             stakingPage, SLOT(updateStakingRewards(const QString&, const QString&, const QString&, const QString&)));
@@ -449,7 +449,19 @@ void WalletView::requestedSyncWarningInfo()
 }
 
 /** Update wallet with the sum of the selected transactions */
-void WalletView::selectedAmount(const QString &strAmount)
+void WalletView::selectedAmount(const qint64 amount)
 {
+    QString strStylesheet = "color:%1;";
+    QString strColor;
+    int nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
+    QString strAmount(BitcoinUnits::formatWithUnit(nDisplayUnit, amount, true, BitcoinUnits::separatorAlways));
+
+    if (amount < 0){
+        strColor = "#E1755A";
+    }else{
+        strColor = "#9CD181";
+    }
+
+    transactionSum->setStyleSheet(strStylesheet.arg(strColor));
     transactionSum->setText(strAmount);
 }

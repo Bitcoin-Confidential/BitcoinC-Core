@@ -56,9 +56,9 @@ public:
         WATCHONLY_COLUMN_WIDTH = 23,
         DATE_COLUMN_WIDTH = 120,
         TYPE_COLUMN_WIDTH = 113,
-        IN_TYPE_COLUMN_WIDTH = 32,
-        OUT_TYPE_COLUMN_WIDTH = 32,
-        AMOUNT_MINIMUM_COLUMN_WIDTH = 120,
+        IN_TYPE_COLUMN_WIDTH = 40,
+        OUT_TYPE_COLUMN_WIDTH = 40,
+        AMOUNT_MINIMUM_COLUMN_WIDTH = 150,
         MINIMUM_COLUMN_WIDTH = 23,
     };
 
@@ -114,7 +114,7 @@ Q_SIGNALS:
     void doubleClicked(const QModelIndex&);
 
     /** Send computed sum back to wallet-view */
-    void selectedAmount(const QString &amount);
+    void selectedAmount(const qint64 amount);
     /** Send computed sum back to wallet-view */
     void totalAmount(const QString &strCountVisible, const QString &strAmountVisible, const QString &strCount, const QString &strAmount);
 

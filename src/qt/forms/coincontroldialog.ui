@@ -346,7 +346,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonSelectAll">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -447,7 +447,7 @@
      </attribute>
      <column>
       <property name="text">
-       <string> </string>
+       <string/>
       </property>
      </column>
      <column>

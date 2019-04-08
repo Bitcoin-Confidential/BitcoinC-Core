@@ -15,6 +15,7 @@
 #include <qt/platformstyle.h>
 #include <qt/sendcoinsentry.h>
 #include <qt/sendcoinsdialog.h>
+#include <qt/guiconstants.h>
 
 #include <chainparams.h>
 #include <interfaces/node.h>
@@ -64,17 +65,17 @@ void StakingStatusUpdate(QLabel *label, bool fEnabled, bool fActive, bool fEnabl
 
     if( fEnabled && fActive ){
         strText = "ENABLED";
-        strColor = "#2f6b16";
+        strColor = "#9CD181";
     }else if( fEnabled && !fActive ){
         strText = "INACTIVE";
-        strColor = "#d6660a";
+        strColor = "#F9B94A";
     }else{
         if( !fEnabledInSettings ){
             strText = "STOPPED";
         }else{
             strText = "DISABLED";
         }
-        strColor = "#9b3209";
+        strColor = "#E1755A";
     }
 
     label->setText(strText);
