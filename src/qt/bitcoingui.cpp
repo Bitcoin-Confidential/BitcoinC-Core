@@ -119,7 +119,7 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     QFontDatabase::addApplicationFont(":/fonts/Lato-Regular");
 
     /* Open CSS when configured */
-    this->setStyleSheet(GUIUtil::loadStyleSheet());
+    this->setStyleSheet( GUIUtil::loadStyleSheet());
 
     rpcConsole = new RPCConsole(node, _platformStyle, 0);
     rpcConsole->setStyleSheet(GUIUtil::loadStyleSheet());

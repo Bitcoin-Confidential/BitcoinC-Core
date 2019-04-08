@@ -953,6 +953,19 @@ QString loadStyleSheet()
         styleSheet = QLatin1String(qFile.readAll());
     }
 
+    std::string chainName = gArgs.GetChainName();
+    if( chainName == CBaseChainParams::TESTNET){
+        styleSheet.replace("#FEC60D", "#1C94F0");
+        styleSheet.replace("#D8A80A", "#78B0DC");
+        styleSheet.replace("#F6C746", "#78B0DC");
+        styleSheet.replace("#bc9427", "#417B99");
+    }else if(chainName == CBaseChainParams::REGTEST){
+        styleSheet.replace("#FEC60D", "#F469D8");
+        styleSheet.replace("#D8A80A", "#D33DB5");
+        styleSheet.replace("#F6C746", "#D33DB5");
+        styleSheet.replace("#bc9427", "#8C2878");
+    }
+
     return styleSheet;
 }
 

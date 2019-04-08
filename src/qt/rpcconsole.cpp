@@ -803,10 +803,10 @@ void RPCConsole::clear(bool clearHistory)
                 "table { }"
                 "td.time { color: #fff; font-size: %2; padding-top: 3px; } "
                 "td.message { font-size: %2; white-space:pre-wrap; } "
-                "td.cmd-request { color: #d8a80a; } "
+                "td.cmd-request { color: #D8A80A; } "
                 "td.cmd-error { color: #9b3209; } "
                 ".secwarning { color: #9b3209; }"
-                "b { color: #d8a80a; } "
+                "b { color: #D8A80A; } "
             ).arg(QString("%1pt").arg(consoleFontSize))
         );
 

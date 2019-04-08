@@ -378,7 +378,7 @@ QHeaderView::section {
 	qproperty-defaultAlignment: AlignLeft AlignVCenter;
 	qproperty-alignment: left;
 	background-color: transparent;
-	color: #d8a80a;
+	color: #D8A80A;
     font-family: "Lato";
 	min-height:30px;
 	font-weight: bold;
@@ -398,7 +398,7 @@ QHeaderView::section:last {
 }
 
 QHeaderView::section:hover {
-	border:1px solid #d8a80a;
+	border:1px solid #D8A80A;
 }
 .QScrollArea {
 	background: transparent;
@@ -810,7 +810,7 @@ RPCConsole {
     text-transform: uppercase;
 	qproperty-alignment: 'AlignBottom';
 	min-width: 180px;
-    color: #d8a80a;
+    color: #D8A80A;
     font-size: 17px;
 }
 
@@ -909,7 +909,7 @@ QWidget .QFrame#frame_2 {
 #lblRecentTransactions {
     text-transform: uppercase;
 	/* min-width: 180px; */
-    color: #d8a80a;
+    color: #D8A80A;
 	/* margin-left: 67px; */
 	/* margin-top: 83px;
 	margin-right: 5px; */
@@ -954,7 +954,7 @@ QDialog#SendCoinsDialog .QFrame#frameCoinControl > .QLabel {
 QDialog#SendCoinsDialog .QFrame#frameCoinControl .QLabel#labelCoinControlFeatures {
 	/* Coin Control Header */
     text-transform: uppercase;
-    color: #d8a80a;
+    color: #D8A80A;
 	font-weight: bold;
 	font-size: 14px;
 }
@@ -1377,7 +1377,7 @@ TransactionView QComboBox {
 }
 QLabel#transactionSumLabel {
 	/* Example of setObjectName for widgets without name */
-	color: #d8a80a;
+	color: #D8A80A;
 	font-weight: bold;
     font-size: 18px;
     text-transform: uppercase;
@@ -1495,7 +1495,7 @@ QGroupBox::title {
 
 #lblSpendingBalances, #lblStakingBalances, #lblTotalText {
     text-transform: uppercase;
-    color: #d8a80a;
+    color: #D8A80A;
     font-style: bold;
 	font-size: 18px;
 	min-height: 24px;
@@ -1719,7 +1719,7 @@ QAbstractScrollArea::corner {
 #hotStakingLine, #coldStakingLine{
     background-color: transparent;
     border-radius: 0px;
-    border-bottom:1px solid #d8a80a;
+    border-bottom:1px solid #D8A80A;
     height: 0px;
 }
 
@@ -1749,7 +1749,7 @@ QAbstractScrollArea::corner {
 
 #lblRewardsFilterText,
 #lblRewardsTotalText{
-    color: #d8a80a;
+    color: #D8A80A;
 }
 
 #lblCurrentHeightText,
