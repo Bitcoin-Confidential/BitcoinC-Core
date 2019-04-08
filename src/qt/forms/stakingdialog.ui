@@ -910,9 +910,6 @@
                 <italic>false</italic>
                </font>
               </property>
-              <property name="styleSheet">
-               <string notr="true">color:rgb(85, 85, 86)</string>
-              </property>
               <property name="text">
                <string>By default your wallet will hot stake, means its only staking when the wallet is running. You can enable an automated ColdStake activation process by setting a remote stake address above. This address must be either a &quot;Stake Address&quot; created on your remote node with &quot;bitcoinc-cli getnewstakeaddress&quot;, or a stake address from a ColdStaking pool. By doing this your funds will be gradually activated for cold staking if you leave your wallet opened for hot staking. Depending on your amounts and coin splits this can take several days but offers an effective way for the transition from HotStaking to ColdStaking. You can see the progress of activation in the progress bar below.</string>
               </property>

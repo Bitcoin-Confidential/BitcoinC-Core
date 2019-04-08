@@ -1539,9 +1539,8 @@ QAbstractScrollArea::corner {
 
 #coldStakingInfo{
     font-family: "Lato";
-    font-style: light;
     font-size: 11px;
-    color: #707780;
+    color: #909790;
 }
 
 #lblStakingText,
