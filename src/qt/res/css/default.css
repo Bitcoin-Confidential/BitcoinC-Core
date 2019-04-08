@@ -1202,6 +1202,7 @@ QTreeWidget {
 	background-color: transparent;
     border: 1px solid rgba(255, 255, 255, 0.05);
 	alternate-background-color: transparent;
+    margin-top: 20px;
 }
 QTreeWidget::item {
 	background-color:transparent;
@@ -1240,6 +1241,7 @@ QTreeWidget::seperator {} QDialog#CoinControlDialog .CoinControlTreeWidget#treeW
 	background-color: transparent;
 	border: 1px solid rgba(255, 255, 255, 0.05);
 	alternate-background-color: transparent;
+    margin-top: 20px;
 }
 .QTableView::item {
 	background-color:transparent;
