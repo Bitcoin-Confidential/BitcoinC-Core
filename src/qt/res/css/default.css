@@ -1282,7 +1282,7 @@ QWidget#ReceiveCoinsDialog .QFrame#frame2 .QLabel#lblLabel {
 	/* Label Label */
 	background-color: transparent;
 	min-width: 102px;
-	color: #ffffff;
+	color: #fff;
 	font-weight: 500;
 	font-size: 16px;
 	padding-right: 5px;
@@ -1291,7 +1291,7 @@ QWidget#ReceiveCoinsDialog .QFrame#frame2 .QLabel#lblAmount {
 	/* Amount Label */
 	background-color: transparent;
 	min-width: 102px;
-	color: #ffffff;
+	color: #fff;
 	font-weight: 500;
 	font-size: 16px;
 	padding-right: 5px;
@@ -1300,7 +1300,7 @@ QWidget#ReceiveCoinsDialog .QFrame#frame2 .QLabel#lblMessage {
 	/* Message Label */
 	background-color: transparent;
 	min-width: 102px;
-	color: #ffffff;
+	color: #fff;
 	font-weight: 500;
 	font-size: 16px;
 	padding-right: 5px;
@@ -1346,7 +1346,7 @@ QWidget#ReceiveCoinsDialog .QFrame#frame QPushButton#removeRequestButton:pressed
 }
 QWidget#ReceiveCoinsDialog .QFrame#frame .QLabel#label_6 {
 	/* Requested Payments History Label */
-	color: #FFFFFF;
+	color: #FFF;
 	font-weight: normal;
 	font-size: 28px;
 }
@@ -1356,7 +1356,7 @@ QDialog#ReceiveRequestDialog QTextEdit {
 	/* Contents of Receive Coin Dialog */
 	border: 0;
     background-color: #232323;
-	color:#FFFFFF;
+	color:#FFF;
 }
 
 
