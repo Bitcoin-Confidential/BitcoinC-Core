@@ -376,12 +376,27 @@
         </widget>
        </item>
        <item>
-        <widget class="Line" name="hotStakingLine">
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+        <widget class="QFrame" name="hotStakingLine">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
          </property>
         </widget>
        </item>
@@ -400,6 +415,12 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayoutCoinControl1_2">
             <property name="bottomMargin">
@@ -675,12 +696,27 @@
         </widget>
        </item>
        <item>
-        <widget class="Line" name="coldStakingLine">
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+        <widget class="QFrame" name="coldStakingLine">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
          </property>
         </widget>
        </item>

@@ -821,7 +821,7 @@ QWidget .QFrame#frameRecentTransactions QListView {
 	font-weight: normal;
     color:#DCDCDC;
 	font-size: 14px;
-	max-width: 420px;
+	max-width: 500px;
 	margin-top: 12px;
 	margin-left: 0px;
 }
@@ -1524,14 +1524,8 @@ QAbstractScrollArea::corner {
     background-color:transparent;
 }
 
-#StakingDialog .QFrame{
-    border: none;
-    border-radius: 10px;
-}
-
 #hotStakingLine, #coldStakingLine{
-    background-color: transparent;
-    border-radius: 0px;
+    min-height: 1px;
     border: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -1547,7 +1541,7 @@ QAbstractScrollArea::corner {
     font-family: "Lato";
     font-style: light;
     font-size: 11px;
-    color: #818181;
+    color: #707780;
 }
 
 #lblStakingText,
