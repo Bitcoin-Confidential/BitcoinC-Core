@@ -499,20 +499,12 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     default:
         break;
     }
-    return QVariant();
+    return COLOR_WHITE;
 }
 
 QString TransactionTableModel::formatTxAmount(const TransactionRecord *wtx, bool showUnconfirmed, BitcoinUnits::SeparatorStyle separators) const
 {
-    QString str = BitcoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), wtx->credit + wtx->debit, false, separators);
-    if(showUnconfirmed)
-    {
-        if(!wtx->status.countsForBalance)
-        {
-            str = QString("[") + str + QString("]");
-        }
-    }
-    return QString(str);
+    return BitcoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), wtx->credit + wtx->debit, false, separators);
 }
 
 QVariant TransactionTableModel::txStatusDecoration(const TransactionRecord *wtx) const
@@ -716,10 +708,15 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
         {
             return COLOR_NEGATIVE;
         }
+        if( ( ( fStaking && index.column() == AmountStaking) || (!fStaking && index.column() == Amount) ) && (rec->credit+rec->debit) > 0)
+        {
+            return COLOR_POSITIVE;
+        }
         if( ( fStaking && index.column() == ToAddressStaking) || (!fStaking && index.column() == ToAddress) )
         {
             return addressColor(rec);
         }
+        return COLOR_WHITE;
         break;
     case TypeRole:
         return rec->type;
