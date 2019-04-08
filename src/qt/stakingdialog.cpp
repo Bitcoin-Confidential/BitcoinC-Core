@@ -78,7 +78,14 @@ void StakingStatusUpdate(QLabel *label, bool fEnabled, bool fActive, bool fEnabl
     }
 
     label->setText(strText);
-    label->setStyleSheet(QString("QLabel { color : %1 }").arg(strColor));
+
+    label->setStyleSheet(QString("#%1{\
+                                    text-transform: uppercase;\
+                                    font-family: \"Montserrat\";\
+                                    font-size: 16px;\
+                                    font-style: bold;\
+                                    color : %2; \
+                                 }").arg(label->objectName()).arg(strColor));
 }
 
 StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
@@ -98,10 +105,20 @@ StakingDialog::StakingDialog(const PlatformStyle *_platformStyle, QWidget *paren
 
     ui->btnChangeStakingStatus->setVisible(gArgs.GetBoolArg("-staking", true));
 
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(modeChanged(int)));
+    tabButtons.addButton(ui->btnStakingStatus, 0);
+    tabButtons.addButton(ui->btnStakingRewards, 1);
+    tabButtons.addButton(ui->btnStakingAddresses, 2);
+    tabButtons.addButton(ui->btnStakingToSpending, 3);
+    tabButtons.addButton(ui->btnStakingToStaking, 4);
+    tabButtons.addButton(ui->btnStakingActivateColdStaking, 5);
+
+    connect(&tabButtons, SIGNAL(buttonClicked(int)), this, SLOT(modeChanged(int)));
+    connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
 
     connect(&updateStakingTimer, SIGNAL(timeout()), this, SLOT(updateStakingUI()));
     updateStakingTimer.start(STAKING_UI_UPDATE_MS);
+
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 StakingDialog::~StakingDialog()
@@ -210,14 +227,14 @@ void StakingDialog::updateStakingUI()
 
         bool fShowColdStakingElements = fColdStakingEnabled || fColdStakingActive;
 
-        ui->lblColdStakingAddress->setVisible(fAutomatedColdStake);
         ui->lblColdStakingAddressLabel->setVisible(fAutomatedColdStake);
-
-        ui->coldStakingLowerLine->setVisible(fShowColdStakingElements);
-        ui->lblColdStakingAmount->setVisible(fShowColdStakingElements);
-        ui->progressColdStaking->setVisible(fShowColdStakingElements);
         ui->lblColdStakingAmountLabel->setVisible(fShowColdStakingElements);
         ui->lblColdStakingPercentLabel->setVisible(fShowColdStakingElements);
+
+        ui->lblColdStakingAddress->setVisible(fAutomatedColdStake);
+        ui->lblColdStakingAmount->setVisible(fShowColdStakingElements);
+        ui->progressColdStaking->setVisible(fShowColdStakingElements);
+
 
         StakingStatusUpdate(ui->lblColdStakingEnabled, fColdStakingEnabled, fColdStakingActive);
     }
@@ -229,9 +246,9 @@ void StakingDialog::updateStakingUI()
 
         if (rv["percentyearreward"].isNum()) {
             ui->lblAnnualStakingReward->hide(); //  <- TBD, remove me
-            ui->lblAnnualStakingRewardLabel->hide(); //  <- TBD, remove me
+            ui->lblAnnualText->hide(); //  <- TBD, remove me
             ui->lblMyAnnualStakingReward->hide(); //  <- TBD, remove me
-            ui->lblMyAnnualStakingRewardLabel->hide(); //  <- TBD, remove me
+            ui->lblAnnualRewardText->hide(); //  <- TBD, remove me
             ui->lblAnnualStakingReward->setText(QString::fromStdString(strprintf("%.02f%%", rv["percentyearreward"].get_real())));
         }
 
@@ -273,7 +290,6 @@ void StakingDialog::updateStakingUI()
 
         if ( fStakingEnabled && ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) ) {
 
-            ui->lblHotStakingErrorLabel->show();
             ui->lblHotStakingError->show();
 
             QString strError = QString::fromStdString(rv["errors"].get_str());
@@ -286,7 +302,6 @@ void StakingDialog::updateStakingUI()
 
             ui->lblHotStakingError->setText(strError);
         }else{
-            ui->lblHotStakingErrorLabel->hide();
             ui->lblHotStakingError->hide();
         }
 
@@ -299,10 +314,14 @@ void StakingDialog::updateStakingUI()
         ui->lblHotStakingAmountLabel->setVisible(fShowHotStakingElements);
         ui->lblHotStakingWalletWeightLabel->setVisible(fShowHotStakingElements);
         ui->lblHotStakingExpectedTimeLabel->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingReserveBalanceLabel->setVisible(fShowHotStakingElements);
 
         ui->lblHotStakingAmount->setVisible(fShowHotStakingElements);
         ui->lblHotStakingWalletWeight->setVisible(fShowHotStakingElements);
         ui->lblHotStakingExpectedTime->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingReserve->setVisible(fShowHotStakingElements);
+
+        ui->btnChangeReserveBalance->setVisible(fShowHotStakingElements);
 
         StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive, fStakingEnabled);
     }
@@ -427,11 +446,11 @@ void StakingDialog::setPages(QWidget *transactionPage, AddressBookPage *addressP
         this->toStake = toStake;
         this->activateCold = activateCold;
 
-        delete ui->rewardsTab->layout()->replaceWidget(ui->stakingRewards, transactionPage);
-        ui->tabWidget->insertTab(2, addressPage, tr("Addresses"));
-        ui->tabWidget->insertTab(3, toStealth, tr("Convert to Spending"));
-        ui->tabWidget->insertTab(4, toStake, tr("Convert to Staking"));
-        ui->tabWidget->insertTab(5, activateCold, tr("Activate ColdStaking"));
+        ui->rewardsTab->layout()->addWidget(transactionPage);
+        ui->stackedWidget->insertWidget(2, addressPage);
+        ui->stackedWidget->insertWidget(3, toStealth);
+        ui->stackedWidget->insertWidget(4, toStake);
+        ui->stackedWidget->insertWidget(5, activateCold);
     }
 
 }
@@ -498,11 +517,14 @@ void StakingDialog::on_btnChangeColdStakingAddress_clicked()
 
 void StakingDialog::modeChanged(int nNewMode)
 {
+    updateStakingTimer.stop();
 
-    if( nNewMode == StakingDialogPages::OVERVIEW ){
+    switch(nNewMode){
+    case OVERVIEW:
         updateStakingUI();
         updateStakingTimer.start(STAKING_UI_UPDATE_MS);
-    }else{
-        updateStakingTimer.stop();
+        break;
+    default:
+        break;
     }
 }

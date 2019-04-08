@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>410</height>
+    <height>356</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,17 +16,41 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btnSignMessage">
+       <property name="text">
+        <string>&amp;Sign Message</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnVerifyMessage">
+       <property name="text">
+        <string>&amp;Verify Message</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
       <number>1</number>
      </property>
-     <widget class="QWidget" name="tabSignMessage">
-      <attribute name="title">
-       <string>&amp;Sign Message</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_SM">
+     <widget class="QWidget" name="tabSignMessage_2">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="infoLabel_SM">
          <property name="sizePolicy">
@@ -241,11 +265,8 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabVerifyMessage">
-      <attribute name="title">
-       <string>&amp;Verify Message</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_VM">
+     <widget class="QWidget" name="tabVerifyMessage_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="infoLabel_VM">
          <property name="minimumSize">

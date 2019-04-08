@@ -10,6 +10,7 @@
 
 #include <net.h>
 
+#include <QButtonGroup>
 #include <QWidget>
 #include <QCompleter>
 #include <QThread>
@@ -71,7 +72,7 @@ protected:
 
 private Q_SLOTS:
     void on_lineEdit_returnPressed();
-    void on_tabWidget_currentChanged(int index);
+    void currentTabIndexChanged(int index);
     /** open the debug.log from the current datadir */
     void on_openDebugLogfileButton_clicked();
     /** change the time range of the network traffic graph */
@@ -160,6 +161,7 @@ private:
     QCompleter *autoCompleter = nullptr;
     QThread thread;
     QString m_last_wallet_id;
+    QButtonGroup tabButtons;
 
     /** Update UI with latest network info from model. */
     void updateNetworkState();

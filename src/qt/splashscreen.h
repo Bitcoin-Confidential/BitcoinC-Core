@@ -58,6 +58,8 @@ private:
     QString curMessage;
     QColor curColor;
     int curAlignment;
+    float devicePixelRatio;
+    float fontFactor;
 
     interfaces::Node& m_node;
     std::unique_ptr<interfaces::Handler> m_handler_init_message;

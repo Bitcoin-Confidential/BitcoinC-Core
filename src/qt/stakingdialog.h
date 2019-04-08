@@ -27,7 +27,6 @@ namespace Ui {
 
 QT_BEGIN_NAMESPACE
 class QUrl;
-
 QT_END_NAMESPACE
 
 /** Dialog for staking management */
@@ -59,6 +58,7 @@ private:
     WalletModel *model;
     const PlatformStyle *platformStyle;
     QTimer updateStakingTimer;
+    QButtonGroup tabButtons;
 
     QWidget *transactionPage;
     AddressBookPage *addressPage;

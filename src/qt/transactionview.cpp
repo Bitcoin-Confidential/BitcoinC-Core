@@ -57,8 +57,8 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     watchOnlyWidget = new QComboBox(this);
     watchOnlyWidget->setFixedWidth(24);
     watchOnlyWidget->addItem("", TransactionFilterProxy::WatchOnlyFilter_All);
-    watchOnlyWidget->addItem(platformStyle->SingleColorIcon(":/icons/eye_plus"), "", TransactionFilterProxy::WatchOnlyFilter_Yes);
-    watchOnlyWidget->addItem(platformStyle->SingleColorIcon(":/icons/eye_minus"), "", TransactionFilterProxy::WatchOnlyFilter_No);
+    watchOnlyWidget->addItem(platformStyle->BitcoinCColorIcon(":/icons/eye_plus"), "", TransactionFilterProxy::WatchOnlyFilter_Yes);
+    watchOnlyWidget->addItem(platformStyle->BitcoinCColorIcon(":/icons/eye_minus"), "", TransactionFilterProxy::WatchOnlyFilter_No);
     hlayout->addWidget(watchOnlyWidget);
 
     dateWidget = new QComboBox(this);
@@ -146,7 +146,13 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     view->installEventFilter(this);
 
     transactionView = view;
-    transactionView->setObjectName("transactionView");
+    if( fStaking ){
+        transactionView->setObjectName("transactionView_staking");
+    }else{
+        transactionView->setObjectName("transactionView");
+    }
+
+    transactionView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     // Actions
     abandonAction = new QAction(tr("Abandon transaction"), this);

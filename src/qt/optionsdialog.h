@@ -5,6 +5,7 @@
 #ifndef BITCOIN_QT_OPTIONSDIALOG_H
 #define BITCOIN_QT_OPTIONSDIALOG_H
 
+#include <QButtonGroup>
 #include <QDialog>
 #include <QValidator>
 
@@ -67,6 +68,8 @@ private:
     Ui::OptionsDialog *ui;
     OptionsModel *model;
     QDataWidgetMapper *mapper;
+
+    QButtonGroup tabButtons;
 };
 
 #endif // BITCOIN_QT_OPTIONSDIALOG_H

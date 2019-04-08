@@ -20,7 +20,7 @@ static const struct {
     /** Extra padding/spacing in transactionview */
     const bool useExtraSpacing;
 } platform_styles[] = {
-    {"macosx", false, false, true},
+    {"macosx", true, false, true},
     {"windows", true, false, false},
     /* Other: linux, unix, ... */
     {"other", true, false, false}
@@ -91,6 +91,7 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
             colorbase = colorHighlightFg;
         singleColor = colorbase;
     }
+    bitcoinCColor = QColor(224, 178, 51);
     // Determine text color
     textColor = QColor(QApplication::palette().color(QPalette::WindowText));
 }
@@ -114,6 +115,16 @@ QIcon PlatformStyle::SingleColorIcon(const QIcon& icon) const
     if (!colorizeIcons)
         return icon;
     return ColorizeIcon(icon, SingleColor());
+}
+
+QIcon PlatformStyle::BitcoinCColorIcon(const QString& filename) const
+{
+    return ColorizeIcon(filename, BitcoinCColor());
+}
+
+QIcon PlatformStyle::BitcoinCColorIcon(const QIcon& icon) const
+{
+    return ColorizeIcon(icon, BitcoinCColor());
 }
 
 QIcon PlatformStyle::TextColorIcon(const QString& filename) const

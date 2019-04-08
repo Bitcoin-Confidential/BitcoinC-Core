@@ -23,6 +23,7 @@ public:
 
     QColor TextColor() const { return textColor; }
     QColor SingleColor() const { return singleColor; }
+    QColor BitcoinCColor() const { return bitcoinCColor; }
 
     /** Colorize an image (given filename) with the icon color */
     QImage SingleColorImage(const QString& filename) const;
@@ -32,6 +33,12 @@ public:
 
     /** Colorize an icon (given object) with the icon color */
     QIcon SingleColorIcon(const QIcon& icon) const;
+
+    /** Colorize an icon (given object) with the bitcoinC color */
+    QIcon BitcoinCColorIcon(const QString& filename) const;
+
+    /** Colorize an icon (given object) with the bitcoinC color */
+    QIcon BitcoinCColorIcon(const QIcon& icon) const;
 
     /** Colorize an icon (given filename) with the text color */
     QIcon TextColorIcon(const QString& filename) const;
@@ -48,6 +55,7 @@ private:
     bool useExtraSpacing;
     QColor singleColor;
     QColor textColor;
+    QColor bitcoinCColor;
     /* ... more to come later */
 };
 

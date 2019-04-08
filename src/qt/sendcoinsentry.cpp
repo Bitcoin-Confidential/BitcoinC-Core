@@ -25,20 +25,17 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
     ui->setupUi(this);
 
     if (m_coldstake) {
-        ui->addressBookButton_cs->setIcon(platformStyle->SingleColorIcon(":/icons/address-book"));
-        ui->pasteButton_cs->setIcon(platformStyle->SingleColorIcon(":/icons/editpaste"));
-        ui->addressBookButton2_cs->setIcon(platformStyle->SingleColorIcon(":/icons/address-book"));
-        ui->pasteButton2_cs->setIcon(platformStyle->SingleColorIcon(":/icons/editpaste"));
-        ui->deleteButton_cs->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
+        ui->addressBookButton_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
+        ui->pasteButton_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/editpaste"));
+        ui->addressBookButton2_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
+        ui->pasteButton2_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/editpaste"));
+        ui->deleteButton_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
 
         setCurrentWidget(ui->SendCoins_cs);
 
         // normal bitcoin address field
         GUIUtil::setupStakeAddressWidget(ui->stakeAddr, this, false, true);
         GUIUtil::setupStakeAddressWidget(ui->spendAddr, this, true);
-        // just a label for displaying bitcoin address(es)
-        ui->stakeAddr->setFont(GUIUtil::fixedPitchFont());
-        ui->spendAddr->setFont(GUIUtil::fixedPitchFont());
 
         // Connect signals
         connect(ui->payAmount_cs, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
@@ -49,11 +46,11 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
         return;
     }
 
-    ui->addressBookButton->setIcon(platformStyle->SingleColorIcon(":/icons/address-book"));
-    ui->pasteButton->setIcon(platformStyle->SingleColorIcon(":/icons/editpaste"));
-    ui->deleteButton->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
-    ui->deleteButton_is->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
-    ui->deleteButton_s->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
+    ui->addressBookButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
+    ui->pasteButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/editpaste"));
+    ui->deleteButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
+    ui->deleteButton_is->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
+    ui->deleteButton_s->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
 
     setCurrentWidget(ui->SendCoins);
 
@@ -62,9 +59,6 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
     ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
 
     // normal bitcoin address field
-
-    // just a label for displaying bitcoin address(es)
-    ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
 
     if( fSpending ){
         GUIUtil::setupAddressWidget(ui->payTo, this);
@@ -174,9 +168,6 @@ void SendCoinsEntry::clear()
     ui->addAsLabel->clear();
     ui->payAmount->clear();
     ui->checkboxSubtractFeeFromAmount->setCheckState(Qt::Unchecked);
-    ui->messageTextLabel->clear();
-    ui->messageTextLabel->hide();
-    ui->messageLabel->hide();
     // clear UI elements for unauthenticated payment request
     ui->payTo_is->clear();
     ui->memoTextLabel_is->clear();
@@ -302,7 +293,6 @@ SendCoinsRecipient SendCoinsEntry::getValue()
     recipient.address = ui->payTo->text();
     recipient.label = ui->addAsLabel->text();
     recipient.amount = ui->payAmount->value();
-    recipient.message = ui->messageTextLabel->text();
     recipient.narration = ui->edtNarration->text();
     recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount->checkState() == Qt::Checked);
 
@@ -346,10 +336,6 @@ void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
     }
     else // normal payment
     {
-        // message
-        ui->messageTextLabel->setText(recipient.message);
-        ui->messageTextLabel->setVisible(!recipient.message.isEmpty());
-        ui->messageLabel->setVisible(!recipient.message.isEmpty());
 
         ui->addAsLabel->clear();
         ui->payTo->setText(recipient.address); // this may set a label from addressbook

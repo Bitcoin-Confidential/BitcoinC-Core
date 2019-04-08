@@ -246,6 +246,8 @@ namespace GUIUtil
     private:
         bool eventFilter(QObject *object, QEvent *event);
     };
+
+    QString loadStyleSheet();
 } // namespace GUIUtil
 
 #endif // BITCOIN_QT_GUIUTIL_H

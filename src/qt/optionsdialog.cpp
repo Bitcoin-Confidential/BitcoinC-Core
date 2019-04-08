@@ -69,16 +69,32 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     connect(ui->connectSocksTor, SIGNAL(toggled(bool)), ui->proxyPortTor, SLOT(setEnabled(bool)));
     connect(ui->connectSocksTor, SIGNAL(toggled(bool)), this, SLOT(updateProxyValidationState()));
 
-    /* Window elements init */
-#ifdef Q_OS_MAC
-    /* remove Window tab on Mac */
-    ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabWindow));
-#endif
+    int nIndex = 0;
+
+    tabButtons.addButton(ui->btnMain, nIndex++);
 
     /* remove Wallet tab in case of -disablewallet */
     if (!enableWallet) {
-        ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabWallet));
+        ui->stackedWidget->removeWidget(ui->tabWallet);
+        ui->btnWallet->hide();
+    }else{
+        tabButtons.addButton(ui->btnWallet, nIndex++);
     }
+
+    tabButtons.addButton(ui->btnNetwork, nIndex++);
+
+    /* Window elements init */
+#ifdef Q_OS_MAC
+    /* remove Window tab on Mac */
+    ui->stackedWidget->removeWidget(ui->tabWindow);
+    ui->btnWindow->hide();
+#else
+    tabButtons.addButton(ui->btnWallet, nIndex++);
+#endif
+
+    tabButtons.addButton(ui->btnDisplay, nIndex++);
+
+    connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
 
     /* Display elements init */
     QDir translations(":translations");

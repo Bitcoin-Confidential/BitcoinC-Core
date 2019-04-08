@@ -39,6 +39,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     walletModel(0),
     platformStyle(_platformStyle)
 {
+
+    QWidget *spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     // Create tabs
     QPushButton *exportButton = new QPushButton(tr("&Export"), this);
     QPushButton *stakingExportButton = new QPushButton(tr("&Export"), this);
@@ -47,6 +50,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     transactionsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
     QHBoxLayout *hbox_buttons = new QHBoxLayout();
+    hbox_buttons->addWidget(spacer);
     transactionView = new TransactionView(platformStyle, false, this);
     vbox->addWidget(transactionView);
     exportButton->setToolTip(tr("Export the data in the current tab to a file"));
@@ -58,7 +62,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     // Sum of selected transactions
     QLabel *transactionSumLabel = new QLabel(); // Label
     transactionSumLabel->setObjectName("transactionSumLabel"); // Label ID as CSS-reference
-    transactionSumLabel->setText(tr("Selected amount:"));
+    transactionSumLabel->setMinimumSize(200, 8);
+    transactionSumLabel->setText(tr("Selected amount"));
     hbox_buttons->addWidget(transactionSumLabel);
 
     transactionSum = new QLabel(); // Amount

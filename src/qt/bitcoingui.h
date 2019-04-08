@@ -44,6 +44,8 @@ class QAction;
 class QComboBox;
 class QProgressBar;
 class QProgressDialog;
+class QWidget;
+class QToolButton;
 QT_END_NAMESPACE
 
 /**
@@ -103,17 +105,17 @@ private:
 
     QMenuBar* appMenuBar = nullptr;
     QToolBar* appToolBar = nullptr;
-    QAction* overviewAction = nullptr;
-    QAction* historyAction = nullptr;
+    QToolButton* overviewAction = nullptr;
+    QToolButton* historyAction = nullptr;
     QAction* quitAction = nullptr;
-    QAction* sendCoinsAction = nullptr;
+    QToolButton* sendCoinsAction = nullptr;
     QAction* sendCoinsMenuAction = nullptr;
     QAction* usedSendingAddressesAction = nullptr;
     QAction* usedReceivingAddressesAction = nullptr;
     QAction* signMessageAction = nullptr;
     QAction* verifyMessageAction = nullptr;
     QAction* aboutAction = nullptr;
-    QAction* receiveCoinsAction = nullptr;
+    QToolButton* receiveCoinsAction = nullptr;
     QAction* receiveCoinsMenuAction = nullptr;
     QAction* optionsAction = nullptr;
     QAction* toggleHideAction = nullptr;
@@ -124,9 +126,10 @@ private:
     QAction* openRPCConsoleAction = nullptr;
     QAction* openAction = nullptr;
     QAction* showHelpMessageAction = nullptr;
+    QWidget *m_wallet_spacer = nullptr;
     QAction* m_wallet_selector_label_action = nullptr;
     QAction* m_wallet_selector_action = nullptr;
-    QAction *coldstakingAction = nullptr;
+    QToolButton *coldstakingAction = nullptr;
     QAction *mnemonicAction = nullptr;
 
     QLabel *m_wallet_selector_label = nullptr;

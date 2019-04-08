@@ -479,6 +479,14 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
     connect(ui->fontSmallerButton, SIGNAL(clicked()), this, SLOT(fontSmaller()));
     connect(ui->btnClearTrafficGraph, SIGNAL(clicked()), ui->trafficGraph, SLOT(clear()));
 
+    tabButtons.addButton(ui->btnShowInfo, 0);
+    tabButtons.addButton(ui->btnShowConsole, 1);
+    tabButtons.addButton(ui->btnShowNetwork, 2);
+    tabButtons.addButton(ui->btnShowPeers, 3);
+
+    connect(&tabButtons, SIGNAL(buttonClicked(int)), this, SLOT(currentTabIndexChanged(int)));
+    connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
+
     // disable the wallet selector by default
     ui->WalletSelector->setVisible(false);
     ui->WalletSelectorLabel->setVisible(false);
@@ -793,13 +801,13 @@ void RPCConsole::clear(bool clearHistory)
     ui->messagesWidget->document()->setDefaultStyleSheet(
         QString(
                 "table { }"
-                "td.time { color: #808080; font-size: %2; padding-top: 3px; } "
-                "td.message { font-family: %1; font-size: %2; white-space:pre-wrap; } "
-                "td.cmd-request { color: #006060; } "
-                "td.cmd-error { color: red; } "
-                ".secwarning { color: red; }"
-                "b { color: #006060; } "
-            ).arg(fixedFontInfo.family(), QString("%1pt").arg(consoleFontSize))
+                "td.time { color: #fff; font-size: %2; padding-top: 3px; } "
+                "td.message { font-size: %2; white-space:pre-wrap; } "
+                "td.cmd-request { color: #d8a80a; } "
+                "td.cmd-error { color: #9b3209; } "
+                ".secwarning { color: #9b3209; }"
+                "b { color: #d8a80a; } "
+            ).arg(QString("%1pt").arg(consoleFontSize))
         );
 
 #ifdef Q_OS_MAC
@@ -987,11 +995,11 @@ void RPCConsole::startExecutor()
     thread.start();
 }
 
-void RPCConsole::on_tabWidget_currentChanged(int index)
+void RPCConsole::currentTabIndexChanged(int index)
 {
-    if (ui->tabWidget->widget(index) == ui->tab_console)
+    if (index == 1)
         ui->lineEdit->setFocus();
-    else if (ui->tabWidget->widget(index) != ui->tab_peers)
+    else if (index != 3)
         clearSelectedNode();
 }
 
@@ -1274,5 +1282,6 @@ void RPCConsole::showOrHideBanTableIfRequired()
 
 void RPCConsole::setTabFocus(enum TabTypes tabType)
 {
-    ui->tabWidget->setCurrentIndex(tabType);
+    ui->stackedWidget->setCurrentIndex(tabType);
+    tabButtons.button(tabType)->setChecked(true);
 }

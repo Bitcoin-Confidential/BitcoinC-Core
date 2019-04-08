@@ -16,6 +16,7 @@
 #include <qt/walletmodel.h>
 
 #include <QAbstractItemDelegate>
+#include <QHBoxLayout>
 #include <QPainter>
 
 #define DECORATION_SIZE 54
@@ -39,6 +40,8 @@ public:
     {
         painter->save();
 
+        painter->setFont(QFont("Lato"));
+
         QIcon icon = qvariant_cast<QIcon>(index.data(TransactionTableModel::RawDecorationRole));
         QRect mainRect = option.rect;
         QRect decorationRect(mainRect.topLeft(), QSize(DECORATION_SIZE, DECORATION_SIZE));
@@ -47,7 +50,7 @@ public:
         int halfheight = (mainRect.height() - 2*ypad)/2;
         QRect amountRect(mainRect.left() + xspace, mainRect.top()+ypad, mainRect.width() - xspace, halfheight);
         QRect addressRect(mainRect.left() + xspace, mainRect.top()+ypad+halfheight, mainRect.width() - xspace, halfheight);
-        icon = platformStyle->SingleColorIcon(icon);
+        icon = platformStyle->BitcoinCColorIcon(icon);
         icon.paint(painter, decorationRect);
 
         QDateTime date = index.data(TransactionTableModel::DateRole).toDateTime();
@@ -73,16 +76,13 @@ public:
             iconWatchonly.paint(painter, watchonlyRect);
         }
 
-        if(amount < 0)
-        {
-            foreground = COLOR_NEGATIVE;
-        }
-        else if(!confirmed)
-        {
+        if (!confirmed) {
             foreground = COLOR_UNCONFIRMED;
-        }
-        else
-        {
+        } else if(amount < 0) {
+            foreground = COLOR_NEGATIVE;
+        } else if (amount > 0) {
+            foreground = COLOR_POSITIVE;
+        } else {
             foreground = option.palette.color(QPalette::Text);
         }
         painter->setPen(foreground);
@@ -125,7 +125,6 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     QIcon icon = platformStyle->SingleColorIcon(":/icons/warning");
     icon.addPixmap(icon.pixmap(QSize(64,64), QIcon::Normal), QIcon::Disabled); // also set the disabled icon because we are using a disabled QPushButton to work around missing HiDPI support of QLabel (https://bugreports.qt.io/browse/QTBUG-42503)
     ui->labelTransactionsStatus->setIcon(icon);
-    ui->labelWalletStatus->setIcon(icon);
 
     // Recent transactions
     ui->listTransactions->setItemDelegate(txdelegate);
@@ -137,8 +136,13 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
-    connect(ui->labelWalletStatus, SIGNAL(clicked()), this, SLOT(handleOutOfSyncWarningClicks()));
     connect(ui->labelTransactionsStatus, SIGNAL(clicked()), this, SLOT(handleOutOfSyncWarningClicks()));
+
+    const QSize requiredSize(90,90);
+    QPixmap pixmap = QIcon(":/icons/bitcoin").pixmap(requiredSize);
+    QLabel *lblLogo = new QLabel();
+    lblLogo->setPixmap(pixmap);
+    ((QHBoxLayout*)ui->widgetLogo->layout())->insertWidget(1,lblLogo);
 }
 
 void OverviewPage::handleTransactionClicked(const QModelIndex &index)
@@ -172,7 +176,7 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
         ui->labelWatchUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingUnconf, false, BitcoinUnits::separatorAlways));
         ui->labelWatchLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
 
-        ui->labelWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
+        ui->lblWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
               balances.balanceWatchSpending + balances.balanceWatchSpendingUnconf + balances.balanceWatchSpendingLocked
             + balances.balanceWatchStaking + balances.balanceWatchStakingUnconf + balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
     } else {
@@ -185,7 +189,7 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
         ui->labelUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingUnconf, false, BitcoinUnits::separatorAlways));
         ui->labelLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceStakingLocked, false, BitcoinUnits::separatorAlways));
 
-        ui->labelTotal->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending + balances.balanceSpendingUnconf + balances.balanceSpendingLocked
+        ui->lblTotalBalance->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceSpending + balances.balanceSpendingUnconf + balances.balanceSpendingLocked
             + balances.balanceStaking + balances.balanceStakingUnconf + balances.balanceStakingLocked , false, BitcoinUnits::separatorAlways));
 
         // Watch balances
@@ -197,24 +201,26 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
         ui->labelWatchUnconfirmedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingUnconf, false, BitcoinUnits::separatorAlways));
         ui->labelWatchLockedStaking->setText(BitcoinUnits::formatWithUnit(unit, balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
 
-        ui->labelWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
+        ui->lblWatchTotal->setText(BitcoinUnits::formatWithUnit(unit,
               balances.balanceWatchSpending + balances.balanceWatchSpendingUnconf + balances.balanceWatchSpendingLocked
             + balances.balanceWatchStaking + balances.balanceWatchStakingUnconf + balances.balanceWatchStakingLocked, false, BitcoinUnits::separatorAlways));
 
     }
 
+    bool fWatchVisible = ui->labelSpendable->isVisible();
+
     // Show pending on if there is something pending
-    ui->labelUnconfirmedSpendingText->setVisible(balances.balanceSpendingUnconf > 0 || balances.balanceWatchSpendingUnconf > 0);
-    ui->labelUnconfirmedSpending->setVisible(balances.balanceSpendingUnconf > 0 || balances.balanceWatchSpendingUnconf > 0);
+    ui->labelUnconfirmedSpendingText->setVisible(balances.balanceSpendingUnconf > 0 || balances.balanceWatchSpendingUnconf > 0 || fWatchVisible);
+    ui->labelUnconfirmedSpending->setVisible(balances.balanceSpendingUnconf > 0 || balances.balanceWatchSpendingUnconf > 0 || fWatchVisible);
 
-    ui->labelLockedSpendingText->setVisible(balances.balanceSpendingLocked > 0 || balances.balanceWatchSpendingLocked > 0);
-    ui->labelLockedSpending->setVisible(balances.balanceSpendingLocked > 0 || balances.balanceWatchSpendingLocked > 0);
+    ui->labelLockedSpendingText->setVisible(balances.balanceSpendingLocked > 0 || balances.balanceWatchSpendingLocked > 0 || fWatchVisible);
+    ui->labelLockedSpending->setVisible(balances.balanceSpendingLocked > 0 || balances.balanceWatchSpendingLocked > 0 || fWatchVisible);
 
-    ui->labelUnconfirmedStakingText->setVisible(balances.balanceStakingUnconf > 0 || balances.balanceWatchStakingUnconf > 0);
-    ui->labelUnconfirmedStaking->setVisible(balances.balanceStakingUnconf > 0 || balances.balanceWatchStakingUnconf > 0);
+    ui->labelUnconfirmedStakingText->setVisible(balances.balanceStakingUnconf > 0 || balances.balanceWatchStakingUnconf > 0 || fWatchVisible);
+    ui->labelUnconfirmedStaking->setVisible(balances.balanceStakingUnconf > 0 || balances.balanceWatchStakingUnconf > 0 || fWatchVisible);
 
-    ui->labelLockedStakingText->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0);
-    ui->labelLockedStaking->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0);
+    ui->labelLockedStakingText->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0 || fWatchVisible);
+    ui->labelLockedStaking->setVisible(balances.balanceStakingLocked > 0 || balances.balanceWatchStakingLocked > 0 || fWatchVisible);
 }
 
 // show/hide watch-only labels
@@ -222,8 +228,6 @@ void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
 {
     ui->labelSpendable->setVisible(showWatchOnly);      // show spendable label (only when watch-only is active)
     ui->labelWatchonly->setVisible(showWatchOnly);      // show watch-only label
-
-    ui->lineWatchBalance->setVisible(showWatchOnly);    // show watch-only balance separator line
 
     ui->labelWatchSpending->setVisible(showWatchOnly); // show watch-only available balance
     ui->labelWatchUnconfirmedSpending->setVisible(showWatchOnly); // show watch-only available balance
@@ -233,7 +237,7 @@ void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
     ui->labelWatchUnconfirmedStaking->setVisible(showWatchOnly); // show watch-only available balance
     ui->labelWatchLockedStaking->setVisible(showWatchOnly);   // show watch-only pending balance
 
-    ui->labelWatchTotal->setVisible(showWatchOnly);     // show watch-only total balance
+    ui->lblWatchTotal->setVisible(showWatchOnly);     // show watch-only total balance
 
     if( showWatchOnly ){
         ui->labelUnconfirmedSpendingText->setVisible(true);
@@ -320,6 +324,5 @@ void OverviewPage::updateAlerts(const QString &warnings)
 
 void OverviewPage::showOutOfSyncWarning(bool fShow)
 {
-    ui->labelWalletStatus->setVisible(fShow);
     ui->labelTransactionsStatus->setVisible(fShow);
 }

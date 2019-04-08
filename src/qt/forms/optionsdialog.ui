@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>440</height>
+    <width>576</width>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,17 +16,86 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_8">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="spacing">
       <number>0</number>
      </property>
+     <item>
+      <widget class="QPushButton" name="btnMain">
+       <property name="text">
+        <string>&amp;Main</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnWallet">
+       <property name="text">
+        <string>W&amp;allet</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnNetwork">
+       <property name="text">
+        <string>&amp;Network</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnWindow">
+       <property name="text">
+        <string>&amp;Window</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnDisplay">
+       <property name="text">
+        <string>&amp;Display</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>3</number>
+     </property>
      <widget class="QWidget" name="tabMain">
-      <attribute name="title">
-       <string>&amp;Main</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_Main">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QCheckBox" name="bitcoinAtStartup">
          <property name="toolTip">
@@ -51,20 +120,20 @@
         </spacer>
        </item>
        <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_Main_Prune">
-        <item>
-         <widget class="QCheckBox" name="prune">
-          <property name="toolTip">
-           <string>Disables some advanced features but all blocks will still be fully validated. Reverting this setting requires re-downloading the entire blockchain. Actual disk usage may be somewhat higher.</string>
-          </property>
-          <property name="text">
-           <string>Prune &amp;block storage to</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="pruneSize"/>
-        </item>
+        <layout class="QHBoxLayout" name="horizontalLayout_Main_Prune">
+         <item>
+          <widget class="QCheckBox" name="prune">
+           <property name="toolTip">
+            <string>Disables some advanced features but all blocks will still be fully validated. Reverting this setting requires re-downloading the entire blockchain. Actual disk usage may be somewhat higher.</string>
+           </property>
+           <property name="text">
+            <string>Prune &amp;block storage to</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="pruneSize"/>
+         </item>
          <item>
           <widget class="QLabel" name="pruneSizeUnitLabel">
            <property name="text">
@@ -187,8 +256,8 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>526</width>
+           <height>160</height>
           </size>
          </property>
         </spacer>
@@ -196,10 +265,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabWallet">
-      <attribute name="title">
-       <string>W&amp;allet</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_Wallet">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
@@ -247,7 +313,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>190</height>
           </size>
          </property>
         </spacer>
@@ -255,10 +321,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabNetwork">
-      <attribute name="title">
-       <string>&amp;Network</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_Network">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QCheckBox" name="mapPortUpnp">
          <property name="toolTip">
@@ -565,7 +628,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>113</height>
           </size>
          </property>
         </spacer>
@@ -573,10 +636,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabWindow">
-      <attribute name="title">
-       <string>&amp;Window</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_Window">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <widget class="QCheckBox" name="hideTrayIcon">
          <property name="toolTip">
@@ -623,10 +683,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabDisplay">
-      <attribute name="title">
-       <string>&amp;Display</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_Display">
+      <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_1_Display">
          <item>
@@ -707,7 +764,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>105</height>
           </size>
          </property>
         </spacer>

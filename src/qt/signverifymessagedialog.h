@@ -48,6 +48,8 @@ private Q_SLOTS:
     void on_addressBookButton_VM_clicked();
     void on_verifyMessageButton_VM_clicked();
     void on_clearButton_VM_clicked();
+    void on_btnSignMessage_clicked();
+    void on_btnVerifyMessage_clicked();
 };
 
 #endif // BITCOIN_QT_SIGNVERIFYMESSAGEDIALOG_H
