@@ -55,6 +55,7 @@
         <file alias="network_disabled">res/icons/network_disabled.png</file>
         <file alias="proxy">res/icons/proxy.png</file>
         <file alias="staking">res/icons/staking.png</file>
+        <file alias="smartcash">res/icons/smartcash.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>
@@ -93,5 +94,29 @@
         <file alias="spinner-033">res/movies/spinner-033.png</file>
         <file alias="spinner-034">res/movies/spinner-034.png</file>
         <file alias="spinner-035">res/movies/spinner-035.png</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file alias="downArrow">res/images/downArrow.png</file>
+        <file alias="upArrow">res/images/upArrow.png</file>
+        <file alias="downArrow_small_white">res/images/downArrow_small.png</file>
+        <file alias="upArrow_small_white">res/images/upArrow_small.png</file>
+    </qresource>
+    <qresource prefix="/css">
+        <file alias="default">res/css/default.css</file>
+    </qresource>
+    <qresource prefix="/fonts">
+    <file alias="Montserrat-Bold">res/fonts/Montserrat/Montserrat-Bold.ttf</file>
+    <file alias="Montserrat-ExtraLight">res/fonts/Montserrat/Montserrat-ExtraLight.ttf</file>
+    <file alias="Montserrat-Italic">res/fonts/Montserrat/Montserrat-Italic.ttf</file>
+    <file alias="Montserrat-Light">res/fonts/Montserrat/Montserrat-Light.ttf</file>
+    <file alias="Montserrat-Medium">res/fonts/Montserrat/Montserrat-Medium.ttf</file>
+    <file alias="Montserrat-Regular">res/fonts/Montserrat/Montserrat-Regular.ttf</file>
+    <file alias="Montserrat-Thin">res/fonts/Montserrat/Montserrat-Thin.ttf</file>
+    <file alias="Lato-Black">res/fonts/Lato/Lato-Black.ttf</file>
+    <file alias="Lato-Bold">res/fonts/Lato/Lato-Bold.ttf</file>
+    <file alias="Lato-Hairline">res/fonts/Lato/Lato-Hairline.ttf</file>
+    <file alias="Lato-Italic">res/fonts/Lato/Lato-Italic.ttf</file>
+    <file alias="Lato-Light">res/fonts/Lato/Lato-Light.ttf</file>
+    <file alias="Lato-Regular">res/fonts/Lato/Lato-Regular.ttf</file>
     </qresource>
 </RCC>
