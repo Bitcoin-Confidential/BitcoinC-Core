@@ -804,8 +804,8 @@ void RPCConsole::clear(bool clearHistory)
                 "td.time { color: #fff; font-size: %2; padding-top: 3px; } "
                 "td.message { font-size: %2; white-space:pre-wrap; } "
                 "td.cmd-request { color: #D8A80A; } "
-                "td.cmd-error { color: #9b3209; } "
-                ".secwarning { color: #9b3209; }"
+                "td.cmd-error { color: #E1755A; } "
+                ".secwarning { color: #E1755A; }"
                 "b { color: #D8A80A; } "
             ).arg(QString("%1pt").arg(consoleFontSize))
         );
