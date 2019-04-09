@@ -70,14 +70,16 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
 {
     ui->setupUi(this);
 
-    if (!_platformStyle->getImagesOnButtons()) {
-        ui->clearButton->setIcon(QIcon());
-        ui->sendButton->setIcon(QIcon());
-    } else {
+    if( fStakingDialog ){
         ui->addButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/add"));
-        ui->clearButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/remove"));
-        ui->sendButton->setIcon(_platformStyle->SingleColorIcon(":/icons/send"));
+        ui->addButton->setText(tr("Add Output"));
+    }else{
+        ui->addButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/add_recipient"));
+        ui->addButton->setText(tr("Add Recipient"));
     }
+
+    ui->clearButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/remove"));
+    ui->sendButton->setIcon(_platformStyle->SingleColorIcon(":/icons/send"));
 
     addEntry();
 
