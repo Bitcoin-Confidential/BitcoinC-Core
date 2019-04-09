@@ -112,6 +112,7 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
     ui->labelCoinControlLowOutput->addAction(clipboardLowOutputAction);
     ui->labelCoinControlChange->addAction(clipboardChangeAction);
 
+    ui->scrollAreaWidgetContents->installEventFilter(this);
 
     // init transaction fee section
     QSettings settings;
@@ -139,6 +140,14 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
 	  
     if (!isConvertToTab)
 		ui->convertToHeaderLabel->hide();
+}
+
+bool SendCoinsDialog::eventFilter(QObject *o, QEvent *e)
+{
+    if(o == ui->scrollAreaWidgetContents && e->type() == QEvent::Resize)
+        setMinimumWidth(ui->scrollAreaWidgetContents->minimumSizeHint().width() + ui->scrollArea->verticalScrollBar()->width());
+
+    return false;
 }
 
 void SendCoinsDialog::setClientModel(ClientModel *_clientModel)

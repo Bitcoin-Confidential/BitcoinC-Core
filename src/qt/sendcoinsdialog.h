@@ -116,6 +116,7 @@ private Q_SLOTS:
     void updateFeeSectionControls();
     void updateMinFeeLabel();
     void updateSmartFeeLabel();
+    bool eventFilter(QObject *o, QEvent *e) override;
 
 Q_SIGNALS:
     // Fired when a message should be reported to the user

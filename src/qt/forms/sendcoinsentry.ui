@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>636</width>
-    <height>229</height>
+    <width>674</width>
+    <height>150</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -138,7 +138,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="payToLabel">
            <property name="text">
-            <string>Pay &amp;To:</string>
+            <string>Pay To</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -237,7 +237,7 @@
          <item row="5" column="0">
           <widget class="QLabel" name="lblNarration">
            <property name="text">
-            <string>Narration:</string>
+            <string>Narration</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -256,7 +256,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Amount:</string>
+            <string>Amount</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -266,7 +266,7 @@
          <item row="2" column="0">
           <widget class="QLabel" name="labellLabel">
            <property name="text">
-            <string>&amp;Label:</string>
+            <string>Label</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -310,26 +310,283 @@
    <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <property name="topMargin">
-     <number>8</number>
-    </property>
-    <property name="bottomMargin">
-     <number>4</number>
-    </property>
-    <property name="horizontalSpacing">
-     <number>12</number>
-    </property>
-    <property name="verticalSpacing">
-     <number>8</number>
-    </property>
-    <item row="1" column="1">
-     <layout class="QHBoxLayout" name="payToLayout2_cs">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QValidatedLineEdit" name="spendAddr">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblNarration_cs">
+        <property name="text">
+         <string>Narration</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>edtNarration_cs</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="spendAddrLabel">
+        <property name="text">
+         <string>ColdStake </string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>addAsLabel</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="amountLabel_cs">
+        <property name="text">
+         <string>Amount</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>payAmount_cs</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="stakeAddrLabel">
+        <property name="text">
+         <string> Stake </string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>stakeAddr</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="payToLayout_cs">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QValidatedLineEdit" name="stakeAddr">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>The stake address on the remote node (cannot be in this wallet)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="addressBookButton_cs">
+          <property name="toolTip">
+           <string>Choose previously used address</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../bitcoin.qrc">
+            <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Alt+A</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="pasteButton_cs">
+          <property name="toolTip">
+           <string>Paste address from clipboard</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../bitcoin.qrc">
+            <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Alt+P</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="deleteButton_cs">
+          <property name="toolTip">
+           <string>Remove this entry</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../bitcoin.qrc">
+            <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="payToLayout2_cs">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QValidatedLineEdit" name="spendAddr">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>ColdStake address used by your remote staking node to stake your funds.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="addressBookButton2_cs">
+          <property name="toolTip">
+           <string>Choose previously used address</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../bitcoin.qrc">
+            <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Alt+A</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="pasteButton2_cs">
+          <property name="toolTip">
+           <string>Paste address from clipboard</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../bitcoin.qrc">
+            <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Alt+P</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayoutAmount" stretch="0,0,0,0">
+        <item>
+         <widget class="BitcoinAmountField" name="payAmount_cs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkboxSubtractFeeFromAmount_cs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>190</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>The fee will be deducted from the amount being sent. The recipient will receive less Bitcoin Confidential than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</string>
+          </property>
+          <property name="text">
+           <string>S&amp;ubtract fee from amount</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="useAvailableBalanceButton_cs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Use available balance</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="edtNarration_cs">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -337,273 +594,14 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>ColdStake address used by your remote staking node to stake your funds.</string>
+         <string>A short message sent over the Bitcoin Confidential network.</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="addressBookButton2_cs">
-        <property name="toolTip">
-         <string>Choose previously used address</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../bitcoin.qrc">
-          <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>Alt+A</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="pasteButton2_cs">
-        <property name="toolTip">
-         <string>Paste address from clipboard</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../bitcoin.qrc">
-          <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>Alt+P</string>
+        <property name="maxLength">
+         <number>24</number>
         </property>
        </widget>
       </item>
      </layout>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="lblNarration_cs">
-      <property name="text">
-       <string>Narration:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="buddy">
-       <cstring>edtNarration_cs</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="edtNarration_cs">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="toolTip">
-       <string>A short message sent over the Bitcoin Confidential network.</string>
-      </property>
-      <property name="maxLength">
-       <number>24</number>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="stakeAddrLabel">
-      <property name="text">
-       <string>Remote Stake Address:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="buddy">
-       <cstring>stakeAddr</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayoutAmount" stretch="0,0,0,0">
-      <item>
-       <widget class="BitcoinAmountField" name="payAmount_cs">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkboxSubtractFeeFromAmount_cs">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>10</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>190</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The fee will be deducted from the amount being sent. The recipient will receive less Bitcoin Confidential than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</string>
-        </property>
-        <property name="text">
-         <string>S&amp;ubtract fee from amount</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="useAvailableBalanceButton_cs">
-        <property name="text">
-         <string>Use available balance</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="1">
-     <layout class="QHBoxLayout" name="payToLayout_cs">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QValidatedLineEdit" name="stakeAddr">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>The stake address on the remote node (cannot be in this wallet)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="addressBookButton_cs">
-        <property name="toolTip">
-         <string>Choose previously used address</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../bitcoin.qrc">
-          <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>Alt+A</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="pasteButton_cs">
-        <property name="toolTip">
-         <string>Paste address from clipboard</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../bitcoin.qrc">
-          <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>Alt+P</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="deleteButton_cs">
-        <property name="toolTip">
-         <string>Remove this entry</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../bitcoin.qrc">
-          <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="amountLabel_cs">
-      <property name="text">
-       <string>Amount:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="buddy">
-       <cstring>payAmount_cs</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="spendAddrLabel">
-      <property name="text">
-       <string>ColdStake Address</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="buddy">
-       <cstring>addAsLabel</cstring>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>

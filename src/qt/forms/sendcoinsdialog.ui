@@ -683,7 +683,7 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -701,23 +701,10 @@
          <property name="spacing">
           <number>6</number>
          </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
         </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Preferred</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
