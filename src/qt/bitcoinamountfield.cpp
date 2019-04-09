@@ -197,14 +197,13 @@ BitcoinAmountField::BitcoinAmountField(QWidget *parent) :
     amount = new AmountSpinBox(this);
     amount->setLocale(QLocale::c());
     amount->installEventFilter(this);
-    amount->setMaximumWidth(240);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(amount);
-    unit = new QValueComboBox(this);
-    unit->setModel(new BitcoinUnits(this));
-    layout->addWidget(unit);
-    layout->addStretch(1);
+//    unit = new QValueComboBox(this);
+//    unit->setModel(new BitcoinUnits(this));
+//    layout->addWidget(unit);
+//    layout->addStretch(1);
     layout->setContentsMargins(0,0,0,0);
 
     setLayout(layout);
@@ -214,22 +213,22 @@ BitcoinAmountField::BitcoinAmountField(QWidget *parent) :
 
     // If one if the widgets changes, the combined content changes as well
     connect(amount, SIGNAL(valueChanged()), this, SIGNAL(valueChanged()));
-    connect(unit, SIGNAL(currentIndexChanged(int)), this, SLOT(unitChanged(int)));
+//    connect(unit, SIGNAL(currentIndexChanged(int)), this, SLOT(unitChanged(int)));
 
     // Set default based on configuration
-    unitChanged(unit->currentIndex());
+    unitChanged(0);
 }
 
 void BitcoinAmountField::clear()
 {
     amount->clear();
-    unit->setCurrentIndex(0);
+//    unit->setCurrentIndex(0);
 }
 
 void BitcoinAmountField::setEnabled(bool fEnabled)
 {
     amount->setEnabled(fEnabled);
-    unit->setEnabled(fEnabled);
+//    unit->setEnabled(fEnabled);
 }
 
 bool BitcoinAmountField::validate()
@@ -261,8 +260,8 @@ bool BitcoinAmountField::eventFilter(QObject *object, QEvent *event)
 QWidget *BitcoinAmountField::setupTabChain(QWidget *prev)
 {
     QWidget::setTabOrder(prev, amount);
-    QWidget::setTabOrder(amount, unit);
-    return unit;
+//    QWidget::setTabOrder(amount, unit);
+    return amount;
 }
 
 CAmount BitcoinAmountField::value(bool *valid_out) const
@@ -282,18 +281,18 @@ void BitcoinAmountField::setReadOnly(bool fReadOnly)
 
 void BitcoinAmountField::unitChanged(int idx)
 {
-    // Use description tooltip for current unit for the combobox
-    unit->setToolTip(unit->itemData(idx, Qt::ToolTipRole).toString());
+//    // Use description tooltip for current unit for the combobox
+//    unit->setToolTip(unit->itemData(idx, Qt::ToolTipRole).toString());
 
     // Determine new unit ID
-    int newUnit = unit->itemData(idx, BitcoinUnits::UnitRole).toInt();
+//    int newUnit = unit->itemData(idx, BitcoinUnits::UnitRole).toInt();
 
-    amount->setDisplayUnit(newUnit);
+    amount->setDisplayUnit(BitcoinUnits::BTC);
 }
 
 void BitcoinAmountField::setDisplayUnit(int newUnit)
 {
-    unit->setValue(newUnit);
+//    unit->setValue(newUnit);
 }
 
 void BitcoinAmountField::setSingleStep(const CAmount& step)
