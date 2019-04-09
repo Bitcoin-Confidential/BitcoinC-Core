@@ -165,6 +165,8 @@ void SendCoinsDialog::setModel(WalletModel *_model)
 
     if(_model && _model->getOptionsModel())
     {
+        coinControlFeatureChanged(model->getOptionsModel()->getCoinControlFeatures());
+
         for(int i = 0; i < ui->entries->count(); ++i)
         {
             SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
@@ -1065,10 +1067,7 @@ void SendCoinsDialog::cbxTypeFromChanged(int index)
 void SendCoinsDialog::coinControlFeatureChanged(bool checked)
 {
     ui->frameCoinControl->setVisible(checked);
-
-    if (!checked && model) // coin control features disabled
-        CoinControlDialog::coinControl(GetCoinControlFlag())->SetNull();
-
+    CoinControlDialog::coinControl(GetCoinControlFlag())->SetNull();
     coinControlUpdateLabels();
 }
 

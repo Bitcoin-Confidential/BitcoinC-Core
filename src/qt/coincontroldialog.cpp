@@ -401,6 +401,7 @@ void CoinControlDialog::cbxTypeChanged()
     if (model)
     {
         coinControl(mode)->nCoinType = ControlModeToCbxType(mode);
+        coinControl(mode)->SetNull();
         CoinControlDialog::updateLabels(model, this);
         updateView();
     };
