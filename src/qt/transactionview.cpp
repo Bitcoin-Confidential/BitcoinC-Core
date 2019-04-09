@@ -58,9 +58,9 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
 
     dateWidget = new QComboBox(this);
     if (platformStyle->getUseExtraSpacing()) {
-        dateWidget->setFixedWidth(121);
+        dateWidget->setFixedWidth(131);
     } else {
-        dateWidget->setFixedWidth(120);
+        dateWidget->setFixedWidth(130);
     }
     dateWidget->addItem(tr("All"), All);
     dateWidget->addItem(tr("Today"), Today);
@@ -75,9 +75,9 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
 
         typeWidget = new QComboBox(this);
         if (platformStyle->getUseExtraSpacing()) {
-            typeWidget->setFixedWidth(121);
+            typeWidget->setFixedWidth(131);
         } else {
-            typeWidget->setFixedWidth(120);
+            typeWidget->setFixedWidth(130);
         }
 
         typeWidget->addItem(tr("All"), TransactionFilterProxy::ALL_TYPES);
