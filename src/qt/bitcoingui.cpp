@@ -257,7 +257,7 @@ void BitcoinGUI::createActions()
     QButtonGroup *tabGroup = new QButtonGroup(this);
 
     overviewAction = new QToolButton(this);
-    overviewAction->setText(tr("&Overview"));
+    overviewAction->setText(tr("Overview"));
     overviewAction->setStatusTip(tr("Show general overview of wallet"));
     overviewAction->setToolTip(overviewAction->statusTip());
     overviewAction->setCheckable(true);
@@ -265,7 +265,7 @@ void BitcoinGUI::createActions()
     tabGroup->addButton(overviewAction);
 
     sendCoinsAction = new QToolButton(this);
-    sendCoinsAction->setText(tr("&Send"));
+    sendCoinsAction->setText(tr("Send"));
     sendCoinsAction->setStatusTip(tr("Send coins to a Bitcoin Confidential address"));
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
     sendCoinsAction->setCheckable(true);
@@ -277,7 +277,7 @@ void BitcoinGUI::createActions()
     sendCoinsMenuAction->setToolTip(sendCoinsMenuAction->statusTip());
 
     receiveCoinsAction = new QToolButton(this);
-    receiveCoinsAction->setText(tr("&Receive"));
+    receiveCoinsAction->setText(tr("Receive"));
     receiveCoinsAction->setStatusTip(tr("Request payments (generates QR codes and bitcoinc: URIs)"));
     receiveCoinsAction->setToolTip(receiveCoinsAction->statusTip());
     receiveCoinsAction->setCheckable(true);
@@ -289,7 +289,7 @@ void BitcoinGUI::createActions()
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
 
     historyAction = new QToolButton(this);
-    historyAction->setText(tr("&Transactions"));
+    historyAction->setText(tr("Transactions"));
     historyAction->setStatusTip(tr("Browse transaction history"));
     historyAction->setToolTip(historyAction->statusTip());
     historyAction->setCheckable(true);
@@ -297,7 +297,7 @@ void BitcoinGUI::createActions()
     tabGroup->addButton(historyAction);
 
     coldstakingAction = new QToolButton(this);
-    coldstakingAction->setText(tr("&Staking"));
+    coldstakingAction->setText(tr("Staking"));
     coldstakingAction->setStatusTip(tr("Setup staking"));
     coldstakingAction->setToolTip(coldstakingAction->statusTip());
     coldstakingAction->setCheckable(true);

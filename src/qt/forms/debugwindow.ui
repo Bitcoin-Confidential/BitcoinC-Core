@@ -22,7 +22,7 @@
      <item>
       <widget class="QPushButton" name="btnShowInfo">
        <property name="text">
-        <string>&amp;Information</string>
+        <string>Information</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -32,7 +32,7 @@
      <item>
       <widget class="QPushButton" name="btnShowConsole">
        <property name="text">
-        <string>&amp;Console</string>
+        <string>Console</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -42,7 +42,7 @@
      <item>
       <widget class="QPushButton" name="btnShowNetwork">
        <property name="text">
-        <string>&amp;Network Traffic</string>
+        <string>Network Traffic</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -52,7 +52,7 @@
      <item>
       <widget class="QPushButton" name="btnShowPeers">
        <property name="text">
-        <string>&amp;Peers</string>
+        <string>Peers</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
