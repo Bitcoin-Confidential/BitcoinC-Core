@@ -1073,6 +1073,7 @@ QDialog#CoinControlDialog .QLabel#labelCoinControlChange {
 
 QDialog#CoinControlDialog .QFrame#frame .QPushButton#pushButtonSelectAll {
 	/* (un)select all button */
+    min-height: 20px;
     padding-left:10px;
     padding-right:10px;
 }

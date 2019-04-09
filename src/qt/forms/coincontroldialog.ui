@@ -308,7 +308,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>0</height>
       </size>
      </property>
      <property name="frameShape">
@@ -433,17 +433,20 @@
      <property name="sizeAdjustPolicy">
       <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
+     <property name="indentation">
+      <number>20</number>
+     </property>
      <property name="sortingEnabled">
       <bool>false</bool>
      </property>
      <property name="columnCount">
-      <number>10</number>
+      <number>8</number>
      </property>
      <attribute name="headerShowSortIndicator" stdset="0">
       <bool>true</bool>
      </attribute>
      <attribute name="headerStretchLastSection">
-      <bool>false</bool>
+      <bool>true</bool>
      </attribute>
      <column>
       <property name="text">
@@ -455,7 +458,7 @@
        <string>Amount</string>
       </property>
       <property name="textAlignment">
-       <set>AlignTrailing|AlignVCenter</set>
+       <set>AlignLeading|AlignVCenter</set>
       </property>
      </column>
      <column>
@@ -481,7 +484,7 @@
        <string>Confirmed</string>
       </property>
       <property name="textAlignment">
-       <set>AlignTrailing|AlignVCenter</set>
+       <set>AlignLeading|AlignVCenter</set>
       </property>
      </column>
      <column>
@@ -491,17 +494,7 @@
      </column>
      <column>
       <property name="text">
-       <string/>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string/>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string/>
+       <string notr="true"/>
       </property>
      </column>
     </widget>
