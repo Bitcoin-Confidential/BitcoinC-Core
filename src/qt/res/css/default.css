@@ -73,10 +73,10 @@ QToolBar > QToolButton {
     /* min-width: 10em; */
 	/* padding: 0em 1em; */
     font-family: "Montserrat";
-    font-size: 15px;
-    font-weight: bold;
-    letter-spacing: 1px;
-	font-weight: 100;
+    font-size: 16px;
+    font-style: bold;
+    letter-spacing: 3px;
+	font-weight:600;
 	color: #232323;
 	width: 100%;
 	opacity: 0.75;
@@ -93,7 +93,9 @@ QToolBar > QToolButton > img {
 }
 
 QToolBar > QToolButton:hover:!checked {
+    background-color: #BC9427;
     color: #DCDCDC;
+    border-bottom: 4px solid #E0E0E0;
 }
 
 QToolBar > QToolButton:checked {
