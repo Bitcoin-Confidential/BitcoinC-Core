@@ -7,8 +7,6 @@
         <file alias="connect_0">res/icons/connect0.png</file>
         <file alias="connect_1">res/icons/connect1.png</file>
         <file alias="connect_2">res/icons/connect2.png</file>
-        <file alias="connect_3">res/icons/connect3.png</file>
-        <file alias="connect_4">res/icons/connect4.png</file>
         <file alias="transaction_0">res/icons/transaction0.png</file>
         <file alias="transaction_confirmed">res/icons/transaction2.png</file>
         <file alias="transaction_conflicted">res/icons/transaction_conflicted.png</file>
@@ -56,6 +54,7 @@
         <file alias="proxy">res/icons/proxy.png</file>
         <file alias="staking">res/icons/staking.png</file>
         <file alias="smartcash">res/icons/smartcash.png</file>
+        <file alias="privacy">res/icons/privacy.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>

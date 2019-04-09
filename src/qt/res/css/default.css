@@ -28,11 +28,16 @@ WalletFrame {
 }
 QStatusBar {
     background-color: #434343;
-    border-top: 1px solid #E0E0E0;
-    color: #FEC60D;
+    border-top: 2px solid #E0E0E0;
+    color: #E0E0E0;
     padding-left:10px;
     padding-right:10px;
 }
+
+QStatusBar QLabel{
+    margin-right: 10px;
+}
+
 .QFrame {
 	background-color: transparent;
 	border: 0px solid #DCDCDC;

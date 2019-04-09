@@ -40,6 +40,12 @@ public:
     /** Colorize an icon (given object) with the bitcoinC color */
     QIcon BitcoinCColorIcon(const QIcon& icon) const;
 
+    /** Colorize an icon (given filename) with the given color */
+    QIcon ColorIcon(const QString& filename, const QColor &color) const;
+
+    /** Colorize an icon (given object) with the given color */
+    QIcon ColorIcon(const QIcon& icon, const QColor &color) const;
+
     /** Colorize an icon (given filename) with the text color */
     QIcon TextColorIcon(const QString& filename) const;
 

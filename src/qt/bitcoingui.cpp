@@ -32,6 +32,7 @@
 #include <chainparams.h>
 #include <interfaces/handler.h>
 #include <interfaces/node.h>
+#include <netbase.h>
 #include <ui_interface.h>
 #include <util.h>
 
@@ -173,16 +174,20 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     labelWalletEncryptionIcon = new GUIUtil::ClickableLabel();
     labelWalletHDStatusIcon = new QLabel();
     labelProxyIcon = new QLabel();
+    labelTorIcon = new QLabel();
     connectionsControl = new GUIUtil::ClickableLabel();
     labelBlocksIcon = new GUIUtil::ClickableLabel();
     if(enableWallet)
     {
-        frameBlocksLayout->addStretch();
-        frameBlocksLayout->addWidget(unitDisplayControl);
+//        frameBlocksLayout->addStretch();
+//        frameBlocksLayout->addWidget(unitDisplayControl);
         frameBlocksLayout->addStretch();
         frameBlocksLayout->addWidget(labelWalletEncryptionIcon);
-        frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
+//        frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
     }
+    frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelTorIcon);
+    frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelProxyIcon);
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(connectionsControl);
@@ -520,6 +525,7 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel)
 
         rpcConsole->setClientModel(_clientModel);
 
+        updateTorIcon();
         updateProxyIcon();
 
 #ifdef ENABLE_WALLET
@@ -822,14 +828,20 @@ void BitcoinGUI::gotoVerifyMessageTab(QString addr)
 void BitcoinGUI::updateNetworkState()
 {
     int count = clientModel->getNumConnections();
+    QColor connectColor;
     QString icon;
+
     switch(count)
     {
     case 0: icon = ":/icons/connect_0"; break;
-    case 1: case 2: case 3: icon = ":/icons/connect_1"; break;
-    case 4: case 5: case 6: icon = ":/icons/connect_2"; break;
-    case 7: case 8: case 9: icon = ":/icons/connect_3"; break;
-    default: icon = ":/icons/connect_4"; break;
+    case 1: case 2: case 3: case 4: icon = ":/icons/connect_1"; break;
+    default: icon = ":/icons/connect_2"; break;
+    }
+
+    if( count ){
+        connectColor = COLOR_POSITIVE;
+    }else{
+        connectColor = COLOR_NEGATIVE;
     }
 
     QString tooltip;
@@ -838,14 +850,15 @@ void BitcoinGUI::updateNetworkState()
         tooltip = tr("%n active connection(s) to Bitcoin Confidential network", "", count) + QString(".<br>") + tr("Click to disable network activity.");
     } else {
         tooltip = tr("Network activity disabled.") + QString("<br>") + tr("Click to enable network activity again.");
-        icon = ":/icons/network_disabled";
+        icon = ":/icons/connect_2";
+        connectColor = COLOR_NEGATIVE;
     }
 
     // Don't word-wrap this (fixed-width) tooltip
     tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
     connectionsControl->setToolTip(tooltip);
 
-    connectionsControl->setPixmap(platformStyle->BitcoinCColorIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+    connectionsControl->setPixmap(platformStyle->ColorIcon(icon, connectColor).pixmap(22 ,STATUSBAR_ICONSIZE));
 }
 
 void BitcoinGUI::setNumConnections(int count)
@@ -922,7 +935,7 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     if(secs < 90*60)
     {
         tooltip = tr("Up to date") + QString(".<br>") + tooltip;
-        labelBlocksIcon->setPixmap(platformStyle->BitcoinCColorIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelBlocksIcon->setPixmap(platformStyle->ColorIcon(":/icons/synced", COLOR_POSITIVE).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
 
 #ifdef ENABLE_WALLET
         if(walletFrame)
@@ -948,8 +961,8 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
         tooltip = tr("Catching up...") + QString("<br>") + tooltip;
         if(count != prevBlocks)
         {
-            labelBlocksIcon->setPixmap(platformStyle->BitcoinCColorIcon(QString(
-                ":/movies/spinner-%1").arg(spinnerFrame, 3, 10, QChar('0')))
+            labelBlocksIcon->setPixmap(platformStyle->ColorIcon(QString(
+                ":/movies/spinner-%1").arg(spinnerFrame, 3, 10, QChar('0')), COLOR_NEGATIVE)
                 .pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
             spinnerFrame = (spinnerFrame + 1) % SPINNER_FRAMES;
         }
@@ -1185,7 +1198,6 @@ void BitcoinGUI::setHDStatus(int hdEnabled)
 
 void BitcoinGUI::setEncryptionStatus(int status)
 {
-    labelWalletEncryptionIcon->setStyleSheet("background-color: none;");
     switch(status)
     {
     case WalletModel::Unencrypted:
@@ -1196,7 +1208,7 @@ void BitcoinGUI::setEncryptionStatus(int status)
         break;
     case WalletModel::Unlocked:
         labelWalletEncryptionIcon->show();
-        labelWalletEncryptionIcon->setPixmap(platformStyle->BitcoinCColorIcon(":/icons/lock_open").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelWalletEncryptionIcon->setPixmap(platformStyle->ColorIcon(":/icons/lock_open", COLOR_NEGATIVE).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
         labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked</b>"));
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
@@ -1204,16 +1216,15 @@ void BitcoinGUI::setEncryptionStatus(int status)
         break;
     case WalletModel::UnlockedForStaking:
         labelWalletEncryptionIcon->show();
-        labelWalletEncryptionIcon->setPixmap(platformStyle->BitcoinCColorIcon(":/icons/lock_open").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelWalletEncryptionIcon->setPixmap(platformStyle->ColorIcon(":/icons/lock_open", COLOR_WARNING).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
         labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked</b> for staking only"));
-        labelWalletEncryptionIcon->setStyleSheet("background-color: rgba(255, 165, 0, 255);");
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
         encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported
         break;
     case WalletModel::Locked:
         labelWalletEncryptionIcon->show();
-        labelWalletEncryptionIcon->setPixmap(platformStyle->BitcoinCColorIcon(":/icons/lock_closed").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelWalletEncryptionIcon->setPixmap(platformStyle->ColorIcon(":/icons/lock_closed", COLOR_POSITIVE).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
         labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>locked</b>"));
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
@@ -1275,6 +1286,35 @@ void BitcoinGUI::updateProxyIcon()
         }
     } else {
         labelProxyIcon->hide();
+    }
+}
+
+
+void BitcoinGUI::updateTorIcon()
+{
+    bool fTorEnabled = false;
+    std::set<enum Network> nets;
+
+    if (gArgs.IsArgSet("-onlynet")) {
+
+            for (const std::string& snet : gArgs.GetArgs("-onlynet")) {
+                enum Network net = ParseNetwork(snet);
+                if (net == NET_ONION){
+                    fTorEnabled = true;
+                }
+                nets.insert(net);
+            }
+    }
+
+    if (fTorEnabled && nets.size() == 1) {
+        labelTorIcon->setPixmap(platformStyle->ColorIcon(":/icons/privacy", COLOR_POSITIVE).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelTorIcon->setToolTip(tr("Tor is <b>enabled</b>"));
+    } else if(fTorEnabled && nets.size() > 1 ) {
+        labelTorIcon->setPixmap(platformStyle->ColorIcon(":/icons/privacy",COLOR_WARNING).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelTorIcon->setToolTip(tr("Tor is <b>enabled</b>, but its not the only network used. Use only onlynet=onion."));
+    }else{
+        labelTorIcon->setPixmap(platformStyle->ColorIcon(":/icons/privacy",COLOR_NEGATIVE).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelTorIcon->setToolTip(tr("Tor is <b>disabled</b>. To enhance your privacy setup consider using tor by setting <b>onlynet=onion</b> in your <b>bitcoinc.conf</b>."));
     }
 }
 

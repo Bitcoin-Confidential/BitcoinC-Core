@@ -97,6 +97,7 @@ private:
     QLabel* labelWalletEncryptionIcon = nullptr;
     QLabel* labelWalletHDStatusIcon = nullptr;
     QLabel* labelProxyIcon = nullptr;
+    QLabel* labelTorIcon = nullptr;
     QLabel* connectionsControl = nullptr;
     QLabel* labelBlocksIcon = nullptr;
     QLabel* progressBarLabel = nullptr;
@@ -228,6 +229,8 @@ public Q_SLOTS:
 private:
     /** Set the proxy-enabled icon as shown in the UI. */
     void updateProxyIcon();
+    /** Set the proxy-enabled icon as shown in the UI. */
+    void updateTorIcon();
 
 private Q_SLOTS:
 #ifdef ENABLE_WALLET

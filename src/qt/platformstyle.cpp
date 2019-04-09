@@ -138,6 +138,16 @@ QIcon PlatformStyle::BitcoinCColorIcon(const QIcon& icon) const
     return ColorizeIcon(icon, BitcoinCColor());
 }
 
+QIcon PlatformStyle::ColorIcon(const QString& filename, const QColor &color) const
+{
+    return ColorizeIcon(filename, color);
+}
+
+QIcon PlatformStyle::ColorIcon(const QIcon& icon, const QColor &color) const
+{
+    return ColorizeIcon(icon, color);
+}
+
 QIcon PlatformStyle::TextColorIcon(const QString& filename) const
 {
     return ColorizeIcon(filename, TextColor());
