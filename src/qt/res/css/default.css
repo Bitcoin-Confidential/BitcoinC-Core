@@ -202,7 +202,7 @@ QGroupBox {
 }
 QToolTip {
 	background-color: #E0E0E0;
-	color: #333;
+	color: #232323;
 }
 QTextEdit {
 	background-color: #DCDCDC;
@@ -273,8 +273,17 @@ QAbstractSpinBox,
 
 
 .QValidatedLineEdit:disabled,
-.QLineEdit:disabled {
-	background-color: rgba(255, 255, 255, 0.05);
+.QLineEdit:disabled,
+.AmountSpinBox:disabled,
+.QComboBox:disabled,
+.QValueComboBox:disabled,
+.QSpinBox:disabled,
+.QSpinBox:disabled,
+.QLineEdit:disabled,
+.QLineEdit:disabled,
+.QValidatedLineEdit:disabled {
+    color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 /****************************************************************************************/
 
@@ -292,8 +301,8 @@ QPushButton {
 	text-transform: uppercase;
 }
 QPushButton:hover {
-        background-color: #BC9427;
-        color: #DCDCDC;
+    background-color: #BC9427;
+    color: #DCDCDC;
 }
 QPushButton:focus {
 	border: none;
