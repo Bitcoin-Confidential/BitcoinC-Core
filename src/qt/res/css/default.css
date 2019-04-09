@@ -1377,7 +1377,7 @@ QGroupBox::title {
     font-size:18px;
     font-style: bold;
     min-height: 24px;
-    qproperty-alignment: 'AlignVCenter | AlignLeft';
+    qproperty-alignment: 'AlignVCenter | AlignRight';
 }
 
 #labelBalance, #labelUnconfirmedSpending, #labelLockedSpending, #labelSpending,
@@ -1386,13 +1386,13 @@ QGroupBox::title {
 #labelWatchUnconfirmedStaking, #labelWatchLockedStaking, #labelWatchStaking,
 #labelTotal, #labelWatchTotal{
     font-size:17px;
-    qproperty-alignment: 'AlignVCenter | AlignLeft';
+    qproperty-alignment: 'AlignVCenter | AlignRight';
 }
 
 #labelUnconfirmedSpendingText, #labelLockedSpendingText, #labelAnonText,
 #labelUnconfirmedStakingText, #labelLockedStakingText, #labelBalanceText{
     font-size: 15px;
-    qproperty-alignment: 'AlignVCenter | AlignLeft';
+    qproperty-alignment: 'AlignVCenter | AlignRight';
 }
 
 .negative-sum {
