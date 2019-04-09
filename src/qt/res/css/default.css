@@ -1265,6 +1265,20 @@ QTableView::item{
     text-align: left;
 }
 
+QTableView::item:selected,
+#recentRequestsView:item:selected,
+QWidget#AddressBookPage QTableView:item:selected {
+    background-color: #707780;
+    color: #232323;
+}
+
+QTableView::item:checked,
+#recentRequestsView:item:checked,
+QWidget#AddressBookPage QTableView:item:checked {
+    background-color: #707780;
+    color: #232323;
+}
+
 TransactionView QLineEdit {
 	/* Address Filter */
 	margin-bottom: 2px;
