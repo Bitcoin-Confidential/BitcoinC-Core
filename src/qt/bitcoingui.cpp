@@ -1201,10 +1201,12 @@ void BitcoinGUI::setEncryptionStatus(int status)
     switch(status)
     {
     case WalletModel::Unencrypted:
-        labelWalletEncryptionIcon->hide();
-        encryptWalletAction->setChecked(false);
+        labelWalletEncryptionIcon->show();
+        labelWalletEncryptionIcon->setPixmap(platformStyle->ColorIcon(":/icons/lock_open", COLOR_NEGATIVE).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>not encrypted</b>. Click the opened lock to encrypt it."));
+        encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(false);
-        encryptWalletAction->setEnabled(true);
+        encryptWalletAction->setEnabled(true); // TODO: decrypt currently not supported
         break;
     case WalletModel::Unlocked:
         labelWalletEncryptionIcon->show();
@@ -1244,6 +1246,9 @@ void BitcoinGUI::toggleLockState()
 
     switch (walletModel->getEncryptionStatus())
     {
+        case WalletModel::Unencrypted:
+            walletView->encryptWallet(true);
+            break;
         case WalletModel::Locked:
             walletView->unlockWallet(true);
             break;
@@ -1279,7 +1284,7 @@ void BitcoinGUI::updateProxyIcon()
     if (proxy_enabled) {
         if (labelProxyIcon->pixmap() == 0) {
             QString ip_port_q = QString::fromStdString(ip_port);
-            labelProxyIcon->setPixmap(platformStyle->BitcoinCColorIcon(":/icons/proxy").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+            labelProxyIcon->setPixmap(platformStyle->ColorIcon(":/icons/proxy", COLOR_POSITIVE).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
             labelProxyIcon->setToolTip(tr("Proxy is <b>enabled</b>: %1").arg(ip_port_q));
         } else {
             labelProxyIcon->show();
