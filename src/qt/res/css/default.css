@@ -737,7 +737,7 @@ QWidget#AddressBookPage QTableView:item,
 }
 QWidget#AddressBookPage QHeaderView::section {
 	/* Min width for Windows fix */
-	min-width: 260px;
+	min-width: 150px;
 }
 
 /**************************** SETTINGS MENU *********************************************/
