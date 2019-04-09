@@ -95,6 +95,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     tabButtons.addButton(ui->btnDisplay, nIndex++);
 
     connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
+    ui->stackedWidget->setCurrentIndex(0);
 
     /* Display elements init */
     QDir translations(":translations");
