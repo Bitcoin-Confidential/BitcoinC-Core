@@ -329,7 +329,10 @@ QComboBox::drop-down {
 	border: 0px;
 }
 QComboBox::down-arrow {
-	border-image: url(':/images/downArrow') 0 0 0 0 stretch stretch;
+	border-image: url(':/images/downArrow_normal') 0 0 0 0 stretch stretch;
+}
+QComboBox::down-arrow:hover {
+	border-image: url(':/images/downArrow_hover') 0 0 0 0 stretch stretch;
 }
 QComboBox QListView {
 	background: #232323;
@@ -374,8 +377,12 @@ QAbstractSpinBox::up-button {
 	padding-top: 2px;
 }
 QAbstractSpinBox::up-arrow {
-	image: url(':/images/upArrow_small');
+	image: url(':/images/upArrow_normal');
 }
+QAbstractSpinBox::up-arrow:hover {
+	image: url(':/images/upArrow_hover');
+}
+
 QAbstractSpinBox::down-button {
 	subcontrol-origin: border;
 	subcontrol-position: bottom right;
@@ -388,8 +395,12 @@ QAbstractSpinBox::down-button {
 	padding-bottom: 2px;
 }
 QAbstractSpinBox::down-arrow {
-	image: url(':/images/downArrow_small');
+	image: url(':/images/downArrow_normal');
 }
+QAbstractSpinBox::down-arrow:hover {
+	image: url(':/images/downArrow_hover');
+}
+
 /****************************************************************************************/
 
 QHeaderView {
@@ -428,18 +439,34 @@ QHeaderView::section:hover {
 QHeaderView::down-arrow {
 	width: 10px;
 	height: 10px;
-	image: url(:/images/downArrow);
+	image: url(:/images/downArrow_normal);
 	subcontrol-position: right center;
 	subcontrol-origin: margin;
 	margin-right: 8px;
 }
 QHeaderView::up-arrow {
-	width: 8px;
-	height: 8px;
-	image: url(:/images/upArrow);
+	width: 10px;
+	height: 10px;
+	image: url(:/images/upArrow_normal);
 	subcontrol-position: right center;
 	subcontrol-origin: margin;
 	margin-right: 8px;
+}
+QHeaderView::down-arrow:hover {
+    width: 10px;
+    height: 10px;
+	image: url(:/images/downArrow_hover);
+    subcontrol-position: right center;
+    subcontrol-origin: margin;
+    margin-right: 8px;
+}
+QHeaderView::up-arrow:hover {
+    width: 10px;
+    height: 10px;
+	image: url(:/images/upArrow_hover);
+    subcontrol-position: right center;
+    subcontrol-origin: margin;
+    margin-right: 8px;
 }
 
 QScrollArea {
@@ -1334,13 +1361,26 @@ QSpinBox::up-arrow,
 AmountSpinBox::up-arrow {
 	width: 10px;
 	height: 10px;
-	image: url(:/images/upArrow);
+	image: url(:/images/upArrow_normal);
 }
 QSpinBox::down-arrow,
 AmountSpinBox::down-arrow {
 	width: 10px;
 	height: 10px;
-	image: url(:/images/downArrow);
+	image: url(:/images/downArrow_normal);
+}
+
+QSpinBox::up-arrow:hover,
+AmountSpinBox::up-arrow:hover {
+	width: 10px;
+	height: 10px;
+	image: url(:/images/upArrow_hover);
+}
+QSpinBox::down-arrow:hover,
+AmountSpinBox::down-arrow:hover {
+	width: 10px;
+	height: 10px;
+	image: url(:/images/downArrow_hover);
 }
 
 QGroupBox {
