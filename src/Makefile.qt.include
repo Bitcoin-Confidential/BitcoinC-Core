@@ -400,7 +400,15 @@ RES_IMAGES = \
   qt/res/images/downArrow_normal.png \
   qt/res/images/downArrow_hover.png \
   qt/res/images/upArrow_normal.png \
-  qt/res/images/upArrow_hover.png
+  qt/res/images/upArrow_hover.png \
+  qt/res/images/rightArrow_normal.png \
+  qt/res/images/rightArrow_hover.png \
+  qt/res/images/downArrow_normal_small.png \
+  qt/res/images/downArrow_hover_small.png \
+  qt/res/images/upArrow_normal_small.png \
+  qt/res/images/upArrow_hover_small.png \
+  qt/res/images/rightArrow_normal_small.png \
+  qt/res/images/rightArrow_hover_small.png
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 

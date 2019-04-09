@@ -100,6 +100,14 @@
         <file alias="downArrow_hover">res/images/downArrow_hover.png</file>
         <file alias="upArrow_normal">res/images/upArrow_normal.png</file>
         <file alias="upArrow_hover">res/images/upArrow_hover.png</file>
+        <file alias="rightArrow_normal">res/images/rightArrow_normal.png</file>
+        <file alias="rightArrow_hover">res/images/rightArrow_hover.png</file>
+        <file alias="downArrow_normal_small">res/images/downArrow_normal_small.png</file>
+        <file alias="downArrow_hover_small">res/images/downArrow_hover_small.png</file>
+        <file alias="upArrow_normal_small">res/images/upArrow_normal_small.png</file>
+        <file alias="upArrow_hover_small">res/images/upArrow_hover_small.png</file>
+        <file alias="rightArrow_normal_small">res/images/rightArrow_normal_small.png</file>
+        <file alias="rightArrow_hover_small">res/images/rightArrow_hover_small.png</file>
     </qresource>
     <qresource prefix="/css">
         <file alias="default">res/css/default.css</file>

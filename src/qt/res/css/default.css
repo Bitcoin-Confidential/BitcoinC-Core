@@ -343,10 +343,14 @@ QComboBox::drop-down {
 	border: 0px;
 }
 QComboBox::down-arrow {
-	border-image: url(':/images/downArrow_normal') 0 0 0 0 stretch stretch;
+    height: 10px;
+    width: 10px;
+	border-image: url(':/images/downArrow_normal');
 }
 QComboBox::down-arrow:hover {
-	border-image: url(':/images/downArrow_hover') 0 0 0 0 stretch stretch;
+    height: 10px;
+    width: 10px;
+	border-image: url(':/images/downArrow_hover');
 }
 QComboBox QListView {
 	background: #232323;
@@ -1166,6 +1170,7 @@ QTreeWidget {
 	alternate-background-color: transparent;
     /* margin-top: 20px; */
 }
+
 QTreeWidget::item {
 	background-color:transparent;
 	color:#DCDCDC;
@@ -1192,6 +1197,20 @@ QTreeWidget::branch:checked {
 	/* Coin Control Branch Icon */
 	background-color: #707780;
 	color: #FEC60D;
+}
+QTreeWidget::branch::closed:has-children {
+    height: 8px;
+    width: 8px;
+	image: url(:/images/rightArrow_normal_small);
+}
+QTreeWidget::branch::closed:has-children:hover {
+	image: url(:/images/rightArrow_hover_small);
+}
+QTreeWidget::branch::open {
+	image: url(:/images/downArrow_normal_small);
+}
+QTreeWidget::branch::open:hover {
+	image: url(:/images/downArrow_hover_small);
 }
 QTreeWidget::seperator {} QDialog#CoinControlDialog .CoinControlTreeWidget#treeWidget::indicator {
 	/* Coin Control Widget Checkbox */
@@ -1359,10 +1378,6 @@ QLineEdit {
 	qproperty-frame: false;
 }
 
-#ReceiveCoinsDialog #label_5 {
-	font-size: 11px;
-	color: #747c83;
-}
 #addressBookButton,
 #pasteButton {
 	background-color: transparent;
