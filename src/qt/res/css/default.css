@@ -401,7 +401,7 @@ QPushButton:focus {
 	outline: none;
 }
 QPushButton:pressed {
-	border: 1px solid #333;
+	border: 1px solid #9e9e9e;
 }
 QComboBox {
 	/* Dropdown Menus */
@@ -1072,9 +1072,6 @@ QDialog#SendCoinsDialog .QPushButton#clearButton:hover {
     color: #232323;
 }
 
-QDialog#SendCoinsDialog .QPushButton#clearButton:pressed {
-	border: 1px solid #9e9e9e;
-}
 QDialog#SendCoinsDialog .QPushButton#addButton {
 	/* Add Button */
 	background-color: transparent;
@@ -1084,9 +1081,6 @@ QDialog#SendCoinsDialog .QPushButton#addButton {
 	padding-right: 20px;
 }
 
-QDialog#SendCoinsDialog .QPushButton#addButton:pressed {
-	border: 1px solid #9e9e9e;
-}
 QDialog#SendCoinsDialog .QPushButton#addButton:hover {
 	background-color: #707780;
     color: #232323;
@@ -1228,26 +1222,10 @@ QDialog#CoinControlDialog .QFrame#frame .QPushButton#pushButtonSelectAll {
     padding-left:10px;
     padding-right:10px;
 }
-QDialog#CoinControlDialog .QFrame#frame .QPushButton#pushButtonToggleLock {
-	/* Toggle lock state button */
-	/* padding-left:10px;
-padding-right:10px;*/
-}
 QDialog#CoinControlDialog .QDialogButtonBox#buttonBox QPushButton {
 	/* Coin Control 'OK' button */
 }
-QDialog#CoinControlDialog .QFrame#frame .QRadioButton#radioTreeMode {
-	/* Coin Control Tree Mode Selector */
-	color: #818181;
-	background-color: transparent;
-}
-QDialog#CoinControlDialog .QFrame#frame .QRadioButton#radioListMode {
-	/* Coin Control List Mode Selector */
-	color: #818181;
-	background-color: transparent;
-}
 QDialog#CoinControlDialog QHeaderView::section:first {
-	/* Bug Fix: the number "1" displays in this table for some reason... */
 	color: transparent;
 }
 
