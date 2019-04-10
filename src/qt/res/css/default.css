@@ -233,10 +233,50 @@ QLabel#labelOverviewHeaderLeft {
 	font-weight: 600;
 	/* qproperty-minimumSize:464px 30px; */
 }
-.QRadioButton {
+
+QRadioButton {
 	/* Radio Button Labels */
-	color: #DCDCDC;
+    color: #DCDCDC;
+    background-color: transparent;
 }
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+QRadioButton::indicator:unchecked
+{
+    image: url(':/images/radio_normal');
+}
+QRadioButton::indicator:hover:unchecked
+{
+    image: url(':/images/radio_normal_hover');
+}
+QRadioButton::indicator:unchecked:pressed
+{
+    image: url(':/images/radio_normal_pressed');
+}
+QRadioButton::indicator:checked
+{
+    image: url(':/images/radio_checked');
+}
+QRadioButton::indicator:checked:hover
+{
+    image: url(':/images/radio_checked_hover');
+}
+QRadioButton::indicator:checked:pressed
+{
+    image: url(':/images/radio_checked_pressed');
+}
+QRadioButton::indicator:checked:disabled
+{
+    image: url(':/images/radio_disabled_checked');
+}
+QRadioButton::indicator:unchecked:disabled
+{
+    image: url(':/images/radio_disabled');
+}
+
 
 QCheckBox{
     font-family: "Lato";
