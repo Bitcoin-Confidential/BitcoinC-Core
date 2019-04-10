@@ -1204,7 +1204,7 @@ void BitcoinGUI::setEncryptionStatus(int status)
         labelWalletEncryptionIcon->show();
         labelWalletEncryptionIcon->setPixmap(platformStyle->ColorIcon(":/icons/lock_open", COLOR_NEGATIVE).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
         labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>not encrypted</b>. Click the opened lock to encrypt it."));
-        encryptWalletAction->setChecked(true);
+        encryptWalletAction->setChecked(false);
         changePassphraseAction->setEnabled(false);
         encryptWalletAction->setEnabled(true); // TODO: decrypt currently not supported
         break;
