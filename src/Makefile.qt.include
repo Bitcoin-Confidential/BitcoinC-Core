@@ -408,7 +408,16 @@ RES_IMAGES = \
   qt/res/images/upArrow_normal_small.png \
   qt/res/images/upArrow_hover_small.png \
   qt/res/images/rightArrow_normal_small.png \
-  qt/res/images/rightArrow_hover_small.png
+  qt/res/images/rightArrow_hover_small.png  \
+  qt/res/images/rightArrow_normal_small.png \
+  qt/res/images/checkbox_normal.png \
+  qt/res/images/checkbox_normal_hover.png \
+  qt/res/images/checkbox_normal_pressed.png \
+  qt/res/images/checkbox_checked.png \
+  qt/res/images/checkbox_checked_hover.png \
+  qt/res/images/checkbox_checked_pressed.png \
+  qt/res/images/checkbox_disabled.png \
+  qt/res/images/checkbox_disabled_pressed.png
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
