@@ -134,8 +134,8 @@ void ReceiveRequestDialog::update()
     QString uri = GUIUtil::formatBitcoinURI(info);
     ui->btnSaveAs->setEnabled(false);
     QString html;
-    html += "<html><font face='verdana, arial, helvetica, sans-serif'>";
-    html += "<b>"+tr("Payment information")+"</b><br>";
+    html += "<html><font face='Lato'>";
+    html += "<b style=\"font-size:14px;\">"+tr("Payment information")+"</b><br><br>";
     html += "<b>"+tr("URI")+"</b>: ";
     html += "<a style=\"color:#edd271;\" href=\""+uri+"\">" + GUIUtil::HtmlEscape(uri) + "</a><br>";
     html += "<b>"+tr("Address")+"</b>: " + GUIUtil::HtmlEscape(info.address) + "<br>";
@@ -165,33 +165,50 @@ void ReceiveRequestDialog::update()
                 ui->lblQRCode->setText(tr("Error encoding URI into QR Code."));
                 return;
             }
-            QImage qrImage = QImage(code->width + 8, code->width + 8, QImage::Format_RGB32);
-            qrImage.fill(0xffffff);
+            QImage qrImage = QImage(code->width + 4, code->width + 4, QImage::Format_RGB32);
+            qrImage.fill(0x202020);
             unsigned char *p = code->data;
             for (int y = 0; y < code->width; y++)
             {
                 for (int x = 0; x < code->width; x++)
                 {
-                    qrImage.setPixel(x + 4, y + 4, ((*p & 1) ? 0x0 : 0xffffff));
+                    qrImage.setPixel(x + 2, y, ((*p & 1) ? 0xD8A80A : 0x202020));
                     p++;
                 }
             }
             QRcode_free(code);
 
-            QImage qrAddrImage = QImage(QR_IMAGE_SIZE, QR_IMAGE_SIZE+20, QImage::Format_RGB32);
-            qrAddrImage.fill(0xffffff);
+            QFont font = QFont("Lato");
+            QString strTitle = "Bitcoin Confidential";
+
+            QImage qrAddrImage = QImage(QR_IMAGE_SIZE, QR_IMAGE_SIZE+60, QImage::Format_RGB32);
+            qrAddrImage.fill(0x202020);
             QPainter painter(&qrAddrImage);
-            painter.drawImage(0, 0, qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE));
-            QFont font = GUIUtil::fixedPitchFont();
             QRect paddedRect = qrAddrImage.rect();
+            qreal font_size_title = GUIUtil::calculateIdealFontSize(paddedRect.width() - 10, strTitle, font, 4, 28);
+            font.setPointSizeF(font_size_title);
+            painter.setFont(font);
+
+            painter.setPen(QColor("#E0E0E0"));
+
+            QFontMetrics fm(font);
+            painter.drawText((QR_IMAGE_SIZE - fm.width(strTitle) - 5)/2, fm.height() + 2, strTitle);
+            painter.drawImage(0, 46, qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE));
 
             // calculate ideal font size
-            qreal font_size = GUIUtil::calculateIdealFontSize(paddedRect.width() - 20, info.address, font);
-            font.setPointSizeF(font_size);
 
+            QString addr1 = info.address.left(info.address.size() / 2);
+            QString addr2 = info.address.right(info.address.size() / 2);
+
+            qreal font_size = GUIUtil::calculateIdealFontSize(paddedRect.width() - 20, addr1, font);
+
+            font.setPointSizeF(font_size);
             painter.setFont(font);
-            paddedRect.setHeight(QR_IMAGE_SIZE+12);
-            painter.drawText(paddedRect, Qt::AlignBottom|Qt::AlignCenter, info.address);
+
+            paddedRect.setHeight(QR_IMAGE_SIZE+39);
+            painter.drawText(paddedRect, Qt::AlignBottom|Qt::AlignCenter, addr1);
+            paddedRect.setHeight(QR_IMAGE_SIZE+51);
+            painter.drawText(paddedRect, Qt::AlignBottom|Qt::AlignCenter, addr2);
             painter.end();
 
             ui->lblQRCode->setPixmap(QPixmap::fromImage(qrAddrImage));
