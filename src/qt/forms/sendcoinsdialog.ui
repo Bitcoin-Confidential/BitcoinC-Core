@@ -26,13 +26,13 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="leftMargin">
-      <number>13</number>
+      <number>9</number>
      </property>
      <property name="topMargin">
       <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>13</number>
+      <number>9</number>
      </property>
      <property name="bottomMargin">
       <number>3</number>
