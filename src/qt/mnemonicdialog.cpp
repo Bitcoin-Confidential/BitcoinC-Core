@@ -46,7 +46,7 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
 
 #if ENABLE_USBDEVICE
 #else
-    ui->tabWidget->setTabEnabled(2, false);
+//    ui->tabWidget->setTabEnabled(2, false);
 #endif
 
     if (!wm->wallet().isDefaultAccountSet()) {
@@ -68,8 +68,13 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
         ui->cbxLanguage->addItem(mnLanguagesDesc[l], QString(mnLanguagesTag[l]));
     }
 
+    tabButtons.addButton(ui->btnTabImport, 0);
+    tabButtons.addButton(ui->btnTabCreate, 1);
+
+    connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
+
     return;
-};
+}
 
 MnemonicDialog::~MnemonicDialog()
 {
@@ -121,7 +126,7 @@ void MnemonicDialog::on_btnGenerate_clicked()
     }
 
     return;
-};
+}
 
 //void MnemonicDialog::on_btnImportFromHwd_clicked()
 //{

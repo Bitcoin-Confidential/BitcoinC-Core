@@ -1599,7 +1599,10 @@ QAbstractScrollArea::corner {
 #btnDisplay,
 /* Sign/Verify dialog buttons */
 #btnSignMessage,
-#btnVerifyMessage{
+#btnVerifyMessage,
+/* Mnemonic dialog buttons */
+#btnTabImport,
+#btnTabCreate{
     background: none;
     font-size: 12px;
 	border-radius: 0px;
@@ -1627,7 +1630,10 @@ QAbstractScrollArea::corner {
 #btnDisplay:hover:checked,
 /* Sign/Verify dialog buttons */
 #btnSignMessage:hover:checked,
-#btnVerifyMessage:hover:checked{
+#btnVerifyMessage:hover:checked,
+/* Mnemonic dialog buttons */
+#btnTabImport:hover:checked,
+#btnTabCreate:hover:checked{
     border: none;
     color: #DCDCDC;
     border-radius: 0px;
@@ -1654,7 +1660,10 @@ QAbstractScrollArea::corner {
 #btnDisplay:hover:!checked,
 /* Sign/Verify dialog buttons */
 #btnSignMessage:hover:!checked,
-#btnVerifyMessage:hover:!checked{
+#btnVerifyMessage:hover:!checked,
+/* Mnemonic dialog buttons */
+#btnTabImport:hover:!checked,
+#btnTabCreate:hover:!checked{
     border: none;
     color: #DCDCDC;
     border-radius: 0px;
@@ -1681,7 +1690,10 @@ QAbstractScrollArea::corner {
 #btnDisplay:checked,
 /* Sign/Verify dialog buttons */
 #btnSignMessage:checked,
-#btnVerifyMessage:checked{
+#btnVerifyMessage:checked,
+/* Mnemonic dialog buttons */
+#btnTabImport:checked,
+#btnTabCreate:checked{
     border: none;
     color: #DCDCDC;
     border-radius: 0px;
@@ -1708,7 +1720,10 @@ QAbstractScrollArea::corner {
 #btnDisplay:hover:pressed,
 /* Sign/Verify dialog buttons */
 #btnSignMessage:hover:pressed,
-#btnVerifyMessage:hover:pressed{
+#btnVerifyMessage:hover:pressed,
+/* Mnemonic dialog buttons */
+#btnTabImport:hover:pressed,
+#btnTabCreate:hover:pressed{
     border: none;
     border-radius: 0px;
     border-bottom: 3px solid #FEC60D;

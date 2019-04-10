@@ -7,6 +7,7 @@
 
 #include <QDialog>
 #include <QThread>
+#include <QButtonGroup>
 #include <univalue.h>
 
 class RPCThread : public QThread
@@ -57,6 +58,8 @@ private Q_SLOTS:
 
 private:
     Ui::MnemonicDialog *ui;
+
+    QButtonGroup tabButtons;
 };
 
 #endif // BITCOINC_QT_MNEMONICDIALOG_H

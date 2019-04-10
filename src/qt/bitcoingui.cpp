@@ -763,6 +763,7 @@ void BitcoinGUI::showMnemonicClicked()
         return;
     }
     MnemonicDialog dlg(this, walletModel);
+    dlg.setStyleSheet(GUIUtil::loadStyleSheet());
     dlg.exec();
 
     setHDStatus(walletModel->wallet().hdEnabled());

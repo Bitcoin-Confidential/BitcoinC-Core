@@ -13,29 +13,69 @@
   <property name="windowTitle">
    <string>HD Wallet Setup</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QTabWidget" name="tabWidget">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QLabel" name="lblHelp">
      <property name="enabled">
       <bool>true</bool>
      </property>
-     <property name="currentIndex">
-      <number>1</number>
+     <property name="text">
+      <string/>
      </property>
-     <widget class="QWidget" name="tabImport">
-      <attribute name="title">
-       <string>Import</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btnTabImport">
+       <property name="text">
+        <string>Import</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnTabCreate">
+       <property name="text">
+        <string>Create</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
         <widget class="QLabel" name="mnemonicLabel">
          <property name="text">
           <string>Import Recovery Phrase</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item>
         <widget class="QTextEdit" name="tbxMnemonic">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>250</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Enter your BIP39 compliant Recovery Phrase/Mnemonic - Typing your own words will probably not work how you expect, since the words require a particular structure (the last word is a checksum).</string>
          </property>
@@ -44,7 +84,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item>
         <layout class="QFormLayout" name="mnemonicLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="passwordLabel">
@@ -55,6 +95,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="edtPassword">
+           <property name="minimumSize">
+            <size>
+             <width>400</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="toolTip">
             <string>Enter a passphrase to protect your Recovery Phrase (optional)</string>
            </property>
@@ -69,6 +115,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QCheckBox" name="chkImportChain">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="toolTip">
             <string>Only needed if you're importing </string>
            </property>
@@ -99,7 +151,7 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0">
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QPushButton" name="btnImport">
@@ -156,20 +208,23 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabCreate">
-      <attribute name="title">
-       <string>Create</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
+     <widget class="QWidget" name="page_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
         <widget class="QLabel" name="mnemonicLabel_2">
          <property name="text">
           <string>Create New Recovery Phrase</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item>
         <widget class="QTextEdit" name="tbxMnemonicOut">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>250</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>This is your randomly generated Recovery Phrase/Mnemonic</string>
          </property>
@@ -181,7 +236,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item>
         <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label">
@@ -198,9 +253,21 @@
          </item>
          <item row="0" column="1">
           <widget class="QSpinBox" name="spinEntropy">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
-             <width>40</width>
+             <width>100</width>
              <height>16777215</height>
             </size>
            </property>
@@ -270,7 +337,7 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0">
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QPushButton" name="btnGenerate">
@@ -327,16 +394,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="lblHelp">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
     </widget>
    </item>
   </layout>
