@@ -48,6 +48,7 @@ public:
 
     void setFocus();
     void hideDeleteButton();
+    void hideMessage();
 
 public Q_SLOTS:
     void clear();

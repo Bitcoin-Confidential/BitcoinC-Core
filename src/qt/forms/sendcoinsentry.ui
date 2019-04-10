@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>674</width>
-    <height>150</height>
+    <height>145</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    <bool>false</bool>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>1</number>
   </property>
   <widget class="QFrame" name="SendCoins">
    <property name="toolTip">
@@ -224,7 +224,7 @@
          <item row="5" column="0">
           <widget class="QLabel" name="lblNarration">
            <property name="text">
-            <string>Narration</string>
+            <string>Message</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -300,19 +300,6 @@
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="3" column="0">
-       <widget class="QLabel" name="lblNarration_cs">
-        <property name="text">
-         <string>Narration</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>edtNarration_cs</cstring>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="spendAddrLabel">
         <property name="text">
@@ -336,19 +323,6 @@
         </property>
         <property name="buddy">
          <cstring>payAmount_cs</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="stakeAddrLabel">
-        <property name="text">
-         <string> Stake </string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>stakeAddr</cstring>
         </property>
        </widget>
       </item>
@@ -559,19 +533,16 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="edtNarration_cs">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="0" column="0">
+       <widget class="QLabel" name="stakeAddrLabel">
+        <property name="text">
+         <string> Stake </string>
         </property>
-        <property name="toolTip">
-         <string>A short message sent over the Bitcoin Confidential network.</string>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="maxLength">
-         <number>24</number>
+        <property name="buddy">
+         <cstring>stakeAddr</cstring>
         </property>
        </widget>
       </item>

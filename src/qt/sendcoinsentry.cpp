@@ -80,6 +80,12 @@ SendCoinsEntry::~SendCoinsEntry()
     delete ui;
 }
 
+void SendCoinsEntry::hideMessage()
+{
+    ui->lblNarration->hide();
+    ui->edtNarration->hide();
+}
+
 void SendCoinsEntry::on_pasteButton_clicked()
 {
     // Paste text from clipboard into recipient field
@@ -182,7 +188,6 @@ void SendCoinsEntry::clear()
     ui->payAmount_cs->clear();
     ui->checkboxSubtractFeeFromAmount_cs->setCheckState(Qt::Unchecked);
     ui->edtNarration->clear();
-    ui->edtNarration_cs->clear();
 
     // update the display unit, to not use the default ("BTC")
     updateDisplayUnit();
@@ -283,7 +288,7 @@ SendCoinsRecipient SendCoinsEntry::getValue()
         recipient.stake_address = ui->stakeAddr->text();
         recipient.spend_address = ui->spendAddr->text();
         recipient.amount = ui->payAmount_cs->value();
-        recipient.narration = ui->edtNarration_cs->text();
+        recipient.narration = "";
         recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount_cs->checkState() == Qt::Checked);
 
         return recipient;
