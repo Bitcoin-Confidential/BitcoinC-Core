@@ -245,39 +245,48 @@ QCheckBox{
     padding: 5px;
     margin: 3px;
 }
+QTreeWidget::indicator,
 QCheckBox::indicator {
     width: 16px;
     height: 16px;
     margin-right: 5px;
 }
+QTreeWidget::indicator:unchecked,
 QCheckBox::indicator:unchecked
 {
     image: url(':/images/checkbox_normal');
 }
+QTreeWidget::indicator:hover:unchecked,
 QCheckBox::indicator:hover:unchecked
 {
     image: url(':/images/checkbox_normal_hover');
 }
+QTreeWidget::indicator:unchecked:pressed,
 QCheckBox::indicator:unchecked:pressed
 {
     image: url(':/images/checkbox_normal_pressed');
 }
+QTreeWidget::indicator:checked,
 QCheckBox::indicator:checked
 {
     image: url(':/images/checkbox_checked');
 }
+QTreeWidget::indicator:checked:hover,
 QCheckBox::indicator:checked:hover
 {
     image: url(':/images/checkbox_checked_hover');
 }
+QTreeWidget::indicator:checked:pressed,
 QCheckBox::indicator:checked:pressed
 {
     image: url(':/images/checkbox_checked_pressed');
 }
+QTreeWidget::indicator:checked:disabled,
 QCheckBox::indicator:checked:disabled
 {
     image: url(':/images/checkbox_disabled_checked');
 }
+QTreeWidget::indicator:unchecked:disabled,
 QCheckBox::indicator:unchecked:disabled
 {
     image: url(':/images/checkbox_disabled');
