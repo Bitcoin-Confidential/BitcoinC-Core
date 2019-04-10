@@ -133,7 +133,7 @@ StakingDialog::~StakingDialog()
     delete activateCold;
 }
 
-void StakingDialog::updateStakingUI()
+void StakingDialog::updateStakingUI(bool fForce)
 {
     if( ShutdownRequested() ){
         updateStakingTimer.stop();
@@ -148,7 +148,7 @@ void StakingDialog::updateStakingUI()
     AddThousandsSpaces(strHeight);
     ui->lblCurrentHeight->setText(strHeight);
 
-    if( QWidget::sender() == clientModel && IsInitialBlockDownload() ){
+    if( QWidget::sender() == clientModel && IsInitialBlockDownload() && !fForce ){
         return;
     }
 
@@ -417,7 +417,7 @@ void StakingDialog::setModel(WalletModel *_model)
 
     if(_model && _model->getOptionsModel())
     {
-        updateStakingUI();
+        updateStakingUI(true);
 
         if( addressPage ){
             addressPage->setModel(_model->getStakingAddressTableModel());

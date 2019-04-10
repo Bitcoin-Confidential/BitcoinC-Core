@@ -79,7 +79,7 @@ private Q_SLOTS:
     void on_btnChangeColdStakingAddress_clicked();
     void on_btnChangeStakingStatus_clicked();
     void modeChanged(int nNewMode);
-    void updateStakingUI();
+    void updateStakingUI(bool fForce = false);
 
 Q_SIGNALS:
     // Fired when a message should be reported to the user
