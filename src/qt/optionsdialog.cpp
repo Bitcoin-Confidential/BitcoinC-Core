@@ -89,7 +89,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->stackedWidget->removeWidget(ui->tabWindow);
     ui->btnWindow->hide();
 #else
-    tabButtons.addButton(ui->btnWallet, nIndex++);
+    tabButtons.addButton(ui->btnWindow, nIndex++);
 #endif
 
     tabButtons.addButton(ui->btnDisplay, nIndex++);
