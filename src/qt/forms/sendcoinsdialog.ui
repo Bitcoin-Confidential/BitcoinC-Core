@@ -14,37 +14,33 @@
    <string>Send Coins</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,1,0,0">
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
    <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="leftMargin">
-      <number>9</number>
+      <number>13</number>
      </property>
      <property name="topMargin">
-      <number>9</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>9</number>
+      <number>13</number>
      </property>
      <property name="bottomMargin">
-      <number>0</number>
+      <number>3</number>
      </property>
      <item>
       <widget class="QLabel" name="sendTabHeaderLabel">
        <property name="text">
-        <string>All spending funds are sent anonymously.  Only the sender and receiver have details of their side of the transaction.  Funds require 12 confirmations (24 minutes) before sending.</string>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="convertToHeaderLabel">
-       <property name="text">
-        <string>Staking funds cannot be sent out of your wallet without converting to spending. After converting to spending, 12 confirmations (24 minutes) are required before sending.</string>
+        <string notr="true"/>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -673,8 +669,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>818</width>
-        <height>564</height>
+        <width>814</width>
+        <height>624</height>
        </rect>
       </property>
       <property name="sizePolicy">

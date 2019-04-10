@@ -36,7 +36,7 @@ class SendCoinsDialog : public QDialog
 
 public:
 
-    explicit SendCoinsDialog(const PlatformStyle *platformStyle, bool fStakingDialog = false, bool isConvertToTab = false, QWidget *parent = 0);
+    explicit SendCoinsDialog(const PlatformStyle *platformStyle, bool fStakingDialog = false, bool fIsConvertToTab = false, QWidget *parent = 0);
     ~SendCoinsDialog();
 
     void setClientModel(ClientModel *clientModel);
@@ -74,6 +74,7 @@ private:
     const PlatformStyle *platformStyle;
     CoinControlDialog * coinControlDialog;
     bool fStakingDialog;
+    bool fIsConvertTab;
     CoinControlDialog::ControlModes nMode;
 
     // Process WalletModel::SendCoinsReturn and generate a pair consisting

@@ -31,17 +31,10 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, QWid
 {
     ui->setupUi(this);
 
-    if (!_platformStyle->getImagesOnButtons()) {
-        ui->clearButton->setIcon(QIcon());
-        ui->receiveButton->setIcon(QIcon());
-        ui->showRequestButton->setIcon(QIcon());
-        ui->removeRequestButton->setIcon(QIcon());
-    } else {
-        ui->clearButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/remove"));
-        ui->receiveButton->setIcon(_platformStyle->SingleColorIcon(":/icons/receiving_addresses"));
-        ui->showRequestButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/eye"));
-        ui->removeRequestButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/remove"));
-    }
+    ui->clearButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/remove"));
+    ui->receiveButton->setIcon(_platformStyle->SingleColorIcon(":/icons/receiving_addresses"));
+    ui->showRequestButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/eye"));
+    ui->removeRequestButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/remove"));
 
     // context menu actions
     QAction *copyURIAction = new QAction(tr("Copy URI"), this);
@@ -105,6 +98,8 @@ void ReceiveCoinsDialog::setModel(WalletModel *_model)
 
         // eventually disable the main receive button if private key operations are disabled
         ui->receiveButton->setEnabled(!model->privateKeysDisabled());
+
+        ui->receiveTabHeaderLabel->setText(GUIUtil::GetSpendingWaitInfo());
     }
 }
 

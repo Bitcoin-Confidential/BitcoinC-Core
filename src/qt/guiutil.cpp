@@ -973,4 +973,25 @@ QString loadStyleSheet()
     return styleSheet;
 }
 
+QString GetSpendingWaitInfo()
+{
+    QString strSpending = QObject::tr("All spending funds are sent anonymously. "
+                          "Only the sender and receiver have details of their side of the transaction. "
+                          "Funds require %1 confirmations (%2 minutes) before sending.");
+
+    int nMinConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
+    int nMinutes = (nMinConfirmations * Params().GetTargetSpacing()) / 60;
+    return strSpending.arg(nMinConfirmations).arg(nMinutes);
+}
+
+QString GetStakingWaitInfo()
+{
+    int nMinConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
+    int nMinutes = (nMinConfirmations * Params().GetTargetSpacing()) / 60;
+
+    QString stakingInfo = QObject::tr("Staking funds cannot be sent out of your wallet without converting to spending. "
+                          "After converting to spending, %1 confirmations (%2 minutes) are required before sending.");
+    return stakingInfo.arg(nMinConfirmations).arg(nMinutes);
+}
+
 } // namespace GUIUtil

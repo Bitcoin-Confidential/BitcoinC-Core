@@ -56,7 +56,7 @@ static int getIndexForConfTarget(int target) {
     return confTargets.size() - 1;
 }
 
-SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStakingDialog, bool isConvertToTab, QWidget *parent) :
+SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStakingDialog, bool fIsConvertToTab, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SendCoinsDialog),
     clientModel(0),
@@ -66,6 +66,7 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
     platformStyle(_platformStyle),
     coinControlDialog(nullptr),
     fStakingDialog(fStakingDialog),
+    fIsConvertTab(fIsConvertToTab),
     nMode(CoinControlDialog::SPENDING)
 {
     ui->setupUi(this);
@@ -136,12 +137,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
     ui->customFee->setValue(settings.value("nTransactionFee").toLongLong());
     ui->checkBoxMinimumFee->setChecked(settings.value("fPayOnlyMinFee").toBool());
     minimizeFeeSection(settings.value("fFeeSectionMinimized").toBool());
-
-	if (fStakingDialog)
-		ui->sendTabHeaderLabel->hide();
-	  
-    if (!isConvertToTab)
-		ui->convertToHeaderLabel->hide();
 }
 
 bool SendCoinsDialog::eventFilter(QObject *o, QEvent *e)
@@ -224,6 +219,15 @@ void SendCoinsDialog::setModel(WalletModel *_model)
             ui->confTargetSelector->setCurrentIndex(getIndexForConfTarget(model->wallet().getConfirmTarget()));
         else
             ui->confTargetSelector->setCurrentIndex(getIndexForConfTarget(settings.value("nConfTarget").toInt()));
+
+        if( !fStakingDialog ){
+            ui->sendTabHeaderLabel->setText(GUIUtil::GetSpendingWaitInfo());
+        }else if( fIsConvertTab ){
+            ui->sendTabHeaderLabel->setText(GUIUtil::GetStakingWaitInfo());
+        }else{
+            ui->sendTabHeaderLabel->hide();
+        }
+
     }
 }
 
@@ -618,6 +622,9 @@ SendCoinsEntry *SendCoinsDialog::addEntry()
     connect(entry, SIGNAL(payAmountChanged()), this, SLOT(coinControlUpdateLabels()));
     connect(entry, SIGNAL(subtractFeeFromAmountChanged()), this, SLOT(coinControlUpdateLabels()));
 
+    if( GetCoinControlFlag() != CoinControlDialog::SPENDING ){
+        entry->hideMessage();
+    }
     // Focus the field, so that entry can start immediately
     entry->clear();
     entry->setFocus();
@@ -648,6 +655,10 @@ SendCoinsEntry *SendCoinsDialog::addEntryCS()
     connect(entry, SIGNAL(useAvailableBalance(SendCoinsEntry*)), this, SLOT(useAvailableBalance(SendCoinsEntry*)));
     connect(entry, SIGNAL(payAmountChanged()), this, SLOT(coinControlUpdateLabels()));
     connect(entry, SIGNAL(subtractFeeFromAmountChanged()), this, SLOT(coinControlUpdateLabels()));
+
+    if( GetCoinControlFlag() != CoinControlDialog::SPENDING ){
+        entry->hideMessage();
+    }
 
     // Focus the field, so that entry can start immediately
     entry->clear();

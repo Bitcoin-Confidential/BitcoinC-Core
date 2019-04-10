@@ -206,6 +206,9 @@ namespace GUIUtil
 
     qreal calculateIdealFontSize(int width, const QString& text, QFont font, qreal minPointSize = 4, qreal startPointSize = 14);
 
+    QString GetSpendingWaitInfo();
+    QString GetStakingWaitInfo();
+
     class ClickableLabel : public QLabel
     {
         Q_OBJECT
