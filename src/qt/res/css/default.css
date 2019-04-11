@@ -1453,7 +1453,10 @@ QLabel#transactionSum {
 
 QDialog#TransactionDescDialog QTextEdit {
 	/* Contents of Receive Coin Dialog */
-	border: 1px solid #d7d7d7;
+	border: 1px solid rgba(255,255,255,0.08);
+    background-color: #232323;
+    color: #DCDCDC;
+    border-radius: 5px;
 }
 
 QLineEdit {

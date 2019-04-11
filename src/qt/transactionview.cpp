@@ -580,6 +580,7 @@ void TransactionView::showDetails()
     if(!selection.isEmpty())
     {
         TransactionDescDialog *dlg = new TransactionDescDialog(selection.at(0));
+        dlg->setStyleSheet(GUIUtil::loadStyleSheet());
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         dlg->show();
     }
