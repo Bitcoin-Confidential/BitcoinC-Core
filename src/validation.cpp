@@ -272,7 +272,7 @@ std::atomic_bool g_is_mempool_loaded{false};
 CScript COINBASE_FLAGS;
 
 
-const std::string strMessageMagic = "Bitcoin Signed Message:\n";
+const std::string strMessageMagic = "BitcoinC Signed Message:\n";
 
 extern bool IncomingBlockChecked(const CBlock &block, CValidationState &state);
 
