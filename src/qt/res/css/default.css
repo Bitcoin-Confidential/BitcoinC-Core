@@ -648,7 +648,7 @@ QScrollBar::add-line:vertical:pressed,
 QScrollBar::sub-line:vertical:pressed,
 QScrollBar::add-line:horizontal:pressed,
 QScrollBar::sub-line:horizontal:pressed {
-	background-color: #e0e0e0;
+	background-color: #E0E0E0;
 }
 QScrollBar::sub-line:vertical {
 	/* Vertical - top button position */
@@ -693,18 +693,22 @@ QScrollBar:right-arrow {
     background: none;
 }
 QSlider::handle:horizontal {
-	background-color: #8a8a8a;
+	background-color: #FEC60D;
+	border: 0;
+	border-radius: 6px;
+}
+QSlider::handle:horizontal:hover {
+	background-color: #BC9427;
 	border: 0;
 	border-radius: 6px;
 }
 QSlider::sub-page:horizontal {
-	background-color: #414a55;
+	background-color: #E0E0E0;
 	border: 0;
 	border-radius: 6px;
 }
 QSlider::add-page:horizontal {
-	/* background-color:rgba(255, 255, 255, 0.08); */
-	background-color: #232323;
+	background-color: #E0E0E0;
 	border: 0;
 	border-radius: 6px;
 }
