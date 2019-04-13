@@ -342,8 +342,8 @@ static UniValue setlabel(const JSONRPCRequest& request)
             "1. \"address\"         (string, required) The bitcoinc address to be associated with a label.\n"
             "2. \"label\"           (string, required) The label to assign to the address.\n"
             "\nExamples:\n"
-            + HelpExampleCli("setlabel", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" \"tabby\"")
-            + HelpExampleRpc("setlabel", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\", \"tabby\"")
+            + HelpExampleCli("setlabel", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" \"tabby\"")
+            + HelpExampleRpc("setlabel", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\", \"tabby\"")
         );
 
     LOCK2(cs_main, pwallet->cs_wallet);
@@ -408,8 +408,8 @@ static UniValue getaccount(const JSONRPCRequest& request)
             "\nResult:\n"
             "\"accountname\"        (string) the account address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getaccount", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\"")
-            + HelpExampleRpc("getaccount", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\"")
+            + HelpExampleCli("getaccount", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\"")
+            + HelpExampleRpc("getaccount", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\"")
         );
 
     LOCK2(cs_main, pwallet->cs_wallet);
@@ -753,11 +753,11 @@ static UniValue signmessage(const JSONRPCRequest& request)
             "\nUnlock the wallet for 30 seconds\n"
             + HelpExampleCli("walletpassphrase", "\"mypassphrase\" 30") +
             "\nCreate the signature\n"
-            + HelpExampleCli("signmessage", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" \"my message\"") +
+            + HelpExampleCli("signmessage", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" \"my message\"") +
             "\nVerify the signature\n"
-            + HelpExampleCli("verifymessage", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" \"signature\" \"my message\"") +
+            + HelpExampleCli("verifymessage", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" \"signature\" \"my message\"") +
             "\nAs json rpc\n"
-            + HelpExampleRpc("signmessage", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\", \"my message\"")
+            + HelpExampleRpc("signmessage", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\", \"my message\"")
         );
 
     LOCK2(cs_main, pwallet->cs_wallet);
@@ -819,13 +819,13 @@ static UniValue getreceivedbyaddress(const JSONRPCRequest& request)
             "amount   (numeric) The total amount in " + CURRENCY_UNIT + " received at this address.\n"
             "\nExamples:\n"
             "\nThe amount from transactions with at least 1 confirmation\n"
-            + HelpExampleCli("getreceivedbyaddress", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\"") +
+            + HelpExampleCli("getreceivedbyaddress", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\"") +
             "\nThe amount including unconfirmed transactions, zero confirmations\n"
-            + HelpExampleCli("getreceivedbyaddress", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" 0") +
+            + HelpExampleCli("getreceivedbyaddress", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" 0") +
             "\nThe amount with at least 6 confirmation\n"
-            + HelpExampleCli("getreceivedbyaddress", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" 6") +
+            + HelpExampleCli("getreceivedbyaddress", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\" 6") +
             "\nAs a json rpc call\n"
-            + HelpExampleRpc("getreceivedbyaddress", "\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\", 6")
+            + HelpExampleRpc("getreceivedbyaddress", "\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\", 6")
        );
 
     // Make sure the results are valid at least up to the most recent block
@@ -1168,7 +1168,7 @@ static UniValue sendfrom(const JSONRPCRequest& request)
             "                       the spend.\n"
             "2. \"toaddress\"         (string, required) The bitcoin address to send funds to.\n"
             "3. amount                (numeric or string, required) The amount in " + CURRENCY_UNIT + " (transaction fee is added on top).\n"
-            "4. minconf               (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
+            "4. minconf               (numeric, optional, default=12) Only use funds with at least this many confirmations.\n"
             "5. \"comment\"           (string, optional) A comment used to store what the transaction is for. \n"
             "                                     This is not part of the transaction, just kept in your wallet.\n"
             "6. \"comment_to\"        (string, optional) An optional comment to store the name of the person or organization \n"
@@ -1245,7 +1245,7 @@ static UniValue sendmany(const JSONRPCRequest& request)
             "      \"address\":amount   (numeric or string) The bitcoinc address is the key, the numeric amount (can be string) in " + CURRENCY_UNIT + " is the value\n"
             "      ,...\n"
             "    }\n"
-            "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
+            "3. minconf                 (numeric, optional, default=12) Only use the balance confirmed at least this many times.\n"
             "4. \"comment\"             (string, optional) A comment\n"
             "5. subtractfeefrom         (array, optional) A json array with addresses.\n"
             "                           The fee will be equally deducted from the amount of each selected address.\n"
@@ -1266,13 +1266,15 @@ static UniValue sendmany(const JSONRPCRequest& request)
             "                                    the number of addresses.\n"
             "\nExamples:\n"
             "\nSend two amounts to two different addresses:\n"
-            + HelpExampleCli("sendmany", "\"\" \"{\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\"") +
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\"") +
             "\nSend two amounts to two different addresses setting the confirmation and comment:\n"
-            + HelpExampleCli("sendmany", "\"\" \"{\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 6 \"testing\"") +
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 12 \"testing\"") +
+            "\nSend two amounts to two different addresses setting the confirmation and comment no subtract fee not replaceable Economical fee to confirm in 10 blocks:\n"
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 12 \"testing\" \"[]\" false 10 ECONOMICAL") +
             "\nSend two amounts to two different addresses, subtract fee from amount:\n"
-            + HelpExampleCli("sendmany", "\"\" \"{\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 1 \"\" \"[\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\",\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\"]\"") +
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 12 \"\" \"[\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\",\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\"]\"") +
             "\nAs a json rpc call\n"
-            + HelpExampleRpc("sendmany", "\"\", {\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\":0.01,\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\":0.02}, 6, \"testing\"");
+            + HelpExampleRpc("sendmany", "\"\", {\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\":0.01,\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\":0.02}, 12, \"testing\"");
     } else {
         help_text = "sendmany \"\" \"fromaccount\" {\"address\":amount,...} ( minconf \"comment\" [\"address\",...] replaceable conf_target \"estimate_mode\")\n"
             "\nSend multiple times. Amounts are double-precision floating point numbers."
@@ -1284,7 +1286,7 @@ static UniValue sendmany(const JSONRPCRequest& request)
             "      \"address\":amount   (numeric or string) The bitcoinc address is the key, the numeric amount (can be string) in " + CURRENCY_UNIT + " is the value\n"
             "      ,...\n"
             "    }\n"
-            "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
+            "3. minconf                 (numeric, optional, default=12) Only use the balance confirmed at least this many times.\n"
             "4. \"comment\"             (string, optional) A comment\n"
             "5. \"subtractfeefrom\"     (array, optional) A json array with addresses.\n"
             "                           The fee will be equally deducted from the amount of each selected address.\n"
@@ -1305,13 +1307,15 @@ static UniValue sendmany(const JSONRPCRequest& request)
             "                                    the number of addresses.\n"
             "\nExamples:\n"
             "\nSend two amounts to two different addresses:\n"
-            + HelpExampleCli("sendmany", "\"\" \"{\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\"") +
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\"") +
             "\nSend two amounts to two different addresses, setting the confirmation and comment:\n"
-            + HelpExampleCli("sendmany", "\"\" \"{\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 6 \"testing\"") +
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 12 \"testing\"") +
+            "\nSend two amounts to two different addresses setting the confirmation and comment no subtract fee not replaceable Economical fee to confirm in 10 blocks:\n"
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 12 \"testing\" \"[]\" false 10 ECONOMICAL") +
             "\nSend two amounts to two different addresses, subtract fee from amount:\n"
-            + HelpExampleCli("sendmany", "\"\" \"{\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 1 \"\" \"[\\\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\",\\\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\"]\"") +
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\":0.01,\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\":0.02}\" 12 \"\" \"[\\\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\\\",\\\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\\\"]\"") +
             "\nAs a json rpc call\n"
-            + HelpExampleRpc("sendmany", "\"\", {\"bbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\":0.01,\"bNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\":0.02}, 6, \"testing\"");
+            + HelpExampleRpc("sendmany", "\"\", {\"BbgpWMXWA5J2zq4oyHae3DocYG4nKBdeU3\":0.01,\"BNLChUQ8sUpFxwsJWSXcXHPNZ4c48WPD3J\":0.02}, 12, \"testing\"");
     }
 
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 8) throw std::runtime_error(help_text);
