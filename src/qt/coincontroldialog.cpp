@@ -137,12 +137,12 @@ CoinControlDialog::CoinControlDialog(const PlatformStyle *_platformStyle, Contro
     // (un)select all
     connect(ui->pushButtonSelectAll, SIGNAL(clicked()), this, SLOT(buttonSelectAllClicked()));
 
-    ui->treeWidget->setColumnWidth(COLUMN_CHECKBOX, 84);
+    ui->treeWidget->setColumnWidth(COLUMN_CHECKBOX, 100);
     ui->treeWidget->setColumnWidth(COLUMN_AMOUNT, 120);
     ui->treeWidget->setColumnWidth(COLUMN_LABEL, 160);
     ui->treeWidget->setColumnWidth(COLUMN_ADDRESS, 320);
     ui->treeWidget->setColumnWidth(COLUMN_DATE, 130);
-    ui->treeWidget->setColumnWidth(COLUMN_CONFIRMATIONS, 120);
+    ui->treeWidget->setColumnWidth(COLUMN_CONFIRMATIONS, 100);
     ui->treeWidget->setColumnHidden(COLUMN_TXHASH, true);         // store transaction hash in this column, but don't show it
     ui->treeWidget->setColumnHidden(COLUMN_VOUT_INDEX, true);     // store vout index in this column, but don't show it
 
