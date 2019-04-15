@@ -1087,12 +1087,11 @@ void SendCoinsDialog::coinControlFeatureChanged(bool checked)
 // Coin Control: button inputs -> show actual coin control dialog
 void SendCoinsDialog::coinControlButtonClicked()
 {
-    if( coinControlDialog ){
-        delete coinControlDialog;
+    if( !coinControlDialog ){
+        coinControlDialog = new CoinControlDialog(platformStyle, GetCoinControlFlag());
+        coinControlDialog->setModel(model);
     }
 
-    coinControlDialog = new CoinControlDialog(platformStyle, GetCoinControlFlag());
-    coinControlDialog->setModel(model);
     coinControlDialog->exec();
     coinControlUpdateLabels();
 }
