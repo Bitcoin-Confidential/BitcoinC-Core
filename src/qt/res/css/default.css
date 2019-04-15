@@ -337,12 +337,6 @@ QCheckBox::indicator:unchecked:disabled
     image: url(':/images/checkbox_disabled');
 }
 
-QTreeWidget::indicator:unchecked:disabled
-{
-    image: none;
-    background: none;
-}
-
 QAbstractSpinBox,
 .AmountSpinBox,
 .QSpinBox,
@@ -1275,26 +1269,6 @@ QTreeWidget::item {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-QTreeWidget::item:selected {
-	/* Coin Control Item (selected) */
-    /* background-color: #707780;
-    color: #232323; */
-}
-QTreeWidget::item:checked {
-	/* Coin Control Item (checked) */
-    background-color: #707780;
-    color: #232323;
-}
-QTreeWidget::branch:selected {
-	/* Coin Control Branch Icon */
-	background:none;
-	color: #FEC60D;
-}
-QTreeWidget::branch:checked {
-	/* Coin Control Branch Icon */
-	background-color: #707780;
-	color: #FEC60D;
-}
 QTreeWidget::branch::closed:has-children {
     height: 8px;
     width: 8px;
@@ -1432,6 +1406,10 @@ QWidget#AddressBookPage QTableView:item:selected {
     color: #232323;
 }
 
+#treeWidget{
+    selection-background-color: transparent;
+}
+
 QTableView::item:checked,
 #recentRequestsView:item:checked,
 QWidget#AddressBookPage QTableView:item:checked {
@@ -1562,14 +1540,6 @@ QGroupBox::title {
 #labelUnconfirmedStakingText, #labelLockedStakingText, #labelBalanceText{
     font-size: 15px;
     qproperty-alignment: 'AlignVCenter | AlignRight';
-}
-
-.negative-sum {
-    color:#DCDCDC;
-}
-
-#BlockExplorer, #BlockExplorer QScrollArea *, #BlockExplorer #content {
-        background-color: #232323;
 }
 
 QAbstractScrollArea::corner {
