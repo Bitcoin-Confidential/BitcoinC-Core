@@ -4384,11 +4384,10 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                         vpsk[k] = vsk[k].begin();
 
                         vpBlinds.push_back(&vInputBlinds[l][k * 32]);
-                        /*
+
                         // Keyimage is required for the tx hash
                         if (0 != (rv = secp256k1_get_keyimage(secp256k1_ctx_blind, &vKeyImages[k * 33], &vm[(i+k*nCols)*33], vpsk[k])))
                             return errorN(1, sError, __func__, _("secp256k1_get_keyimage failed %d").c_str(), rv);
-                        */
                     }
                 }
 
