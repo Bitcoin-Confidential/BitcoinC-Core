@@ -1272,8 +1272,8 @@ QTreeWidget::item {
 
 QTreeWidget::item:selected {
 	/* Coin Control Item (selected) */
-    background-color: #707780;
-    color: #232323;
+    /* background-color: #707780;
+    color: #232323; */
 }
 QTreeWidget::item:checked {
 	/* Coin Control Item (checked) */
