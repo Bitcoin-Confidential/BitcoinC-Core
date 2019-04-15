@@ -326,10 +326,16 @@ QCheckBox::indicator:checked:disabled
 {
     image: url(':/images/checkbox_disabled_checked');
 }
-QTreeWidget::indicator:unchecked:disabled,
+
 QCheckBox::indicator:unchecked:disabled
 {
     image: url(':/images/checkbox_disabled');
+}
+
+QTreeWidget::indicator:unchecked:disabled
+{
+    image: none;
+    background: none;
 }
 
 QAbstractSpinBox,
