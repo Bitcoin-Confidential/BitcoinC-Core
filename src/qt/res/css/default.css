@@ -382,7 +382,6 @@ QAbstractSpinBox,
     color: #232323;
     background-color: rgba(255, 255, 255, 0.03);
 }
-/****************************************************************************************/
 
 QPushButton {
 	/* Global Button Style */
@@ -486,12 +485,6 @@ QAbstractSpinBox::up-button {
 	padding-left: 5px;
 	padding-top: 2px;
 }
-QAbstractSpinBox::up-arrow {
-	image: url(':/images/upArrow_normal');
-}
-QAbstractSpinBox::up-arrow:hover {
-	image: url(':/images/upArrow_hover');
-}
 
 QAbstractSpinBox::down-button {
 	subcontrol-origin: border;
@@ -504,11 +497,27 @@ QAbstractSpinBox::down-button {
 	padding-left: 5px;
 	padding-bottom: 2px;
 }
+
+QAbstractSpinBox::up-arrow {
+	width: 10px;
+	height: 10px;
+	image: url(:/images/upArrow_normal);
+}
 QAbstractSpinBox::down-arrow {
-	image: url(':/images/downArrow_normal');
+	width: 10px;
+	height: 10px;
+	image: url(:/images/downArrow_normal);
+}
+
+QAbstractSpinBox::up-arrow:hover{
+	width: 10px;
+	height: 10px;
+	image: url(:/images/upArrow_hover);
 }
 QAbstractSpinBox::down-arrow:hover {
-	image: url(':/images/downArrow_hover');
+	width: 10px;
+	height: 10px;
+	image: url(:/images/downArrow_hover);
 }
 
 /****************************************************************************************/
@@ -1462,32 +1471,6 @@ QLineEdit {
 	border: 0;
 	padding-left: 6px;
 	padding-right: 6px;
-}
-
-QSpinBox::up-arrow,
-AmountSpinBox::up-arrow {
-	width: 10px;
-	height: 10px;
-	image: url(:/images/upArrow_normal);
-}
-QSpinBox::down-arrow,
-AmountSpinBox::down-arrow {
-	width: 10px;
-	height: 10px;
-	image: url(:/images/downArrow_normal);
-}
-
-QSpinBox::up-arrow:hover,
-AmountSpinBox::up-arrow:hover {
-	width: 10px;
-	height: 10px;
-	image: url(:/images/upArrow_hover);
-}
-QSpinBox::down-arrow:hover,
-AmountSpinBox::down-arrow:hover {
-	width: 10px;
-	height: 10px;
-	image: url(:/images/downArrow_hover);
 }
 
 QGroupBox {
