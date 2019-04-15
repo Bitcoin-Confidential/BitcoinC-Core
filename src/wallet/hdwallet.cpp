@@ -4015,7 +4015,7 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
             if (pick_new_inputs) {
                 nValueIn = 0;
                 setCoins.clear();
-                if (!SelectBlindedCoins(vAvailableCoins, nValueToSelect, setCoins, nValueIn, coinControl)) {
+                if (!SelectBlindedCoins(vAvailableCoins, nValueToSelect, setCoins, nValueIn, coinControl) || !setCoins.size()) {
                     return wserrorN(1, sError, __func__, _("Insufficient funds."));
                 }
             }
@@ -4052,34 +4052,33 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                 InsertChangeAddress(r, vecSend, nChangePosInOut);
             }
 
+            size_t nSelectedInputs = setCoins.size();
+            size_t nTxInputs = ( nSelectedInputs / nInputsPerSig ) + ( nSelectedInputs % nInputsPerSig ? 1 : 0 );
 
-            int nSignSigs = 1;
-            if (nInputsPerSig < setCoins.size()) {
-                nSignSigs = setCoins.size() / nInputsPerSig;
-                while (nSignSigs % nInputsPerSig != 0) {
-                    nSignSigs++;
-                }
-            }
+            while( txNew.vin.size() < nTxInputs ){
 
-            size_t nRemainingInputs = setCoins.size();
-
-            for (int k = 0; k < nSignSigs; ++k) {
-                size_t nInputs = (k == nSignSigs-1 ? nRemainingInputs : nInputsPerSig);
                 CTxIn txin;
                 txin.nSequence = CTxIn::SEQUENCE_FINAL;
                 txin.prevout.n = COutPoint::ANON_MARKER;
-                txin.SetAnonInfo(nInputs, nRingSize);
-                txNew.vin.emplace_back(txin);
 
-                nRemainingInputs -= nInputs;
+                // Default to the set parameter nInputsPerSig for the new input
+                int nInputRings = nInputsPerSig;
+
+                // For the last tx add only the remainder as anon sigs info
+                if( txNew.vin.size() == nTxInputs - 1 && nSelectedInputs % nInputsPerSig ){
+                    nInputRings = nSelectedInputs % nInputsPerSig;
+                }
+
+                txin.SetAnonInfo(nInputRings, nRingSize);
+                txNew.vin.emplace_back(txin);
             }
 
             vMI.clear();
             vInputBlinds.clear();
             vSecretColumns.clear();
-            vMI.resize(nSignSigs);
-            vInputBlinds.resize(nSignSigs);
-            vSecretColumns.resize(nSignSigs);
+            vMI.resize(nTxInputs);
+            vInputBlinds.resize(nTxInputs);
+            vSecretColumns.resize(nTxInputs);
 
 
             nValueOutPlain = 0;
@@ -4125,7 +4124,6 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                 }
             }
 
-
             std::set<int64_t> setHave; // Anon prev-outputs can only be used once per transaction.
             size_t nTotalInputs = 0;
             for (size_t l = 0; l < txNew.vin.size(); ++l) { // Must add real outputs to setHave before picking decoys
@@ -4142,7 +4140,6 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                     return 1; // sError is set
                 }
             }
-
 
             // Fill in dummy signatures for fee calculation.
             for (size_t l = 0; l < txNew.vin.size(); ++l) {
@@ -4361,7 +4358,6 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
 
                 std::vector<uint8_t> &vKeyImages = txin.scriptData.stack[0];
 
-
                 for (size_t k = 0; k < nSigInputs; ++k)
                 for (size_t i = 0; i < nCols; ++i) {
                     int64_t nIndex = vMI[l][k][i];
@@ -4374,7 +4370,6 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                     memcpy(&vm[(i+k*nCols)*33], ao.pubkey.begin(), 33);
                     vCommitments.push_back(ao.commitment);
                     vpInCommits[i+k*nCols] = vCommitments.back().data;
-
 
                     if (i == vSecretColumns[l]) {
                         CKeyID idk = ao.pubkey.GetID();
