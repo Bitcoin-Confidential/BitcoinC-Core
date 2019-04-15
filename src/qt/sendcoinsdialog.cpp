@@ -641,14 +641,6 @@ SendCoinsEntry *SendCoinsDialog::addEntry()
 
 SendCoinsEntry *SendCoinsDialog::addEntryCS()
 {
-    if (ui->entries->count() == 1) {
-        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(0)->widget());
-
-        if (entry->isClear() && !entry->m_coldstake) {
-            ui->entries->takeAt(0)->widget()->deleteLater();
-        }
-    }
-
     SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, false, true);
     entry->setModel(model);
     ui->entries->addWidget(entry);
@@ -685,8 +677,12 @@ void SendCoinsDialog::removeEntry(SendCoinsEntry* entry)
     entry->hide();
 
     // If the last entry is about to be removed add an empty one
-    if (ui->entries->count() == 1)
-        addEntry();
+    if (ui->entries->count() == 1){
+        if( GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_COLD_STAKE)
+            addEntry();
+        else
+            addEntryCS();
+    }
 
     entry->deleteLater();
 
