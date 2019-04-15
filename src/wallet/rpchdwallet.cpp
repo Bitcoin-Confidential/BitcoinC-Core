@@ -4834,7 +4834,7 @@ static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes 
     return rv;
 }
 
-static UniValue converttostealth(const JSONRPCRequest &request)
+static UniValue converttospending(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -7090,7 +7090,7 @@ static const CRPCCommand commands[] =
 
     { "wallet",             "listunspent",                  &listunspent,               {"minconf","maxconf","addresses","include_unsafe","query_options"} },
 
-    { "wallet",             "converttostealth",                 &converttostealth,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
+    { "wallet",             "converttospending",                 &converttospending,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
     { "wallet",             "converttostake",                   &converttostake,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
     { "wallet",             "sendanontoanon",                   &sendanontoanon,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },

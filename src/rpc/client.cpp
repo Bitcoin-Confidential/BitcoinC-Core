@@ -184,8 +184,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "filteraddresses", 0, "offset" },
     { "filteraddresses", 1, "count" },
 
-    { "converttostealth", 1, "amount" },
-    { "converttostealth", 4, "subtractfeefromamount" },
+    { "converttospending", 1, "amount" },
+    { "converttospending", 4, "subtractfeefromamount" },
 
     { "converttostake", 1, "amount" },
     { "converttostake", 4, "subtractfeefromamount" },
