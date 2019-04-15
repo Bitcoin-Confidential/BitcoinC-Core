@@ -112,6 +112,7 @@
         <file alias="checkbox_normal_hover">res/images/checkbox_normal_hover.png</file>
         <file alias="checkbox_normal_pressed">res/images/checkbox_normal_pressed.png</file>
         <file alias="checkbox_checked">res/images/checkbox_checked.png</file>
+        <file alias="checkbox_partly_checked">res/images/checkbox_partly_checked.png</file>
         <file alias="checkbox_checked_hover">res/images/checkbox_checked_hover.png</file>
         <file alias="checkbox_checked_pressed">res/images/checkbox_checked_pressed.png</file>
         <file alias="checkbox_disabled">res/images/checkbox_disabled.png</file>
