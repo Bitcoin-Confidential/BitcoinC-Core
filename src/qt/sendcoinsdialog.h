@@ -54,8 +54,8 @@ public:
 
 public Q_SLOTS:
     void clear();
-    void reject();
-    void accept();
+    void reject() override;
+    void accept() override;
     SendCoinsEntry *addEntry();
     SendCoinsEntry *addEntryCS();
     void updateTabsAndLabels();

@@ -1087,7 +1087,7 @@ void SendCoinsDialog::coinControlButtonClicked()
         coinControlDialog = new CoinControlDialog(platformStyle, GetCoinControlFlag());
         coinControlDialog->setModel(model);
     }
-
+    coinControlDialog->updateView();
     coinControlDialog->exec();
     coinControlUpdateLabels();
 }
