@@ -691,14 +691,14 @@ void SendCoinsDialog::removeEntry(SendCoinsEntry* entry)
 
 QWidget *SendCoinsDialog::setupTabChain(QWidget *prev)
 {
-//    for(int i = 0; i < ui->entries->count(); ++i)
-//    {
-//        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
-//        if(entry)
-//        {
-//            prev = entry->setupTabChain(prev);
-//        }
-//    }
+    for(int i = 0; i < ui->entries->count(); ++i)
+    {
+        SendCoinsEntry *entry = qobject_cast<SendCoinsEntry*>(ui->entries->itemAt(i)->widget());
+        if(entry)
+        {
+            prev = entry->setupTabChain(prev);
+        }
+    }
 
     QWidget::setTabOrder(prev, ui->sendButton);
     QWidget::setTabOrder(ui->sendButton, ui->clearButton);
