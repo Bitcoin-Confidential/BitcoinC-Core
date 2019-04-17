@@ -63,6 +63,8 @@ public:
     static CCoinControl *coinControl(ControlModes mode);
     static bool fSubtractFeeFromAmount;
 
+    void updateView();
+
 private:
     Ui::CoinControlDialog *ui;
     WalletModel *model;
@@ -79,7 +81,6 @@ private:
     ControlModes mode;
 
     void sortView(int, Qt::SortOrder);
-    void updateView();
 
     enum
     {
