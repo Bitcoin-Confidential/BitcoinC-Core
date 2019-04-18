@@ -467,7 +467,11 @@ void SendCoinsDialog::on_sendButton_clicked()
     QString questionString = tr("Are you sure you want to send?");
     questionString.append("<br /><span style='font-size:10pt;'>");
     questionString.append(tr("Please, review your transaction."));
-    questionString.append("</span><br /><b>"+sTypeFrom+ "</b> to <b>" +sTypeTo+"</b><br />%1");
+    if( !(sTypeFrom == "spending" && sTypeFrom == sTypeTo) ){
+        questionString.append("</span><br /><b>"+sTypeFrom+ "</b> to <b>" +sTypeTo+"</b><br />%1");
+    }else{
+        questionString.append("</span><br />%1");
+    }
 
     if(txFee > 0)
     {
