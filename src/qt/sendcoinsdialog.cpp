@@ -82,8 +82,6 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *_platformStyle, bool fStak
     ui->clearButton->setIcon(_platformStyle->BitcoinCColorIcon(":/icons/remove"));
     ui->sendButton->setIcon(_platformStyle->SingleColorIcon(":/icons/send"));
 
-    addEntry();
-
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
     // Coin Control
