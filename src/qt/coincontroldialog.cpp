@@ -771,12 +771,15 @@ void CoinControlDialog::updateView()
                 itemOutput->setIcon(COLUMN_CHECKBOX, platformStyle->BitcoinCColorIcon(":/icons/lock_closed"));
             };
 
-            if( ControlModeToCbxType(mode) == OUTPUT_STANDARD && out.depth_in_main_chain <= nBlocksToMaturity){
+            if( ControlModeToCbxType(mode) == OUTPUT_STANDARD && out.is_coinstake && out.depth_in_main_chain <= nBlocksToMaturity){
                 coinControl(mode)->UnSelect(output); // just to be sure
                 itemOutput->setDisabled(true);
+
+                itemOutput->setFlags(flgNoBox);
+                itemOutput->setIcon(0, QIcon());
             }
 
-            if( ControlModeToCbxType(mode) == OUTPUT_RINGCT && out.depth_in_main_chain <= Params().GetConsensus().nMinRCTOutputDepth){
+            if( ControlModeToCbxType(mode) == OUTPUT_RINGCT && out.depth_in_main_chain < Params().GetConsensus().nMinRCTOutputDepth){
                 coinControl(mode)->UnSelect(output); // just to be sure
                 itemOutput->setDisabled(true);
                 itemOutput->setIcon(COLUMN_CHECKBOX, platformStyle->BitcoinCColorIcon(":/icons/lock_closed"));
