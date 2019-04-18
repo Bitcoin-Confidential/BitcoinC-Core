@@ -507,16 +507,8 @@ void SendCoinsDialog::on_sendButton_clicked()
     if (!fSubbedFee)
         totalAmount += txFee;
 
-    QStringList alternativeUnits;
-    for (BitcoinUnits::Unit u : BitcoinUnits::availableUnits())
-    {
-        if(u != model->getOptionsModel()->getDisplayUnit())
-            alternativeUnits.append(BitcoinUnits::formatHtmlWithUnit(u, totalAmount));
-    }
     questionString.append(QString("<b>%1</b>: <b>%2</b>").arg(tr("Total Amount"))
         .arg(BitcoinUnits::formatHtmlWithUnit(model->getOptionsModel()->getDisplayUnit(), totalAmount)));
-    questionString.append(QString("<br /><span style='font-size:10pt; font-weight:normal;'>(=%1)</span>")
-        .arg(alternativeUnits.join(" " + tr("or") + " ")));
 
     if (fNeedHWDevice)
     {
