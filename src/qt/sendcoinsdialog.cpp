@@ -481,7 +481,7 @@ void SendCoinsDialog::on_sendButton_clicked()
         questionString.append(" (" + QString::number((double)nBytes / 1000) + " kB): ");
 
         // append transaction fee value
-        questionString.append("<span style='color:#aa0000; font-weight:bold;'>");
+        questionString.append("<span style='color:#E1755A;; font-weight:bold;'>");
         questionString.append(BitcoinUnits::formatHtmlWithUnit(model->getOptionsModel()->getDisplayUnit(), txFee));
         questionString.append("</span><br />");
 
