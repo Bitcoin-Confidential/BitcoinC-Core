@@ -416,6 +416,7 @@ public:
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("mainnet.b-c.rocks");
+        vSeeds.emplace_back("mainnet.b-c.xyz");
         vSeeds.emplace_back("mainnet-seed.bitcoinconfidential.cc");
         vSeeds.emplace_back("dnsseed-mainnet.bitcoinconfidential.cc");
         vSeeds.emplace_back("mainnet.bitcoinconfidential.cc");
@@ -587,6 +588,7 @@ public:
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("testnet.b-c.rocks");
+        vSeeds.emplace_back("testnet.b-c.xyz");        
         vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc");
         vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc");
 
