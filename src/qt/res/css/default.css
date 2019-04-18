@@ -1107,7 +1107,8 @@ QDialog#SendCoinsDialog .QPushButton#addButton:hover {
 
 /**************************** SEND COINS ENTRY ******************************************/
 
-#sendWidget > .QLabel {
+#sendWidget > .QLabel,
+#sendWidget_cs > .QLabel {
 	/* Send Coin Entry Labels */
         /* background-color:#FEC60D; */
 	/* min-width: 102px; */
@@ -1119,17 +1120,6 @@ QDialog#SendCoinsDialog .QPushButton#addButton:hover {
 	padding-right: 5px; */
 }
 
-QStackedWidget#SendCoinsEntry .QFrame#SendCoins_cs > .QLabel {
-	/* Send Coin Entry Labels */
-        /* background-color:#FEC60D; */
-	/* min-width: 102px; */
-	font-weight: 500;
-	font-size: 16px;
-	color: #DCDCDC;
-	min-height: 25px;
-	/* margin-right: 5px;
-	padding-right: 5px; */
-}
 QStackedWidget#SendCoinsEntry .QFrame#SendCoins .QLabel#amountLabel {
 	/* background-color:#6a6a6a; */
 }
