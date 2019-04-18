@@ -1483,13 +1483,13 @@ QGroupBox::title {
     font-size:18px;
 }
 
-#resetButton, #cancelButton{
+#resetButton, #cancelButton, #btnShowAll{
     background-color: transparent;
 	border: 2px solid #707780;
     color: #707780;
 }
 
-#resetButton:hover, #cancelButton:hover {
+#resetButton:hover, #cancelButton:hover, #btnShowAll:hover {
     background-color: #707780;
     color: #232323;
 }
