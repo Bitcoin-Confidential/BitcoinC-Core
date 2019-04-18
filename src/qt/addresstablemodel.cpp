@@ -404,11 +404,25 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
             default:
                 break;
         };
+        if( addrType == ADDR_STEALTH ){
 
-        UniValue rv;
-        if (!walletModel->tryCallRpc(sCommand, rv))
-            return QString();
-        return QString::fromStdString(rv.get_str());
+            WalletModel::UnlockContext ctx(walletModel->requestUnlock());
+            if(!ctx.isValid())
+            {
+                // Unlock wallet was cancelled
+                return QString();
+            }
+
+            UniValue rv;
+            if (!walletModel->tryCallRpc(sCommand, rv))
+                return QString();
+            return QString::fromStdString(rv.get_str());
+        }else{
+            UniValue rv;
+            if (!walletModel->tryCallRpc(sCommand, rv))
+                return QString();
+            return QString::fromStdString(rv.get_str());
+        }
     }
     else
     {
