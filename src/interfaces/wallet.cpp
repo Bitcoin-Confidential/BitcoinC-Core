@@ -175,6 +175,7 @@ WalletTxOut MakeWalletTxOut(CWallet& wallet, const CWalletTx& wtx, int n, int de
     result.time = wtx.GetTxTime();
     result.depth_in_main_chain = depth;
     result.is_spent = wallet.IsSpent(wtx.GetHash(), n);
+    result.is_coinstake = wtx.IsCoinStake();
     return result;
 }
 
@@ -190,6 +191,7 @@ WalletTxOut MakeWalletTxOut(CHDWallet &wallet, const uint256 &hash, const CTrans
     result.time = rtx.GetTxTime();
     result.depth_in_main_chain = depth;
     result.is_spent = wallet.IsSpent(hash, n);
+    result.is_coinstake = rtx.IsCoinStake();
     return result;
 }
 
