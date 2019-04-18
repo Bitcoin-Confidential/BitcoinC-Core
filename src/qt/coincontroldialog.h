@@ -80,6 +80,8 @@ private:
     const PlatformStyle *platformStyle;
     ControlModes mode;
 
+    bool fShowImmature;
+
     void sortView(int, Qt::SortOrder);
 
     enum
@@ -117,6 +119,7 @@ private Q_SLOTS:
     void buttonBoxClicked(QAbstractButton*);
     void buttonSelectAllClicked();
     void updateLabelLocked();
+    void on_btnShowAll_clicked();
 };
 
 #endif // BITCOIN_QT_COINCONTROLDIALOG_H

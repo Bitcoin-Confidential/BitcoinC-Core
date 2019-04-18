@@ -61,7 +61,8 @@ CoinControlDialog::CoinControlDialog(const PlatformStyle *_platformStyle, Contro
     ui(new Ui::CoinControlDialog),
     model(0),
     platformStyle(_platformStyle),
-    mode(modeFlag)
+    mode(modeFlag),
+    fShowImmature(false)
 {
     ui->setupUi(this);
 
@@ -448,6 +449,12 @@ void CoinControlDialog::updateLabelLocked()
     else ui->labelLocked->setVisible(false);
 }
 
+void CoinControlDialog::on_btnShowAll_clicked()
+{
+    fShowImmature = !fShowImmature;
+    updateView();
+}
+
 void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
 {
     if (!model)
@@ -660,6 +667,25 @@ void CoinControlDialog::updateView()
     if (!model || !model->getOptionsModel() || !model->getAddressTableModel())
         return;
 
+    if( fShowImmature ){
+
+        if( ControlModeToCbxType(mode) == OUTPUT_STANDARD ){
+            ui->btnShowAll->setText(tr("Hide immature"));
+        }else{
+            ui->btnShowAll->setText(tr("Hide locked"));
+        }
+
+    }else{
+
+        if( ControlModeToCbxType(mode) == OUTPUT_STANDARD){
+            ui->btnShowAll->setText(tr("Show immature"));
+        }else{
+            ui->btnShowAll->setText(tr("Show locked"));
+        }
+
+    }
+
+    int nImmature = 0;
     int nBlocksToMaturity = std::min(COINBASE_MATURITY, (int)(chainActive.Height() / 2) - 1);
 
     bool treeMode = ui->radioTreeMode->isChecked();
@@ -667,6 +693,7 @@ void CoinControlDialog::updateView()
     ui->treeWidget->clear();
     ui->treeWidget->setEnabled(false); // performance, otherwise updateLabels would be called for every checked checkbox
     ui->treeWidget->setAlternatingRowColors(!treeMode);
+    QFlags<Qt::ItemFlag> flgNoBox = 0;
     QFlags<Qt::ItemFlag> flgCheckbox = Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
     QFlags<Qt::ItemFlag> flgTristate = Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
 
@@ -701,6 +728,15 @@ void CoinControlDialog::updateView()
         for (const auto& outpair : coins.second) {
             const COutPoint& output = std::get<0>(outpair);
             const interfaces::WalletTxOut& out = std::get<1>(outpair);
+
+            if( ( ControlModeToCbxType(mode) == OUTPUT_STANDARD && out.is_coinstake && out.depth_in_main_chain <= nBlocksToMaturity ) ||
+                ( ControlModeToCbxType(mode) == OUTPUT_RINGCT && out.depth_in_main_chain < Params().GetConsensus().nMinRCTOutputDepth ) ) {
+                ++nImmature;
+                if(!fShowImmature){
+                    continue;
+                }
+            }
+
             nSum += out.txout.nValue;
 
             nChildren++;
@@ -807,6 +843,12 @@ void CoinControlDialog::updateView()
         for (int i = 0; i < ui->treeWidget->topLevelItemCount(); i++)
             if (ui->treeWidget->topLevelItem(i)->checkState(COLUMN_CHECKBOX) == Qt::PartiallyChecked)
                 ui->treeWidget->topLevelItem(i)->setExpanded(true);
+    }
+
+    if( nImmature ){
+        ui->btnShowAll->show();
+    }else{
+        ui->btnShowAll->hide();
     }
 
     // sort view
