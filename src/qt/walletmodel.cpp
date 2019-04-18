@@ -657,7 +657,7 @@ bool WalletModel::saveStakingRequest(const std::string &sAddress, const int64_t 
 bool WalletModel::bumpFee(uint256 hash)
 {
     CCoinControl coin_control;
-    coin_control.m_signal_bip125_rbf = false;
+    coin_control.m_signal_bip125_rbf = true;
     std::vector<std::string> errors;
     CAmount old_fee;
     CAmount new_fee;
