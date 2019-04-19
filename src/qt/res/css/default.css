@@ -454,16 +454,20 @@ QComboBox QAbstractItemView::item {
 	min-height: 35px;
 }
 QComboBox::item {
-	color: #727272;
+    background: #232323;
+    color: #727272;
     font-size: 13px;
 }
 QComboBox::item:alternate {
-	background: #232323;
+    background: #232323;
+    color: #727272;
+    font-size: 13px;
 }
 QComboBox::item:selected {
-	border: 0px solid transparent;
-	background: #434343;
-	color: #DCDCDC;
+    border: 0px solid transparent;
+    background: #434343;
+    color: #DCDCDC;
+    font-size: 13px;
 }
 QComboBox::indicator {
 	background-color: transparent;
