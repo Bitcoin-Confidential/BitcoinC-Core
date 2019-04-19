@@ -1468,10 +1468,6 @@ bool AppInitMain()
     RegisterZMQRPCCommands(tableRPC);
 #endif
 
-    if( !gArgs.GetBoolArg("-testnet", true) ){
-        return InitError(_("Sorry, MainNet isn't yet."));
-    }
-
     /* Start the RPC server already.  It will be started in "warmup" mode
      * and not really process calls already (but it will signify connections
      * that the server is there and will be ready later).  Warmup mode will
