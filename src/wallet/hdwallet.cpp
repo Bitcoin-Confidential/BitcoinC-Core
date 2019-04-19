@@ -3696,7 +3696,9 @@ int CHDWallet::AddStandardInputs(CWalletTx &wtx, CTransactionRecord &rtx,
         }
 
         rtx.nFee = nFeeRet;
-        AddOutputRecordMetaData(rtx, vecSend);
+        if( sign ){
+            AddOutputRecordMetaData(rtx, vecSend);
+        }
 
         // Embed the constructed transaction data in wtxNew.
         wtx.SetTx(MakeTransactionRef(std::move(txNew)));
@@ -4466,7 +4468,9 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
 
 
         rtx.nFee = nFeeRet;
-        AddOutputRecordMetaData(rtx, vecSend);
+        if( sign ){
+            AddOutputRecordMetaData(rtx, vecSend);
+        }
 
         // Embed the constructed transaction data in wtxNew.
         wtx.SetTx(MakeTransactionRef(std::move(txNew)));
