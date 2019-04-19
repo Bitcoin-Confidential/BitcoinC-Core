@@ -332,7 +332,7 @@ public:
         consensus.csp2shHeight = 0x7FFFFFFF;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 2 * 60;
+        consensus.nPowTargetSpacing = 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
@@ -373,13 +373,13 @@ public:
 
         nModifierInterval = 10 * 60;    // 10 minutes
         nStakeMinConfirmations = 225;   // 225 * 2 minutes
-        nTargetSpacing = 120;           // 2 minutes
+        nTargetSpacing = 60;           // 1 minutes
         nTargetTimespan = 24 * 60;      // 24 mins
 
         AddImportHashesMain(vImportedCoinbaseTxns);
         SetLastImportHeight();
 
-        nLaunchPhaseEndHeight = 5040; // 7 days
+        nLaunchPhaseEndHeight = 11000; // ~7 days
         dLaunchPhaseRewardRatio = 0.05; // 5% of the actual reward
 
         nPruneAfterHeight = 100000;
