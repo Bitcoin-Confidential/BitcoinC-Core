@@ -907,6 +907,15 @@ QDialog#RPCConsole .QGroupBox #line_2 {
 	/* Network Out Line */
 	background: #DCDCDC;
 }
+
+QDialog#OptionsDialog #proxyIp,
+QDialog#OptionsDialog #proxyIpTor{
+    min-width: 150px;
+}
+QDialog#OptionsDialog #proxyPort,
+QDialog#OptionsDialog #proxyPortTor{
+    min-width: 80px;
+}
 /**************************** HELP MENU *************************************************/
 
 /* Command Line Options Dialog */
