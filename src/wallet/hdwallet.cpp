@@ -2588,6 +2588,8 @@ int CHDWallet::GetChangeAddress(CPubKey &pk)
                 WalletLogPrintf("%s: Skipping used address %s.\n", __func__, CBitcoinAddress(idk).ToString());
             }
             pc->nGenerated++;
+        }else{
+            break;
         }
     }
 
