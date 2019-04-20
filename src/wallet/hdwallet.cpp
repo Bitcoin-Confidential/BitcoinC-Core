@@ -3592,7 +3592,7 @@ int CHDWallet::AddStandardInputs(CWalletTx &wtx, CTransactionRecord &rtx,
         if (sign) {
 
             std::string strError;
-            if( !SignOutputs(txNew, pindexBestHeader->nTime, strError) ){
+            if( !SignOutputs(txNew, pindexBestHeader->nTime, strError, true) ){
                 return wserrorN(1, sError, __func__, strError);
             }
 
@@ -4262,6 +4262,8 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
             vpOutBlinds.push_back(&vBlindPlain[0]);
         }
 
+        int fStandardOut = 0;
+
         // Update the change output commitment
         for (size_t i = 0; i < vecSend.size(); ++i) {
             auto &r = vecSend[i];
@@ -4287,6 +4289,10 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                 vpOutCommits.push_back(txNew.vpout[r.n]->GetPCommitment()->data);
                 vpOutBlinds.push_back(&r.vBlind[0]);
             }
+
+            if( r.nType == OUTPUT_STANDARD ){
+                ++fStandardOut;
+            }
         }
 
 
@@ -4299,7 +4305,7 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
         if (sign) {
 
             std::string strError;
-            if( !SignOutputs(txNew, pindexBestHeader->nTime, strError) ){
+            if( !SignOutputs(txNew, pindexBestHeader->nTime, strError, fStandardOut) ){
                 return wserrorN(1, sError, __func__, strError);
             }
 
@@ -11033,7 +11039,7 @@ bool CHDWallet::CreateCoinStake(unsigned int nBits, int64_t nTime, int nBlockHei
     // Sign
 
     std::string strError;
-    if( !SignOutputs(txNew, nTime, strError) ){
+    if( !SignOutputs(txNew, nTime, strError, true) ){
         return werror("%s: %s", __func__, strError);
     }
 
@@ -11121,7 +11127,7 @@ bool CHDWallet::SignBlock(CBlockTemplate *pblocktemplate, int nHeight, int64_t n
 };
 
 
-bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &strError )
+bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &strError, bool fHasStandardInOut )
 {
     // Create the output signatures if needed
     for( CTxOutBaseRef &out : tx.vpout ){
@@ -11129,7 +11135,6 @@ bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &st
         if( out->nVersion == OUTPUT_STANDARD ){
 
             CTxOutStandard *pout = (CTxOutStandard*)out.get();
-            pout->vecSignature.clear();
 
             bool fIsCoinStake = false;
             CKeyID keyId1, keyId2;
@@ -11193,6 +11198,106 @@ bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &st
 
             if( !key.SignCompact(nOutSigHash, pout->vecSignature) ){
                 strError = "Staking output - Failed to sign";
+                return false;
+            }
+
+        }else if(out->nVersion == OUTPUT_RINGCT && fHasStandardInOut){
+
+            LOCK(cs_wallet);
+
+            CTxOutRingCT *pout = (CTxOutRingCT*)out.get();
+
+            CKeyID idk = pout->pk.GetID();
+
+            // Uncover stealth
+            uint32_t prefix = 0;
+            bool fHavePrefix = false;
+            if (pout->vData.size() != 33) {
+                if (pout->vData.size() == 38 // Have prefix
+                    && pout->vData[33] == DO_STEALTH_PREFIX) {
+                    fHavePrefix = true;
+                    memcpy(&prefix, &pout->vData[34], 4);
+                } else {
+                    LogPrint(BCLog::HDWALLET, "Bad anon output data size.\n");
+                    continue;
+                }
+            }
+
+            CKey spendKey, actualSpendKey;
+            std::vector<uint8_t> vchEphemPK;
+            vchEphemPK.resize(33);
+            memcpy(&vchEphemPK[0], &pout->vData[0], 33);
+
+            // First check if the address is in the stealth account
+            ExtKeyAccountMap::const_iterator mi;
+            for (mi = mapExtAccounts.begin(); mi != mapExtAccounts.end(); ++mi)
+            {
+                CExtKeyAccount *ea = mi->second;
+
+                if (ea->mapStealthKeys.size() < 1)
+                    continue;
+
+                AccStealthKeyMap::const_iterator it;
+                for (it = ea->mapStealthKeys.begin(); it != ea->mapStealthKeys.end(); ++it)
+                {
+                    if (!ea->GetKey(it->second.akSpend, spendKey)){
+                        continue;
+                    }
+
+                    if( StealthSecretSpend(it->second.skScan, vchEphemPK,spendKey, actualSpendKey ) != 0 ){
+                        continue;
+                    }
+
+                    if (!actualSpendKey.IsValid()) {
+                        continue;
+                    }
+
+                    if (idk == actualSpendKey.GetPubKey().GetID()) {
+                        break;
+                    }
+                }
+            }
+
+            if( !actualSpendKey.IsValid() ){
+
+                std::set<CStealthAddress>::iterator it;
+                for (it = stealthAddresses.begin(); it != stealthAddresses.end(); ++it) {
+                    if (!MatchPrefix(it->prefix.number_bits, it->prefix.bitfield, prefix, fHavePrefix)) {
+                        continue;
+                    }
+
+                    if (!it->scan_secret.IsValid()) {
+                        continue; // stealth address is not owned
+                    }
+
+                    if(!GetKey(it->spend_secret_id, spendKey) ){
+                        continue; // stealth spend key not available
+                    }
+
+                    if( StealthSecretSpend(it->scan_secret, vchEphemPK,spendKey, actualSpendKey ) != 0 ){
+                        continue;
+                    }
+
+                    if (!actualSpendKey.IsValid()) {
+                        continue;
+                    }
+
+                    if (idk == actualSpendKey.GetPubKey().GetID()) {
+                        break;
+                    }
+                }
+
+            }
+
+            if (!actualSpendKey.IsValid() || !HaveKey(idk) || !GetKey(idk, actualSpendKey) ) {
+                strError = "Staking output - Failed to get spending change key";
+                return false;
+            }
+
+            uint256 nOutSigHash = SignatureHashSpendingOutput(pout->pk.GetID(), pout->vRangeproof, tx.vin);
+
+            if( !actualSpendKey.SignCompact(nOutSigHash, pout->vecSignature) ){
+                strError = "Spending output - Failed to sign";
                 return false;
             }
         }

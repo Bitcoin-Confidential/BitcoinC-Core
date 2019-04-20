@@ -294,7 +294,9 @@ typedef OUTPUT_PTR<CTxOutBase> CTxOutBaseRef;
 class CTxOutStandard : public CTxOutBase
 {
 public:
-    CTxOutStandard() : CTxOutBase(OUTPUT_STANDARD) {}
+    CTxOutStandard() : CTxOutBase(OUTPUT_STANDARD) {
+        vecSignature.clear();
+    }
     CTxOutStandard(const CAmount& nValueIn, CScript scriptPubKeyIn);
 
     CAmount nValue;
@@ -350,11 +352,14 @@ public:
 class CTxOutRingCT : public CTxOutBase
 {
 public:
-    CTxOutRingCT() : CTxOutBase(OUTPUT_RINGCT) {};
+    CTxOutRingCT() : CTxOutBase(OUTPUT_RINGCT) {
+        vecSignature.clear();
+    }
     CCmpPubKey pk;
     std::vector<uint8_t> vData; // first 33 bytes is always ephemeral pubkey, can contain token for stealth prefix matching
     secp256k1_pedersen_commitment commitment;
     std::vector<uint8_t> vRangeproof;
+    std::vector<unsigned char> vecSignature;
 
     template<typename Stream>
     void Serialize(Stream &s) const
@@ -363,6 +368,7 @@ public:
         s.write((char*)pk.begin(), 33);
         s.write((char*)&commitment.data[0], 33);
         s << vData;
+        s << vecSignature;
 
         if (fAllowWitness)
         {
@@ -379,6 +385,7 @@ public:
         s.read((char*)pk.ncbegin(), 33);
         s.read((char*)&commitment.data[0], 33);
         s >> vData;
+        s >> vecSignature;
         s >> vRangeproof;
     };
 
