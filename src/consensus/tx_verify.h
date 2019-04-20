@@ -83,4 +83,6 @@ bool SequenceLocks(const CTransaction &tx, int flags, std::vector<int>* prevHeig
 
 uint256 SignatureHashStakingOutput(const CKeyID& keyId, const CAmount nAmount, const std::vector<CTxIn>& vin);
 
+uint256 SignatureHashSpendingOutput(const CKeyID& keyId, const std::vector<uint8_t> &vRangeproof, const std::vector<CTxIn>& vin);
+
 #endif // BITCOIN_CONSENSUS_TX_VERIFY_H
