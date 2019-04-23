@@ -11254,6 +11254,8 @@ bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &st
 
                     if (idk == actualSpendKey.GetPubKey().GetID()) {
                         break;
+                    }else{
+                        actualSpendKey.Clear();
                     }
                 }
             }
@@ -11284,13 +11286,15 @@ bool CHDWallet::SignOutputs( CMutableTransaction &tx, int nTime, std::string &st
 
                     if (idk == actualSpendKey.GetPubKey().GetID()) {
                         break;
+                    }else{
+                        actualSpendKey.Clear();
                     }
                 }
 
             }
 
-            if (!actualSpendKey.IsValid() || !HaveKey(idk) || !GetKey(idk, actualSpendKey) ) {
-                strError = "Staking output - Failed to get spending change key";
+            if (!actualSpendKey.IsValid() && ( !HaveKey(idk) || !GetKey(idk, actualSpendKey) ) ) {
+                strError = "Spending output - Failed to get key for spending output signature. All addresses must be available in the wallet.";
                 return false;
             }
 
