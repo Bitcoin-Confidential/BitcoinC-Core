@@ -185,7 +185,7 @@ const size_t nGenesisOutputsRegtest = sizeof(regTestOutputs) / sizeof(regTestOut
 //Mainnet
 const std::pair<const char*, CAmount> genesisOutputs[] = {
          //Dev address bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ
-    std::make_pair("fff85dd28a712f821414fabec2a58395858ff7ae",1000 * COIN),
+    std::make_pair("fff85dd28a712f821414fabec2a58395858ff7ae", 1 * COIN),
 };
 
 const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]);
@@ -268,7 +268,7 @@ static CBlock CreateGenesisBlockTestNet(uint32_t nTime, uint32_t nNonce, uint32_
 
 static CBlock CreateGenesisBlockMainNet(uint32_t nTime, uint32_t nNonce, uint32_t nBits)
 {
-    const char *pszTimestamp = "NY Times 12/12/2018 Who's Living in a 'Bubble'";
+    const char *pszTimestamp = "12/15/2018 The Bitcoin Confidential Snapshot was taken from the SmartCash Blockchain at block 797279!";
 
     CMutableTransaction txNew;
     txNew.nVersion = BITCOINC_TXN_VERSION;
@@ -384,7 +384,7 @@ public:
 
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlockMainNet(1551128292, 36140, 0x1f00ffff); // 2018-12-12
+        genesis = CreateGenesisBlockMainNet(1556236800, 141739, 0x1f00ffff); // 2019-04-26
         consensus.hashGenesisBlock = genesis.GetHash();
 /*
             bool fNegative;
@@ -393,7 +393,7 @@ public:
 
             bnTarget.SetCompact(0x1f00ffff, &fNegative, &fOverflow);
                   for(int count = 1; count < 100000000000; count++){
-                     genesis = CreateGenesisBlockMainNet(1551128292, count, 0x1f00ffff);
+                     genesis = CreateGenesisBlockMainNet(1556236800, count, 0x1f00ffff);
     // default
                      if (UintToArith256(genesis.GetHash()) <= bnTarget){
                         printf("new mainnet genesis.nNonce = %d\n", count);
@@ -406,9 +406,10 @@ public:
                       printf("count = %d\n", count);
                      }
 */
-        assert(consensus.hashGenesisBlock == uint256S("0x0000c1bed1b5d0905a9e0629859444c8102d220f79d49d38806fcfc3b5fbdea1"));
-        assert(genesis.hashMerkleRoot == uint256S("0x55f4623c823f63ea4bbdb678de0fcbacc95eef94b679a1bb8ca2b89d1049a053"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x88cac0b7df946812ec8fcbbb8a9547151b070067c5417c84a0247329d93d7624"));
+
+        assert(consensus.hashGenesisBlock == uint256S("0x0000c5725bfe5ddf82e0d6bd709cc40e8f0ffcc9ec412be52a8a2381fa1df142"));
+        assert(genesis.hashMerkleRoot == uint256S("0x1d4078dbaa54666e166bd655ccf94bacf84b7c51c4402a97e90a547d4ac39c0b"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x63f264eb0ce1b249ac22a1eadc54673b9a9de2cf4355b7f9e0bdabd500488727"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
