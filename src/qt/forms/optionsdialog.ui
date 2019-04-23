@@ -92,7 +92,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabMain">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -404,6 +404,9 @@
            <property name="toolTip">
             <string>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -435,6 +438,9 @@
            </property>
            <property name="toolTip">
             <string>Port of the proxy (e.g. 9050)</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -591,6 +597,9 @@
            <property name="toolTip">
             <string>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -622,6 +631,9 @@
            </property>
            <property name="toolTip">
             <string>Port of the proxy (e.g. 9050)</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
