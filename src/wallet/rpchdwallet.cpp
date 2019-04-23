@@ -4794,7 +4794,15 @@ static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes 
 {
     std::string rv;
 
-    std::string cmd = std::string("send") + TypeToWord(typeIn) + "to" + TypeToWord(typeOut);
+    std::string cmd;
+
+    if( typeIn == OUTPUT_STANDARD && typeOut == OUTPUT_RINGCT ){
+        cmd = "converttospending";
+    }else if( typeIn == OUTPUT_RINGCT && typeOut == OUTPUT_STANDARD ){
+        cmd = "converttostaking";
+    }else{
+        cmd = "sendspending";
+    }
 
     rv = cmd + " \"address\" amount ( \"comment\" \"comment-to\" subtractfeefromamount \"narration\"";
     if (typeIn == OUTPUT_RINGCT)
@@ -4803,7 +4811,7 @@ static std::string SendHelp(CHDWallet *pwallet, OutputTypes typeIn, OutputTypes 
 
     rv += "\nSend an amount of ";
     rv += typeIn == OUTPUT_RINGCT ? "spending" : "staking";
-    rv += std::string(" BC in a") + ( typeOut == OUTPUT_RINGCT ? " confidential" : "") + " payment to a given address.\n";
+    rv += std::string(" BC in a") + ( typeOut == OUTPUT_RINGCT ? " confidential" : "") + " payment to a given" + ( typeOut == OUTPUT_STANDARD ? " staking" : " spending") + " address.\n";
 
     rv += HelpRequiringPassphrase(pwallet);
 
@@ -4846,7 +4854,7 @@ static UniValue converttospending(const JSONRPCRequest &request)
     return SendToInner(request, OUTPUT_STANDARD, OUTPUT_RINGCT);
 }
 
-static UniValue converttostake(const JSONRPCRequest &request)
+static UniValue converttostaking(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -4858,7 +4866,7 @@ static UniValue converttostake(const JSONRPCRequest &request)
     return SendToInner(request, OUTPUT_RINGCT, OUTPUT_STANDARD);
 }
 
-static UniValue sendanontoanon(const JSONRPCRequest &request)
+static UniValue sendspending(const JSONRPCRequest &request)
 {
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
@@ -4879,7 +4887,7 @@ UniValue sendtypeto(const JSONRPCRequest &request)
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 9)
         throw std::runtime_error(
             "sendtypeto \"typein\" \"typeout\" [{address: , amount: , narr: , subfee:},...] (\"comment\" \"comment-to\" ringsize inputs_per_sig test_fee coin_control)\n"
-            "\nSend part to multiple outputs.\n"
+            "\nSend BC to multiple outputs.\n"
             + HelpRequiringPassphrase(pwallet) +
             "\nArguments:\n"
             "1. \"typein\"          (string, required) spending/staking\n"
@@ -7092,8 +7100,8 @@ static const CRPCCommand commands[] =
 
     { "wallet",             "converttospending",                 &converttospending,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
-    { "wallet",             "converttostake",                   &converttostake,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
-    { "wallet",             "sendanontoanon",                   &sendanontoanon,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
+    { "wallet",             "converttostaking",                   &converttostaking,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
+    { "wallet",             "sendspending",                   &sendspending,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
 
     { "wallet",             "sendtypeto",                       &sendtypeto,                    {"typein","typeout","outputs","comment","comment_to","ringsize","inputs_per_sig","test_fee","coincontrol"} },
 

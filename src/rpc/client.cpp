@@ -187,15 +187,15 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "converttospending", 1, "amount" },
     { "converttospending", 4, "subtractfeefromamount" },
 
-    { "converttostake", 1, "amount" },
-    { "converttostake", 4, "subtractfeefromamount" },
-    { "converttostake", 6, "ringsize" },
-    { "converttostake", 7, "inputs_per_sig" },
+    { "converttostaking", 1, "amount" },
+    { "converttostaking", 4, "subtractfeefromamount" },
+    { "converttostaking", 6, "ringsize" },
+    { "converttostaking", 7, "inputs_per_sig" },
 
-    { "sendanontoanon", 1, "amount" },
-    { "sendanontoanon", 4, "subtractfeefromamount" },
-    { "sendanontoanon", 6, "ringsize" },
-    { "sendanontoanon", 7, "inputs_per_sig" },
+    { "sendspending", 1, "amount" },
+    { "sendspending", 4, "subtractfeefromamount" },
+    { "sendspending", 6, "ringsize" },
+    { "sendspending", 7, "inputs_per_sig" },
 
     { "sendtypeto", 2, "outputs" },
     { "sendtypeto", 5, "ringsize" },
