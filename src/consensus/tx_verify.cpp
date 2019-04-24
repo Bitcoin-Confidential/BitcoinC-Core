@@ -206,7 +206,7 @@ bool CheckStandardOutput(CValidationState &state, const Consensus::Params& conse
         return false;
 
     if( p->vecSignature.size() > CPubKey::COMPACT_SIGNATURE_SIZE ){
-        return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-signature-size");
+        return state.DoS(10, false, REJECT_INVALID, "bad-stake-vout-signature-size");
     }
 
     bool fIsCoinStake = false;
@@ -215,11 +215,11 @@ bool CheckStandardOutput(CValidationState &state, const Consensus::Params& conse
     {
         fIsCoinStake = true;
         if (GetAdjustedTime() < consensusParams.OpIsCoinstakeTime)
-            return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-opiscoinstake");
+            return state.DoS(10, false, REJECT_INVALID, "bad-stake-vout-opiscoinstake");
         if (!consensusParams.fAllowOpIsCoinstakeWithP2PKH)
         {
             if (IsSpendScriptP2PKH(p->scriptPubKey))
-                return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-opiscoinstake-spend-p2pkh");
+                return state.DoS(10, false, REJECT_INVALID, "bad-stak-vout-opiscoinstake-spend-p2pkh");
         }
     }
 
@@ -275,11 +275,8 @@ bool CheckStandardOutput(CValidationState &state, const Consensus::Params& conse
     return true;
 }
 
-bool CheckAnonOutput(CValidationState &state, const CTxOutRingCT *p)
+bool CheckAnonOutput(CValidationState &state, const CTxOutRingCT *p, const CTransaction &tx, bool fIsConvertOutput)
 {
-/*    if (Params().NetworkID() == "main")
-        return state.DoS(100, false, REJECT_INVALID, "AnonOutput in mainnet"); */
-
     if (p->vData.size() < 33 || p->vData.size() > 33 + 5)
         return state.DoS(100, false, REJECT_INVALID, "bad-rctout-ephem-size");
 
@@ -302,6 +299,32 @@ bool CheckAnonOutput(CValidationState &state, const CTxOutRingCT *p)
 
     if (rv != 1)
         return state.DoS(100, false, REJECT_INVALID, "bad-rctout-rangeproof-verify");
+
+    // Check for max signature size and only allow signature data size if its an actual
+    // conversion transaction
+    if( ( fIsConvertOutput  && p->vecSignature.size() > CPubKey::COMPACT_SIGNATURE_SIZE ) ||
+        ( !fIsConvertOutput && p->vecSignature.size() ) ){
+        return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-spending-signature-size");
+    }
+
+    // If its a stake => spending conversion check the output signature
+    if( fIsConvertOutput ){
+
+        if( !p->vecSignature.size() ){
+            return state.DoS(100, false, REJECT_INVALID, "bad-spending-out-signature-missing");
+        }
+
+        uint256 nSigHash = SignatureHashSpendingOutput(p->pk.GetID(), p->vRangeproof, tx.vin);
+        CPubKey pubKey;
+
+        if ( !pubKey.RecoverCompact(nSigHash, p->vecSignature) ) {
+            return state.DoS(100, false, REJECT_INVALID, "bad-spending-out-signature");
+        }
+
+        if( pubKey.GetID() != p->pk.GetID() ) {
+            return state.DoS(100, false, REJECT_INVALID, "bad-spending-out-signature-key");
+        }
+    }
 
     return true;
 }
@@ -336,6 +359,21 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
         if (!tx.vout.empty())
             return state.DoS(10, false, REJECT_INVALID, "bad-txns-vout-not-empty");
 
+        bool fHasStandardInput = false, fHasStandardOutput = false;
+        for (const CTxIn& txin : tx.vin) {
+            if ( !txin.IsAnonInput() ){
+                fHasStandardInput = true;
+                break;
+            }
+        }
+
+        for (const CTxOutBaseRef& pout : tx.vpout) {
+            if ( pout->GetType() == OUTPUT_STANDARD ){
+                fHasStandardOutput = true;
+                break;
+            }
+        }
+
         size_t nStandardOutputs = 0;
         CAmount nValueOut = 0;
         size_t nDataOutputs = 0;
@@ -350,7 +388,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, bool fChe
                     nStandardOutputs++;
                     break;
                 case OUTPUT_RINGCT:
-                    if (!CheckAnonOutput(state, (CTxOutRingCT*) txout.get()))
+                    if (!CheckAnonOutput(state, (CTxOutRingCT*) txout.get(), tx, fHasStandardInput || fHasStandardOutput))
                         return false;
                     break;
                 case OUTPUT_DATA:
@@ -552,7 +590,6 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
     return true;
 }
 
-
 uint256 SignatureHashStakingOutput(const CKeyID& keyId, const CAmount nAmount, const std::vector<CTxIn>& vin)
 {
     assert(vin.size());
@@ -563,6 +600,25 @@ uint256 SignatureHashStakingOutput(const CKeyID& keyId, const CAmount nAmount, c
 
     // Amount of the convert output
     ss << nAmount;
+
+    for( auto txin : vin ){
+        ss << txin.prevout;
+    }
+
+    return ss.GetHash();
+}
+
+uint256 SignatureHashSpendingOutput(const CKeyID& keyId, const std::vector<uint8_t> &vRangeproof, const std::vector<CTxIn>& vin)
+{
+    assert(vin.size());
+
+    CHashWriter ss(SER_GETHASH, 0);
+
+    // Address of the convert output
+    ss << keyId;
+
+    // Rangeproof of the convert output
+    ss << vRangeproof;
 
     for( auto txin : vin ){
         ss << txin.prevout;
