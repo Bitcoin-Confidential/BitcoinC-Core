@@ -60,6 +60,7 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, QWid
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 
     ui->cbxAddressType->hide();
+    ui->useBech32->hide();
 }
 
 void ReceiveCoinsDialog::setModel(WalletModel *_model)
