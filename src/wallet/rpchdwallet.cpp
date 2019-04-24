@@ -4568,12 +4568,12 @@ static UniValue SendToInner(const JSONRPCRequest &request, OutputTypes typeIn, O
     }
 
     nv = nRingSizeOfs;
-    size_t nRingSize = 4; // TODO: default size?
+    size_t nRingSize = DEFAULT_RING_SIZE; // TODO: default size?
     if (request.params.size() > nv) {
         nRingSize = request.params[nv].get_int();
     }
     nv++;
-    size_t nInputsPerSig = 32;
+    size_t nInputsPerSig = DEFAULT_INPUTS_PER_SIG;
     if (request.params.size() > nv) {
         nInputsPerSig = request.params[nv].get_int();
     }
