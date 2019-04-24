@@ -280,7 +280,7 @@ public:
 
     virtual secp256k1_pedersen_commitment *GetPCommitment() { return nullptr; }
     virtual std::vector<uint8_t> *GetPRangeproof() { return nullptr; }
-
+    virtual std::vector<uint8_t> *GetPData() { return nullptr; }
 
     virtual bool GetCTFee(CAmount &nFee) const { return false; }
 
@@ -405,6 +405,10 @@ public:
     {
         return &vRangeproof;
     };
+    std::vector<uint8_t> *GetPData() override
+    {
+        return &vData;
+    }
 };
 
 class CTxOutData : public CTxOutBase
@@ -434,6 +438,10 @@ public:
 
         size_t nb;
         return (0 == GetVarInt(vData, 1, (uint64_t&)nFee, nb));
+    }
+    std::vector<uint8_t> *GetPData() override
+    {
+        return &vData;
     }
 };
 

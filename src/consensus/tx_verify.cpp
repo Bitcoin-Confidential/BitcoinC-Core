@@ -284,19 +284,28 @@ bool CheckAnonOutput(CValidationState &state, const CTxOutRingCT *p, const CTran
     if (p->vRangeproof.size() > nRangeProofLen)
         return state.DoS(100, false, REJECT_INVALID, "bad-rctout-rangeproof-size");
 
-    if ((fBusyImporting) && fSkipRangeproof)
+    if ( fBusyImporting && fSkipRangeproof) {
         return true;
+    }
 
-    uint64_t min_value, max_value;
-    int rv = secp256k1_rangeproof_verify(secp256k1_ctx_blind, &min_value, &max_value,
-        &p->commitment, p->vRangeproof.data(), p->vRangeproof.size(),
-        nullptr, 0,
-        secp256k1_generator_h);
+    uint64_t min_value = 0, max_value = 0;
+    int rv = 0;
 
-    if (LogAcceptCategory(BCLog::RINGCT))
+    if (state.fBulletproofsActive) {
+        rv = secp256k1_bulletproof_rangeproof_verify(secp256k1_ctx_blind,
+            blind_scratch, blind_gens, p->vRangeproof.data(), p->vRangeproof.size(),
+            nullptr, &p->commitment, 1, 64, &secp256k1_generator_const_h, nullptr, 0);
+    } else {
+        rv = secp256k1_rangeproof_verify(secp256k1_ctx_blind, &min_value, &max_value,
+            &p->commitment, p->vRangeproof.data(), p->vRangeproof.size(),
+            nullptr, 0,
+            secp256k1_generator_h);
+    }
+
+    if (LogAcceptCategory(BCLog::RINGCT)) {
         LogPrintf("%s: rv, min_value, max_value %d, %s, %s\n", __func__,
             rv, FormatMoney((CAmount)min_value), FormatMoney((CAmount)max_value));
-
+    }
     if (rv != 1)
         return state.DoS(100, false, REJECT_INVALID, "bad-rctout-rangeproof-verify");
 

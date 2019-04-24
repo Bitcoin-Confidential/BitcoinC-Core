@@ -6630,14 +6630,25 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
             size_t mlen = sizeof(msg);
             memset(msg, 0, mlen);
             uint64_t amountOut;
+            uint256 blind;
+            if (txout->GetPRangeproof()->size() < 1000) {
+                if (1 != secp256k1_bulletproof_rangeproof_rewind(secp256k1_ctx_blind, blind_gens,
+                    &amountOut, blindOut, txout->GetPRangeproof()->data(), txout->GetPRangeproof()->size(),
+                    0, txout->GetPCommitment(), &secp256k1_generator_const_h, r.nonce.begin(), NULL, 0)) {
+                    throw JSONRPCError(RPC_MISC_ERROR, strprintf("secp256k1_bulletproof_rangeproof_rewind failed, output %d.", n));
+                }
+
+                ExtractNarration(r.nonce, r.vData, r.sNarration);
+            } else
             if (1 != secp256k1_rangeproof_rewind(secp256k1_ctx_blind,
                 blindOut, &amountOut, msg, &mlen, r.nonce.begin(),
                 &min_value, &max_value,
                 txout->GetPCommitment(), txout->GetPRangeproof()->data(), txout->GetPRangeproof()->size(),
                 nullptr, 0,
-                secp256k1_generator_h))
+                secp256k1_generator_h)) {
                 throw JSONRPCError(RPC_MISC_ERROR, strprintf("secp256k1_rangeproof_rewind failed, output %d.", n));
-            uint256 blind;
+            }
+
             memcpy(blind.begin(), blindOut, 32);
 
             mOutputBlinds[n] = blind;
@@ -6645,13 +6656,14 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
 
             msg[mlen-1] = '\0';
             size_t nNarr = strlen((const char*)msg);
-            if (nNarr > 0)
+            if (nNarr > 0) {
                 r.sNarration.assign((const char*)msg, nNarr);
-        } else
-        {
-            if (txout->GetPRangeproof())
+            }
+        } else {
+            if (txout->GetPRangeproof()) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Missing nonce for output %d.", n));
-        };
+            }
+        }
         /*
         if (outputAmounts[sKey]["blind"].isStr())
         {
@@ -6688,8 +6700,9 @@ static UniValue fundrawtransactionfrom(const JSONRPCRequest& request)
             secp256k1_pedersen_commitment commitment;
             if (!secp256k1_pedersen_commit(secp256k1_ctx_blind,
                 &commitment, (const uint8_t*)(itb->second.begin()),
-                ita->second, secp256k1_generator_h))
+                ita->second, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
                 throw JSONRPCError(RPC_MISC_ERROR, strprintf("secp256k1_pedersen_commit failed, output %d.", i));
+            }
 
             if (memcmp(txout->GetPCommitment()->data, commitment.data, 33) != 0)
                 throw JSONRPCError(RPC_MISC_ERROR, strprintf("Bad blinding factor, output %d.", i));
@@ -6842,12 +6855,13 @@ static UniValue verifycommitment(const JSONRPCRequest &request)
     secp256k1_pedersen_commitment commitment;
     if (!secp256k1_pedersen_commit(secp256k1_ctx_blind,
         &commitment, blind.begin(),
-        nValue, secp256k1_generator_h))
+        nValue, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
         throw JSONRPCError(RPC_MISC_ERROR, strprintf("secp256k1_pedersen_commit failed."));
+    }
 
-    if (memcmp(vchCommitment.data(), commitment.data, 33) != 0)
-        throw JSONRPCError(RPC_MISC_ERROR, strprintf("Mismatched commitment."));
-
+    if (memcmp(vchCommitment.data(), commitment.data, 33) != 0) {
+        throw JSONRPCError(RPC_MISC_ERROR, strprintf("Mismatched commitment, expected ") + HexStr(&commitment.data[0], &commitment.data[0]+33));
+    }
 
     UniValue result(UniValue::VOBJ);
     bool rv = true;

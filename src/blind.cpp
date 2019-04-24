@@ -13,6 +13,8 @@
 
 
 secp256k1_context *secp256k1_ctx_blind = nullptr;
+secp256k1_scratch_space *blind_scratch = nullptr;
+secp256k1_bulletproof_generators *blind_gens = nullptr;
 
 static int CountLeadingZeros(uint64_t nValueIn)
 {
@@ -111,6 +113,13 @@ int SelectRangeProofParameters(uint64_t nValueIn, uint64_t &minValue, int &expon
 
 int GetRangeProofInfo(const std::vector<uint8_t> &vRangeproof, int &rexp, int &rmantissa, CAmount &min_value, CAmount &max_value)
 {
+    if (vRangeproof.size() > 500 && vRangeproof.size() < 1000) { // v2
+        rexp = -1;
+        rmantissa = -1;
+        min_value = 0;
+        max_value = 0x7FFFFFFFFFFFFFFFl; // largest signed
+        return true;
+    }
     return (!(secp256k1_rangeproof_info(secp256k1_ctx_blind,
         &rexp, &rmantissa, (uint64_t*) &min_value, (uint64_t*) &max_value,
         &vRangeproof[0], vRangeproof.size()) == 1));
@@ -132,10 +141,18 @@ void ECC_Start_Blinding()
     }
 
     secp256k1_ctx_blind = ctx;
+
+    blind_scratch = secp256k1_scratch_space_create(secp256k1_ctx_blind, 1024 * 1024);
+    assert(blind_scratch);
+    blind_gens = secp256k1_bulletproof_generators_create(secp256k1_ctx_blind, &secp256k1_generator_const_g, 128);
+    assert(blind_gens);
 };
 
 void ECC_Stop_Blinding()
 {
+    secp256k1_bulletproof_generators_destroy(secp256k1_ctx_blind, blind_gens);
+    secp256k1_scratch_space_destroy(blind_scratch);
+
     secp256k1_context *ctx = secp256k1_ctx_blind;
     secp256k1_ctx_blind = nullptr;
 
