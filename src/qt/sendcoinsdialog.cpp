@@ -354,8 +354,8 @@ void SendCoinsDialog::on_sendButton_clicked()
         nRecipient++;
     }
 
-    int nRingSize = MIN_RINGSIZE; //GetRandInt(MAX_RINGSIZE - MIN_RINGSIZE) + MIN_RINGSIZE;
-    int nMaxInputs = 32;
+    int nRingSize = DEFAULT_RING_SIZE;
+    int nMaxInputs = DEFAULT_INPUTS_PER_SIG;
 
     sCommand += "] \"\" \"\" "+QString::number(nRingSize)+" "+QString::number(nMaxInputs);
 
