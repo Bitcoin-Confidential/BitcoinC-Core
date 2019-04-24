@@ -409,24 +409,18 @@ QPushButton:pressed {
 }
 QComboBox {
 	/* Dropdown Menus */
-    padding: 0.8em 0.85em 0.8em;
+    combobox-popup: 0;
+    padding: 10px;
 	min-height: 20px;
-	color: #DCDCDC;
-	border: 0;
+	border:3px solid #BC9427;
 	font-size: 13px;
 	outline: 0;
-	background-color: rgba(255, 255, 255, 0.08);
+	background-color: #232323;
 	border-radius: 10px;
 }
-
 QComboBox:checked {
 	background-color: rgba(255, 255, 255, 0.1);
 	border:3px solid #BC9427;
-}
-QComboBox:editable {
-    background: #FEC60D;
-	color: #727272;
-	border: 0px solid transparent;
 }
 QComboBox::drop-down {
     background: none;
@@ -444,28 +438,12 @@ QComboBox::down-arrow:hover {
 	border-image: url(':/images/downArrow_hover');
 }
 QComboBox QListView {
-	background: #232323;
-	border: 0;
-	padding-right: 3px;
-	padding-left: 3px;
-}
-QComboBox QAbstractItemView::item {
-	margin: 4px;
-	min-height: 35px;
-}
-QComboBox::item {
-    background: #232323;
-    color: #727272;
-    font-size: 13px;
-}
-QComboBox::item:alternate {
-    background: #232323;
-    color: #727272;
-    font-size: 13px;
+	background-color: #434343;
+    color: #DCDCDC;
 }
 QComboBox::item:selected {
     border: 0px solid transparent;
-    background: #434343;
+    background-color: #232323;
     color: #DCDCDC;
     font-size: 13px;
 }
