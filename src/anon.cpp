@@ -42,8 +42,9 @@ bool VerifyMLSAG(const CTransaction &tx, CValidationState &state)
     if (nPlainValueOut > 0)
     {
         if (!secp256k1_pedersen_commit(secp256k1_ctx_blind,
-            &plainCommitment, zeroBlind, (uint64_t) nPlainValueOut, secp256k1_generator_h))
+            &plainCommitment, zeroBlind, (uint64_t) nPlainValueOut, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
             return state.DoS(100, false, REJECT_INVALID, "bad-plain-commitment");
+        }
     };
 
     std::vector<const uint8_t*> vpInputSplitCommits;
@@ -193,10 +194,10 @@ bool VerifyMLSAG(const CTransaction &tx, CValidationState &state)
             (const secp256k1_pedersen_commitment* const*)vpInputSplitCommits.data(), vpInputSplitCommits.size(),
             (const secp256k1_pedersen_commitment* const*)vpOutCommits.data(), vpOutCommits.size())))
             return state.DoS(100, error("%s: verify-commit-tally-failed %d", __func__, rv), REJECT_INVALID, "verify-commit-tally-failed");
-    };
+    }
 
     return true;
-};
+}
 
 bool AddKeyImagesToMempool(const CTransaction &tx, CTxMemPool &pool)
 {
@@ -374,4 +375,18 @@ bool RewindToCheckpoint(int nCheckPointHeight, int &nBlocks, std::string &sError
     };
 
     return true;
+};
+
+bool RewindRangeProof(const std::vector<uint8_t> &rangeproof, const std::vector<uint8_t> &commitment, const uint256 &nonce,
+                      std::vector<uint8_t> &blind_out, CAmount &value_out)
+{
+    blind_out.resize(32);
+    secp256k1_pedersen_commitment commitment_type;
+    if (commitment.size() != 33) {
+        return false;
+    }
+    memcpy(&commitment_type.data[0], commitment.data(), 33);
+    return (1 == secp256k1_bulletproof_rangeproof_rewind(secp256k1_ctx_blind, blind_gens,
+            (uint64_t*) &value_out, blind_out.data(), rangeproof.data(), rangeproof.size(),
+            0, &commitment_type, &secp256k1_generator_const_h, nonce.begin(), nullptr, 0));
 };

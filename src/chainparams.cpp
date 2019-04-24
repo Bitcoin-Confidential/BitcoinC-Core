@@ -358,6 +358,7 @@ public:
   //      consensus.defaultAssumeValid = uint256S("0x5dacfb4e040ed98031f8586ce1516b6813990b53d677fb45a49099e8ceecb6fa"); //250000
 
         consensus.nMinRCTOutputDepth = 12;
+        consensus.bulletproof_time = 0xFFFFFFFF; // 2106 TODO: lower
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -537,6 +538,7 @@ public:
         //consensus.defaultAssumeValid = uint256S("0x000000000871ee6842d3648317ccc8a435eb8cc3c2429aee94faff9ba26b05a0"); //1043841
 
         consensus.nMinRCTOutputDepth = 12;
+        consensus.bulletproof_time = 0xFFFFFFFF;
 
         pchMessageStart[0] = 0xbc;
         pchMessageStart[1] = 0x15;
@@ -589,7 +591,7 @@ public:
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("testnet.b-c.rocks");
-        vSeeds.emplace_back("testnet.b-c.xyz");        
+        vSeeds.emplace_back("testnet.b-c.xyz");
         vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc");
         vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc");
 
@@ -695,6 +697,7 @@ public:
 //        consensus.defaultAssumeValid = uint256S("0x00");
 
         consensus.nMinRCTOutputDepth = 1;
+        consensus.bulletproof_time = 0;
 
         pchMessageStart[0] = 0xbc;
         pchMessageStart[1] = 0x5c;
