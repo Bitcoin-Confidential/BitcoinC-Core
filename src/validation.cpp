@@ -2684,7 +2684,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             CAmount nDevReward =  0;
             if (!pDevFundSettings || pDevFundSettings->nMinDevStakePercent <= 0)
             {
-                if (nStakeReward < 0 || nStakeReward > nCalculatedStakeReward)
+                if (nStakeReward < 0 || nStakeReward != nCalculatedStakeReward)
                     return state.DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward), REJECT_INVALID, "bad-cs-amount");
             } else
             {
@@ -2731,7 +2731,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                         return state.DoS(100, error("%s: Bad foundation-reward (actual=%d vs expected=%d)", __func__, outputDF->nValue, nDevReward), REJECT_INVALID, "bad-cs-fund-amount");
                 } else
                 {
-                    if (nStakeReward < 0 || nStakeReward > nCalculatedStakeReward)
+                    if (nStakeReward < 0 || nStakeReward != nCalculatedStakeReward)
                         return state.DoS(100, error("%s: Bad stake-reward (actual=%d vs expected=%d)", __func__, nStakeReward, nCalculatedStakeReward), REJECT_INVALID, "bad-cs-amount");
                 };
 
