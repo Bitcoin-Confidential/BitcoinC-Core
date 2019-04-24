@@ -769,15 +769,25 @@ void CoinControlDialog::updateView()
                 }else{
                     itemOutput->setText(COLUMN_ADDRESS, sWalletAddress);
                     itemOutput->setToolTip(COLUMN_LABEL, tr("spending from %1 (%2)").arg(sWalletLabel).arg(sWalletAddress));
-                    itemOutput->setText(COLUMN_LABEL, tr("(spending)"));
+
+                    QString sLabel = model->getAddressTableModel()->labelForAddress(sWalletAddress);
+                    if (sLabel.isEmpty()){
+                        sLabel = tr("(no label)");
+                    }
+                    itemOutput->setText(COLUMN_LABEL, sLabel);
                 }
 
             }
             else if (!treeMode)
             {
                 QString sLabel = model->getAddressTableModel()->labelForAddress(sAddress);
-                if (sLabel.isEmpty())
-                    sLabel = tr("(no label)");
+                if (sLabel.isEmpty()){
+                    if(ControlModeToCbxType(mode) == OUTPUT_STANDARD){
+                        sLabel = tr("(no label)");
+                    }else{
+                        sLabel = tr("(change)");
+                    }
+                }
                 itemOutput->setText(COLUMN_LABEL, sLabel);
             }
 
