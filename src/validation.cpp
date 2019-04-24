@@ -617,6 +617,9 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         *pfMissingInputs = false;
     }
 
+    const Consensus::Params &consensus = Params().GetConsensus();
+    state.fBulletproofsActive = nAcceptTime >= consensus.bulletproof_time;
+
     if (!CheckTransaction(tx, state))
         return false; // state filled in by CheckTransaction
 
@@ -2241,6 +2244,9 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     assert(pindex);
     assert(*pindex->phashBlock == block.GetHash());
     int64_t nTimeStart = GetTimeMicros();
+
+    const Consensus::Params &consensus = Params().GetConsensus();
+    state.fBulletproofsActive = block.nTime >= consensus.bulletproof_time;
 
     // Check it again in case a previous version let a bad block in
     // NOTE: We don't currently (re-)invoke ContextualCheckBlock() or
@@ -4001,6 +4007,8 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     // redundant with the call in AcceptBlockHeader.
     if (!CheckBlockHeader(block, state, consensusParams, fCheckPOW))
         return false;
+
+    state.fBulletproofsActive = block.nTime >= consensusParams.bulletproof_time;
 
     // Check the merkle root.
     if (fCheckMerkleRoot) {
@@ -6316,4 +6324,3 @@ bool CoinStakeCache::InsertCoinStake(const uint256 &blockHash, const CTransactio
 
     return true;
 };
-

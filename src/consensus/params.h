@@ -66,7 +66,8 @@ struct Params {
     int csp2shHeight;
     /** Time at which Paid SMSG becomes active */
     int64_t nPaidSmsgTime;
-
+    /** Time at which bulletproofs become active */
+    uint32_t bulletproof_time;
 
     /**
      * Minimum blocks including miner confirmation of the total of 2016 blocks in a retargeting period,

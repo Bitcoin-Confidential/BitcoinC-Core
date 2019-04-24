@@ -25,6 +25,7 @@ typedef std::map<uint256, CTransactionRecord> MapRecords_t;
 typedef std::multimap<int64_t, std::map<uint256, CTransactionRecord>::iterator> RtxOrdered_t;
 
 class UniValue;
+typedef struct secp256k1_scratch_space_struct secp256k1_scratch_space;
 
 const uint16_t OR_PLACEHOLDER_N = 0xFFFF; // index of a fake output to contain reconstructed amounts for txns with undecodeable outputs
 enum OutputRecordFlags
@@ -239,6 +240,11 @@ public:
     uint256 nonce;
 
     // TODO: range proof parameters, try to keep similar for fee
+    // Allow an overwrite of the parameters.
+    bool fOverwriteRangeProofParams = false;
+    uint64_t min_value;
+    int ct_exponent;
+    int ct_bits;        // set to 0 to mark bulletproof
 
     CKey sEphem;
     CPubKey pkTo;
@@ -753,8 +759,20 @@ public:
 
     bool fUnlockForStakingOnly = false; // Use coldstaking instead
 
-    int64_t nRCTOutSelectionGroup1 = 2400;
-    int64_t nRCTOutSelectionGroup2 = 24000;
+    int64_t nRCTOutSelectionGroup1 = 5000;
+    int64_t nRCTOutSelectionGroup2 = 50000;
+    size_t prefer_max_num_anon_inputs = 5; // if > x anon inputs are randomly selected attempt to reduce
+    int m_mixin_selection_mode = 1;
+    secp256k1_scratch_space *m_blind_scratch = nullptr;
+
+    int m_collapse_spent_mode = 0;
+    int m_min_collapse_depth = 3;
+    std::map<uint256, std::set<uint256> > mapTxCollapsedSpends;
+    std::set<uint256> m_collapsed_txns;
+    std::set<COutPoint> m_collapsed_txn_inputs;
+
+    int64_t m_smsg_fee_rate_target = 0;
+    uint32_t m_smsg_difficulty_target = 0; // 0 = auto
 
 private:
     void ParseAddressForMetaData(const CTxDestination &addr, COutputRecord &rec);
@@ -790,6 +808,7 @@ int LoopExtAccountsInDB(CHDWallet *pwallet, bool fInactive, LoopExtKeyCallback &
 bool CheckOutputValue(const CTempRecipient &r, const CTxOutBase *txbout, CAmount nFeeRet, std::string sError);
 void SetCTOutVData(std::vector<uint8_t> &vData, CPubKey &pkEphem, uint32_t nStealthPrefix);
 int CreateOutput(OUTPUT_PTR<CTxOutBase> &txbout, CTempRecipient &r, std::string &sError);
+void ExtractNarration(const uint256 &nonce, const std::vector<uint8_t> &vData, std::string &sNarr);
 
 // Calculate the size of the transaction assuming all signatures are max size
 // Use DummySignatureCreator, which inserts 72 byte signatures everywhere.

@@ -122,10 +122,16 @@ const COutputRecord *CTransactionRecord::GetChangeOutput() const
 
 int CHDWallet::Finalise()
 {
+    LOCK(cs_wallet);
     LogPrint(BCLog::HDWALLET, "%s %s\n", GetDisplayName(), __func__);
 
     FreeExtKeyMaps();
     mapAddressBook.clear();
+
+    if (m_blind_scratch) {
+        secp256k1_scratch_space_destroy(m_blind_scratch);
+        m_blind_scratch = nullptr;
+    }
     return 0;
 };
 
@@ -171,6 +177,9 @@ void CHDWallet::AddOptions()
 bool CHDWallet::Initialise()
 {
     fBitcoinCWallet = true;
+
+    m_blind_scratch = secp256k1_scratch_space_create(secp256k1_ctx_blind, 1024 * 1024);
+    assert(m_blind_scratch);
 
     if (!ParseMoney(gArgs.GetArg("-reservebalance", ""), nReserveBalance)) {
         return InitError(_("Invalid amount for -reservebalance=<amount>"));
@@ -2852,8 +2861,8 @@ int CHDWallet::AddCTData(CTxOutBase *txout, CTempRecipient &r, std::string &sErr
 
     uint64_t nValue = r.nAmount;
     if (!secp256k1_pedersen_commit(secp256k1_ctx_blind,
-        pCommitment, (uint8_t*)&r.vBlind[0],
-        nValue, secp256k1_generator_h)) {
+        pCommitment, (uint8_t*)r.vBlind.data(),
+        nValue, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
         return wserrorN(1, sError, __func__, "secp256k1_pedersen_commit failed.");
     }
 
@@ -2872,30 +2881,72 @@ int CHDWallet::AddCTData(CTxOutBase *txout, CTempRecipient &r, std::string &sErr
         r.nonce = nonce;
     }
 
-    const char *message = r.sNarration.c_str();
-    size_t mlen = strlen(message);
-
     size_t nRangeProofLen = 5134;
     pvRangeproof->resize(nRangeProofLen);
 
-    uint64_t min_value = 0;
-    int ct_exponent = 2;
-    int ct_bits = 32;
+    if (GetTime() >= Params().GetConsensus().bulletproof_time) {
+        const uint8_t *bp[1];
+        bp[0] = r.vBlind.data();
+        assert(r.vBlind.size() == 32);
 
-    if (0 != SelectRangeProofParameters(nValue, min_value, ct_exponent, ct_bits)) {
-        return wserrorN(1, sError, __func__, "SelectRangeProofParameters failed.");
-    }
+        if (1 != secp256k1_bulletproof_rangeproof_prove(secp256k1_ctx_blind, m_blind_scratch, blind_gens,
+            pvRangeproof->data(), &nRangeProofLen, &nValue, nullptr, bp, 1,
+            &secp256k1_generator_const_h, 64, nonce.begin(), nullptr, 0)) {
+            return wserrorN(1, sError, __func__, "secp256k1_bulletproof_rangeproof_prove failed.");
+        }
 
-    if (1 != secp256k1_rangeproof_sign(secp256k1_ctx_blind,
-        &(*pvRangeproof)[0], &nRangeProofLen,
-        min_value, pCommitment,
-        &r.vBlind[0], nonce.begin(),
-        ct_exponent, ct_bits,
-        nValue,
-        (const unsigned char*) message, mlen,
-        nullptr, 0,
-        secp256k1_generator_h)) {
-        return wserrorN(1, sError, __func__, "secp256k1_rangeproof_sign failed.");
+        if (1 != secp256k1_bulletproof_rangeproof_verify(secp256k1_ctx_blind, m_blind_scratch, blind_gens,
+            pvRangeproof->data(), nRangeProofLen, nullptr, pCommitment, 1, 64, &secp256k1_generator_const_h, nullptr, 0)) {
+            return wserrorN(1, sError, __func__, "secp256k1_bulletproof_rangeproof_verify failed.");
+        }
+
+        if (r.sNarration.size() > 0) {
+            std::vector<uint8_t> vchNarr, &vData = *txout->GetPData();
+            CPubKey pkEphem = r.sEphem.GetPubKey();
+            SecMsgCrypter crypter;
+            crypter.SetKey(r.nonce.begin(), pkEphem.begin());
+
+            if (!crypter.Encrypt((uint8_t*)r.sNarration.data(), r.sNarration.length(), vchNarr)) {
+                return errorN(1, sError, __func__, "Narration encryption failed.");
+            }
+            if (vchNarr.size() > MAX_STEALTH_NARRATION_SIZE) {
+                return errorN(1, sError, __func__, "Encrypted narration is too long.");
+            }
+
+            size_t o = vData.size();
+            vData.resize(o + vchNarr.size() + 1);
+            vData[o++] = DO_NARR_CRYPT;
+            memcpy(&vData[o], vchNarr.data(), vchNarr.size());
+        }
+    } else {
+        uint64_t min_value = 0;
+        int ct_exponent = 2;
+        int ct_bits = 32;
+
+        const char *message = r.sNarration.c_str();
+        size_t mlen = strlen(message);
+
+        if (0 != SelectRangeProofParameters(nValue, min_value, ct_exponent, ct_bits)) {
+            return wserrorN(1, sError, __func__, "SelectRangeProofParameters failed.");
+        }
+
+        if (r.fOverwriteRangeProofParams == true) {
+            min_value = r.min_value;
+            ct_exponent = r.ct_exponent;
+            ct_bits = r.ct_bits;
+        }
+
+        if (1 != secp256k1_rangeproof_sign(secp256k1_ctx_blind,
+            &(*pvRangeproof)[0], &nRangeProofLen,
+            min_value, pCommitment,
+            &r.vBlind[0], nonce.begin(),
+            ct_exponent, ct_bits,
+            nValue,
+            (const unsigned char*) message, mlen,
+            nullptr, 0,
+            secp256k1_generator_h)) {
+            return wserrorN(1, sError, __func__, "secp256k1_rangeproof_sign failed.");
+        }
     }
 
     pvRangeproof->resize(nRangeProofLen);
@@ -3194,6 +3245,7 @@ bool CHDWallet::SetChangeDest(const CCoinControl *coinControl, CTempRecipient &r
 
 static bool InsertChangeAddress(CTempRecipient &r, std::vector<CTempRecipient> &vecSend, int &nChangePosInOut)
 {
+    r.fChange = true;
     if (nChangePosInOut < 0) {
         nChangePosInOut = GetRandInt(vecSend.size()+1);
     } else {
@@ -3352,7 +3404,6 @@ int CHDWallet::AddStandardInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                 // Fill an output to ourself
                 CTempRecipient r;
                 r.nType = OUTPUT_STANDARD;
-                r.fChange = true;
                 r.SetAmount(nChange);
 
                 if (!SetChangeDest(coinControl, r, sError)) {
@@ -3435,14 +3486,14 @@ int CHDWallet::AddStandardInputs(CWalletTx &wtx, CTransactionRecord &rtx,
             memset(&vBlindPlain[0], 0, 32);
             vpBlinds.push_back(&vBlindPlain[0]);
             if (nValueIn > 0
-                && !secp256k1_pedersen_commit(secp256k1_ctx_blind, &plainInputCommitment, &vBlindPlain[0], (uint64_t) nValueIn, secp256k1_generator_h)) {
+                && !secp256k1_pedersen_commit(secp256k1_ctx_blind, &plainInputCommitment, &vBlindPlain[0], (uint64_t) nValueIn, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
                 return wserrorN(1, sError, __func__, "secp256k1_pedersen_commit failed for plain in.");
             }
 
             if (nValueOutPlain > 0) {
                 vpBlinds.push_back(&vBlindPlain[0]);
 
-                if (!secp256k1_pedersen_commit(secp256k1_ctx_blind, &plainCommitment, &vBlindPlain[0], (uint64_t) nValueOutPlain, secp256k1_generator_h)) {
+                if (!secp256k1_pedersen_commit(secp256k1_ctx_blind, &plainCommitment, &vBlindPlain[0], (uint64_t) nValueOutPlain, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
                     return wserrorN(1, sError, __func__, "secp256k1_pedersen_commit failed for plain out.");
                 }
             }
@@ -3877,44 +3928,140 @@ int CHDWallet::PickHidingOutputs(std::vector<std::vector<int64_t> > &vMI, size_t
     int nBestHeight = chainActive.Tip()->nHeight;
     const Consensus::Params& consensusParams = Params().GetConsensus();
     size_t nInputs = vMI.size();
+    int64_t nLastRCTOutIndex = chainActive.Tip()->nAnonOutputs;
 
-    int64_t nLastRCTOutIndex = 0;
-    {
-        AssertLockHeld(cs_main);
-        nLastRCTOutIndex = chainActive.Tip()->nAnonOutputs;
+    // Remove outputs without required depth
+    int nExtraDepth = gArgs.GetBoolArg("-regtest", false) ? -1 : 2; // if not on regtest pick outputs deeper than consensus checks to prevent banning
+    while (nLastRCTOutIndex > 1){
+        CAnonOutput ao;
+        if (!pblocktree->ReadRCTOutput(nLastRCTOutIndex, ao)) {
+            return wserrorN(1, sError, __func__, _("Anon output not found in db, %d"), nLastRCTOutIndex);
+        }
+        if (ao.nBlockHeight > nBestHeight - (consensusParams.nMinRCTOutputDepth + nExtraDepth)) {
+            nLastRCTOutIndex--;
+            continue;
+        }
+        break;
     }
 
+    if (LogAcceptCategory(BCLog::HDWALLET)) {
+        WalletLogPrintf("%s: Last index %d, inputs %d, ring size %d, selection mode %d.\n", __func__, nLastRCTOutIndex, nInputs, nRingSize, m_mixin_selection_mode);
+    }
     if (nLastRCTOutIndex < (int64_t)(nInputs * nRingSize)) {
         return wserrorN(1, sError, __func__, _("Not enough spending outputs available in the blockchain for privacy mixing. There are currently %d. For this transaction required: %d"), nLastRCTOutIndex, nInputs * nRingSize);
     }
 
-    int nExtraDepth = gArgs.GetBoolArg("-regtest", false) ? -1 : 2; // if not on regtest pick outputs deeper than consensus checks to prevent banning
-
     // Must add real outputs to setHave before adding the decoys.
+    std::vector<int64_t> real_inputs;
+    real_inputs.reserve(setHave.size());
+    for (auto i : setHave) {
+        real_inputs.push_back(i);
+    }
+
+    static const int max_groups = 4;
+    static const double distribution[] = {0.6, 0.75, 0.85, 0.93};
+    int64_t range_periods[] = {1, 7, 31, 365};
+    int64_t expect_aos_per_period = 500;
+
+    static const double range_blur = 0.3;
+    int64_t ranges[max_groups];
+
+    if (m_mixin_selection_mode == 1) {
+        for (int j = 0; j < max_groups; j++) {
+            ranges[j] = expect_aos_per_period * range_periods[j];
+
+            int64_t output_id = nLastRCTOutIndex - std::min(nLastRCTOutIndex-1, std::max(int64_t(1), ranges[j]));
+            CAnonOutput ao;
+            if (!pblocktree->ReadRCTOutput(output_id, ao)) {
+                return wserrorN(1, sError, __func__, _("Anon output not found in db, %d"), output_id);
+            }
+
+            int num_blocks = nBestHeight - ao.nBlockHeight;
+            if (num_blocks) {
+                double ratio = ((double) range_periods[j] / ((double) num_blocks / 720.0));
+                if (ratio > 1.0) {
+                    if (LogAcceptCategory(BCLog::HDWALLET)) {
+                        WalletLogPrintf("%s: Adjusting range, anon-outputs %d, blocks %d, ratio %f.\n", __func__, ranges[j], num_blocks, ratio);
+                    }
+                    ranges[j] *= ratio;
+                }
+            }
+            ranges[j] += (int64_t) GetRand((uint64_t)((double)ranges[j] * range_blur));
+        }
+    }
+
     for (size_t k = 0; k < nInputs; ++k)
     for (size_t i = 0; i < nRingSize; ++i) {
         if (i == nSecretColumn) {
             continue;
         }
 
-        int64_t nMinIndex = 1;
-        if (GetRandInt(100) < 50) { // 50% chance of selecting from the last 2400
-            nMinIndex = std::max((int64_t)1, nLastRCTOutIndex - nRCTOutSelectionGroup1);
-        } else
-        if (GetRandInt(100) < 70) { // further 70% chance of selecting from the last 24000
-            nMinIndex = std::max((int64_t)1, nLastRCTOutIndex - nRCTOutSelectionGroup2);
-        }
-
-        int64_t nLastDepthCheckPassed = 0;
         size_t j = 0;
         const static size_t nMaxTries = 1000;
         for (j = 0; j < nMaxTries; ++j) {
-            if (nLastRCTOutIndex <= nMinIndex) {
-                return wserrorN(1, sError, __func__, _("Not enough spending outputs available in the blockchain for privacy mixing. There are currently %d. For this transaction required: %d, lastpick: %d"), nLastRCTOutIndex, nInputs * nRingSize, nMinIndex);
+            int64_t select_min = 1;
+            int64_t select_max = nLastRCTOutIndex;
+
+            if (m_mixin_selection_mode == 1) {
+                static const int max_r = 1000;
+                int g_r = GetRandInt(max_r);
+                for (int j = 0; j < max_groups; j++) {
+                    if (g_r <= max_r * distribution[j]) {
+                        select_min = nLastRCTOutIndex - ranges[j];
+                        break;
+                    }
+                    select_max -= ranges[j];
+                }
+                if (select_max <= 1) { // Select from entire range if too few mixins exist
+                    select_max = nLastRCTOutIndex;
+                }
+                select_min = std::min(nLastRCTOutIndex, std::max(int64_t(1), select_min));
+                select_max = std::min(nLastRCTOutIndex, std::max(int64_t(1), select_max));
+            } else
+            if (m_mixin_selection_mode == 2) {
+                int64_t select_range = 0;
+                int64_t select_near = 0;
+                if (GetRandInt(100) < 50) { // 50% chance of selecting within 5000 places of a random input
+                    select_range = nRCTOutSelectionGroup1;
+                    select_near = real_inputs[GetRandInt(real_inputs.size())];
+                } else
+                if (GetRandInt(100) < 40) { // Further 40% chance of selecting within 50000 places of a random input
+                    select_range = nRCTOutSelectionGroup2;
+                    select_near = real_inputs[GetRandInt(real_inputs.size())];
+                }
+
+                if (select_near) {
+                    // Randomly offset the range
+                    select_near = std::max(int64_t(1), int64_t((select_near - select_range) + (select_range * 2.0) * GetRandDoubleUnit()));
+
+                    select_min = std::min(nLastRCTOutIndex, std::max(int64_t(1), select_near - select_range));
+                    select_max = std::min(nLastRCTOutIndex, select_near + select_range);
+
+                    int64_t num_blocks, num_aos = select_max - select_min;
+                    CAnonOutput ao_min, ao_max;
+                    if (!pblocktree->ReadRCTOutput(select_min, ao_min)) {
+                        return wserrorN(1, sError, __func__, _("Anon output not found in db, %d"), select_min);
+                    }
+                    if (!pblocktree->ReadRCTOutput(select_max, ao_max)) {
+                        return wserrorN(1, sError, __func__, _("Anon output not found in db, %d"), select_max);
+                    }
+                    num_blocks = ao_max.nBlockHeight - ao_min.nBlockHeight;
+
+                    if (num_blocks) {
+                        double ratio = ((double) num_aos * 2.0) / ((double) num_blocks);
+                        if (ratio > 1.0) {
+                            if (LogAcceptCategory(BCLog::HDWALLET)) {
+                                WalletLogPrintf("%s: Adjusting range, anon-outputs %d, blocks %d, ratio %f.\n", __func__, num_aos, num_blocks, ratio);
+                            }
+                            select_range *= ratio;
+                            select_min = std::min(nLastRCTOutIndex, std::max(int64_t(1), select_near - select_range));
+                            select_max = std::min(nLastRCTOutIndex, select_near + select_range);
+                        }
+                    }
+                }
             }
 
-            int64_t nDecoy = nMinIndex + GetRand((nLastRCTOutIndex - nMinIndex) + 1);
-
+            int64_t nDecoy = select_min + GetRand(select_max-select_min);
             if (setHave.count(nDecoy) > 0) {
                 if (nDecoy == nLastRCTOutIndex) {
                     nLastRCTOutIndex--;
@@ -3922,23 +4069,12 @@ int CHDWallet::PickHidingOutputs(std::vector<std::vector<int64_t> > &vMI, size_t
                 continue;
             }
 
-            if (nDecoy > nLastDepthCheckPassed) {
-                CAnonOutput ao;
-                if (!pblocktree->ReadRCTOutput(nDecoy, ao)) {
-                    return wserrorN(1, sError, __func__, _("Anon output not found in db, %d"), nDecoy);
-                }
-
-                if (ao.nBlockHeight > nBestHeight - (consensusParams.nMinRCTOutputDepth+nExtraDepth)) {
-                    if (nLastRCTOutIndex > nDecoy) {
-                        nLastRCTOutIndex = nDecoy-1;
-                    }
-                    continue;
-                }
-                nLastDepthCheckPassed = nDecoy;
-            }
-
             vMI[k][i] = nDecoy;
             setHave.insert(nDecoy);
+
+            if (LogAcceptCategory(BCLog::HDWALLET)) {
+                WalletLogPrintf("Adding decoy %d, from range (%d, %d).\n", nDecoy, select_min, select_max);
+            }
             break;
         }
 
@@ -4039,7 +4175,6 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                 // Fill an output to ourself
                 CTempRecipient r;
                 r.nType = OUTPUT_RINGCT;
-                r.fChange = true;
 
                 if (!SetChangeDest(coinControl, r, sError)) {
                     return wserrorN(1, sError, __func__, ("SetChangeDest failed: " + sError));
@@ -4254,7 +4389,7 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
 
         if (nValueOutPlain > 0) {
             if (!secp256k1_pedersen_commit(secp256k1_ctx_blind,
-                &plainCommitment, &vBlindPlain[0], (uint64_t) nValueOutPlain, secp256k1_generator_h)) {
+                &plainCommitment, &vBlindPlain[0], (uint64_t) nValueOutPlain, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
                 return wserrorN(1, sError, __func__, "secp256k1_pedersen_commit failed for plain out.");
             }
 
@@ -4444,7 +4579,7 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
                     secp256k1_pedersen_commitment splitInputCommit;
                     if (!secp256k1_pedersen_commit(secp256k1_ctx_blind,
                         &splitInputCommit, (uint8_t*)vSplitCommitBlindingKeys[l].begin(),
-                        nCommitValue, secp256k1_generator_h)) {
+                        nCommitValue, &secp256k1_generator_const_h, &secp256k1_generator_const_g)) {
                         return wserrorN(1, sError, __func__, "secp256k1_pedersen_commit failed.");
                     }
 
@@ -4487,13 +4622,15 @@ int CHDWallet::AddSpendingInputs(CWalletTx &wtx, CTransactionRecord &rtx,
         return 1;
     }
 
+    double all_est = feeCalc.est.pass.totalConfirmed + feeCalc.est.pass.inMempool + feeCalc.est.pass.leftMempool;
+    if (all_est == 0.0) all_est = 1.0;
     WalletLogPrintf("Fee Calculation: Fee:%d Bytes:%u Needed:%d Tgt:%d (requested %d) Reason:\"%s\" Decay %.5f: Estimation: (%g - %g) %.2f%% %.1f/(%.1f %d mem %.1f out) Fail: (%g - %g) %.2f%% %.1f/(%.1f %d mem %.1f out)\n",
               nFeeRet, nBytes, nFeeNeeded, feeCalc.returnedTarget, feeCalc.desiredTarget, StringForFeeReason(feeCalc.reason), feeCalc.est.decay,
               feeCalc.est.pass.start, feeCalc.est.pass.end,
-              100 * feeCalc.est.pass.withinTarget / (feeCalc.est.pass.totalConfirmed + feeCalc.est.pass.inMempool + feeCalc.est.pass.leftMempool),
+              100 * feeCalc.est.pass.withinTarget / all_est,
               feeCalc.est.pass.withinTarget, feeCalc.est.pass.totalConfirmed, feeCalc.est.pass.inMempool, feeCalc.est.pass.leftMempool,
               feeCalc.est.fail.start, feeCalc.est.fail.end,
-              100 * feeCalc.est.fail.withinTarget / (feeCalc.est.fail.totalConfirmed + feeCalc.est.fail.inMempool + feeCalc.est.fail.leftMempool),
+              100 * feeCalc.est.fail.withinTarget / all_est,
               feeCalc.est.fail.withinTarget, feeCalc.est.fail.totalConfirmed, feeCalc.est.fail.inMempool, feeCalc.est.fail.leftMempool);
     return 0;
 };
@@ -4660,7 +4797,7 @@ int CHDWallet::UnloadTransaction(const uint256 &hash)
             //if (it->second->first == hash)
             if (it->second == itr) {
                 rtxOrdered.erase(it++);
-                continue;
+                break;
             }
             ++it;
         }
@@ -8304,7 +8441,7 @@ int CHDWallet::CheckForStealthAndNarration(const CTxOutBase *pb, const CTxOutDat
     // returns: -1 error, 0 nothing found, 1 narration, 2 stealth
 
     CKey sShared;
-    std::vector<uint8_t> vchEphemPK, vchENarr;
+    std::vector<uint8_t> vchEphemPK;
     const std::vector<uint8_t> &vData = pdata->vData;
 
     if (vData.size() < 1) {
@@ -8365,14 +8502,12 @@ int CHDWallet::CheckForStealthAndNarration(const CTxOutBase *pb, const CTxOutDat
                 WalletLogPrintf("%s: Invalid narration data length: %d\n", __func__, lenNarr);
                 return 2; // still found
             }
-            vchENarr.resize(lenNarr);
-            memcpy(&vchENarr[0], &vData[nNarrOffset], lenNarr);
 
             SecMsgCrypter crypter;
             crypter.SetKey(sShared.begin(), &vchEphemPK[0]);
 
             std::vector<uint8_t> vchNarr;
-            if (!crypter.Decrypt(&vchENarr[0], vchENarr.size(), vchNarr)) {
+            if (!crypter.Decrypt(&vData[nNarrOffset], lenNarr, vchNarr)) {
                 WalletLogPrintf("%s: Decrypt narration failed.\n", __func__);
                 return 2; // still found
             }
@@ -8754,7 +8889,45 @@ int CHDWallet::OwnStandardOut(const CTxOutStandard *pout, const CTxOutData *pdat
     rout.nFlags &= ~ORF_LOCKED;
 
     return 1;
-};
+}
+
+void ExtractNarration(const uint256 &nonce, const std::vector<uint8_t> &vData, std::string &sNarr)
+{
+    if (vData.size() < 33) {
+        return;
+    }
+
+    CPubKey pkEphem;
+    pkEphem.Set(vData.begin(), vData.begin() + 33);
+
+    int nNarrOffset = -1;
+    if (vData.size() > 38 && vData[38] == DO_NARR_CRYPT) {
+        nNarrOffset = 39;
+    } else
+    if (vData.size() > 33 && vData[33] == DO_NARR_CRYPT) {
+        nNarrOffset = 34;
+    }
+
+    if (nNarrOffset == -1) {
+        return;
+    }
+
+    size_t lenNarr = vData.size() - nNarrOffset;
+    if (lenNarr < 1 || lenNarr > 32) { // min block size 8?
+        LogPrintf("%s: Invalid narration data length: %d\n", __func__, lenNarr);
+        return;
+    }
+
+    SecMsgCrypter crypter;
+    crypter.SetKey(nonce.begin(), pkEphem.begin());
+
+    std::vector<uint8_t> vchNarr;
+    if (!crypter.Decrypt(&vData[nNarrOffset], lenNarr, vchNarr)) {
+        LogPrintf("%s: Decrypt narration failed.\n", __func__);
+        return;
+    }
+    sNarr = std::string(vchNarr.begin(), vchNarr.end());
+}
 
 int CHDWallet::OwnAnonOut(CHDWalletDB *pwdb, const uint256 &txhash, const CTxOutRingCT *pout, const CStoredExtKey *pc, uint32_t &nLastChild,
     COutputRecord &rout, CStoredTransaction &stx, bool &fUpdated)
@@ -8818,6 +8991,16 @@ int CHDWallet::OwnAnonOut(CHDWalletDB *pwdb, const uint256 &txhash, const CTxOut
     size_t mlen = sizeof(msg);
     memset(msg, 0, mlen);
     uint64_t amountOut;
+
+    if (pout->vRangeproof.size() < 1000) {
+        if (1 != secp256k1_bulletproof_rangeproof_rewind(secp256k1_ctx_blind, blind_gens,
+            &amountOut, blindOut, pout->vRangeproof.data(), pout->vRangeproof.size(),
+            0, &pout->commitment, &secp256k1_generator_const_h, nonce.begin(), nullptr, 0)) {
+            return werrorN(0, "%s: secp256k1_bulletproof_rangeproof_rewind failed.", __func__);
+        }
+
+        ExtractNarration(nonce, pout->vData, rout.sNarration);
+    } else
     if (1 != secp256k1_rangeproof_rewind(secp256k1_ctx_blind,
         blindOut, &amountOut, msg, &mlen, nonce.begin(),
         &min_value, &max_value,

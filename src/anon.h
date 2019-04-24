@@ -19,6 +19,10 @@ const size_t MAX_ANON_INPUTS = 32; // To raise see MLSAG_MAX_ROWS also
 
 const size_t ANON_FEE_MULTIPLIER = 2;
 
+const size_t DEFAULT_RING_SIZE = 5;
+const size_t DEFAULT_INPUTS_PER_SIG = 1;
+
+
 
 bool VerifyMLSAG(const CTransaction &tx, CValidationState &state);
 
@@ -31,4 +35,7 @@ bool RollBackRCTIndex(int64_t nLastValidRCTOutput, int64_t nExpectErase, std::se
 
 bool RewindToCheckpoint(int nCheckPointHeight, int &nBlocks, std::string &sError);
 
-#endif  // BITCOINC_ANON_H
+bool RewindRangeProof(const std::vector<uint8_t> &rangeproof, const std::vector<uint8_t> &commitment, const uint256 &nonce,
+                      std::vector<uint8_t> &blind_out, CAmount &value_out);
+
+#endif  // PARTICL_ANON_H

@@ -24,6 +24,8 @@ uint64_t GetRand(uint64_t nMax);
 int GetRandInt(int nMax);
 uint256 GetRandHash();
 
+double GetRandDoubleUnit();
+
 /**
  * Add a little bit of randomness to the output of GetStrongRangBytes.
  * This sleeps for a millisecond, so should only be called when there is
