@@ -41,9 +41,10 @@ information or see https://opensource.org/licenses/MIT.
 
 Development Process
 -------------------
+Current releases are on 1.0.x branch.  Build with disabling tests.
+./configure --disable-tests --disable-gui-tests --disable-bench
 
-The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/bitcoin-confidential/bitcoinc-core/tags) are created
+The `master` branch is regularly built and tested, but is not guaranteed to be stable or work correctly with exsting network. [Tags](https://github.com/bitcoin-confidential/bitcoinc-core/tags) are created
 regularly to indicate new official, stable release versions of BitcoinC Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
