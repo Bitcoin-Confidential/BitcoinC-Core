@@ -184,8 +184,8 @@ const size_t nGenesisOutputsRegtest = sizeof(regTestOutputs) / sizeof(regTestOut
 
 //Mainnet
 const std::pair<const char*, CAmount> genesisOutputs[] = {
-         //Dev address bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ
-    std::make_pair("fff85dd28a712f821414fabec2a58395858ff7ae", 1 * COIN),
+    // bJoMC6zjVq5RsPPkj1iRotN4ShzLnBNfrK
+    std::make_pair("42962c52d85b0d65e47eb0491ab883bc2c2f5152", 1 * COIN),
 };
 
 const size_t nGenesisOutputs = sizeof(genesisOutputs) / sizeof(genesisOutputs[0]);
@@ -385,7 +385,7 @@ public:
 
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlockMainNet(1556236800, 141739, 0x1f00ffff); // 2019-04-26
+        genesis = CreateGenesisBlockMainNet(1556236800, 177928, 0x1f00ffff); // 2019-04-26
         consensus.hashGenesisBlock = genesis.GetHash();
 /*
             bool fNegative;
@@ -408,9 +408,10 @@ public:
                      }
 */
 
-        assert(consensus.hashGenesisBlock == uint256S("0x0000c5725bfe5ddf82e0d6bd709cc40e8f0ffcc9ec412be52a8a2381fa1df142"));
-        assert(genesis.hashMerkleRoot == uint256S("0x1d4078dbaa54666e166bd655ccf94bacf84b7c51c4402a97e90a547d4ac39c0b"));
-        assert(genesis.hashWitnessMerkleRoot == uint256S("0x63f264eb0ce1b249ac22a1eadc54673b9a9de2cf4355b7f9e0bdabd500488727"));
+
+        assert(consensus.hashGenesisBlock == uint256S("0x000094f345c7c044aaa7cd17803a5cbd5041b5be1c21f10de1943a48014b490f"));
+        assert(genesis.hashMerkleRoot == uint256S("0x066a898337fb4ba4394b7dd3ad379289e5e5320a72a6028eaeabe9e5fe68ceb3"));
+        assert(genesis.hashWitnessMerkleRoot == uint256S("0x2e0d0e1db526e3ef777f742d89d0fb07eb092bd161a4881ed885413b53fe924e"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
