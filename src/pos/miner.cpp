@@ -386,14 +386,14 @@ void ThreadStakeMiner(size_t nThreadID, std::vector<std::shared_ptr<CWallet>> &v
             };
         };
 
-//        if (g_connman->vNodes.empty() || IsInitialBlockDownload())
-//        {
-//            fIsStaking = false;
-//            fTryToSync = true;
-//            LogPrint(BCLog::POS, "%s: IsInitialBlockDownload\n", __func__);
-//            condWaitFor(nThreadID, 2000);
-//            continue;
-//        };
+        if (g_connman->vNodes.empty() || IsInitialBlockDownload())
+        {
+            fIsStaking = false;
+            fTryToSync = true;
+            LogPrint(BCLog::POS, "%s: IsInitialBlockDownload\n", __func__);
+            condWaitFor(nThreadID, 2000);
+            continue;
+        };
 
 
         {
@@ -402,13 +402,13 @@ void ThreadStakeMiner(size_t nThreadID, std::vector<std::shared_ptr<CWallet>> &v
             nBestTime = chainActive.Tip()->nTime;
         }
 
-//        if (nBestHeight < GetNumBlocksOfPeers()-1)
-//        {
-//            fIsStaking = false;
-//            LogPrint(BCLog::POS, "%s: nBestHeight < GetNumBlocksOfPeers(), %d, %d\n", __func__, nBestHeight, GetNumBlocksOfPeers());
-//            condWaitFor(nThreadID, nMinerSleep * 4);
-//            continue;
-//        };
+        if (nBestHeight < GetNumBlocksOfPeers()-1)
+        {
+            fIsStaking = false;
+            LogPrint(BCLog::POS, "%s: nBestHeight < GetNumBlocksOfPeers(), %d, %d\n", __func__, nBestHeight, GetNumBlocksOfPeers());
+            condWaitFor(nThreadID, nMinerSleep * 4);
+            continue;
+        };
 
         if (nMinStakeInterval > 0 && nTimeLastStake + (int64_t)nMinStakeInterval > GetTime())
         {
