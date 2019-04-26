@@ -419,9 +419,9 @@ public:
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("mainnet.b-c.rocks");
         vSeeds.emplace_back("mainnet.b-c.xyz");
-        vSeeds.emplace_back("mainnet-seed.bitcoinconfidential.cc");
-        vSeeds.emplace_back("dnsseed-mainnet.bitcoinconfidential.cc");
-        vSeeds.emplace_back("mainnet.bitcoinconfidential.cc");
+        vSeeds.emplace_back("mainnet-seed.bconf.cc");
+        vSeeds.emplace_back("dnsseed-mainnet.bconf.cc");
+        vSeeds.emplace_back("mainnet.bconf.cc");
 
         vDevFundSettings.emplace_back(0,DevFundSettings("bc4iXxHcHUsMJxcW8s2EReF5ErtmhwuuxZ", 30, 1000));
 
@@ -592,8 +592,8 @@ public:
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("testnet.b-c.rocks");
         vSeeds.emplace_back("testnet.b-c.xyz");
-        vSeeds.emplace_back("testnet-seed.bitcoinconfidential.cc");
-        vSeeds.emplace_back("dnsseed-testnet.bitcoinconfidential.cc");
+        vSeeds.emplace_back("testnet-seed.bconf.cc");
+        vSeeds.emplace_back("dnsseed-testnet.bconf.cc");
 
 //        vDevFundSettings.push_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1)));
         vDevFundSettings.emplace_back(std::make_pair(0, DevFundSettings("pYf3vP9nqyTVrpnsqibvfn9rFMXRHRCgcc", 30, 1000)));
