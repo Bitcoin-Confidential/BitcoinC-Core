@@ -1,5 +1,5 @@
 ---
-name: "bitcoinc-win-0.17.0.3"
+name: "bitcoinc-win-1.0.0"
 enable_cache: true
 sudo: true
 suites:
@@ -24,7 +24,7 @@ packages:
 - "python"
 - "rename"
 remotes:
-- "url": "git@git.smartcash.cc:BitcoinC/BitcoinC-Core.git"
+- "url": "https://www.github.com/Bitcoin-Confidential/BitcoinC-Core.git"
   "dir": "BitcoinC-Core"
 files: []
 script: |
