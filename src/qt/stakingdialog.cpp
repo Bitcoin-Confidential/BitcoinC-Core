@@ -262,9 +262,7 @@ void StakingDialog::updateStakingUI(bool fForce)
         }
 
         if (rv["netstakeweight"].isNum()) {
-
-            double dNetWeight = rv["netstakeweight"].get_real();
-            QString strNetWeight = QString::fromStdString(strprintf("%0.00f", dNetWeight / COIN));
+            QString strNetWeight = QString::fromStdString(strprintf("%0.00f", rv["netstakeweight"].get_real()));
             AddThousandsSpaces(strNetWeight);
             ui->lblStakingNetWeight->setText(strNetWeight);
         }
