@@ -1727,6 +1727,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             Misbehaving(pfrom->GetId(), 100);
             return false;
         } else {
+            LogPrint(BCLog::NET, "peer=%d version < NO_BLOOM; disconnecting.\n", pfrom->GetId());
             pfrom->fDisconnect = true;
             return false;
         }
@@ -1942,6 +1943,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         // Feeler connections exist only to verify if address is online.
         if (pfrom->fFeeler) {
             assert(pfrom->fInbound == false);
+            LogPrint(BCLog::NET, "peer=%d feller connection; disconnecting.\n", pfrom->GetId());
             pfrom->fDisconnect = true;
         }
         return true;
@@ -3136,6 +3138,7 @@ static bool SendRejectsAndCheckIfBanned(CNode* pnode, CConnman* connman, bool en
         else if (pnode->m_manual_connection)
             LogPrintf("Warning: not punishing manually-connected peer %s!\n", pnode->addr.ToString());
         else {
+            LogPrint(BCLog::NET, "peer=%d SendRejectsAndCheckIfBanned; disconnecting.\n", pnode->GetId());
             pnode->fDisconnect = true;
             if (pnode->addr.IsLocal())
                 LogPrintf("Warning: not banning local peer %s!\n", pnode->addr.ToString());

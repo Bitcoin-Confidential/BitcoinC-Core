@@ -1072,6 +1072,7 @@ bool CConnman::AttemptToEvictConnection()
     LOCK(cs_vNodes);
     for (CNode* pnode : vNodes) {
         if (pnode->GetId() == evicted) {
+            LogPrint(BCLog::NET, "peer=%d evicted; disconnecting\n", pnode->GetId());
             pnode->fDisconnect = true;
             return true;
         }
