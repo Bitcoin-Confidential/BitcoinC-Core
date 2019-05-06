@@ -72,9 +72,6 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="placeholderText">
-              <string/>
-             </property>
             </widget>
            </item>
            <item>
