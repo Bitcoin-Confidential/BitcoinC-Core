@@ -10764,15 +10764,17 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
 
                 COutPoint kernel(wtxid, i);
 
-//                if (!CheckStakeUnused(kernel)){
-//                    LogPrintf("kernel used %s\n", kernel.ToString());
-//                }
-//                if(IsSpent(wtxid, i) ){
-//                    LogPrintf("kernel spent %s\n", kernel.ToString());
-//                }
-//                if(IsLockedCoin(wtxid, i)) {
-//                    LogPrintf("coins locked %s\n", kernel.ToString());
-//                }
+                if (LogAcceptCategory(BCLog::POS)) {
+                    if (!CheckStakeUnused(kernel)){
+                        WalletLogPrintf("%s: Kernel used %s\n", __func__, kernel.ToString());
+                    }
+                    if(IsSpent(wtxid, i) ){
+                        WalletLogPrintf("%s: Coin spent %s - %d\n", __func__, wtxid.ToString(), i);
+                    }
+                    if(IsLockedCoin(wtxid, i)) {
+                        WalletLogPrintf("%s: Coin is locked %s - %d\n", __func__, wtxid.ToString(), i);
+                    }
+                }
 
                 if (!CheckStakeUnused(kernel)
                      || IsSpent(wtxid, i)
@@ -10786,12 +10788,8 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
                     continue;
                 }
 
-                CBitcoinAddress addr(keyID);
-//                LogPrintf("Address %s, kernel %s\n", addr.ToString(), kernel.ToString());
-
                 isminetype mine = IsMine(keyID);
                 if (!(mine & ISMINE_SPENDABLE)) {
-//                    LogPrintf("Address %s -- not mine \n", addr.ToString());
                     continue;
                 }
 
