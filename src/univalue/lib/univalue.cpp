@@ -14,6 +14,7 @@
 using namespace std;
 
 const UniValue NullUniValue;
+const UniValue SuccessUniValue = UniValue(UniValue::VBOOL, "1");
 
 void UniValue::clear()
 {
