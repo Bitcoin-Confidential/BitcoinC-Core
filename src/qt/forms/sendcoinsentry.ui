@@ -72,6 +72,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="placeholderText">
+              <string/>
+             </property>
             </widget>
            </item>
            <item>
@@ -118,32 +121,16 @@
            </item>
           </layout>
          </item>
-         <item row="5" column="2">
-          <widget class="QLineEdit" name="edtNarration">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>A short message sent over the Bitcoin Confidential network.</string>
-           </property>
-           <property name="maxLength">
-            <number>24</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="payToLabel">
+         <item row="5" column="0">
+          <widget class="QLabel" name="lblNarration">
            <property name="text">
-            <string>Pay To</string>
+            <string>Message</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
            <property name="buddy">
-            <cstring>payTo</cstring>
+            <cstring>edtNarration</cstring>
            </property>
           </widget>
          </item>
@@ -233,16 +220,16 @@
            </item>
           </layout>
          </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="lblNarration">
+         <item row="0" column="0">
+          <widget class="QLabel" name="payToLabel">
            <property name="text">
-            <string>Message</string>
+            <string>Pay To</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
            <property name="buddy">
-            <cstring>edtNarration</cstring>
+            <cstring>payTo</cstring>
            </property>
           </widget>
          </item>
@@ -259,19 +246,6 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="labellLabel">
-           <property name="text">
-            <string>Label</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="buddy">
-            <cstring>addAsLabel</cstring>
            </property>
           </widget>
          </item>
@@ -292,6 +266,64 @@
               <string>Enter a label for this address to add it to the list of used addresses</string>
              </property>
             </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labellLabel">
+           <property name="text">
+            <string>Label</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="buddy">
+            <cstring>addAsLabel</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLineEdit" name="edtNarration">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>500</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>A short message sent over the Bitcoin Confidential network.</string>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>An encrypted message sent with the transaction (optional, max. 24 characters).</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -1711,7 +1743,6 @@
   <tabstop>payAmount_is</tabstop>
   <tabstop>deleteButton_is</tabstop>
   <tabstop>payAmount_s</tabstop>
-  <tabstop>edtNarration</tabstop>
   <tabstop>deleteButton_s</tabstop>
  </tabstops>
  <resources>
