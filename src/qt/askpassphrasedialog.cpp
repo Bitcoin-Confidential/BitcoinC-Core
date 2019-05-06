@@ -42,7 +42,6 @@ AskPassphraseDialog::AskPassphraseDialog(Mode _mode, QWidget *parent) :
 
     ui->unlockForStakingOnlyCheckBox->setChecked(false);
     ui->unlockForStakingOnlyCheckBox->hide();
-    ui->unlockForStakingOnlyLabel->hide();
     switch(mode)
     {
         case Encrypt: // Ask passphrase x2
@@ -66,7 +65,6 @@ AskPassphraseDialog::AskPassphraseDialog(Mode _mode, QWidget *parent) :
             ui->passLabel3->hide();
             ui->passEdit3->hide();
             ui->unlockForStakingOnlyCheckBox->show();
-            ui->unlockForStakingOnlyLabel->show();
             setWindowTitle(tr("Unlock wallet"));
             break;
         case Decrypt:   // Ask passphrase
