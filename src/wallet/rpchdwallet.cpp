@@ -3988,7 +3988,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     obj.pushKV("lastsearchtime", (uint64_t)pwallet->nLastCoinStakeSearchTime);
 
     obj.pushKV("weight", (uint64_t)nWeight);
-    obj.pushKV("netstakeweight", (double)nNetworkWeight);
+    obj.pushKV("netstakeweight", (double)nNetworkWeight / COIN);
 
     obj.pushKV("expectedtime", nExpectedTime);
 
