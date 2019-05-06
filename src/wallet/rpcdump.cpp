@@ -404,7 +404,7 @@ UniValue importaddress(const JSONRPCRequest& request)
         pwallet->ReacceptWalletTransactions();
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 UniValue importprunedfunds(const JSONRPCRequest& request)
@@ -464,7 +464,7 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
 
     if (pwallet->IsMine(*wtx.tx)) {
         pwallet->AddToWallet(wtx, false);
-        return NullUniValue;
+        return SuccessUniValue;
     }
 
     throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "No addresses in wallet correspond to included transaction");
@@ -506,7 +506,7 @@ UniValue removeprunedfunds(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Transaction does not exist in wallet.");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 UniValue importpubkey(const JSONRPCRequest& request)
@@ -575,7 +575,7 @@ UniValue importpubkey(const JSONRPCRequest& request)
         pwallet->ReacceptWalletTransactions();
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 
@@ -895,7 +895,7 @@ UniValue importwallet(const JSONRPCRequest& request)
     if (!fGood)
         throw JSONRPCError(RPC_WALLET_ERROR, "Error adding some keys/scripts to wallet");
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 UniValue dumpprivkey(const JSONRPCRequest& request)

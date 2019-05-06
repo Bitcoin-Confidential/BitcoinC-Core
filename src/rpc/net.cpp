@@ -62,7 +62,7 @@ static UniValue ping(const JSONRPCRequest& request)
     g_connman->ForEachNode([](CNode* pnode) {
         pnode->fPingQueued = true;
     });
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static std::string ServicesToString(ServiceFlags nSerivces)
@@ -248,7 +248,7 @@ static UniValue addnode(const JSONRPCRequest& request)
     {
         CAddress addr;
         g_connman->OpenNetworkConnection(addr, false, nullptr, strNode.c_str(), false, false, true);
-        return NullUniValue;
+        return SuccessUniValue;
     }
 
     if (strCommand == "add")
@@ -262,7 +262,7 @@ static UniValue addnode(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_CLIENT_NODE_NOT_ADDED, "Error: Node has not been added.");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue disconnectnode(const JSONRPCRequest& request)
@@ -305,7 +305,7 @@ static UniValue disconnectnode(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_CLIENT_NODE_NOT_CONNECTED, "Node not found in connected nodes");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue getaddednodeinfo(const JSONRPCRequest& request)
@@ -582,7 +582,7 @@ static UniValue setban(const JSONRPCRequest& request)
         if (!( isSubnet ? g_connman->Unban(subNet) : g_connman->Unban(netAddr) ))
             throw JSONRPCError(RPC_CLIENT_INVALID_IP_OR_SUBNET, "Error: Unban failed. Requested address/subnet was not previously banned.");
     }
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue listbanned(const JSONRPCRequest& request)
@@ -633,7 +633,7 @@ static UniValue clearbanned(const JSONRPCRequest& request)
 
     g_connman->ClearBanned();
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue setnetworkactive(const JSONRPCRequest& request)
