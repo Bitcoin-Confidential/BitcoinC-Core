@@ -567,13 +567,6 @@ bool CHDWallet::DumpJson(UniValue &rv, std::string &sError)
                     if (!mi->second.purpose.empty())
                         sxAddr.pushKV("purpose", mi->second.purpose);
 
-                    UniValue objDestData(UniValue::VOBJ);
-                    for (const auto &pair : mi->second.destdata) {
-                        sxAddr.pushKV(pair.first, pair.second);
-                    }
-                    if (objDestData.size() > 0) {
-                        sxAddr.pushKV("destdata", objDestData);
-                    }
                 }
 
                 stealthAddresses.push_back(sxAddr);
