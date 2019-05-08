@@ -654,7 +654,7 @@ UniValue importwallet(const JSONRPCRequest& request)
 
             if( fFirstLine ){
 
-                if( line[0] != '#'){
+                if( line[0] != '#' && line.rfind("Wallet dump created by BitcoinC", 0) != 0  ){
                     std::vector<std::string> vstr;
                     // Check if its an electrum or hdwallet.smartcash.cc CSV import.
                     boost::split(vstr, line, boost::is_any_of(","));
@@ -668,10 +668,12 @@ UniValue importwallet(const JSONRPCRequest& request)
                 continue;
             }
 
-            if (line.empty() || line[0] == '#')
+            if (line.empty() || ( line[0] == '#' &&
+                                  line.rfind("# --- Begin JSON ---", 0) != 0 &&
+                                  line.rfind("# --- End JSON ---", 0) != 0))
                 continue;
 
-            if( !fIsScElectrumImport && !fIsScCsvImport ){
+             if( !fIsScElectrumImport && !fIsScCsvImport ){
 
                 if (line.rfind("# --- Begin JSON ---", 0) == 0)
                 {
