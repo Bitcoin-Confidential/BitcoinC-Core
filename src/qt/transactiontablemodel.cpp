@@ -522,19 +522,15 @@ QVariant TransactionTableModel::txStatusDecoration(const TransactionRecord *wtx)
 
         int nConfirmations = TransactionRecord::RecommendedNumConfirmations;
 
-        if( wtx->typeIn == "S" && wtx->typeOut == "S" ){
+        if( wtx->typeOut == "S" ){
 
             if( fStaking ) {
                 nConfirmations = COINBASE_MATURITY + 1;
             }else{
                 nConfirmations = TransactionRecord::RecommendedNumConfirmations;
             }
-        }else if( wtx->typeIn == "BC" && wtx->typeOut == "BC" ){
+        }else if( wtx->typeOut == "BC" ){
             nConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
-        }else if(wtx->typeIn == "S" && wtx->typeOut == "BC"){
-            nConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
-        }else if(wtx->typeIn == "BC" && wtx->typeOut == "S"){
-            nConfirmations = TransactionRecord::RecommendedNumConfirmations;
         }
 
         // Break the depth down to 5 steps
@@ -542,6 +538,7 @@ QVariant TransactionTableModel::txStatusDecoration(const TransactionRecord *wtx)
 
         switch(nConfirmations)
         {
+        case 0: return platformStyle->BitcoinCColorIcon(":/icons/transaction_1");
         case 1: return platformStyle->BitcoinCColorIcon(":/icons/transaction_1");
         case 2: return platformStyle->BitcoinCColorIcon(":/icons/transaction_2");
         case 3: return platformStyle->BitcoinCColorIcon(":/icons/transaction_3");
