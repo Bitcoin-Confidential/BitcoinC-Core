@@ -263,7 +263,7 @@ bool CHDWallet::Initialise()
     }
 
     if (!pEKMaster) {
-        if (gArgs.GetBoolArg("-createdefaultmasterkey", true)) {
+        if (gArgs.GetBoolArg("-createdefaultmasterkey", false)) {
             std::string sMsg = "Generating random HD keys for wallet " + GetName();
             #ifndef ENABLE_QT
             fprintf(stdout, "%s\n", sMsg.c_str());
