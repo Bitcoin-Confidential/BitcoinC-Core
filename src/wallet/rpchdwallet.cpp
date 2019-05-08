@@ -438,9 +438,7 @@ static int KeyInfo(CHDWallet *pwallet, CKeyID &idMaster, CKeyID &idKey, CStoredE
         obj.pushKV("key_type", sType);
     }
 
-    if (idMaster == idKey) {
-        obj.pushKV("current_master", "true");
-    }
+    obj.pushKV("current_master", (bool)(idMaster == idKey) );
 
     CBitcoinAddress addr;
     mvi = sek.mapValue.find(EKVT_ROOT_ID);
