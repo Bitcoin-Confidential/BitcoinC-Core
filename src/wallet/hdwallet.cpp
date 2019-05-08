@@ -50,6 +50,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/thread.hpp>
 
+extern int ExtractExtKeyId(const std::string &sInKey, CKeyID &keyId, CChainParams::Base58Type prefix);
 
 int CTransactionRecord::InsertOutput(COutputRecord &r)
 {
@@ -641,9 +642,261 @@ bool CHDWallet::LoadJson(const UniValue &inj, std::string &sError)
         return wserrorN(false, sError, __func__, _("Wallet must be unlocked."));
     }
 
+    if( mapExtKeys.size() ){
+        return wserrorN(false, sError, __func__, _("Empty wallet required for import."));
+    }
+
     LOCK(cs_wallet);
 
-    return wserrorN(false, sError, __func__, _("TODO: LoadJson."));
+    UniValue looseExtKeys, accounts, importedStealth;
+
+    if( !inj.exists("loose_extkeys") ){
+        return wserrorN(false, sError, __func__, _("loose_extkeys missing."));
+    }
+
+    if( !inj["loose_extkeys"].isArray() ){
+        return wserrorN(false, sError, __func__, _("loose_extkeys must be an array."));
+    }
+
+    if( !inj.exists("accounts") ){
+        return wserrorN(false, sError, __func__, _("accounts missing."));
+    }
+
+    if( !inj["accounts"].isArray() ){
+        return wserrorN(false, sError, __func__, _("accounts must be an array."));
+    }
+
+    if( inj.exists("imported_stealth_addresses") && inj["imported_stealth_addresses"].isArray() ){
+        importedStealth = inj["imported_stealth_addresses"].get_array();
+    }
+
+    looseExtKeys = inj["loose_extkeys"].get_array();
+    accounts = inj["accounts"].get_array();
+
+    CKeyID activeMaster, activeAccount;
+
+    CHDWalletDB wdb(GetDBHandle(), "r+");
+
+    if (!wdb.TxnBegin()) {
+        return wserrorN(false, sError, __func__, _("TxnBegin failed."));
+    }
+
+    for( const UniValue &extKey : looseExtKeys.getValues() ){
+
+        std::string sKey = extKey["evkey"].get_str();
+
+        CStoredExtKey sek;
+        sek.sLabel = extKey["label"].get_str();
+
+        bool fActiveMaster = extKey["current_master"].get_bool();
+
+        std::vector<uint8_t> v;
+        int64_t nTime = GetTime();
+
+        if( extKey.exists("created_at") && extKey["created_at"].isNum() ){
+            nTime = extKey["created_at"].get_int64();
+        }
+
+        sek.mapValue[EKVT_CREATED_AT] = SetCompressedInt64(v, nTime);
+
+        CExtKey58 eKey58;
+        if (eKey58.Set58(sKey.c_str()) != 0) {
+            return wserrorN(false, sError, __func__, strprintf("Import failed - Invalid key: %s", sKey.c_str()));
+        }
+
+        if (!eKey58.IsValid(CChainParams::EXT_SECRET_KEY)
+            && !eKey58.IsValid(CChainParams::EXT_PUBLIC_KEY_BTC)) {
+            return wserrorN(false, sError, __func__, strprintf("Import failed - Key with wrong prefix: %s", sKey.c_str()));
+        }
+
+        sek.kp = eKey58.GetKey();
+
+        int rv;
+        CKeyID idDerived;
+        if (0 != (rv = ExtKeyImportLoose(&wdb, sek, idDerived, false, false))) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeyImportLoose failed, %s", ExtKeyGetString(rv)));
+        }
+
+        if( fActiveMaster ){
+            activeMaster = sek.GetID();
+        }
+
+    }
+
+    for( const UniValue &account : accounts.getValues() ){
+
+        bool fActiveAccount = account["active"].get_bool();
+        std::string sLabel = account["label"].get_str();
+        std::string sPath = account["path"].get_str();
+        std::string sKeyMaster = account["root_key_id"].get_str();
+        UniValue chains = account["chains"].get_array();
+        UniValue derivedStealth = account.exists("stealth_addresses") ?
+                    account["stealth_addresses"].get_array() :
+                    UniValue(UniValue::VARR);
+
+        CKeyID idMaster;
+        ExtractExtKeyId(sKeyMaster, idMaster, CChainParams::EXT_KEY_HASH);
+
+        int rv;
+        if (0 != (rv = ExtKeySetMaster(&wdb, idMaster)) && rv != 11) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetMaster failed, %s.", ExtKeyGetString(rv)));
+        }
+
+        CExtKeyAccount *sea = new CExtKeyAccount();
+
+        if ((rv = ExtKeyDeriveNewAccount(&wdb, sea, sLabel, sPath)) != 0) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeyDeriveNewAccount failed, label: %s, path: %s", sLabel, sPath));
+        }
+
+        if( fActiveAccount ){
+            activeAccount  = sea->GetID();
+        }
+
+        CKeyID accountId = sea->GetID();
+        if (0 != (rv = ExtKeySetDefaultAccount(&wdb, accountId))) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetDefaultAccount failed, %s.", ExtKeyGetString(rv)));
+        }
+
+        for( const UniValue& chain : chains.getValues() ){
+
+            CPubKey newKey;  // dummy
+            std::string sFunction = chain.exists("function") ? chain["function"].get_str() : "";
+
+            if( sFunction ==  "active_external" ){
+                UniValue derived = chain.exists("derived_keys") ? chain["derived_keys"] : UniValue(UniValue::VARR);
+
+                for( const UniValue& key : derived.getValues() ){
+
+                    bool f256bit = false;
+                    CBitcoinAddress addr(key["address"].get_str());
+                    f256bit = addr.IsValid(CChainParams::PUBKEY_ADDRESS_256);
+                    std::string label = key.exists("label") ? key["label"].get_str() : "";
+
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, false, false, f256bit, false, label.c_str())) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount failed.");
+                    }
+
+                    if (f256bit) {
+                        AddressBookChangedNotify(newKey.GetID256(), CT_NEW);
+                    } else {
+                        AddressBookChangedNotify(newKey.GetID(), CT_NEW);
+                    }
+                }
+
+                UniValue derivedHardened = chain.exists("derived_keys_hardened") ? chain["derived_keys_hardened"] : UniValue(UniValue::VARR);
+
+                for( const UniValue& key : derivedHardened.getValues() ){
+
+                    bool f256bit = false;
+                    CBitcoinAddress addr(key["address"].get_str());
+                    f256bit = addr.IsValid(CChainParams::PUBKEY_ADDRESS_256);
+                    std::string label = key.exists("label") ? key["label"].get_str() : "";
+
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, false, true, f256bit, false, label.c_str())) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount failed.");
+                    }
+
+                    if (f256bit) {
+                        AddressBookChangedNotify(newKey.GetID256(), CT_NEW);
+                    } else {
+                        AddressBookChangedNotify(newKey.GetID(), CT_NEW);
+                    }
+                }
+            }
+
+            if( sFunction ==  "active_internal" ){
+
+                uint32_t nDerives = 0;
+                uint32_t nDerivesH = 0;
+
+                if (chain["num_derives"].isStr()
+                    && !ParseUInt32(chain["num_derives"].get_str(), &nDerives)) {
+                    wdb.TxnAbort();
+                    return wserrorN(false, sError, __func__, "num_derives to int failed.");
+                }
+                if (chain["num_derives_h"].isStr()
+                    && !ParseUInt32(chain["num_derives_h"].get_str(), &nDerivesH)) {
+                    wdb.TxnAbort();
+                    return wserrorN(false, sError, __func__, "num_derives_h to int failed.");
+                }
+
+                for( uint32_t i=0; i< nDerives; ++i ){
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, true, false, false, false, "")) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount internal failed.");
+                    }
+                }
+
+                for( uint32_t i=0; i< nDerivesH; ++i ){
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, true, true, false, false, "")) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount internal/hardened failed.");
+                    }
+                }
+
+            }
+
+        }
+
+        for( const UniValue& stealth : derivedStealth.getValues() ){
+
+            std::string sLabel = stealth.exists("label") ? stealth["label"].get_str() : "";
+
+            CEKAStealthKey akStealthOut;
+            //  Make V2 if the scan/spend are from different chains
+            if( stealth["account_chain_scan"].get_int64() != stealth["account_chain_spend"].get_int64() ){
+
+                if (0 != NewStealthKeyV2FromAccount(&wdb, idDefaultAccount, sLabel, akStealthOut, 0, nullptr, false)) {
+                    wdb.TxnAbort();
+                    ExtKeyRemoveAccountFromMapsAndFree(idDefaultAccount);
+                    ExtKeyLoadAccount(&wdb, idDefaultAccount);
+                    return wserrorN(false, sError, __func__, "NewStealthKeyV2FromAccount failed.");
+                }
+
+            }else{
+
+                if (0 != NewStealthKeyFromAccount(&wdb, idDefaultAccount, sLabel, akStealthOut, 0, nullptr, false)) {
+                    wdb.TxnAbort();
+                    return wserrorN(false, sError, __func__, "NewStealthKeyFromAccount failed.");
+                }
+            }
+
+            CStealthAddress sxAddr;
+            akStealthOut.SetSxAddr(sxAddr);
+            AddressBookChangedNotify(sxAddr, CT_NEW);
+        }
+
+    }
+
+    if( !activeMaster.IsNull() ){
+
+        int rv;
+        if (0 != (rv = ExtKeySetMaster(&wdb, activeMaster)) && rv != 11) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetMaster failed, %s.", ExtKeyGetString(rv)));
+        }
+    }
+
+    if( !activeAccount.IsNull() ){
+
+        int rv;
+
+        if (0 != (rv = ExtKeySetDefaultAccount(&wdb, activeAccount))) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetDefaultAccount failed, %s.", ExtKeyGetString(rv)));
+        }
+
+    }
+
+    if (!wdb.TxnCommit()) {
+        return wserrorN(false, sError, __func__, "TxnCommit failed.");
+    }
 
     return true;
 };
