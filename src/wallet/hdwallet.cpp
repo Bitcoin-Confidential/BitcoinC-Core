@@ -551,7 +551,8 @@ bool CHDWallet::DumpJson(UniValue &rv, std::string &sError)
                 }
                 mapStealthKeySpend[sxPacked.id] = std::make_pair(kSpend, sxStr);
 
-                sxAddr.pushKV("account_chain", (int)sxPacked.aks.akSpend.nParent);
+                sxAddr.pushKV("account_chain_scan", (int)sxPacked.aks.nScanParent);
+                sxAddr.pushKV("account_chain_spend", (int)sxPacked.aks.akSpend.nParent);
 
                 uint32_t nScanKey = sxPacked.aks.nScanKey;
                 ClearHardenedBit(nScanKey);
