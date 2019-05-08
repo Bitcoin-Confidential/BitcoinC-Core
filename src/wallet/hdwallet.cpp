@@ -384,25 +384,38 @@ static void AppendKey(CHDWallet *pw, CKey &key, uint32_t nChild, UniValue &deriv
 
     bool fHardened = IsHardened(nChild);
     ClearHardenedBit(nChild);
-    keyobj.pushKV("path", std::to_string(nChild) + (fHardened ? "'" : ""));
-    keyobj.pushKV("address", CBitcoinAddress(idk).ToString());
-    keyobj.pushKV("privkey", CBitcoinSecret(key).ToString());
 
     std::map<CTxDestination, CAddressBookData>::const_iterator mi = pw->mapAddressBook.find(idk);
+
+    // If no standard keyID try the 256 bit version
+    if (mi == pw->mapAddressBook.end()) {
+        CKeyID256 idk256 = key.GetPubKey().GetID256();
+        mi = pw->mapAddressBook.find(idk256);
+    }
+
     if (mi != pw->mapAddressBook.end()) {
         // TODO: confirm vPath?
-        keyobj.pushKV("label", mi->second.name);
-        if (!mi->second.purpose.empty())
-            keyobj.pushKV("purpose", mi->second.purpose);
-
         UniValue objDestData(UniValue::VOBJ);
         for (const auto &pair : mi->second.destdata) {
             objDestData.pushKV(pair.first, pair.second);
         }
+
+        keyobj.pushKV("path", std::to_string(nChild) + (fHardened ? "'" : ""));
+        keyobj.pushKV("address", CBitcoinAddress(mi->first).ToString());
+        keyobj.pushKV("privkey", CBitcoinSecret(key).ToString());
         if (objDestData.size() > 0) {
             keyobj.pushKV("destdata", objDestData);
         }
+
+        keyobj.pushKV("label", mi->second.name);
+        if (!mi->second.purpose.empty())
+            keyobj.pushKV("purpose", mi->second.purpose);
+    }else{
+        keyobj.pushKV("path", std::to_string(nChild) + (fHardened ? "'" : ""));
+        keyobj.pushKV("address", CBitcoinAddress(key.GetPubKey().GetID()).ToString());
+        keyobj.pushKV("privkey", CBitcoinSecret(key).ToString());
     }
+
     derivedKeys.push_back(keyobj);
     return;
 };
