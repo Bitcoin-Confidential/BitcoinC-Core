@@ -689,7 +689,7 @@ static int ManageExtAccount(CExtKeyAccount &sea, std::string &sOptName, std::str
     return 0;
 };
 
-static int ExtractExtKeyId(const std::string &sInKey, CKeyID &keyId, CChainParams::Base58Type prefix)
+int ExtractExtKeyId(const std::string &sInKey, CKeyID &keyId, CChainParams::Base58Type prefix)
 {
     CExtKey58 eKey58;
     CExtKeyPair ekp;
