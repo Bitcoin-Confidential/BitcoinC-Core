@@ -1734,8 +1734,8 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
             "\nResult:\n"
             "\"address\"              (string) The new bitcoinc spending address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewaddress", "\"lblTestAddrPrefix\" 3 \"0b101\"")
-            + HelpExampleRpc("getnewaddress", "\"lblTestAddrPrefix\", 3, \"0b101\""));
+            + HelpExampleCli("getnewaddress", "\"lblTestAddrPrefix\"")
+            + HelpExampleRpc("getnewaddress", "\"lblTestAddrPrefix\""));
 
     EnsureWalletIsUnlocked(pwallet);
 
