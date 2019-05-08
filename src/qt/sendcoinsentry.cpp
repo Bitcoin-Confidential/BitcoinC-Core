@@ -195,7 +195,11 @@ void SendCoinsEntry::clear()
 
 void SendCoinsEntry::checkSubtractFeeFromAmount()
 {
-    ui->checkboxSubtractFeeFromAmount->setChecked(true);
+    if (m_coldstake) {
+        ui->checkboxSubtractFeeFromAmount_cs->setChecked(true);
+    }else{
+        ui->checkboxSubtractFeeFromAmount->setChecked(true);
+    }
 }
 
 void SendCoinsEntry::deleteClicked()
