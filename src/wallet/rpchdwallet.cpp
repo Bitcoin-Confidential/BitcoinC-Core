@@ -1717,7 +1717,7 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
         return NullUniValue;
 
-    if (request.fHelp || request.params.size() > 5)
+    if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "getnewaddress ( \"label\" num_prefix_bits prefix_num bech32 makeV2 )\n"
             "Returns a new BitcoinC confidential address for receiving payments."
@@ -1731,9 +1731,8 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
             "           A stealth address created without a prefix will scan all incoming stealth transactions, irrespective of transaction prefixes.\n"
             "           Stealth addresses with prefixes will scan only incoming stealth transactions with a matching prefix.\n"
             "4. bech32              (bool, optional, default=false) Use Bech32 encoding.\n"
-            "5. makeV2              (bool, optional, default=false) Generate an address from the same method used for hardware wallets.\n"
             "\nResult:\n"
-            "\"address\"              (string) The new bitcoinc address\n"
+            "\"address\"              (string) The new bitcoinc spending address\n"
             "\nExamples:\n"
             + HelpExampleCli("getnewaddress", "\"lblTestAddrPrefix\" 3 \"0b101\"")
             + HelpExampleRpc("getnewaddress", "\"lblTestAddrPrefix\", 3, \"0b101\""));
@@ -1760,22 +1759,11 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
         sPrefix_num = request.params[2].get_str();
 
     bool fBech32 = request.params.size() > 3 ? request.params[3].get_bool() : false;
-    bool fMakeV2 = request.params.size() > 4 ? request.params[4].get_bool() : false;
-
-    if (fMakeV2 && !fBech32)
-        throw JSONRPCError(RPC_INVALID_PARAMETER, _("bech32 must be true when using makeV2."));
 
     CEKAStealthKey akStealth;
-    std::string sError;
-    if (fMakeV2)
-    {
-        if (0 != pwallet->NewStealthKeyV2FromAccount(sLabel, akStealth, num_prefix_bits, sPrefix_num.empty() ? nullptr : sPrefix_num.c_str(), fBech32))
-            throw JSONRPCError(RPC_WALLET_ERROR, _("NewStealthKeyV2FromAccount failed."));
-    } else
-    {
-        if (0 != pwallet->NewStealthKeyFromAccount(sLabel, akStealth, num_prefix_bits, sPrefix_num.empty() ? nullptr : sPrefix_num.c_str(), fBech32))
-            throw JSONRPCError(RPC_WALLET_ERROR, _("NewStealthKeyFromAccount failed."));
-    };
+
+    if (0 != pwallet->NewStealthKeyV2FromAccount(sLabel, akStealth, num_prefix_bits, sPrefix_num.empty() ? nullptr : sPrefix_num.c_str(), fBech32))
+        throw JSONRPCError(RPC_WALLET_ERROR, _("NewStealthKeyV2FromAccount failed."));
 
     CStealthAddress sxAddr;
     akStealth.SetSxAddr(sxAddr);
