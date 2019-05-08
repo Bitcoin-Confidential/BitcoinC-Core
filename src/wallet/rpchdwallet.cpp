@@ -225,10 +225,7 @@ static int AccountInfo(CHDWallet *pwallet, CExtKeyAccount *pa, int nShowKeys, bo
     obj.pushKV("type", "Account");
     obj.pushKV("active", pa->nFlags & EAF_ACTIVE ? true : false);
     obj.pushKV("label", pa->sLabel);
-
-    if (pwallet->idDefaultAccount == pa->GetID()) {
-        obj.pushKV("default_account", "true");
-    }
+    obj.pushKV("default_account", pwallet->idDefaultAccount == pa->GetID());
 
     mapEKValue_t::iterator mvi = pa->mapValue.find(EKVT_CREATED_AT);
     if (mvi != pa->mapValue.end()) {
