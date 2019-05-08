@@ -16,7 +16,7 @@
 #include <vector>
 
 static const uint32_t CHAIN_NO_GENESIS = 444444;
-static const uint32_t CHAIN_NO_STEALTH_SPEND = 1; // used hardened
+static const uint32_t CHAIN_NO_STEALTH_SPEND = 2; // used hardened
 
 struct SeedSpec6 {
     uint8_t addr[16];
