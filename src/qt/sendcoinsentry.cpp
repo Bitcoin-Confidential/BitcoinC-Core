@@ -310,14 +310,28 @@ SendCoinsRecipient SendCoinsEntry::getValue()
 
 QWidget *SendCoinsEntry::setupTabChain(QWidget *prev)
 {
-    QWidget::setTabOrder(prev, ui->payTo);
-    QWidget::setTabOrder(ui->payTo, ui->addAsLabel);
-    QWidget *w = ui->payAmount->setupTabChain(ui->addAsLabel);
-    QWidget::setTabOrder(w, ui->checkboxSubtractFeeFromAmount);
-    QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
-    QWidget::setTabOrder(ui->addressBookButton, ui->pasteButton);
-    QWidget::setTabOrder(ui->pasteButton, ui->deleteButton);
-    return ui->deleteButton;
+    QWidget *last;
+    if( m_coldstake ){
+        QWidget::setTabOrder(prev, ui->stakeAddr);
+        QWidget::setTabOrder(ui->stakeAddr, ui->spendAddr);
+        QWidget *w = ui->payAmount_cs->setupTabChain(ui->spendAddr);
+        QWidget::setTabOrder(w, ui->checkboxSubtractFeeFromAmount_cs);
+        QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount_cs, ui->addressBookButton_cs);
+        QWidget::setTabOrder(ui->addressBookButton_cs, ui->pasteButton_cs);
+        QWidget::setTabOrder(ui->pasteButton_cs, ui->deleteButton_cs);
+        last = ui->deleteButton_cs;
+    }else{
+        QWidget::setTabOrder(prev, ui->payTo);
+        QWidget::setTabOrder(ui->payTo, ui->addAsLabel);
+        QWidget *w = ui->payAmount->setupTabChain(ui->addAsLabel);
+        QWidget::setTabOrder(w, ui->edtNarration);
+        QWidget::setTabOrder(ui->edtNarration, ui->checkboxSubtractFeeFromAmount);
+        QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
+        QWidget::setTabOrder(ui->addressBookButton, ui->pasteButton);
+        QWidget::setTabOrder(ui->pasteButton, ui->deleteButton);
+        last = ui->deleteButton;
+    }
+    return last;
 }
 
 void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
