@@ -223,7 +223,7 @@ static int AccountInfo(CHDWallet *pwallet, CExtKeyAccount *pa, int nShowKeys, bo
     CExtKey58 eKey58;
 
     obj.pushKV("type", "Account");
-    obj.pushKV("active", pa->nFlags & EAF_ACTIVE ? "true" : "false");
+    obj.pushKV("active", pa->nFlags & EAF_ACTIVE ? true : false);
     obj.pushKV("label", pa->sLabel);
 
     if (pwallet->idDefaultAccount == pa->GetID()) {
@@ -247,7 +247,7 @@ static int AccountInfo(CHDWallet *pwallet, CExtKeyAccount *pa, int nShowKeys, bo
     }
 
     obj.pushKV("id", pa->GetIDString58());
-    obj.pushKV("has_secret", pa->nFlags & EAF_HAVE_SECRET ? "true" : "false");
+    obj.pushKV("has_secret", pa->nFlags & EAF_HAVE_SECRET ? true : false);
 
     CStoredExtKey *sekAccount = pa->ChainAccount();
     if (!sekAccount) {
@@ -305,8 +305,8 @@ static int AccountInfo(CHDWallet *pwallet, CExtKeyAccount *pa, int nShowKeys, bo
             objC.pushKV("id", sek->GetIDString58());
             objC.pushKV("chain", eKey58.ToString());
             objC.pushKV("label", sek->sLabel);
-            objC.pushKV("active", sek->nFlags & EAF_ACTIVE ? "true" : "false");
-            objC.pushKV("receive_on", sek->nFlags & EAF_RECEIVE_ON ? "true" : "false");
+            objC.pushKV("active", sek->nFlags & EAF_ACTIVE ? true : false);
+            objC.pushKV("receive_on", sek->nFlags & EAF_RECEIVE_ON ? true : false);
 
             mapEKValue_t::iterator it = sek->mapValue.find(EKVT_KEY_TYPE);
             if (it != sek->mapValue.end() && it->second.size() > 0) {
@@ -404,10 +404,10 @@ static int KeyInfo(CHDWallet *pwallet, CKeyID &idMaster, CKeyID &idKey, CStoredE
 
     bool fBip44Root = false;
     obj.pushKV("type", "Loose");
-    obj.pushKV("active", sek.nFlags & EAF_ACTIVE ? "true" : "false");
-    obj.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? "true" : "false");
-    obj.pushKV("encrypted", sek.nFlags & EAF_IS_CRYPTED ? "true" : "false");
-    obj.pushKV("hardware_device", sek.nFlags & EAF_HARDWARE_DEVICE ? "true" : "false");
+    obj.pushKV("active", sek.nFlags & EAF_ACTIVE ? true : false);
+    obj.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? true : false);
+    obj.pushKV("encrypted", sek.nFlags & EAF_IS_CRYPTED ? true : false);
+    obj.pushKV("hardware_device", sek.nFlags & EAF_HARDWARE_DEVICE ? true : false);
     obj.pushKV("label", sek.sLabel);
 
     if (reversePlace(&sek.kp.vchFingerprint[0]) == 0) {
@@ -611,7 +611,7 @@ static int ManageExtKey(CStoredExtKey &sek, std::string &sOptName, std::string &
             }
         }
 
-        result.pushKV("set_active", sek.nFlags & EAF_ACTIVE ? "true" : "false");
+        result.pushKV("set_active", sek.nFlags & EAF_ACTIVE ? true : false);
     } else
     if (sOptName == "receive_on") {
         if (sOptValue.length() > 0) {
@@ -622,7 +622,7 @@ static int ManageExtKey(CStoredExtKey &sek, std::string &sOptName, std::string &
             }
         }
 
-        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? "true" : "false");
+        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? true : false);
     } else
     if (sOptName == "look_ahead") {
         uint64_t nLookAhead = gArgs.GetArg("-defaultlookaheadsize", N_DEFAULT_LOOKAHEAD);
@@ -651,8 +651,8 @@ static int ManageExtKey(CStoredExtKey &sek, std::string &sOptName, std::string &
     } else {
         // List all possible
         result.pushKV("label", sek.sLabel);
-        result.pushKV("active", sek.nFlags & EAF_ACTIVE ? "true" : "false");
-        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? "true" : "false");
+        result.pushKV("active", sek.nFlags & EAF_ACTIVE ? true : false);
+        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? true : false);
 
         mapEKValue_t::iterator itV = sek.mapValue.find(EKVT_N_LOOKAHEAD);
         if (itV != sek.mapValue.end()) {
@@ -684,11 +684,11 @@ static int ManageExtAccount(CExtKeyAccount &sea, std::string &sOptName, std::str
             }
         }
 
-        result.pushKV("set_active", sea.nFlags & EAF_ACTIVE ? "true" : "false");
+        result.pushKV("set_active", sea.nFlags & EAF_ACTIVE ? true : false);
     } else {
         // List all possible
         result.pushKV("label", sea.sLabel);
-        result.pushKV("active", sea.nFlags & EAF_ACTIVE ? "true" : "false");
+        result.pushKV("active", sea.nFlags & EAF_ACTIVE ? true : false);
     }
 
     return 0;
@@ -1092,7 +1092,7 @@ static UniValue extkey(const JSONRPCRequest &request)
                 }
 
                 result.pushKV("account_id", HDAccIDToString(sek.GetID()));
-                result.pushKV("has_secret", sek.kp.IsValidV() ? "true" : "false");
+                result.pushKV("has_secret", sek.kp.IsValidV() ? true : false);
                 result.pushKV("account_label", sLabel);
                 result.pushKV("account_label", sLabel);
                 result.pushKV("scanned_from", nTimeStartScan);
@@ -3085,10 +3085,10 @@ static void ParseRecords(
     }
 
     if (nLockedOutputs) {
-        push(entry, "requires_unlock", "true");
+        push(entry, "requires_unlock", true);
     }
     if (nWatchOnly) {
-        push(entry, "involvesWatchonly", "true");
+        push(entry, "involvesWatchonly", true);
     }
 
     push(entry, "outputs", outputs);
@@ -3661,7 +3661,7 @@ static UniValue filteraddresses(const JSONRPCRequest &request)
             CBitcoinAddress address(item->first, item->second.fBech32);
             entry.pushKV("address", address.ToString());
             entry.pushKV("label", item->second.name);
-            entry.pushKV("owned", item->second.nOwned == 1 ? "true" : "false");
+            entry.pushKV("owned", item->second.nOwned == 1 ? true : false);
 
             if (nShowPath > 0)
             {
@@ -3816,7 +3816,7 @@ static UniValue manageaddressbook(const JSONRPCRequest &request)
             mabi->second.nOwned = pwallet->HaveAddress(mabi->first) ? 1 : 2;
         }
 
-        result.pushKV("owned", mabi->second.nOwned == 1 ? "true" : "false");
+        result.pushKV("owned", mabi->second.nOwned == 1 ? true : false);
 
         if (mabi->second.vPath.size() > 1) {
             std::string sPath;
