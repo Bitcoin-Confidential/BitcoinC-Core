@@ -725,6 +725,9 @@ public:
     mutable bool m_have_spendable_balance_cached = false;
     mutable CAmount m_spendable_balance_cached = 0;
 
+    mutable bool m_have_cached_stakeable_coins = false;
+    mutable std::vector<COutput> m_cached_stakeable_coins;
+
     enum eStakingState {
         NOT_STAKING = 0,
         IS_STAKING = 1,

@@ -2537,7 +2537,7 @@ CAmount CHDWallet::GetSpendableBalance() const
     m_have_spendable_balance_cached = true;
 
     return m_spendable_balance_cached;
-};
+}
 
 CAmount CHDWallet::GetUnconfirmedBalance() const
 {
@@ -4962,6 +4962,7 @@ void CHDWallet::ClearCachedBalances()
 {
     // Clear cache when a new txn is added to the wallet or a block is added or removed from the chain.
     m_have_spendable_balance_cached = false;
+    m_have_cached_stakeable_coins = false;
     return;
 }
 
@@ -11123,10 +11124,19 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
     return;
 };
 
+
 bool CHDWallet::SelectCoinsForStaking(int64_t nTargetValue, int64_t nTime, int nHeight, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64_t& nValueRet) const
 {
-    std::vector<COutput> vCoins;
-    AvailableCoinsForStaking(vCoins, nTime, nHeight);
+
+    if (m_have_cached_stakeable_coins) {
+        random_shuffle(m_cached_stakeable_coins.begin(), m_cached_stakeable_coins.end(), GetRandInt);
+    } else {
+        m_cached_stakeable_coins.clear();
+        AvailableCoinsForStaking(m_cached_stakeable_coins, nTime, nHeight);
+        m_have_cached_stakeable_coins = true;
+    }
+
+    std::vector<COutput> &vCoins = m_cached_stakeable_coins;
 
     setCoinsRet.clear();
     nValueRet = 0;
