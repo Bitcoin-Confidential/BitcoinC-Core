@@ -401,7 +401,7 @@ QValidatedLineEdit:disabled {
 QPushButton {
 	/* Global Button Style */
     background-color: #F6C746;
-    padding: 0.85em 1em;
+    padding: 0.7em 0.85em;
 	font-family: "Montserrat";
 	letter-spacing: 1px;
 	border: 0;
@@ -1127,7 +1127,6 @@ QDialog#SendCoinsDialog .QPushButton#addButton:hover {
 	/* Send Coin Entry Checkboxes */
 	margin-right: 9px;
     margin-left: 9px;
-    max-height: 40px;
 }
 
 #edtNarration{
