@@ -184,7 +184,6 @@ void StakingDialog::updateStakingUI(bool fForce)
     }
 
     ui->lblColdStakingAddress->setText(change_stake);
-    ui->lblHotStakingReserve->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, model->wallet().getReserveBalance()));
     ui->lblTotalSupply->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, chainActive.Tip()->nMoneySupply));
 
     sCommand = QString("getblockreward %1").arg(chainActive.Tip()->nHeight);
@@ -313,14 +312,10 @@ void StakingDialog::updateStakingUI(bool fForce)
         ui->lblHotStakingAmountLabel->setVisible(fShowHotStakingElements);
         ui->lblHotStakingWalletWeightLabel->setVisible(fShowHotStakingElements);
         ui->lblHotStakingExpectedTimeLabel->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingReserveBalanceLabel->setVisible(fShowHotStakingElements);
 
         ui->lblHotStakingAmount->setVisible(fShowHotStakingElements);
         ui->lblHotStakingWalletWeight->setVisible(fShowHotStakingElements);
         ui->lblHotStakingExpectedTime->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingReserve->setVisible(fShowHotStakingElements);
-
-        ui->btnChangeReserveBalance->setVisible(fShowHotStakingElements);
 
         StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive, fStakingEnabled);
     }
@@ -350,20 +345,6 @@ bool StakingDialog::getChangeSettings(QString &change_spend, QString &change_sta
         return true;
     }
     return false;
-}
-
-void StakingDialog::on_btnChangeReserveBalance_clicked()
-{
-    bool ok;
-    double nNewReserveBalance = QInputDialog::getDouble(this, "Change Reserve Balance" ,
-                                                                "New Reserve Balance in BC:",
-                                                                0, 0, MAX_MONEY / COIN, 8, &ok);
-
-    if( ok ){
-        model->setReserveBalance(nNewReserveBalance * COIN);
-    }
-
-    updateStakingUI();
 }
 
 void StakingDialog::on_btnChangeStakingStatus_clicked()

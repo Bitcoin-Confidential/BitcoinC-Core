@@ -75,7 +75,6 @@ public Q_SLOTS:
 
 private Q_SLOTS:
 
-    void on_btnChangeReserveBalance_clicked();
     void on_btnChangeColdStakingAddress_clicked();
     void on_btnChangeStakingStatus_clicked();
     void modeChanged(int nNewMode);
