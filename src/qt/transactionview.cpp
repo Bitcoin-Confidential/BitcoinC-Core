@@ -47,11 +47,10 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     hlayout->setContentsMargins(0,0,0,0);
 
     hlayout->setSpacing(5);
-    hlayout->addSpacing(26);
 
     watchOnlyWidget = new QComboBox(this);
-    watchOnlyWidget->setFixedWidth(24);
-    watchOnlyWidget->addItem("", TransactionFilterProxy::WatchOnlyFilter_All);
+    watchOnlyWidget->setFixedWidth(40);
+    watchOnlyWidget->addItem(tr("All"), TransactionFilterProxy::WatchOnlyFilter_All);
     watchOnlyWidget->addItem(platformStyle->BitcoinCColorIcon(":/icons/eye_plus"), "", TransactionFilterProxy::WatchOnlyFilter_Yes);
     watchOnlyWidget->addItem(platformStyle->BitcoinCColorIcon(":/icons/eye_minus"), "", TransactionFilterProxy::WatchOnlyFilter_No);
     hlayout->addWidget(watchOnlyWidget);
@@ -131,13 +130,7 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     vlayout->addWidget(spacer);
     vlayout->addWidget(view);
     vlayout->setSpacing(0);
-    int width = view->verticalScrollBar()->sizeHint().width();
-    // Cover scroll bar width with spacing
-    if (platformStyle->getUseExtraSpacing()) {
-        hlayout->addSpacing(width+2);
-    } else {
-        hlayout->addSpacing(width);
-    }
+
     // Always show scroll bar
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     view->setTabKeyNavigation(false);

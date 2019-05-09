@@ -26,7 +26,7 @@ class SendCoinsEntry : public QStackedWidget
     Q_OBJECT
 
 public:
-    explicit SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *parent = 0, bool fSpending = true, bool coldstake = false);
+    explicit SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *parent = 0, bool fSpending = true, bool coldstake = false, bool fConvert = false);
     ~SendCoinsEntry();
 
     void setModel(WalletModel *model);
@@ -51,6 +51,7 @@ public:
     void setFocus();
     void hideDeleteButton();
     void hideMessage();
+    void hideAddLabel();
 
 public Q_SLOTS:
     void clear();
@@ -84,8 +85,9 @@ private:
 
     bool updateLabel(const QString &address);
 public:
-    bool m_coldstake;
     bool fSpending;
+    bool fConvert;
+    bool fColdstake;
 };
 
 #endif // BITCOIN_QT_SENDCOINSENTRY_H

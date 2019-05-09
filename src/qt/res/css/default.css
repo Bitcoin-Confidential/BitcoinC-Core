@@ -338,47 +338,62 @@ QCheckBox::indicator:unchecked:disabled
 }
 
 QAbstractSpinBox,
-.AmountSpinBox,
-.QSpinBox,
-.QComboBox,
-.QValidatedLineEdit,
-.QValueComboBox,
-.QLineEdit{
+QComboBox,
+AmountSpinBox,
+BitcoinAmountField,
+QSpinBox,
+QValidatedLineEdit,
+QValueComboBox,
+QLineEdit{
 	/* Text Entry Fields */
-	border: 0;
-	font-size: 12px;
-	min-height: 20px;
-	outline: 0;
-	background-color: rgba(255, 255, 255, 0.08);
-	color: #DCDCDC;
-	padding: 0.8em 0.85em 0.8em;
+    border: 0;
+    font-size: 12px;
+    height: 40px;
+    max-height: 40px;
+    min-width: 40px;
+    outline: 0;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #DCDCDC;
+    padding-left: 10px;
+    padding-right: 10px;
     border-radius: 10px;
 }
 
-.AmountSpinBox:focus,
-.QComboBox:focus,
-.QValueComboBox:selected,
-.QSpinBox:focus,
-.QSpinBox:selected,
-.QLineEdit:focus,
-.QLineEdit:focus,
-.QValidatedLineEdit:focus{
+QAbstractSpinBox:focus,
+QComboBox:focus,
+AmountSpinBox:focus,
+BitcoinAmountField:focus,
+QSpinBox:focus,
+QValidatedLineEdit:focus,
+QValueComboBox:focus,
+QLineEdit:focus,
+QAbstractSpinBox:selected,
+QComboBox:selected,
+AmountSpinBox:selected,
+BitcoinAmountField:selected,
+QSpinBox:selected,
+QValidatedLineEdit:selected,
+QValueComboBox:selected,
+QLineEdit:selected{
 	outline: 0;
+    font-size: 12px;
+	height: 40px;
 	background-color: rgba(255, 255, 255, 0.1);
 	border:3px solid #BC9427;
 }
 
 
-.QValidatedLineEdit:disabled,
-.QLineEdit:disabled,
-.AmountSpinBox:disabled,
-.QComboBox:disabled,
-.QValueComboBox:disabled,
-.QSpinBox:disabled,
-.QSpinBox:disabled,
-.QLineEdit:disabled,
-.QLineEdit:disabled,
-.QValidatedLineEdit:disabled {
+QValidatedLineEdit:disabled,
+QComboBox:disabled,
+QLineEdit:disabled,
+AmountSpinBox:disabled,
+QComboBox:disabled,
+QValueComboBox:disabled,
+QSpinBox:disabled,
+QSpinBox:disabled,
+QLineEdit:disabled,
+QLineEdit:disabled,
+QValidatedLineEdit:disabled {
     color: #232323;
     background-color: rgba(255, 255, 255, 0.03);
 }
@@ -407,21 +422,7 @@ QPushButton:focus {
 QPushButton:pressed {
 	border: 1px solid #DCDCDC;
 }
-QComboBox {
-	/* Dropdown Menus */
-    combobox-popup: 0;
-    padding: 10px;
-	min-height: 20px;
-	border:3px solid #BC9427;
-	font-size: 13px;
-	outline: 0;
-	background-color: #232323;
-	border-radius: 10px;
-}
-QComboBox:checked {
-	background-color: rgba(255, 255, 255, 0.1);
-	border:3px solid #BC9427;
-}
+
 QComboBox::drop-down {
     background: none;
 	width: 25px;
@@ -1099,16 +1100,38 @@ QDialog#SendCoinsDialog .QPushButton#addButton:hover {
 /**************************** SEND COINS ENTRY ******************************************/
 
 #sendWidget > .QLabel,
-#sendWidget_cs > .QLabel {
+#sendWidget_cs > .QLabel,
+#sendWidget_convert > .QLabel,
+#sendWidget > .BitcoinAmountField,
+#sendWidget_cs > .BitcoinAmountField,
+#sendWidget_convert > .BitcoinAmountField {
 	/* Send Coin Entry Labels */
-        /* background-color:#FEC60D; */
-	/* min-width: 102px; */
 	font-weight: 500;
 	font-size: 16px;
 	color: #DCDCDC;
-	min-height: 25px;
-	/* margin-right: 5px;
-	padding-right: 5px; */
+	min-height: 20px;
+    max-height: 40px;
+}
+
+#sendWidget > .QCheckBox,
+#sendWidget_cs > .QCheckBox,
+#sendWidget_convert > .QCheckBox {
+	/* Send Coin Entry Available balance buttons */
+    margin-left: 9px;
+    max-height: 40px;
+}
+
+#sendWidget > .QPushButton,
+#sendWidget_cs > .QPushButton,
+#sendWidget_convert > .QPushButton {
+	/* Send Coin Entry Checkboxes */
+	margin-right: 9px;
+    margin-left: 9px;
+    max-height: 40px;
+}
+
+#edtNarration{
+    min-width: 450px;
 }
 
 QStackedWidget#SendCoinsEntry .QFrame#SendCoins .QLabel#amountLabel {
