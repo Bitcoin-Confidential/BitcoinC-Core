@@ -383,6 +383,12 @@ void SendCoinsEntry::setAmount(const CAmount &amount)
     ui->payAmount->setValue(amount);
 }
 
+void SendCoinsEntry::setStakeAddress(const QString &address)
+{
+    ui->stakeAddr->setText(address);
+    ui->spendAddr->setFocus();
+}
+
 bool SendCoinsEntry::isClear()
 {
     return ui->payTo->text().isEmpty() && ui->payTo_is->text().isEmpty() && ui->payTo_s->text().isEmpty();
@@ -390,7 +396,11 @@ bool SendCoinsEntry::isClear()
 
 void SendCoinsEntry::setFocus()
 {
-    ui->payTo->setFocus();
+    if( m_coldstake ){
+        ui->stakeAddr->setFocus();
+    }else{
+        ui->payTo->setFocus();
+    }
 }
 
 void SendCoinsEntry::hideDeleteButton()

@@ -41,6 +41,8 @@ public:
     void setNarration(const QString &sNarr);
     void setAmount(const CAmount &amount);
 
+    void setStakeAddress(const QString &address);
+
     /** Set up the tab chain manually, as Qt messes up the tab chain by default in some cases
      *  (issue https://bugreports.qt-project.org/browse/QTBUG-10907).
      */

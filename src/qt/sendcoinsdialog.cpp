@@ -227,6 +227,7 @@ void SendCoinsDialog::setModel(WalletModel *_model)
                                                "This will take longer than the \"Automated ColdStaking activation\"to start staking but wallet does not need to be online for the activation."));
         }
 
+        clear();
     }
 }
 
@@ -643,13 +644,19 @@ SendCoinsEntry *SendCoinsDialog::addEntryCS()
     connect(entry, SIGNAL(payAmountChanged()), this, SLOT(coinControlUpdateLabels()));
     connect(entry, SIGNAL(subtractFeeFromAmountChanged()), this, SLOT(coinControlUpdateLabels()));
 
-    if( GetCoinControlFlag() != CoinControlDialog::SPENDING ){
-        entry->hideMessage();
-    }
-
     // Focus the field, so that entry can start immediately
+    entry->hideMessage();
     entry->clear();
     entry->setFocus();
+
+    UniValue rv;
+    if (model->wallet().getBitcoinCWallet()->GetSetting("changeaddress", rv)) {
+        if (rv.isObject()
+            && rv["coldstakingaddress"].isStr()) {
+            entry->setStakeAddress(QString::fromStdString(rv["coldstakingaddress"].get_str()));
+        }
+    }
+
     ui->scrollAreaWidgetContents->resize(ui->scrollAreaWidgetContents->sizeHint());
     qApp->processEvents();
     QScrollBar* bar = ui->scrollArea->verticalScrollBar();
@@ -1015,7 +1022,7 @@ void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
         setBalance(balances);
     }
 
-    clear();
+
 }
 
 // Coin Control: copy label "Quantity" to clipboard
