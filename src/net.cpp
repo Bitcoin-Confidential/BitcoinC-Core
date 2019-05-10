@@ -2041,7 +2041,7 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
 
 void CConnman::ThreadMessageHandler()
 {
-    const int64_t nTimeDecBanThreshold = 60; // TODO: make option
+    const int64_t nTimeDecBanThreshold = gArgs.GetArg("-decmisbehavinginterval", 30);
     int64_t nTimeNextBanReduced = GetTime() + nTimeDecBanThreshold;
 
     while (!flagInterruptMsgProc)
