@@ -10560,7 +10560,7 @@ bool CHDWallet::AbandonTransaction(const uint256 &hashTx)
     if ((mri = mapRecords.find(hashTx)) != mapRecords.end())
     {
         CTransactionRecord &rtx = mri->second;
-        if (GetDepthInMainChain(rtx.blockHash, rtx.nIndex) > 0 || InMempool(hashTx))
+        if ( rtx.IsAbandoned() || GetDepthInMainChain(rtx.blockHash, rtx.nIndex) > 0 || InMempool(hashTx))
         {
             return false;
         };
@@ -10568,7 +10568,7 @@ bool CHDWallet::AbandonTransaction(const uint256 &hashTx)
     if ((mwi = mapWallet.find(hashTx)) != mapWallet.end())
     {
         CWalletTx &wtx = mwi->second;
-        if (wtx.GetDepthInMainChain() > 0 || InMempool(hashTx))
+        if (wtx.isAbandoned() || wtx.GetDepthInMainChain() > 0 || InMempool(hashTx))
         {
             return false;
         };
