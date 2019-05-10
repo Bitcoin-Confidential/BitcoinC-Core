@@ -166,12 +166,16 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     contextMenu->addAction(copyLabelAction);
     contextMenu->addAction(copyAmountAction);
     contextMenu->addAction(copyTxIDAction);
-    contextMenu->addAction(copyTxHexAction);
-    contextMenu->addAction(copyTxPlainText);
+    if( !fStaking ){
+//        contextMenu->addAction(copyTxHexAction); // Disable for now, requires reworks, does not work with mapRecord txes
+        contextMenu->addAction(copyTxPlainText);
+    }
     contextMenu->addAction(showDetailsAction);
     contextMenu->addSeparator();
-    contextMenu->addAction(bumpFeeAction);
-    contextMenu->addAction(abandonAction);
+    if( !fStaking ){
+        contextMenu->addAction(bumpFeeAction);
+        contextMenu->addAction(abandonAction);
+    }
     contextMenu->addAction(editLabelAction);
 
     mapperThirdPartyTxUrls = new QSignalMapper(this);
