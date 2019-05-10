@@ -263,7 +263,7 @@ bool SendCoinsEntry::validate(interfaces::Node& node)
             ui->stakeAddr->setValid(false);
             retval = false;
         }
-        if (!model->validateAddress(ui->spendAddr->text())) {
+        if (!model->validateColdStakeAddress(ui->spendAddr->text())) {
             ui->spendAddr->setValid(false);
             retval = false;
         }

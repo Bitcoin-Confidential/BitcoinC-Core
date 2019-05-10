@@ -154,6 +154,12 @@ bool WalletModel::validateAddress(const QString &address, bool allow_stakeonly)
     return IsValidDestinationString(address.toStdString(), allow_stakeonly);
 }
 
+bool WalletModel::validateColdStakeAddress(const QString &address)
+{
+    CBitcoinAddress addr(address.toStdString());
+    return addr.IsValid(CChainParams::PUBKEY_ADDRESS_256);
+}
+
 WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransaction &transaction, const CCoinControl& coinControl)
 {
     CAmount total = 0;
