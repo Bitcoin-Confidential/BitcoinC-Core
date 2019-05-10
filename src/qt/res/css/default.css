@@ -53,14 +53,21 @@ QMenuBar::item:selected {
 	background-color: #E0E0E0;
 }
 QMenu {
-	background-color: #E0E0E0;
+    background-color: #333333;
+    border: 1px solid #F9E08B;
+    border-radius: 6px;
 }
 QMenu::item {
-	color: #333;
+	color: #DCDCDC;
+    font-family: "Lato";
+    padding: 5px 10px 5px 10px;
 }
 QMenu::item:selected {
-	background-color: #f2f0f0;
-	color: #333;
+	background-color: #434343;
+	color: #DCDCDC;
+}
+QMenu::item:disabled {
+	color: #8C8C8C;
 }
 QToolBar {
 	background-color: #FEC60D;
