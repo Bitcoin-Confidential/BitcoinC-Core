@@ -10514,6 +10514,35 @@ std::set<uint256> CHDWallet::GetConflicts(const uint256 &txid) const
     return CWallet::GetConflicts(txid);
 }
 
+bool CHDWallet::TransactionCanBeAbandoned(const uint256 &hashTx) const
+{
+    LOCK2(cs_main, cs_wallet);
+
+    MapRecords_t::const_iterator mri;
+    MapWallet_t::const_iterator mwi;
+
+    // Can't mark abandoned if confirmed or in mempool
+
+    if ((mri = mapRecords.find(hashTx)) != mapRecords.end())
+    {
+        const CTransactionRecord &rtx = mri->second;
+        if ( rtx.IsAbandoned() || GetDepthInMainChain(rtx.blockHash, rtx.nIndex) > 0 || InMempool(hashTx))
+        {
+            return false;
+        };
+    } else
+    if ((mwi = mapWallet.find(hashTx)) != mapWallet.end())
+    {
+        const CWalletTx &wtx = mwi->second;
+        if (wtx.isAbandoned() || wtx.GetDepthInMainChain() > 0 || InMempool(hashTx))
+        {
+            return false;
+        };
+    }
+
+    return true;
+}
+
 /* Mark a transaction (and it in-wallet descendants) as abandoned so its inputs may be respent. */
 bool CHDWallet::AbandonTransaction(const uint256 &hashTx)
 {

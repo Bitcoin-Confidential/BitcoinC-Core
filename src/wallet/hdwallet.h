@@ -687,6 +687,9 @@ public:
 
     std::set<uint256> GetConflicts(const uint256 &txid) const;
 
+    /** Return whether transaction can be abandoned */
+    bool TransactionCanBeAbandoned(const uint256& hashTx) const override;
+
     /* Mark a transaction (and it in-wallet descendants) as abandoned so its inputs may be respent. */
     bool AbandonTransaction(const uint256 &hashTx) override;
 
