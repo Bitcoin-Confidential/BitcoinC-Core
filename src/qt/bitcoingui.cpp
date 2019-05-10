@@ -1042,7 +1042,7 @@ void BitcoinGUI::message(const QString &title, const QString &message, unsigned 
 
         showNormalIfMinimized();
         QMessageBox mBox(static_cast<QMessageBox::Icon>(nMBoxIcon), strTitle, message, buttons, this);
-        mBox.setTextFormat(Qt::PlainText);
+        mBox.setStyleSheet( GUIUtil::loadStyleSheet());
         int r = mBox.exec();
         if (ret != nullptr)
             *ret = r == QMessageBox::Ok;
