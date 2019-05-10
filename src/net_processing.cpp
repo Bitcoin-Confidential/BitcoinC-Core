@@ -856,7 +856,7 @@ void DecMisbehaving(NodeId nodeid, int howmuch) EXCLUSIVE_LOCKS_REQUIRED(cs_main
 }
 
 size_t MAX_LOOSE_HEADERS = 300;
-int MAX_DUPLICATE_HEADERS = 1000;
+int MAX_DUPLICATE_HEADERS = 2000;
 int64_t MAX_LOOSE_HEADER_TIME = 120;
 bool AddNodeHeader(NodeId node_id, const uint256 &hash) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
