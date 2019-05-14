@@ -68,7 +68,9 @@ private Q_SLOTS:
     void useAvailableBalanceClicked();
     void on_payTo_textChanged(const QString &address);
     void on_addressBookButton_clicked();
+    void on_addressBookButton_convert_clicked();
     void on_pasteButton_clicked();
+    void on_pasteButton_convert_clicked();
     void updateDisplayUnit();
 
     void on_pasteButton_cs_clicked();

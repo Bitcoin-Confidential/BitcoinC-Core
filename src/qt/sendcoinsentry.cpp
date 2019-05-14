@@ -124,6 +124,12 @@ void SendCoinsEntry::on_pasteButton_clicked()
     ui->payTo->setText(QApplication::clipboard()->text());
 }
 
+void SendCoinsEntry::on_pasteButton_convert_clicked()
+{
+    // Paste text from clipboard into recipient field
+    ui->payTo_convert->setText(QApplication::clipboard()->text());
+}
+
 void SendCoinsEntry::on_addressBookButton_clicked()
 {
     if(!model)
@@ -137,6 +143,22 @@ void SendCoinsEntry::on_addressBookButton_clicked()
     {
         ui->payTo->setText(dlg.getReturnValue());
         ui->payAmount->setFocus();
+    }
+}
+
+void SendCoinsEntry::on_addressBookButton_convert_clicked()
+{
+    if(!model)
+        return;
+    AddressBookPage dlg(platformStyle,
+                        AddressBookPage::ForSelection,
+                        fSpending ? AddressBookPage::SendingTab : AddressBookPage::StakingTab,
+                        this);
+    dlg.setModel(fSpending ? model->getAddressTableModel() : model->getStakingAddressTableModel());
+    if(dlg.exec())
+    {
+        ui->payTo_convert->setText(dlg.getReturnValue());
+        ui->payAmount_convert->setFocus();
     }
 }
 
