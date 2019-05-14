@@ -3882,7 +3882,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             "  \"lastsearchtime\": xxxxxxx      (numeric) the last time this wallet searched for a coinstake\n"
             "  \"weight\": xxxxxxx              (numeric) the current stake weight of this wallet\n"
             "  \"netstakeweight\": xxxxxxx      (numeric) the current stake weight of the network\n"
-            "  \"expectedtime\": xxxxxxx        (numeric) estimated time for next stake\n"
+            "  \"rewardfrequency\": xxxxxxx     (numeric) estimated minutes between stake rewards\n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getstakinginfo", "")
@@ -3968,7 +3968,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     obj.pushKV("weight", (uint64_t)nWeight);
     obj.pushKV("netstakeweight", (double)nNetworkWeight / COIN);
 
-    obj.pushKV("expectedtime", nExpectedTime);
+    obj.pushKV("rewardfrequency", nExpectedTime);
 
     return obj;
 };

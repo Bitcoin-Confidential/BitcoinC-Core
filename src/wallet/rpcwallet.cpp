@@ -3301,7 +3301,7 @@ static UniValue encryptwallet(const JSONRPCRequest& request)
     // unencrypted private keys. So:
     StartShutdown();
     //return "wallet encrypted; BitcoinC server stopping, restart to run with encrypted wallet. The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.";
-    return "wallet encrypted; BitcoinC server stopping, restart to run with encrypted wallet. You need to make a new backup.";
+    return "wallet encrypted; Bitcoin Confidential server stopping, restart to run with encrypted wallet. You need to make a new backup.";
 }
 
 static UniValue lockunspent(const JSONRPCRequest& request)

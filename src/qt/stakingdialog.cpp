@@ -303,8 +303,8 @@ void StakingDialog::updateStakingUI(bool fForce)
             ui->lblHotStakingError->hide();
         }
 
-        if (rv["expectedtime"].isNum()) {
-            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["expectedtime"].get_int64()));
+        if (rv["rewardfrequency"].isNum()) {
+            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["rewardfrequency"].get_int64()));
         }
 
         bool fShowHotStakingElements = fLocked ? false : fHotStakingEnabled || fHotStakingActive;
