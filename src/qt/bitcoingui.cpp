@@ -417,6 +417,8 @@ void BitcoinGUI::createMenuBar()
     appMenuBar = menuBar();
 #endif
 
+    appMenuBar->setObjectName("appMenuBar");
+
     // Configure the menus
     QMenu *file = appMenuBar->addMenu(tr("&File"));
     if(walletFrame)

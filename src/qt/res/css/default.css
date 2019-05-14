@@ -134,7 +134,12 @@ QMessageBox {
 
 #shutdownWindow{
     background-color: #232323;
-	color: #E0E0E0;    
+	color: #E0E0E0;
+}
+
+#appMenuBar{
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
 }
 
 QProgressBar,
