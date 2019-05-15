@@ -741,7 +741,6 @@ void TransactionView::computeTotalSum()
     }
 
     int nColumn, nRowsVisible = 0;
-    int nStatus = -1;
 
     if( fStaking ){
         nColumn = TransactionTableModel::AmountStaking;
@@ -752,10 +751,8 @@ void TransactionView::computeTotalSum()
     for ( int nRow = 0; nRow < txModel->rowCount(QModelIndex()); ++nRow ){
         QModelIndex index = txModel->index(nRow, nColumn);
 
-        nStatus = index.data(TransactionTableModel::Status).toLongLong();
-
         // Don't count orphans
-        if( fStaking && nStatus == TransactionStatus::Abandoned ){
+        if( fStaking && txModel->index(nRow, 0).data(TransactionTableModel::StatusRole).toInt() == TransactionStatus::Abandoned  ){
             continue;
         }
 
