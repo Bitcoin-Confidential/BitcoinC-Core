@@ -3871,18 +3871,22 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             "  \"percentyearreward\": xxxxxxx,  (numeric) current stake reward percentage\n"
             "  \"moneysupply\": xxxxxxx,        (numeric) the total amount of bitcoinc in the network\n"
             "  \"reserve\": xxxxxxx,            (numeric) the total amount of bitcoinc in the network\n"
-//            "  \"walletfoundationdonationpercent\": xxxxxxx,\n    (numeric) user set percentage of the block reward ceded to the foundation\n"
-//            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
-//            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
             "  \"currentblocksize\": nnn,       (numeric) the last block size in bytes\n"
             "  \"currentblockweight\": nnn,     (numeric) the last block weight\n"
             "  \"currentblocktx\": nnn,         (numeric) the number of transactions in the last block\n"
             "  \"pooledtx\": n                  (numeric) the number of transactions in the mempool\n"
             "  \"difficulty\": xxx.xxxxx        (numeric) the current difficulty\n"
             "  \"lastsearchtime\": xxxxxxx      (numeric) the last time this wallet searched for a coinstake\n"
+            "  \"amount_in_stakable_script\":   (numeric) the current amount in hotstakable script\n"
             "  \"weight\": xxxxxxx              (numeric) the current stake weight of this wallet\n"
             "  \"netstakeweight\": xxxxxxx      (numeric) the current stake weight of the network\n"
-            "  \"rewardfrequency\": xxxxxxx     (numeric) estimated minutes between stake rewards\n"
+            "  \"rewardfrequency\": xxxxxxx     (numeric) estimated seconds between stake rewards\n"
+            "  \"coldstaking\": {               (object) ColdStaking information if enabled\n"
+            "       \"active\":                 (boolean) true if the coldstake change address is set or coldstakable funds are available\n"
+            "       \"amount_in_coldstakable_script\": (numeric) the current amount in coldstakable script\n"
+            "       \"percent_in_coldstakable_script\": (numeric) the current percent in coldstakable script\n"
+            "       \"coldstake_change_address\":      (string) If set, all change amounts of spending conversions and all successfully hot staked funds will automatically send to a coldstake script\n"
+            "  }"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getstakinginfo", "")
@@ -3892,17 +3896,95 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    UniValue obj(UniValue::VOBJ);
+    std::vector<COutput> vecOutputs;
+
+    bool include_unsafe = false;
+    bool fIncludeImmature = true;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    int nMinDepth = 0;
+    int nMaxDepth = 0x7FFFFFFF;
+    int nHeight, nRequiredDepth;
 
     int64_t nTipTime;
     float rCoinYearReward;
     CAmount nMoneySupply;
+
+    CAmount nStakeable = 0;
+    CAmount nColdStakeable = 0;
+    CAmount nWalletStaking = 0;
+
+    CKeyID keyID;
     {
-        LOCK(cs_main);
+        LOCK2(cs_main, pwallet->cs_wallet);
+
+        nHeight = chainActive.Tip()->nHeight;
+        nRequiredDepth = std::min((int)(Params().GetStakeMinConfirmations()-1), (int)(nHeight / 2));
+
         nTipTime = chainActive.Tip()->nTime;
         rCoinYearReward = Params().GetCoinYearReward(nTipTime) / CENT;
         nMoneySupply = chainActive.Tip()->nMoneySupply;
+
+        pwallet->AvailableCoins(vecOutputs, !include_unsafe, nullptr, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth, fIncludeImmature);
+
+        for (const auto &out : vecOutputs) {
+            const CScript *scriptPubKey = out.tx->tx->vpout[out.i]->GetPScriptPubKey();
+            CAmount nValue = out.tx->tx->vpout[out.i]->GetValue();
+
+            if (scriptPubKey->IsPayToPublicKeyHash() || scriptPubKey->IsPayToPublicKeyHash256()) {
+                if (!out.fSpendable) {
+                    continue;
+                }
+                nStakeable += nValue;
+            } else
+            if (scriptPubKey->IsPayToPublicKeyHash256_CS() || scriptPubKey->IsPayToScriptHash256_CS() || scriptPubKey->IsPayToScriptHash_CS()) {
+                // Show output on both the spending and staking wallets
+                if (!out.fSpendable) {
+                    if (!ExtractStakingKeyID(*scriptPubKey, keyID)
+                        || !pwallet->HaveKey(keyID)) {
+                        continue;
+                    }
+                }
+                nColdStakeable += nValue;
+            } else {
+                continue;
+            }
+
+            if (out.nDepth < nRequiredDepth) {
+                continue;
+            }
+
+            if (!ExtractStakingKeyID(*scriptPubKey, keyID)) {
+                continue;
+            }
+            if (pwallet->HaveKey(keyID)) {
+                nWalletStaking += nValue;
+            }
+        }
     }
+
+    UniValue jsonSettings;
+    std::string addrColdStaking;
+    if (pwallet->GetSetting("changeaddress", jsonSettings)
+        && jsonSettings["coldstakingaddress"].isStr()) {
+        std::string sAddress;
+        try { sAddress = jsonSettings["coldstakingaddress"].get_str();
+        } catch (std::exception &e) {
+            return error("%s: Get coldstakingaddress failed %s.", __func__, e.what());
+        };
+        CBitcoinAddress addr(sAddress);
+
+        if( addr.IsValid(CChainParams::PUBKEY_ADDRESS) ){
+            addrColdStaking = sAddress;
+        }else{
+            addrColdStaking = "";
+        }
+
+    }
+
+    UniValue obj(UniValue::VOBJ);
 
     UniValue stakingstatus;
     bool fStakingEnabled = false;
@@ -3949,15 +4031,6 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
         obj.pushKV("reserve", ValueFromAmount(pwallet->nReserveBalance));
     }
 
-  /*  if (pwallet->nWalletDevFundCedePercent > 0) {
-        obj.pushKV("walletfoundationdonationpercent", pwallet->nWalletDevFundCedePercent);
-    }*/
-
-    //const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTipTime);
- /*   if (pDevFundSettings && pDevFundSettings->nMinDevStakePercent > 0) {
-        obj.pushKV("foundationdonationpercent", pDevFundSettings->nMinDevStakePercent);
-    }*/
-
     obj.pushKV("currentblocksize", (uint64_t)nLastBlockSize);
     obj.pushKV("currentblocktx", (uint64_t)nLastBlockTx);
     obj.pushKV("pooledtx", (uint64_t)mempool.size());
@@ -3965,143 +4038,25 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     obj.pushKV("difficulty", GetDifficulty(chainActive.Tip()));
     obj.pushKV("lastsearchtime", (uint64_t)pwallet->nLastCoinStakeSearchTime);
 
+    obj.pushKV("amount_in_stakeable_script", ValueFromAmount(nStakeable));
     obj.pushKV("weight", (uint64_t)nWeight);
     obj.pushKV("netstakeweight", (double)nNetworkWeight / COIN);
 
     obj.pushKV("rewardfrequency", nExpectedTime);
 
-    return obj;
-};
+    UniValue objCold(UniValue::VOBJ);
 
-static UniValue getcoldstakinginfo(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-
-    if (request.fHelp || request.params.size() != 0)
-        throw std::runtime_error(
-            "getcoldstakinginfo\n"
-            "Returns an object containing coldstaking related information."
-            "\nResult:\n"
-            "{\n"
-            "  \"enabled\": true|false,             (boolean) If a valid coldstakingaddress is loaded or not on this wallet.\n"
-            "  \"coldstaking_extkey_id\"            (string) The id of the current coldstakingaddress.\n"
-            "  \"coin_in_stakeable_script\"         (numeric) Current amount of coin in scripts stakeable by this wallet.\n"
-            "  \"coin_in_coldstakeable_script\"     (numeric) Current amount of coin in scripts stakeable by the wallet with the coldstakingaddress.\n"
-            "  \"percent_in_coldstakeable_script\"  (numeric) Percentage of coin in coldstakeable scripts.\n"
-            "  \"currently_staking\"                (numeric) Amount of coin estimated to be currently staking by this wallet.\n"
-            "}\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getcoldstakinginfo", "")
-            + HelpExampleRpc("getcoldstakinginfo", ""));
-
-    // Make sure the results are valid at least up to the most recent block
-    // the user could have gotten from another RPC command prior to now
-    pwallet->BlockUntilSyncedToCurrentChain();
-
-    UniValue obj(UniValue::VOBJ);
-
-    std::vector<COutput> vecOutputs;
-
-    bool include_unsafe = false;
-    bool fIncludeImmature = true;
-    CAmount nMinimumAmount = 0;
-    CAmount nMaximumAmount = MAX_MONEY;
-    CAmount nMinimumSumAmount = MAX_MONEY;
-    uint64_t nMaximumCount = 0;
-    int nMinDepth = 0;
-    int nMaxDepth = 0x7FFFFFFF;
-    int nHeight, nRequiredDepth;
-
-    {
-        LOCK2(cs_main, pwallet->cs_wallet);
-        nHeight = chainActive.Tip()->nHeight;
-        nRequiredDepth = std::min((int)(Params().GetStakeMinConfirmations()-1), (int)(nHeight / 2));
-        pwallet->AvailableCoins(vecOutputs, !include_unsafe, nullptr, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth, fIncludeImmature);
-    }
-
-    LOCK(pwallet->cs_wallet);
-
-    CAmount nStakeable = 0;
-    CAmount nColdStakeable = 0;
-    CAmount nWalletStaking = 0;
-
-    CKeyID keyID;
-    CScript coinstakePath;
-    for (const auto &out : vecOutputs) {
-        const CScript *scriptPubKey = out.tx->tx->vpout[out.i]->GetPScriptPubKey();
-        CAmount nValue = out.tx->tx->vpout[out.i]->GetValue();
-
-        if (scriptPubKey->IsPayToPublicKeyHash() || scriptPubKey->IsPayToPublicKeyHash256()) {
-            if (!out.fSpendable) {
-                continue;
-            }
-            nStakeable += nValue;
-        } else
-        if (scriptPubKey->IsPayToPublicKeyHash256_CS() || scriptPubKey->IsPayToScriptHash256_CS() || scriptPubKey->IsPayToScriptHash_CS()) {
-            // Show output on both the spending and staking wallets
-            if (!out.fSpendable) {
-                if (!ExtractStakingKeyID(*scriptPubKey, keyID)
-                    || !pwallet->HaveKey(keyID)) {
-                    continue;
-                }
-            }
-            nColdStakeable += nValue;
-        } else {
-            continue;
-        }
-
-        if (out.nDepth < nRequiredDepth) {
-            continue;
-        }
-
-        if (!ExtractStakingKeyID(*scriptPubKey, keyID)) {
-            continue;
-        }
-        if (pwallet->HaveKey(keyID)) {
-            nWalletStaking += nValue;
-        }
-    }
-
-
-    bool fEnabled = false;
-    UniValue jsonSettings;
-    CBitcoinAddress addrColdStaking;
-    if (pwallet->GetSetting("changeaddress", jsonSettings)
-        && jsonSettings["coldstakingaddress"].isStr()) {
-        std::string sAddress;
-        try { sAddress = jsonSettings["coldstakingaddress"].get_str();
-        } catch (std::exception &e) {
-            return error("%s: Get coldstakingaddress failed %s.", __func__, e.what());
-        };
-
-        addrColdStaking = sAddress;
-        if (addrColdStaking.IsValid()) {
-            fEnabled = true;
-        }
-    }
-
-    obj.pushKV("enabled", fEnabled);
-    if (addrColdStaking.IsValid(CChainParams::EXT_PUBLIC_KEY)) {
-        CTxDestination dest = addrColdStaking.Get();
-        CExtKeyPair kp = boost::get<CExtKeyPair>(dest);
-        CKeyID idk = kp.GetID();
-        CBitcoinAddress addr;
-        addr.Set(idk, CChainParams::EXT_KEY_HASH);
-        obj.pushKV("coldstaking_extkey_id", addr.ToString());
-    }
-    obj.pushKV("coin_in_stakeable_script", ValueFromAmount(nStakeable));
-    obj.pushKV("coin_in_coldstakeable_script", ValueFromAmount(nColdStakeable));
+    objCold.pushKV("active", addrColdStaking != "" || nColdStakeable > 0);
+    objCold.pushKV("amount_in_coldstakeable_script", ValueFromAmount(nColdStakeable));
     CAmount nTotal = nColdStakeable + nStakeable;
-    obj.pushKV("percent_in_coldstakeable_script",
+    objCold.pushKV("percent_in_coldstakeable_script",
         UniValue(UniValue::VNUM, strprintf("%.2f", nTotal == 0 ? 0.0 : (static_cast<double>(nColdStakeable) * 10000 / nTotal) / 100.0)));
-    obj.pushKV("currently_staking", ValueFromAmount(nWalletStaking));
+    objCold.pushKV("coldstake_change_address", addrColdStaking);
+
+    obj.pushKV("coldstaking", objCold);
 
     return obj;
-};
-
+}
 
 static UniValue listunspent(const JSONRPCRequest &request)
 {
@@ -7073,7 +7028,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
     { "wallet",             "getnewstakeaddress",               &getnewstakeaddress,            {"label","bech32", "hardened"} },
-    { "wallet",             "getnewcoldstakeaddress",              &getnewcoldstakeaddress,       {"label","bech32", "hardened"} },
+    { "wallet",             "getnewcoldstakeaddress",           &getnewcoldstakeaddress,        {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 
@@ -7087,14 +7042,13 @@ static const CRPCCommand commands[] =
     { "wallet",             "manageaddressbook",                &manageaddressbook,             {"action","address","label","purpose"} },
 
     { "wallet",             "getstakinginfo",                   &getstakinginfo,                {} },
-    { "wallet",             "getcoldstakinginfo",               &getcoldstakinginfo,            {} },
 
-    { "wallet",             "listunspent",                  &listunspent,               {"minconf","maxconf","addresses","include_unsafe","query_options"} },
+    { "wallet",             "listunspent",                      &listunspent,                   {"minconf","maxconf","addresses","include_unsafe","query_options"} },
 
-    { "wallet",             "converttospending",                 &converttospending,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
+    { "wallet",             "converttospending",                &converttospending,             {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
-    { "wallet",             "converttostaking",                   &converttostaking,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
-    { "wallet",             "sendspending",                   &sendspending,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
+    { "wallet",             "converttostaking",                 &converttostaking,              {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
+    { "wallet",             "sendspending",                     &sendspending,                  {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
 
     { "wallet",             "sendtypeto",                       &sendtypeto,                    {"typein","typeout","outputs","comment","comment_to","ringsize","inputs_per_sig","test_fee","coincontrol"} },
 
@@ -7107,10 +7061,10 @@ static const CRPCCommand commands[] =
     { "wallet",             "walletsettings",                   &walletsettings,                {"setting","json"} },
 
     { "wallet",             "transactionblinds",                &transactionblinds,             {"txnid"} },
-    { "wallet",             "derivefromspendingaddress",         &derivefromspendingaddress,      {"spendingaddress","ephempubkey"} },
+    { "wallet",             "derivefromspendingaddress",        &derivefromspendingaddress,     {"spendingaddress","ephempubkey"} },
 
     { "rawtransactions",    "buildscript",                      &buildscript,                   {"json"} },
-    { "rawtransactions",    "createrawbctransaction",         &createrawbctransaction,      {"inputs","outputs","locktime","replaceable"} },
+    { "rawtransactions",    "createrawbctransaction",           &createrawbctransaction,        {"inputs","outputs","locktime","replaceable"} },
     { "rawtransactions",    "fundrawtransactionfrom",           &fundrawtransactionfrom,        {"input_type","hexstring","input_amounts","output_amounts","options"} },
     { "rawtransactions",    "verifycommitment",                 &verifycommitment,              {"commitment","blind","amount"} },
     { "rawtransactions",    "verifyrawtransaction",             &verifyrawtransaction,          {"hexstring","prevtxs","options"} },
