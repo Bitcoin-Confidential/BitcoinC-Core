@@ -259,8 +259,8 @@ void StakingDialog::updateStakingUI(bool fForce)
             ui->lblHotStakingError->hide();
         }
 
-        if (rv["rewardfrequency"].isNum()) {
-            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["rewardfrequency"].get_int64()));
+        if (rv["estimated_rewardfrequency"].isNum()) {
+            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()));
         }
 
         bool fShowHotStakingElements = fLocked ? false : fHotStakingEnabled || fHotStakingActive;
@@ -294,6 +294,16 @@ void StakingDialog::updateStakingUI(bool fForce)
 
         if (objCold["coldstake_change_address"].isStr()) {
             strColdStakeChange = objCold["coldstake_change_address"].get_str();
+        }
+
+        if (objCold["estimated_weight"].isNum()) {
+            QString strWeight = QString::fromStdString(strprintf("%0.00f", objCold["estimated_weight"].get_real()));
+            AddThousandsSpaces(strWeight);
+            ui->lblColdStakingWeight->setText(strWeight);
+        }
+
+        if (objCold["estimated_rewardfrequency"].isNum()) {
+            ui->lblColdStakingFrequency->setText(GUIUtil::formatNiceTimeOffset(objCold["estimated_rewardfrequency"].get_int64()));
         }
 
         bool fAutomatedColdStake;

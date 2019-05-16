@@ -3880,12 +3880,14 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             "  \"amount_in_stakable_script\":   (numeric) the current amount in hotstakable script\n"
             "  \"weight\": xxxxxxx              (numeric) the current stake weight of this wallet\n"
             "  \"netstakeweight\": xxxxxxx      (numeric) the current stake weight of the network\n"
-            "  \"rewardfrequency\": xxxxxxx     (numeric) estimated seconds between stake rewards\n"
-            "  \"coldstaking\": {               (object) ColdStaking information if enabled\n"
+            "  \"estimated_rewardfrequency\": xxxxxxx     (numeric) estimated seconds between stake rewards\n"
+            "  \"coldstaking\": {               (object) ColdStaking information\n"
             "       \"active\":                 (boolean) true if the coldstake change address is set or coldstakable funds are available\n"
-            "       \"amount_in_coldstakable_script\": (numeric) the current amount in coldstakable script\n"
+            "       \"amount_in_coldstakable_script\":  (numeric) the current amount in coldstakable script\n"
+            "       \"estimated_weight\":               (numeric) the current estimated weight in coldstakable script\n"
             "       \"percent_in_coldstakable_script\": (numeric) the current percent in coldstakable script\n"
-            "       \"coldstake_change_address\":      (string) If set, all change amounts of spending conversions and all successfully hot staked funds will automatically send to a coldstake script\n"
+            "       \"coldstake_change_address\":       (string) If set, all change amounts of spending conversions and all successfully hot staked funds will automatically send to a coldstake script\n"
+            "       \"estimated_rewardfrequency\":      (numeric) estimated seconds between coldstake rewards\n"
             "  }"
             "}\n"
             "\nExamples:\n"
@@ -3915,6 +3917,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     CAmount nStakeable = 0;
     CAmount nColdStakeable = 0;
     CAmount nWalletStaking = 0;
+    CAmount nColdStakingWeight = 0;
 
     CKeyID keyID;
     {
@@ -3948,6 +3951,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
                     }
                 }
                 nColdStakeable += nValue;
+
             } else {
                 continue;
             }
@@ -3961,6 +3965,10 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             }
             if (pwallet->HaveKey(keyID)) {
                 nWalletStaking += nValue;
+            }
+
+            if (scriptPubKey->IsPayToPublicKeyHash256_CS() || scriptPubKey->IsPayToScriptHash256_CS() || scriptPubKey->IsPayToScriptHash_CS()) {
+                nColdStakingWeight += nValue;
             }
         }
     }
@@ -3999,6 +4007,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
 
     bool fStaking = nWeight && fIsStaking;
     uint64_t nExpectedTime = fStaking ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nWeight) : 0;
+    uint64_t nExpectedTimeColdStaking = nColdStakingWeight > 0 ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nColdStakingWeight) : 0;
 
     obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && fStakingEnabled); // enabled on node, vs enabled on wallet
     obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
@@ -4042,16 +4051,18 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     obj.pushKV("weight", (uint64_t)nWeight);
     obj.pushKV("netstakeweight", (double)nNetworkWeight / COIN);
 
-    obj.pushKV("rewardfrequency", nExpectedTime);
+    obj.pushKV("estimated_rewardfrequency", nExpectedTime);
 
     UniValue objCold(UniValue::VOBJ);
 
     objCold.pushKV("active", addrColdStaking != "" || nColdStakeable > 0);
     objCold.pushKV("amount_in_coldstakeable_script", ValueFromAmount(nColdStakeable));
+    objCold.pushKV("estimated_weight", ValueFromAmount(nColdStakingWeight));
     CAmount nTotal = nColdStakeable + nStakeable;
     objCold.pushKV("percent_in_coldstakeable_script",
         UniValue(UniValue::VNUM, strprintf("%.2f", nTotal == 0 ? 0.0 : (static_cast<double>(nColdStakeable) * 10000 / nTotal) / 100.0)));
     objCold.pushKV("coldstake_change_address", addrColdStaking);
+    objCold.pushKV("estimated_rewardfrequency", nExpectedTimeColdStaking);
 
     obj.pushKV("coldstaking", objCold);
 
