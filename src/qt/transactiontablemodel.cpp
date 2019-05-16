@@ -643,7 +643,11 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
             case TypeOut:
                 return QString::fromStdString(rec->typeOut);
             case Amount:
-                return formatTxAmount(rec, true, BitcoinUnits::separatorAlways);
+                if( rec->credit + rec->debit == 0 && rec->typeOut == "BC" ){
+                    return tr("Unlock to show");
+                }else{
+                    return formatTxAmount(rec, true, BitcoinUnits::separatorAlways);
+                }
             }
         }
     break;
