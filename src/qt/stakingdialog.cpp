@@ -221,7 +221,8 @@ void StakingDialog::updateStakingUI(bool fForce)
         // Local info
 
         bool fHotStakingEnabled = false, fHotStakingActive = false;
-        int64_t nWeight;
+        CAmount nWeight;
+        CAmount nAmountInStakableScript = 0;
 
         if (rv["enabled"].isBool()) {
             fHotStakingEnabled = rv["enabled"].get_bool();
@@ -232,7 +233,8 @@ void StakingDialog::updateStakingUI(bool fForce)
         }
 
         if (rv["amount_in_stakeable_script"].isNum()) {
-            ui->lblHotStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(rv["amount_in_stakeable_script"])));
+            nAmountInStakableScript = AmountFromValue(rv["amount_in_stakeable_script"]);
+            ui->lblHotStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, nAmountInStakableScript));
         }
 
         if (rv["weight"].isNum()) {
@@ -242,6 +244,10 @@ void StakingDialog::updateStakingUI(bool fForce)
             ui->lblHotStakingWalletWeight->setText(strWeight);
         }
 
+        if (rv["estimated_rewardfrequency"].isNum()) {
+            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()));
+        }
+
         if ( fStakingEnabled && ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) ) {
 
             ui->lblHotStakingError->show();
@@ -249,9 +255,14 @@ void StakingDialog::updateStakingUI(bool fForce)
             QString strError = QString::fromStdString(rv["errors"].get_str());
 
             if( fLocked ){
-                strError = "Your wallet is locked. To start staking unlock the wallet for staking only. To do the unlock you can click on the lock icon in the bottom bar.";
+                strError = tr("Your wallet is locked. To start staking unlock the wallet for staking only. To do the unlock you can click on the lock icon in the bottom bar.");
             }else if( strError == "" ){
-                strError = "No suitable staking outputs available. Your staking funds need to have 225 confirmations to be eligible for staking";
+
+                if( !nAmountInStakableScript ){
+                    strError = tr("No stakable funds available. Use the \"Convert to staking\" tab to convert your funds for staking.");
+                }else{
+                    strError = tr("No eligible staking outputs available. Your staking funds need to have 225 confirmations to be eligible.");
+                }
             }
 
             ui->lblHotStakingError->setText(strError);
@@ -259,24 +270,24 @@ void StakingDialog::updateStakingUI(bool fForce)
             ui->lblHotStakingError->hide();
         }
 
-        if (rv["estimated_rewardfrequency"].isNum()) {
-            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()));
-        }
-
         bool fShowHotStakingElements = fLocked ? false : fHotStakingEnabled || fHotStakingActive;
+        bool fShowStakingWeight = nWeight > 0;
 
         ui->lblHotStakingAmountLabel->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingWalletWeightLabel->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingExpectedTimeLabel->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingWalletWeightLabel->setVisible(fShowStakingWeight);
+        ui->lblHotStakingExpectedTimeLabel->setVisible(fShowStakingWeight);
 
         ui->lblHotStakingAmount->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingWalletWeight->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingExpectedTime->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingWalletWeight->setVisible(fShowStakingWeight);
+        ui->lblHotStakingExpectedTime->setVisible(fShowStakingWeight);
+
 
         StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive, fStakingEnabled);
 
         bool fColdStakingActive = false;
         std::string strColdStakeChange = "";
+        bool fShowColdStakingWeight = false;
+        CAmount nAmountInColdStakableScript = 0;
 
         UniValue objCold = rv["coldstaking"].get_obj();
 
@@ -285,7 +296,8 @@ void StakingDialog::updateStakingUI(bool fForce)
         }
 
         if (objCold["amount_in_coldstakeable_script"].isNum()) {
-            ui->lblColdStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, AmountFromValue(objCold["amount_in_coldstakeable_script"])));
+            nAmountInColdStakableScript = AmountFromValue(objCold["amount_in_coldstakeable_script"]);
+            ui->lblColdStakingAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, nAmountInColdStakableScript));
         }
 
         if (objCold["percent_in_coldstakeable_script"].isNum()) {
@@ -297,13 +309,22 @@ void StakingDialog::updateStakingUI(bool fForce)
         }
 
         if (objCold["estimated_weight"].isNum()) {
-            QString strWeight = QString::fromStdString(strprintf("%0.00f", objCold["estimated_weight"].get_real()));
+            double dWeight = objCold["estimated_weight"].get_real();
+            fShowColdStakingWeight = dWeight > 0;
+            QString strWeight = QString::fromStdString(strprintf("%0.00f", dWeight));
             AddThousandsSpaces(strWeight);
             ui->lblColdStakingWeight->setText(strWeight);
         }
 
         if (objCold["estimated_rewardfrequency"].isNum()) {
             ui->lblColdStakingFrequency->setText(GUIUtil::formatNiceTimeOffset(objCold["estimated_rewardfrequency"].get_int64()));
+        }
+
+        if ( nAmountInColdStakableScript && !fShowColdStakingWeight ) {
+            ui->lblColdStakingError->show();
+            ui->lblColdStakingError->setText(tr("No eligible coldstaking outputs available. Your coldstaking funds need to have 225 confirmations to be eligible."));
+        }else{
+            ui->lblColdStakingError->hide();
         }
 
         bool fAutomatedColdStake;
@@ -321,10 +342,14 @@ void StakingDialog::updateStakingUI(bool fForce)
         ui->lblColdStakingAddressLabel->setVisible(fAutomatedColdStake);
         ui->lblColdStakingAmountLabel->setVisible(fColdStakingActive);
         ui->lblColdStakingPercentLabel->setVisible(fColdStakingActive);
+        ui->lblColdStakingWeightLabel->setVisible(fShowColdStakingWeight);
+        ui->lblColdStakingFrequencyLabel->setVisible(fShowColdStakingWeight);
 
         ui->lblColdStakingAddress->setVisible(fAutomatedColdStake);
         ui->lblColdStakingAmount->setVisible(fColdStakingActive);
         ui->progressColdStaking->setVisible(fColdStakingActive);
+        ui->lblColdStakingWeight->setVisible(fShowColdStakingWeight);
+        ui->lblColdStakingFrequency->setVisible(fShowColdStakingWeight);
 
         StakingStatusUpdate(ui->lblColdStakingEnabled, fColdStakingActive, fColdStakingActive);
     }

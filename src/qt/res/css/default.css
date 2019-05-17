@@ -1809,7 +1809,8 @@ QAbstractScrollArea::corner {
     qproperty-alignment: 'AlignVCenter | AlignLeft';
 }
 
-#lblHotStakingError{
+#lblHotStakingError,
+#lblColdStakingError{
     color: #E1755A;
     font-size: 14px;
     qproperty-alignment: 'AlignVCenter | AlignLeft';
