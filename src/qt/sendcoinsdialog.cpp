@@ -224,7 +224,7 @@ void SendCoinsDialog::setModel(WalletModel *_model)
             ui->sendTabHeaderLabel->setText(GUIUtil::GetStakingWaitInfo());
         }else{
             ui->sendTabHeaderLabel->setText(tr("This tab allows manually activating Staking funds for ColdStaking. "
-                                               "This will take longer than the \"Automated ColdStaking activation\"to start staking but wallet does not need to be online for the activation."));
+                                               "This will take longer than the \"Automated ColdStaking activation\" to start staking but wallet does not need to be online for the activation."));
         }
 
         clear();
