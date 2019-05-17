@@ -34,7 +34,7 @@ public:
         vSorted = vValues;
     }
     
-    CMedianFilter() : nSize(0)
+    CMedianFilter() : nSize(0), defaultValue(0)
     {
     }
     
@@ -43,6 +43,7 @@ public:
         nSize = size;
         vValues.reserve(nSize);
         vSorted = vValues;
+        this->defaultValue = defaultValue;
     }
 
     void input(T value)
