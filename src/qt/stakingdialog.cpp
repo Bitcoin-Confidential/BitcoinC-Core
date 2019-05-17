@@ -363,6 +363,11 @@ void StakingDialog::updateStakingRewards(const QString& strCountVisible, const Q
     ui->lblRewardTotal->setText(strAmount);
 }
 
+void StakingDialog::updateEncryptionStatus()
+{
+    updateStakingUI(true);
+}
+
 bool StakingDialog::getChangeSettings(QString &change_spend, QString &change_stake)
 {
     UniValue rv;

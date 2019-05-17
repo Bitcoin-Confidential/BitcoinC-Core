@@ -177,6 +177,9 @@ void WalletView::setBitcoinGUI(BitcoinGUI *gui)
         // Pass through encryption status changed signals
         connect(this, SIGNAL(encryptionStatusChanged()), gui, SLOT(updateWalletStatus()));
 
+        // Pass through encryption status changed signals
+        connect(this, SIGNAL(encryptionStatusChanged()), stakingPage, SLOT(updateEncryptionStatus()));
+
         // Pass through transaction notifications
         connect(this, SIGNAL(incomingTransaction(QString,int,CAmount,QString,QString,QString,QString)), gui, SLOT(incomingTransaction(QString,int,CAmount,QString,QString,QString,QString)));
 

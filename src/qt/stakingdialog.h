@@ -70,7 +70,7 @@ private:
 
 public Q_SLOTS:
     void updateStakingRewards(const QString& strCountVisible, const QString& strAmountVisible, const QString& strCount, const QString& strAmount);
-
+    void updateEncryptionStatus();
 private Q_SLOTS:
 
     void on_btnChangeColdStakingAddress_clicked();
