@@ -471,35 +471,37 @@ void StakingDialog::setPages(QWidget *transactionPage, AddressBookPage *addressP
 
 void StakingDialog::on_btnChangeColdStakingAddress_clicked()
 {
+    bool fEnabled = false;
+    QString newColdStakeChangeAddress;
 
     if( ui->btnChangeColdStakingAddress->text() == "Enable" ){
+
         bool ok;
-        QString newColdStakeChangeAddress = QInputDialog::getText(this, tr("Set Remote Staking Address"),
+        newColdStakeChangeAddress = QInputDialog::getText(this, tr("Set Remote Staking Address"),
                                                                   tr("Enter the remote staking address:"), QLineEdit::Normal,
                                                                   "", &ok);
         if (ok && !newColdStakeChangeAddress.isEmpty()){
             QString sCommand;
 
-            if (newColdStakeChangeAddress != m_coldStakeChangeAddress) {
-                QString change_spend, change_stake;
-                getChangeSettings(change_spend, m_coldStakeChangeAddress);
+            QString change_spend, change_stake;
+            getChangeSettings(change_spend, change_stake);
 
-                sCommand = "walletsettings changeaddress {";
-                if (!change_spend.isEmpty()) {
-                    sCommand += "\"address_standard\":\""+change_spend+"\"";
-                }
-                if (!newColdStakeChangeAddress.isEmpty()) {
-                    if (!change_spend.isEmpty()) {
-                        sCommand += ",";
-                    }
-                    sCommand += "\"coldstakingaddress\":\""+newColdStakeChangeAddress+"\"";
-                }
-                sCommand += "}";
+            sCommand = "walletsettings changeaddress {";
+            if (!change_spend.isEmpty()) {
+                sCommand += "\"address_standard\":\""+change_spend+"\"";
             }
+
+            if (!change_spend.isEmpty()) {
+                sCommand += ",";
+            }
+            sCommand += "\"coldstakingaddress\":\""+newColdStakeChangeAddress+"\"}";
+
+            fEnabled = true;
 
             if (!sCommand.isEmpty()) {
                 UniValue rv;
                 if (!model->tryCallRpc(sCommand, rv)) {
+                    fEnabled = false;
                     return;
                 }
             }
@@ -524,6 +526,11 @@ void StakingDialog::on_btnChangeColdStakingAddress_clicked()
         if (!change_spend.isEmpty() && !model->tryCallRpc(sCommand, rv)) {
             return;
         }
+    }
+
+    if( fEnabled ){
+        UniValue rv;
+        model->tryCallRpc("walletsettings stakingstatus true", rv);
     }
 
     updateStakingUI();

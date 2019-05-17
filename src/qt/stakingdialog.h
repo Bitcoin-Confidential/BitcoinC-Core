@@ -66,8 +66,6 @@ private:
     SendCoinsDialog *toStake;
     SendCoinsDialog *activateCold;
 
-    QString m_coldStakeChangeAddress;
-
     bool getChangeSettings(QString &change_spend, QString &change_stake);
 
 public Q_SLOTS:
