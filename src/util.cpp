@@ -854,10 +854,10 @@ std::string ArgsManager::GetHelpMessage() const
             case OptionsCategory::SMSG:
                 usage += HelpMessageGroup("SMSG Commands:");
                 break;
-            case OptionsCategory::PART_WALLET:
+            case OptionsCategory::BC_WALLET:
                 usage += HelpMessageGroup("BitcoinC wallet Commands:");
                 break;
-            case OptionsCategory::PART_STAKING:
+            case OptionsCategory::BC_STAKING:
                 usage += HelpMessageGroup("Staking Commands:");
                 break;
             default:

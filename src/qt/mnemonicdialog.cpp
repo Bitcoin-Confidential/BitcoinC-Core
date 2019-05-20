@@ -74,6 +74,9 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
 
     connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
 
+    ui->importChainLabel->hide();
+    ui->chkImportChain->hide();
+
     return;
 }
 

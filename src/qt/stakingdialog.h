@@ -66,16 +66,13 @@ private:
     SendCoinsDialog *toStake;
     SendCoinsDialog *activateCold;
 
-    QString m_coldStakeChangeAddress;
-
     bool getChangeSettings(QString &change_spend, QString &change_stake);
 
 public Q_SLOTS:
     void updateStakingRewards(const QString& strCountVisible, const QString& strAmountVisible, const QString& strCount, const QString& strAmount);
-
+    void updateEncryptionStatus();
 private Q_SLOTS:
 
-    void on_btnChangeReserveBalance_clicked();
     void on_btnChangeColdStakingAddress_clicked();
     void on_btnChangeStakingStatus_clicked();
     void modeChanged(int nNewMode);

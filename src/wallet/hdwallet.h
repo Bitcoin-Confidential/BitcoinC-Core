@@ -687,6 +687,9 @@ public:
 
     std::set<uint256> GetConflicts(const uint256 &txid) const;
 
+    /** Return whether transaction can be abandoned */
+    bool TransactionCanBeAbandoned(const uint256& hashTx) const override;
+
     /* Mark a transaction (and it in-wallet descendants) as abandoned so its inputs may be respent. */
     bool AbandonTransaction(const uint256 &hashTx) override;
 
@@ -724,6 +727,9 @@ public:
     //mutable int m_least_txn_depth = 0; // depth of least deep txn
     mutable bool m_have_spendable_balance_cached = false;
     mutable CAmount m_spendable_balance_cached = 0;
+
+    mutable bool m_have_cached_stakeable_coins = false;
+    mutable std::vector<COutput> m_cached_stakeable_coins;
 
     enum eStakingState {
         NOT_STAKING = 0,

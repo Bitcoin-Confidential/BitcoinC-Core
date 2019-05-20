@@ -223,12 +223,9 @@ static int AccountInfo(CHDWallet *pwallet, CExtKeyAccount *pa, int nShowKeys, bo
     CExtKey58 eKey58;
 
     obj.pushKV("type", "Account");
-    obj.pushKV("active", pa->nFlags & EAF_ACTIVE ? "true" : "false");
+    obj.pushKV("active", pa->nFlags & EAF_ACTIVE ? true : false);
     obj.pushKV("label", pa->sLabel);
-
-    if (pwallet->idDefaultAccount == pa->GetID()) {
-        obj.pushKV("default_account", "true");
-    }
+    obj.pushKV("default_account", pwallet->idDefaultAccount == pa->GetID());
 
     mapEKValue_t::iterator mvi = pa->mapValue.find(EKVT_CREATED_AT);
     if (mvi != pa->mapValue.end()) {
@@ -247,7 +244,7 @@ static int AccountInfo(CHDWallet *pwallet, CExtKeyAccount *pa, int nShowKeys, bo
     }
 
     obj.pushKV("id", pa->GetIDString58());
-    obj.pushKV("has_secret", pa->nFlags & EAF_HAVE_SECRET ? "true" : "false");
+    obj.pushKV("has_secret", pa->nFlags & EAF_HAVE_SECRET ? true : false);
 
     CStoredExtKey *sekAccount = pa->ChainAccount();
     if (!sekAccount) {
@@ -305,8 +302,8 @@ static int AccountInfo(CHDWallet *pwallet, CExtKeyAccount *pa, int nShowKeys, bo
             objC.pushKV("id", sek->GetIDString58());
             objC.pushKV("chain", eKey58.ToString());
             objC.pushKV("label", sek->sLabel);
-            objC.pushKV("active", sek->nFlags & EAF_ACTIVE ? "true" : "false");
-            objC.pushKV("receive_on", sek->nFlags & EAF_RECEIVE_ON ? "true" : "false");
+            objC.pushKV("active", sek->nFlags & EAF_ACTIVE ? true : false);
+            objC.pushKV("receive_on", sek->nFlags & EAF_RECEIVE_ON ? true : false);
 
             mapEKValue_t::iterator it = sek->mapValue.find(EKVT_KEY_TYPE);
             if (it != sek->mapValue.end() && it->second.size() > 0) {
@@ -404,10 +401,10 @@ static int KeyInfo(CHDWallet *pwallet, CKeyID &idMaster, CKeyID &idKey, CStoredE
 
     bool fBip44Root = false;
     obj.pushKV("type", "Loose");
-    obj.pushKV("active", sek.nFlags & EAF_ACTIVE ? "true" : "false");
-    obj.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? "true" : "false");
-    obj.pushKV("encrypted", sek.nFlags & EAF_IS_CRYPTED ? "true" : "false");
-    obj.pushKV("hardware_device", sek.nFlags & EAF_HARDWARE_DEVICE ? "true" : "false");
+    obj.pushKV("active", sek.nFlags & EAF_ACTIVE ? true : false);
+    obj.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? true : false);
+    obj.pushKV("encrypted", sek.nFlags & EAF_IS_CRYPTED ? true : false);
+    obj.pushKV("hardware_device", sek.nFlags & EAF_HARDWARE_DEVICE ? true : false);
     obj.pushKV("label", sek.sLabel);
 
     if (reversePlace(&sek.kp.vchFingerprint[0]) == 0) {
@@ -441,9 +438,7 @@ static int KeyInfo(CHDWallet *pwallet, CKeyID &idMaster, CKeyID &idKey, CStoredE
         obj.pushKV("key_type", sType);
     }
 
-    if (idMaster == idKey) {
-        obj.pushKV("current_master", "true");
-    }
+    obj.pushKV("current_master", (bool)(idMaster == idKey) );
 
     CBitcoinAddress addr;
     mvi = sek.mapValue.find(EKVT_ROOT_ID);
@@ -611,7 +606,7 @@ static int ManageExtKey(CStoredExtKey &sek, std::string &sOptName, std::string &
             }
         }
 
-        result.pushKV("set_active", sek.nFlags & EAF_ACTIVE ? "true" : "false");
+        result.pushKV("set_active", sek.nFlags & EAF_ACTIVE ? true : false);
     } else
     if (sOptName == "receive_on") {
         if (sOptValue.length() > 0) {
@@ -622,7 +617,7 @@ static int ManageExtKey(CStoredExtKey &sek, std::string &sOptName, std::string &
             }
         }
 
-        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? "true" : "false");
+        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? true : false);
     } else
     if (sOptName == "look_ahead") {
         uint64_t nLookAhead = gArgs.GetArg("-defaultlookaheadsize", N_DEFAULT_LOOKAHEAD);
@@ -651,8 +646,8 @@ static int ManageExtKey(CStoredExtKey &sek, std::string &sOptName, std::string &
     } else {
         // List all possible
         result.pushKV("label", sek.sLabel);
-        result.pushKV("active", sek.nFlags & EAF_ACTIVE ? "true" : "false");
-        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? "true" : "false");
+        result.pushKV("active", sek.nFlags & EAF_ACTIVE ? true : false);
+        result.pushKV("receive_on", sek.nFlags & EAF_RECEIVE_ON ? true : false);
 
         mapEKValue_t::iterator itV = sek.mapValue.find(EKVT_N_LOOKAHEAD);
         if (itV != sek.mapValue.end()) {
@@ -684,17 +679,17 @@ static int ManageExtAccount(CExtKeyAccount &sea, std::string &sOptName, std::str
             }
         }
 
-        result.pushKV("set_active", sea.nFlags & EAF_ACTIVE ? "true" : "false");
+        result.pushKV("set_active", sea.nFlags & EAF_ACTIVE ? true : false);
     } else {
         // List all possible
         result.pushKV("label", sea.sLabel);
-        result.pushKV("active", sea.nFlags & EAF_ACTIVE ? "true" : "false");
+        result.pushKV("active", sea.nFlags & EAF_ACTIVE ? true : false);
     }
 
     return 0;
 };
 
-static int ExtractExtKeyId(const std::string &sInKey, CKeyID &keyId, CChainParams::Base58Type prefix)
+int ExtractExtKeyId(const std::string &sInKey, CKeyID &keyId, CChainParams::Base58Type prefix)
 {
     CExtKey58 eKey58;
     CExtKeyPair ekp;
@@ -1092,7 +1087,7 @@ static UniValue extkey(const JSONRPCRequest &request)
                 }
 
                 result.pushKV("account_id", HDAccIDToString(sek.GetID()));
-                result.pushKV("has_secret", sek.kp.IsValidV() ? "true" : "false");
+                result.pushKV("has_secret", sek.kp.IsValidV() ? true : false);
                 result.pushKV("account_label", sLabel);
                 result.pushKV("account_label", sLabel);
                 result.pushKV("scanned_from", nTimeStartScan);
@@ -1151,8 +1146,6 @@ static UniValue extkey(const JSONRPCRequest &request)
         CKeyID idOldDefault = pwallet->idDefaultAccount;
         CBitcoinAddress addr;
 
-        CExtKeyAccount *sea = new CExtKeyAccount();
-
         if (addr.SetString(sInKey)
             && addr.IsValid(CChainParams::EXT_ACC_HASH)
             && addr.GetKeyID(idNewDefault, CChainParams::EXT_ACC_HASH)) {
@@ -1165,18 +1158,15 @@ static UniValue extkey(const JSONRPCRequest &request)
             CHDWalletDB wdb(pwallet->GetDBHandle(), "r+");
 
             if (!wdb.TxnBegin()) {
-                delete sea;
                 throw JSONRPCError(RPC_MISC_ERROR, "TxnBegin failed.");
             }
 
             if (0 != (rv = pwallet->ExtKeySetDefaultAccount(&wdb, idNewDefault))) {
-                delete sea;
                 wdb.TxnAbort();
                 throw JSONRPCError(RPC_WALLET_ERROR, strprintf("ExtKeySetDefaultAccount failed, %s.", ExtKeyGetString(rv)));
             }
 
             if (!wdb.TxnCommit()) {
-                delete sea;
                 pwallet->idDefaultAccount = idOldDefault;
                 throw JSONRPCError(RPC_MISC_ERROR, "TxnCommit failed.");
             }
@@ -1727,7 +1717,7 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
         return NullUniValue;
 
-    if (request.fHelp || request.params.size() > 5)
+    if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "getnewaddress ( \"label\" num_prefix_bits prefix_num bech32 makeV2 )\n"
             "Returns a new BitcoinC confidential address for receiving payments."
@@ -1741,12 +1731,11 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
             "           A stealth address created without a prefix will scan all incoming stealth transactions, irrespective of transaction prefixes.\n"
             "           Stealth addresses with prefixes will scan only incoming stealth transactions with a matching prefix.\n"
             "4. bech32              (bool, optional, default=false) Use Bech32 encoding.\n"
-            "5. makeV2              (bool, optional, default=false) Generate an address from the same method used for hardware wallets.\n"
             "\nResult:\n"
-            "\"address\"              (string) The new bitcoinc address\n"
+            "\"address\"              (string) The new bitcoinc spending address\n"
             "\nExamples:\n"
-            + HelpExampleCli("getnewaddress", "\"lblTestAddrPrefix\" 3 \"0b101\"")
-            + HelpExampleRpc("getnewaddress", "\"lblTestAddrPrefix\", 3, \"0b101\""));
+            + HelpExampleCli("getnewaddress", "\"lblTestAddrPrefix\"")
+            + HelpExampleRpc("getnewaddress", "\"lblTestAddrPrefix\""));
 
     EnsureWalletIsUnlocked(pwallet);
 
@@ -1770,22 +1759,11 @@ static UniValue getnewaddress(const JSONRPCRequest &request)
         sPrefix_num = request.params[2].get_str();
 
     bool fBech32 = request.params.size() > 3 ? request.params[3].get_bool() : false;
-    bool fMakeV2 = request.params.size() > 4 ? request.params[4].get_bool() : false;
-
-    if (fMakeV2 && !fBech32)
-        throw JSONRPCError(RPC_INVALID_PARAMETER, _("bech32 must be true when using makeV2."));
 
     CEKAStealthKey akStealth;
-    std::string sError;
-    if (fMakeV2)
-    {
-        if (0 != pwallet->NewStealthKeyV2FromAccount(sLabel, akStealth, num_prefix_bits, sPrefix_num.empty() ? nullptr : sPrefix_num.c_str(), fBech32))
-            throw JSONRPCError(RPC_WALLET_ERROR, _("NewStealthKeyV2FromAccount failed."));
-    } else
-    {
-        if (0 != pwallet->NewStealthKeyFromAccount(sLabel, akStealth, num_prefix_bits, sPrefix_num.empty() ? nullptr : sPrefix_num.c_str(), fBech32))
-            throw JSONRPCError(RPC_WALLET_ERROR, _("NewStealthKeyFromAccount failed."));
-    };
+
+    if (0 != pwallet->NewStealthKeyV2FromAccount(sLabel, akStealth, num_prefix_bits, sPrefix_num.empty() ? nullptr : sPrefix_num.c_str(), fBech32))
+        throw JSONRPCError(RPC_WALLET_ERROR, _("NewStealthKeyV2FromAccount failed."));
 
     CStealthAddress sxAddr;
     akStealth.SetSxAddr(sxAddr);
@@ -3085,10 +3063,10 @@ static void ParseRecords(
     }
 
     if (nLockedOutputs) {
-        push(entry, "requires_unlock", "true");
+        push(entry, "requires_unlock", true);
     }
     if (nWatchOnly) {
-        push(entry, "involvesWatchonly", "true");
+        push(entry, "involvesWatchonly", true);
     }
 
     push(entry, "outputs", outputs);
@@ -3661,7 +3639,7 @@ static UniValue filteraddresses(const JSONRPCRequest &request)
             CBitcoinAddress address(item->first, item->second.fBech32);
             entry.pushKV("address", address.ToString());
             entry.pushKV("label", item->second.name);
-            entry.pushKV("owned", item->second.nOwned == 1 ? "true" : "false");
+            entry.pushKV("owned", item->second.nOwned == 1 ? true : false);
 
             if (nShowPath > 0)
             {
@@ -3816,7 +3794,7 @@ static UniValue manageaddressbook(const JSONRPCRequest &request)
             mabi->second.nOwned = pwallet->HaveAddress(mabi->first) ? 1 : 2;
         }
 
-        result.pushKV("owned", mabi->second.nOwned == 1 ? "true" : "false");
+        result.pushKV("owned", mabi->second.nOwned == 1 ? true : false);
 
         if (mabi->second.vPath.size() > 1) {
             std::string sPath;
@@ -3893,18 +3871,24 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             "  \"percentyearreward\": xxxxxxx,  (numeric) current stake reward percentage\n"
             "  \"moneysupply\": xxxxxxx,        (numeric) the total amount of bitcoinc in the network\n"
             "  \"reserve\": xxxxxxx,            (numeric) the total amount of bitcoinc in the network\n"
-//            "  \"walletfoundationdonationpercent\": xxxxxxx,\n    (numeric) user set percentage of the block reward ceded to the foundation\n"
-//            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
-//            "  \"foundationdonationpercent\": xxxxxxx,\n    (numeric) network enforced percentage of the block reward ceded to the foundation\n"
             "  \"currentblocksize\": nnn,       (numeric) the last block size in bytes\n"
             "  \"currentblockweight\": nnn,     (numeric) the last block weight\n"
             "  \"currentblocktx\": nnn,         (numeric) the number of transactions in the last block\n"
             "  \"pooledtx\": n                  (numeric) the number of transactions in the mempool\n"
             "  \"difficulty\": xxx.xxxxx        (numeric) the current difficulty\n"
             "  \"lastsearchtime\": xxxxxxx      (numeric) the last time this wallet searched for a coinstake\n"
+            "  \"amount_in_stakable_script\":   (numeric) the current amount in hotstakable script\n"
             "  \"weight\": xxxxxxx              (numeric) the current stake weight of this wallet\n"
             "  \"netstakeweight\": xxxxxxx      (numeric) the current stake weight of the network\n"
-            "  \"expectedtime\": xxxxxxx        (numeric) estimated time for next stake\n"
+            "  \"estimated_rewardfrequency\": xxxxxxx     (numeric) estimated seconds between stake rewards\n"
+            "  \"coldstaking\": {               (object) ColdStaking information\n"
+            "       \"active\":                 (boolean) true if the coldstake change address is set or coldstakable funds are available\n"
+            "       \"amount_in_coldstakable_script\":  (numeric) the current amount in coldstakable script\n"
+            "       \"estimated_weight\":               (numeric) the current estimated weight in coldstakable script\n"
+            "       \"percent_in_coldstakable_script\": (numeric) the current percent in coldstakable script\n"
+            "       \"coldstake_change_address\":       (string) If set, all change amounts of spending conversions and all successfully hot staked funds will automatically send to a coldstake script\n"
+            "       \"estimated_rewardfrequency\":      (numeric) estimated seconds between coldstake rewards\n"
+            "  }"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getstakinginfo", "")
@@ -3914,17 +3898,101 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    UniValue obj(UniValue::VOBJ);
+    std::vector<COutput> vecOutputs;
+
+    bool include_unsafe = false;
+    bool fIncludeImmature = true;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    int nMinDepth = 0;
+    int nMaxDepth = 0x7FFFFFFF;
+    int nHeight, nRequiredDepth;
 
     int64_t nTipTime;
     float rCoinYearReward;
     CAmount nMoneySupply;
+
+    CAmount nStakeable = 0;
+    CAmount nColdStakeable = 0;
+    CAmount nWalletStaking = 0;
+    CAmount nColdStakingWeight = 0;
+
+    CKeyID keyID;
     {
-        LOCK(cs_main);
+        LOCK2(cs_main, pwallet->cs_wallet);
+
+        nHeight = chainActive.Tip()->nHeight;
+        nRequiredDepth = std::min((int)(Params().GetStakeMinConfirmations()-1), (int)(nHeight / 2));
+
         nTipTime = chainActive.Tip()->nTime;
         rCoinYearReward = Params().GetCoinYearReward(nTipTime) / CENT;
         nMoneySupply = chainActive.Tip()->nMoneySupply;
+
+        pwallet->AvailableCoins(vecOutputs, !include_unsafe, nullptr, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth, fIncludeImmature);
+
+        for (const auto &out : vecOutputs) {
+            const CScript *scriptPubKey = out.tx->tx->vpout[out.i]->GetPScriptPubKey();
+            CAmount nValue = out.tx->tx->vpout[out.i]->GetValue();
+
+            if (scriptPubKey->IsPayToPublicKeyHash() || scriptPubKey->IsPayToPublicKeyHash256()) {
+                if (!out.fSpendable) {
+                    continue;
+                }
+                nStakeable += nValue;
+            } else
+            if (scriptPubKey->IsPayToPublicKeyHash256_CS() || scriptPubKey->IsPayToScriptHash256_CS() || scriptPubKey->IsPayToScriptHash_CS()) {
+                // Show output on both the spending and staking wallets
+                if (!out.fSpendable) {
+                    if (!ExtractStakingKeyID(*scriptPubKey, keyID)
+                        || !pwallet->HaveKey(keyID)) {
+                        continue;
+                    }
+                }
+                nColdStakeable += nValue;
+
+            } else {
+                continue;
+            }
+
+            if (out.nDepth < nRequiredDepth) {
+                continue;
+            }
+
+            if (!ExtractStakingKeyID(*scriptPubKey, keyID)) {
+                continue;
+            }
+            if (pwallet->HaveKey(keyID)) {
+                nWalletStaking += nValue;
+            }
+
+            if (scriptPubKey->IsPayToPublicKeyHash256_CS() || scriptPubKey->IsPayToScriptHash256_CS() || scriptPubKey->IsPayToScriptHash_CS()) {
+                nColdStakingWeight += nValue;
+            }
+        }
     }
+
+    UniValue jsonSettings;
+    std::string addrColdStaking;
+    if (pwallet->GetSetting("changeaddress", jsonSettings)
+        && jsonSettings["coldstakingaddress"].isStr()) {
+        std::string sAddress;
+        try { sAddress = jsonSettings["coldstakingaddress"].get_str();
+        } catch (std::exception &e) {
+            return error("%s: Get coldstakingaddress failed %s.", __func__, e.what());
+        };
+        CBitcoinAddress addr(sAddress);
+
+        if( addr.IsValid(CChainParams::PUBKEY_ADDRESS) ){
+            addrColdStaking = sAddress;
+        }else{
+            addrColdStaking = "";
+        }
+
+    }
+
+    UniValue obj(UniValue::VOBJ);
 
     UniValue stakingstatus;
     bool fStakingEnabled = false;
@@ -3939,6 +4007,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
 
     bool fStaking = nWeight && fIsStaking;
     uint64_t nExpectedTime = fStaking ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nWeight) : 0;
+    uint64_t nExpectedTimeColdStaking = nColdStakingWeight > 0 ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nColdStakingWeight) : 0;
 
     obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && fStakingEnabled); // enabled on node, vs enabled on wallet
     obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
@@ -3971,15 +4040,6 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
         obj.pushKV("reserve", ValueFromAmount(pwallet->nReserveBalance));
     }
 
-  /*  if (pwallet->nWalletDevFundCedePercent > 0) {
-        obj.pushKV("walletfoundationdonationpercent", pwallet->nWalletDevFundCedePercent);
-    }*/
-
-    //const DevFundSettings *pDevFundSettings = Params().GetDevFundSettings(nTipTime);
- /*   if (pDevFundSettings && pDevFundSettings->nMinDevStakePercent > 0) {
-        obj.pushKV("foundationdonationpercent", pDevFundSettings->nMinDevStakePercent);
-    }*/
-
     obj.pushKV("currentblocksize", (uint64_t)nLastBlockSize);
     obj.pushKV("currentblocktx", (uint64_t)nLastBlockTx);
     obj.pushKV("pooledtx", (uint64_t)mempool.size());
@@ -3987,143 +4047,27 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     obj.pushKV("difficulty", GetDifficulty(chainActive.Tip()));
     obj.pushKV("lastsearchtime", (uint64_t)pwallet->nLastCoinStakeSearchTime);
 
+    obj.pushKV("amount_in_stakeable_script", ValueFromAmount(nStakeable));
     obj.pushKV("weight", (uint64_t)nWeight);
-    obj.pushKV("netstakeweight", (double)nNetworkWeight);
+    obj.pushKV("netstakeweight", (double)nNetworkWeight / COIN);
 
-    obj.pushKV("expectedtime", nExpectedTime);
+    obj.pushKV("estimated_rewardfrequency", nExpectedTime);
 
-    return obj;
-};
+    UniValue objCold(UniValue::VOBJ);
 
-static UniValue getcoldstakinginfo(const JSONRPCRequest &request)
-{
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CHDWallet *const pwallet = GetBitcoinCWallet(wallet.get());
-    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
-        return NullUniValue;
-
-    if (request.fHelp || request.params.size() != 0)
-        throw std::runtime_error(
-            "getcoldstakinginfo\n"
-            "Returns an object containing coldstaking related information."
-            "\nResult:\n"
-            "{\n"
-            "  \"enabled\": true|false,             (boolean) If a valid coldstakingaddress is loaded or not on this wallet.\n"
-            "  \"coldstaking_extkey_id\"            (string) The id of the current coldstakingaddress.\n"
-            "  \"coin_in_stakeable_script\"         (numeric) Current amount of coin in scripts stakeable by this wallet.\n"
-            "  \"coin_in_coldstakeable_script\"     (numeric) Current amount of coin in scripts stakeable by the wallet with the coldstakingaddress.\n"
-            "  \"percent_in_coldstakeable_script\"  (numeric) Percentage of coin in coldstakeable scripts.\n"
-            "  \"currently_staking\"                (numeric) Amount of coin estimated to be currently staking by this wallet.\n"
-            "}\n"
-            "\nExamples:\n"
-            + HelpExampleCli("getcoldstakinginfo", "")
-            + HelpExampleRpc("getcoldstakinginfo", ""));
-
-    // Make sure the results are valid at least up to the most recent block
-    // the user could have gotten from another RPC command prior to now
-    pwallet->BlockUntilSyncedToCurrentChain();
-
-    UniValue obj(UniValue::VOBJ);
-
-    std::vector<COutput> vecOutputs;
-
-    bool include_unsafe = false;
-    bool fIncludeImmature = true;
-    CAmount nMinimumAmount = 0;
-    CAmount nMaximumAmount = MAX_MONEY;
-    CAmount nMinimumSumAmount = MAX_MONEY;
-    uint64_t nMaximumCount = 0;
-    int nMinDepth = 0;
-    int nMaxDepth = 0x7FFFFFFF;
-    int nHeight, nRequiredDepth;
-
-    {
-        LOCK2(cs_main, pwallet->cs_wallet);
-        nHeight = chainActive.Tip()->nHeight;
-        nRequiredDepth = std::min((int)(Params().GetStakeMinConfirmations()-1), (int)(nHeight / 2));
-        pwallet->AvailableCoins(vecOutputs, !include_unsafe, nullptr, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth, fIncludeImmature);
-    }
-
-    LOCK(pwallet->cs_wallet);
-
-    CAmount nStakeable = 0;
-    CAmount nColdStakeable = 0;
-    CAmount nWalletStaking = 0;
-
-    CKeyID keyID;
-    CScript coinstakePath;
-    for (const auto &out : vecOutputs) {
-        const CScript *scriptPubKey = out.tx->tx->vpout[out.i]->GetPScriptPubKey();
-        CAmount nValue = out.tx->tx->vpout[out.i]->GetValue();
-
-        if (scriptPubKey->IsPayToPublicKeyHash() || scriptPubKey->IsPayToPublicKeyHash256()) {
-            if (!out.fSpendable) {
-                continue;
-            }
-            nStakeable += nValue;
-        } else
-        if (scriptPubKey->IsPayToPublicKeyHash256_CS() || scriptPubKey->IsPayToScriptHash256_CS() || scriptPubKey->IsPayToScriptHash_CS()) {
-            // Show output on both the spending and staking wallets
-            if (!out.fSpendable) {
-                if (!ExtractStakingKeyID(*scriptPubKey, keyID)
-                    || !pwallet->HaveKey(keyID)) {
-                    continue;
-                }
-            }
-            nColdStakeable += nValue;
-        } else {
-            continue;
-        }
-
-        if (out.nDepth < nRequiredDepth) {
-            continue;
-        }
-
-        if (!ExtractStakingKeyID(*scriptPubKey, keyID)) {
-            continue;
-        }
-        if (pwallet->HaveKey(keyID)) {
-            nWalletStaking += nValue;
-        }
-    }
-
-
-    bool fEnabled = false;
-    UniValue jsonSettings;
-    CBitcoinAddress addrColdStaking;
-    if (pwallet->GetSetting("changeaddress", jsonSettings)
-        && jsonSettings["coldstakingaddress"].isStr()) {
-        std::string sAddress;
-        try { sAddress = jsonSettings["coldstakingaddress"].get_str();
-        } catch (std::exception &e) {
-            return error("%s: Get coldstakingaddress failed %s.", __func__, e.what());
-        };
-
-        addrColdStaking = sAddress;
-        if (addrColdStaking.IsValid()) {
-            fEnabled = true;
-        }
-    }
-
-    obj.pushKV("enabled", fEnabled);
-    if (addrColdStaking.IsValid(CChainParams::EXT_PUBLIC_KEY)) {
-        CTxDestination dest = addrColdStaking.Get();
-        CExtKeyPair kp = boost::get<CExtKeyPair>(dest);
-        CKeyID idk = kp.GetID();
-        CBitcoinAddress addr;
-        addr.Set(idk, CChainParams::EXT_KEY_HASH);
-        obj.pushKV("coldstaking_extkey_id", addr.ToString());
-    }
-    obj.pushKV("coin_in_stakeable_script", ValueFromAmount(nStakeable));
-    obj.pushKV("coin_in_coldstakeable_script", ValueFromAmount(nColdStakeable));
+    objCold.pushKV("active", addrColdStaking != "" || nColdStakeable > 0);
+    objCold.pushKV("amount_in_coldstakeable_script", ValueFromAmount(nColdStakeable));
+    objCold.pushKV("estimated_weight", ValueFromAmount(nColdStakingWeight));
     CAmount nTotal = nColdStakeable + nStakeable;
-    obj.pushKV("percent_in_coldstakeable_script",
+    objCold.pushKV("percent_in_coldstakeable_script",
         UniValue(UniValue::VNUM, strprintf("%.2f", nTotal == 0 ? 0.0 : (static_cast<double>(nColdStakeable) * 10000 / nTotal) / 100.0)));
-    obj.pushKV("currently_staking", ValueFromAmount(nWalletStaking));
+    objCold.pushKV("coldstake_change_address", addrColdStaking);
+    objCold.pushKV("estimated_rewardfrequency", nExpectedTimeColdStaking);
+
+    obj.pushKV("coldstaking", objCold);
 
     return obj;
-};
-
+}
 
 static UniValue listunspent(const JSONRPCRequest &request)
 {
@@ -7090,12 +7034,12 @@ static const CRPCCommand commands[] =
   //  --------------------- ------------------------            -----------------------         ----------
     { "wallet",             "extkey",                           &extkey,                        {} },
     { "wallet",             "extkeyimportmaster",               &extkeyimportmaster,            {"source","passphrase","save_bip44_root","master_label","account_label","scan_chain_from"} }, // import, set as master, derive account, set default account, force users to run mnemonic new first make them copy the key
-    { "wallet",             "extkeygenesisimport",              &extkeygenesisimport,           {"source","passphrase","save_bip44_root","master_label","account_label","scan_chain_from"} },
+//    { "wallet",             "extkeygenesisimport",              &extkeygenesisimport,           {"source","passphrase","save_bip44_root","master_label","account_label","scan_chain_from"} },
     { "wallet",             "extkeyaltversion",                 &extkeyaltversion,              {"ext_key"} },
     { "wallet",             "getnewextaddress",                 &getnewextaddress,              {"label","childNo","bech32","hardened"} },
     { "wallet",             "getnewaddress",                    &getnewaddress,                 {"label","num_prefix_bits","prefix_num","bech32","makeV2"} },
     { "wallet",             "getnewstakeaddress",               &getnewstakeaddress,            {"label","bech32", "hardened"} },
-    { "wallet",             "getnewcoldstakeaddress",              &getnewcoldstakeaddress,       {"label","bech32", "hardened"} },
+    { "wallet",             "getnewcoldstakeaddress",           &getnewcoldstakeaddress,        {"label","bech32", "hardened"} },
     { "wallet",             "importstealthaddress",             &importstealthaddress,          {"scan_secret","spend_secret","label","num_prefix_bits","prefix_num","bech32"} },
     { "wallet",             "liststealthaddresses",             &liststealthaddresses,          {"show_secrets"} },
 
@@ -7109,14 +7053,13 @@ static const CRPCCommand commands[] =
     { "wallet",             "manageaddressbook",                &manageaddressbook,             {"action","address","label","purpose"} },
 
     { "wallet",             "getstakinginfo",                   &getstakinginfo,                {} },
-    { "wallet",             "getcoldstakinginfo",               &getcoldstakinginfo,            {} },
 
-    { "wallet",             "listunspent",                  &listunspent,               {"minconf","maxconf","addresses","include_unsafe","query_options"} },
+    { "wallet",             "listunspent",                      &listunspent,                   {"minconf","maxconf","addresses","include_unsafe","query_options"} },
 
-    { "wallet",             "converttospending",                 &converttospending,                {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
+    { "wallet",             "converttospending",                &converttospending,             {"address","amount","comment","comment_to","subtractfeefromamount","narration"} },
 
-    { "wallet",             "converttostaking",                   &converttostaking,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
-    { "wallet",             "sendspending",                   &sendspending,                {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
+    { "wallet",             "converttostaking",                 &converttostaking,              {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
+    { "wallet",             "sendspending",                     &sendspending,                  {"address","amount","comment","comment_to","subtractfeefromamount","narration","ringsize","inputs_per_sig"} },
 
     { "wallet",             "sendtypeto",                       &sendtypeto,                    {"typein","typeout","outputs","comment","comment_to","ringsize","inputs_per_sig","test_fee","coincontrol"} },
 
@@ -7129,10 +7072,10 @@ static const CRPCCommand commands[] =
     { "wallet",             "walletsettings",                   &walletsettings,                {"setting","json"} },
 
     { "wallet",             "transactionblinds",                &transactionblinds,             {"txnid"} },
-    { "wallet",             "derivefromspendingaddress",         &derivefromspendingaddress,      {"spendingaddress","ephempubkey"} },
+    { "wallet",             "derivefromspendingaddress",        &derivefromspendingaddress,     {"spendingaddress","ephempubkey"} },
 
     { "rawtransactions",    "buildscript",                      &buildscript,                   {"json"} },
-    { "rawtransactions",    "createrawbctransaction",         &createrawbctransaction,      {"inputs","outputs","locktime","replaceable"} },
+    { "rawtransactions",    "createrawbctransaction",           &createrawbctransaction,        {"inputs","outputs","locktime","replaceable"} },
     { "rawtransactions",    "fundrawtransactionfrom",           &fundrawtransactionfrom,        {"input_type","hexstring","input_amounts","output_amounts","options"} },
     { "rawtransactions",    "verifycommitment",                 &verifycommitment,              {"commitment","blind","amount"} },
     { "rawtransactions",    "verifyrawtransaction",             &verifyrawtransaction,          {"hexstring","prevtxs","options"} },

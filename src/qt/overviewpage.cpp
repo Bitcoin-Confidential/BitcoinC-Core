@@ -55,6 +55,7 @@ public:
 
         QDateTime date = index.data(TransactionTableModel::DateRole).toDateTime();
         QString address = index.data(Qt::DisplayRole).toString();
+        QString typeOut = index.data(TransactionTableModel::TxOutTypeRole).toString();
         qint64 amount = index.data(TransactionTableModel::AmountRole).toLongLong();
         bool confirmed = index.data(TransactionTableModel::ConfirmedRole).toBool();
         QVariant value = index.data(Qt::ForegroundRole);
@@ -85,12 +86,22 @@ public:
         } else {
             foreground = option.palette.color(QPalette::Text);
         }
+
         painter->setPen(foreground);
-        QString amountText = BitcoinUnits::formatWithUnit(unit, amount, true, BitcoinUnits::separatorAlways);
-        if(!confirmed)
-        {
-            amountText = QString("[") + amountText + QString("]");
+
+        QString amountText;
+
+        if( typeOut == "BC" && amount == 0 ){
+            amountText = tr("Unlock to show");
+        }else{
+            amountText = BitcoinUnits::formatWithUnit(unit, amount, true, BitcoinUnits::separatorAlways);
+
+            if(!confirmed)
+            {
+                amountText = QString("[") + amountText + QString("]");
+            }
         }
+
         painter->drawText(amountRect, Qt::AlignRight|Qt::AlignVCenter, amountText);
 
         painter->setPen(option.palette.color(QPalette::Text));

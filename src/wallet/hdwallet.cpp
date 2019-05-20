@@ -50,6 +50,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/thread.hpp>
 
+extern int ExtractExtKeyId(const std::string &sInKey, CKeyID &keyId, CChainParams::Base58Type prefix);
 
 int CTransactionRecord::InsertOutput(COutputRecord &r)
 {
@@ -161,16 +162,16 @@ int CHDWallet::FreeExtKeyMaps()
 
 void CHDWallet::AddOptions()
 {
-    gArgs.AddArg("-defaultlookaheadsize=<n>", strprintf(_("Number of keys to load into the lookahead pool per chain. (default: %u)"), N_DEFAULT_LOOKAHEAD), false, OptionsCategory::PART_WALLET);
-    gArgs.AddArg("-extkeysaveancestors", strprintf(_("On saving a key from the lookahead pool, save all unsaved keys leading up to it too. (default: %s)"), "true"), false, OptionsCategory::PART_WALLET);
-    gArgs.AddArg("-createdefaultmasterkey", strprintf(_("Generate a random master key and main account if no master key exists. (default: %s)"), "false"), false, OptionsCategory::PART_WALLET);
+    gArgs.AddArg("-defaultlookaheadsize=<n>", strprintf(_("Number of keys to load into the lookahead pool per chain. (default: %u)"), N_DEFAULT_LOOKAHEAD), false, OptionsCategory::BC_WALLET);
+    gArgs.AddArg("-extkeysaveancestors", strprintf(_("On saving a key from the lookahead pool, save all unsaved keys leading up to it too. (default: %s)"), "true"), false, OptionsCategory::BC_WALLET);
+    gArgs.AddArg("-createdefaultmasterkey", strprintf(_("Generate a random master key and main account if no master key exists. (default: %s)"), "false"), false, OptionsCategory::BC_WALLET);
 
-    gArgs.AddArg("-staking", _("Stake your coins to support network and gain reward (default: true)"), false, OptionsCategory::PART_STAKING);
-    gArgs.AddArg("-stakingthreads", _("Number of threads to start for staking, max 1 per active wallet, will divide wallets evenly between threads (default: 1)"), false, OptionsCategory::PART_STAKING);
-    gArgs.AddArg("-minstakeinterval=<n>", _("Minimum time in seconds between successful stakes (default: 0)"), false, OptionsCategory::PART_STAKING);
-    gArgs.AddArg("-minersleep=<n>", _("Milliseconds between stake attempts. Lowering this param will not result in more stakes. (default: 500)"), false, OptionsCategory::PART_STAKING);
-    gArgs.AddArg("-reservebalance=<amount>", _("Ensure available balance remains above reservebalance. (default: 0)"), false, OptionsCategory::PART_STAKING);
-//    gArgs.AddArg("-foundationdonationpercent=<n>", _("Percentage of block reward donated to the foundation fund, overridden by system minimum. (default: 0)"), false, OptionsCategory::PART_STAKING);
+    gArgs.AddArg("-staking", _("Stake your coins to support network and gain reward (default: true)"), false, OptionsCategory::BC_STAKING);
+    gArgs.AddArg("-stakingthreads", _("Number of threads to start for staking, max 1 per active wallet, will divide wallets evenly between threads (default: 1)"), false, OptionsCategory::BC_STAKING);
+    gArgs.AddArg("-minstakeinterval=<n>", _("Minimum time in seconds between successful stakes (default: 0)"), false, OptionsCategory::BC_STAKING);
+    gArgs.AddArg("-minersleep=<n>", _("Milliseconds between stake attempts. Lowering this param will not result in more stakes. (default: 500)"), false, OptionsCategory::BC_STAKING);
+    gArgs.AddArg("-reservebalance=<amount>", _("Ensure available balance remains above reservebalance. (default: 0)"), false, OptionsCategory::BC_STAKING);
+//    gArgs.AddArg("-foundationdonationpercent=<n>", _("Percentage of block reward donated to the foundation fund, overridden by system minimum. (default: 0)"), false, OptionsCategory::BC_STAKING);
 
     return;
 };
@@ -262,7 +263,7 @@ bool CHDWallet::Initialise()
     }
 
     if (!pEKMaster) {
-        if (gArgs.GetBoolArg("-createdefaultmasterkey", true)) {
+        if (gArgs.GetBoolArg("-createdefaultmasterkey", false)) {
             std::string sMsg = "Generating random HD keys for wallet " + GetName();
             #ifndef ENABLE_QT
             fprintf(stdout, "%s\n", sMsg.c_str());
@@ -306,10 +307,9 @@ bool CHDWallet::ProcessStakingSettings(std::string &sError)
 
     // Set defaults
     fStakingEnabled = true;
-    nStakeCombineThreshold = 10000 * COIN;
-    nStakeSplitThreshold = 20000 * COIN;
+    nStakeCombineThreshold = 100000 * COIN;
+    nStakeSplitThreshold = 200000 * COIN;
     nMaxStakeCombine = 3;
-    nWalletDevFundCedePercent = gArgs.GetArg("-foundationdonationpercent", 0);
 
     UniValue json;
     if (GetSetting("stakingoptions", json)) {
@@ -334,13 +334,6 @@ bool CHDWallet::ProcessStakingSettings(std::string &sError)
             }
         }
 
-        if (!json["foundationdonationpercent"].isNull()) {
-            try { nWalletDevFundCedePercent = json["foundationdonationpercent"].get_int();
-            } catch (std::exception &e) {
-                AppendError(sError, "\"foundationdonationpercent\" not an integer.");
-            }
-        }
-
         if (!json["rewardaddress"].isNull()) {
             try { rewardAddress = CBitcoinAddress(json["rewardaddress"].get_str());
             } catch (std::exception &e) {
@@ -349,23 +342,14 @@ bool CHDWallet::ProcessStakingSettings(std::string &sError)
         }
     }
 
-    if (nStakeCombineThreshold < 1000 * COIN || nStakeCombineThreshold > 50000 * COIN) {
-        AppendError(sError, "\"stakecombinethreshold\" must be >= 1000 and <= 50000.");
-        nStakeCombineThreshold = 1000 * COIN;
+    if (nStakeCombineThreshold < 100000 * COIN || nStakeCombineThreshold > 200000 * COIN) {
+        AppendError(sError, "\"stakecombinethreshold\" must be >= 10000 and <= 200000.");
+        nStakeCombineThreshold = 100000 * COIN;
     }
 
-    if (nStakeSplitThreshold < nStakeCombineThreshold * 2 || nStakeSplitThreshold > 100000 * COIN) {
-        AppendError(sError, "\"stakesplitthreshold\" must be >= 2x \"stakecombinethreshold\" and <= 100000.");
+    if (nStakeSplitThreshold < nStakeCombineThreshold * 2 || nStakeSplitThreshold > 400000 * COIN) {
+        AppendError(sError, "\"stakesplitthreshold\" must be >= 2x \"stakecombinethreshold\" and <= 400000.");
         nStakeSplitThreshold = nStakeCombineThreshold * 2;
-    }
-
-    if (nWalletDevFundCedePercent < 0) {
-        WalletLogPrintf("%s: Warning \"foundationdonationpercent\" out of range %d, clamped to %d\n", __func__, nWalletDevFundCedePercent, 0);
-        nWalletDevFundCedePercent = 0;
-    } else
-    if (nWalletDevFundCedePercent > 100) {
-        WalletLogPrintf("%s: \"Warning foundationdonationpercent\" out of range %d, clamped to %d\n", __func__, nWalletDevFundCedePercent, 100);
-        nWalletDevFundCedePercent = 100;
     }
 
     return true;
@@ -384,25 +368,38 @@ static void AppendKey(CHDWallet *pw, CKey &key, uint32_t nChild, UniValue &deriv
 
     bool fHardened = IsHardened(nChild);
     ClearHardenedBit(nChild);
-    keyobj.pushKV("path", std::to_string(nChild) + (fHardened ? "'" : ""));
-    keyobj.pushKV("address", CBitcoinAddress(idk).ToString());
-    keyobj.pushKV("privkey", CBitcoinSecret(key).ToString());
 
     std::map<CTxDestination, CAddressBookData>::const_iterator mi = pw->mapAddressBook.find(idk);
+
+    // If no standard keyID try the 256 bit version
+    if (mi == pw->mapAddressBook.end()) {
+        CKeyID256 idk256 = key.GetPubKey().GetID256();
+        mi = pw->mapAddressBook.find(idk256);
+    }
+
     if (mi != pw->mapAddressBook.end()) {
         // TODO: confirm vPath?
-        keyobj.pushKV("label", mi->second.name);
-        if (!mi->second.purpose.empty())
-            keyobj.pushKV("purpose", mi->second.purpose);
-
         UniValue objDestData(UniValue::VOBJ);
         for (const auto &pair : mi->second.destdata) {
             objDestData.pushKV(pair.first, pair.second);
         }
+
+        keyobj.pushKV("path", std::to_string(nChild) + (fHardened ? "'" : ""));
+        keyobj.pushKV("address", CBitcoinAddress(mi->first).ToString());
+        keyobj.pushKV("privkey", CBitcoinSecret(key).ToString());
         if (objDestData.size() > 0) {
             keyobj.pushKV("destdata", objDestData);
         }
+
+        keyobj.pushKV("label", mi->second.name);
+        if (!mi->second.purpose.empty())
+            keyobj.pushKV("purpose", mi->second.purpose);
+    }else{
+        keyobj.pushKV("path", std::to_string(nChild) + (fHardened ? "'" : ""));
+        keyobj.pushKV("address", CBitcoinAddress(key.GetPubKey().GetID()).ToString());
+        keyobj.pushKV("privkey", CBitcoinSecret(key).ToString());
     }
+
     derivedKeys.push_back(keyobj);
     return;
 };
@@ -551,7 +548,8 @@ bool CHDWallet::DumpJson(UniValue &rv, std::string &sError)
                 }
                 mapStealthKeySpend[sxPacked.id] = std::make_pair(kSpend, sxStr);
 
-                sxAddr.pushKV("account_chain", (int)sxPacked.aks.akSpend.nParent);
+                sxAddr.pushKV("account_chain_scan", (int)sxPacked.aks.nScanParent);
+                sxAddr.pushKV("account_chain_spend", (int)sxPacked.aks.akSpend.nParent);
 
                 uint32_t nScanKey = sxPacked.aks.nScanKey;
                 ClearHardenedBit(nScanKey);
@@ -566,13 +564,6 @@ bool CHDWallet::DumpJson(UniValue &rv, std::string &sError)
                     if (!mi->second.purpose.empty())
                         sxAddr.pushKV("purpose", mi->second.purpose);
 
-                    UniValue objDestData(UniValue::VOBJ);
-                    for (const auto &pair : mi->second.destdata) {
-                        sxAddr.pushKV(pair.first, pair.second);
-                    }
-                    if (objDestData.size() > 0) {
-                        sxAddr.pushKV("destdata", objDestData);
-                    }
                 }
 
                 stealthAddresses.push_back(sxAddr);
@@ -634,9 +625,261 @@ bool CHDWallet::LoadJson(const UniValue &inj, std::string &sError)
         return wserrorN(false, sError, __func__, _("Wallet must be unlocked."));
     }
 
+    if( mapExtKeys.size() ){
+        return wserrorN(false, sError, __func__, _("Empty wallet required for import."));
+    }
+
     LOCK(cs_wallet);
 
-    return wserrorN(false, sError, __func__, _("TODO: LoadJson."));
+    UniValue looseExtKeys, accounts, importedStealth;
+
+    if( !inj.exists("loose_extkeys") ){
+        return wserrorN(false, sError, __func__, _("loose_extkeys missing."));
+    }
+
+    if( !inj["loose_extkeys"].isArray() ){
+        return wserrorN(false, sError, __func__, _("loose_extkeys must be an array."));
+    }
+
+    if( !inj.exists("accounts") ){
+        return wserrorN(false, sError, __func__, _("accounts missing."));
+    }
+
+    if( !inj["accounts"].isArray() ){
+        return wserrorN(false, sError, __func__, _("accounts must be an array."));
+    }
+
+    if( inj.exists("imported_stealth_addresses") && inj["imported_stealth_addresses"].isArray() ){
+        importedStealth = inj["imported_stealth_addresses"].get_array();
+    }
+
+    looseExtKeys = inj["loose_extkeys"].get_array();
+    accounts = inj["accounts"].get_array();
+
+    CKeyID activeMaster, activeAccount;
+
+    CHDWalletDB wdb(GetDBHandle(), "r+");
+
+    if (!wdb.TxnBegin()) {
+        return wserrorN(false, sError, __func__, _("TxnBegin failed."));
+    }
+
+    for( const UniValue &extKey : looseExtKeys.getValues() ){
+
+        std::string sKey = extKey["evkey"].get_str();
+
+        CStoredExtKey sek;
+        sek.sLabel = extKey["label"].get_str();
+
+        bool fActiveMaster = extKey["current_master"].get_bool();
+
+        std::vector<uint8_t> v;
+        int64_t nTime = GetTime();
+
+        if( extKey.exists("created_at") && extKey["created_at"].isNum() ){
+            nTime = extKey["created_at"].get_int64();
+        }
+
+        sek.mapValue[EKVT_CREATED_AT] = SetCompressedInt64(v, nTime);
+
+        CExtKey58 eKey58;
+        if (eKey58.Set58(sKey.c_str()) != 0) {
+            return wserrorN(false, sError, __func__, strprintf("Import failed - Invalid key: %s", sKey.c_str()));
+        }
+
+        if (!eKey58.IsValid(CChainParams::EXT_SECRET_KEY)
+            && !eKey58.IsValid(CChainParams::EXT_PUBLIC_KEY_BTC)) {
+            return wserrorN(false, sError, __func__, strprintf("Import failed - Key with wrong prefix: %s", sKey.c_str()));
+        }
+
+        sek.kp = eKey58.GetKey();
+
+        int rv;
+        CKeyID idDerived;
+        if (0 != (rv = ExtKeyImportLoose(&wdb, sek, idDerived, false, false))) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeyImportLoose failed, %s", ExtKeyGetString(rv)));
+        }
+
+        if( fActiveMaster ){
+            activeMaster = sek.GetID();
+        }
+
+    }
+
+    for( const UniValue &account : accounts.getValues() ){
+
+        bool fActiveAccount = account["active"].get_bool();
+        std::string sLabel = account["label"].get_str();
+        std::string sPath = account["path"].get_str();
+        std::string sKeyMaster = account["root_key_id"].get_str();
+        UniValue chains = account["chains"].get_array();
+        UniValue derivedStealth = account.exists("stealth_addresses") ?
+                    account["stealth_addresses"].get_array() :
+                    UniValue(UniValue::VARR);
+
+        CKeyID idMaster;
+        ExtractExtKeyId(sKeyMaster, idMaster, CChainParams::EXT_KEY_HASH);
+
+        int rv;
+        if (0 != (rv = ExtKeySetMaster(&wdb, idMaster)) && rv != 11) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetMaster failed, %s.", ExtKeyGetString(rv)));
+        }
+
+        CExtKeyAccount *sea = new CExtKeyAccount();
+
+        if ((rv = ExtKeyDeriveNewAccount(&wdb, sea, sLabel, sPath)) != 0) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeyDeriveNewAccount failed, label: %s, path: %s", sLabel, sPath));
+        }
+
+        if( fActiveAccount ){
+            activeAccount  = sea->GetID();
+        }
+
+        CKeyID accountId = sea->GetID();
+        if (0 != (rv = ExtKeySetDefaultAccount(&wdb, accountId))) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetDefaultAccount failed, %s.", ExtKeyGetString(rv)));
+        }
+
+        for( const UniValue& chain : chains.getValues() ){
+
+            CPubKey newKey;  // dummy
+            std::string sFunction = chain.exists("function") ? chain["function"].get_str() : "";
+
+            if( sFunction ==  "active_external" ){
+                UniValue derived = chain.exists("derived_keys") ? chain["derived_keys"] : UniValue(UniValue::VARR);
+
+                for( const UniValue& key : derived.getValues() ){
+
+                    bool f256bit = false;
+                    CBitcoinAddress addr(key["address"].get_str());
+                    f256bit = addr.IsValid(CChainParams::PUBKEY_ADDRESS_256);
+                    std::string label = key.exists("label") ? key["label"].get_str() : "";
+
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, false, false, f256bit, false, label.c_str())) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount failed.");
+                    }
+
+                    if (f256bit) {
+                        AddressBookChangedNotify(newKey.GetID256(), CT_NEW);
+                    } else {
+                        AddressBookChangedNotify(newKey.GetID(), CT_NEW);
+                    }
+                }
+
+                UniValue derivedHardened = chain.exists("derived_keys_hardened") ? chain["derived_keys_hardened"] : UniValue(UniValue::VARR);
+
+                for( const UniValue& key : derivedHardened.getValues() ){
+
+                    bool f256bit = false;
+                    CBitcoinAddress addr(key["address"].get_str());
+                    f256bit = addr.IsValid(CChainParams::PUBKEY_ADDRESS_256);
+                    std::string label = key.exists("label") ? key["label"].get_str() : "";
+
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, false, true, f256bit, false, label.c_str())) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount failed.");
+                    }
+
+                    if (f256bit) {
+                        AddressBookChangedNotify(newKey.GetID256(), CT_NEW);
+                    } else {
+                        AddressBookChangedNotify(newKey.GetID(), CT_NEW);
+                    }
+                }
+            }
+
+            if( sFunction ==  "active_internal" ){
+
+                uint32_t nDerives = 0;
+                uint32_t nDerivesH = 0;
+
+                if (chain["num_derives"].isStr()
+                    && !ParseUInt32(chain["num_derives"].get_str(), &nDerives)) {
+                    wdb.TxnAbort();
+                    return wserrorN(false, sError, __func__, "num_derives to int failed.");
+                }
+                if (chain["num_derives_h"].isStr()
+                    && !ParseUInt32(chain["num_derives_h"].get_str(), &nDerivesH)) {
+                    wdb.TxnAbort();
+                    return wserrorN(false, sError, __func__, "num_derives_h to int failed.");
+                }
+
+                for( uint32_t i=0; i< nDerives; ++i ){
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, true, false, false, false, "")) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount internal failed.");
+                    }
+                }
+
+                for( uint32_t i=0; i< nDerivesH; ++i ){
+                    if (0 != NewKeyFromAccount(&wdb, idDefaultAccount, newKey, true, true, false, false, "")) {
+                        wdb.TxnAbort();
+                        return wserrorN(false, sError, __func__, "NewKeyFromAccount internal/hardened failed.");
+                    }
+                }
+
+            }
+
+        }
+
+        for( const UniValue& stealth : derivedStealth.getValues() ){
+
+            std::string sLabel = stealth.exists("label") ? stealth["label"].get_str() : "";
+
+            CEKAStealthKey akStealthOut;
+            //  Make V2 if the scan/spend are from different chains
+            if( stealth["account_chain_scan"].get_int64() != stealth["account_chain_spend"].get_int64() ){
+
+                if (0 != NewStealthKeyV2FromAccount(&wdb, idDefaultAccount, sLabel, akStealthOut, 0, nullptr, false)) {
+                    wdb.TxnAbort();
+                    ExtKeyRemoveAccountFromMapsAndFree(idDefaultAccount);
+                    ExtKeyLoadAccount(&wdb, idDefaultAccount);
+                    return wserrorN(false, sError, __func__, "NewStealthKeyV2FromAccount failed.");
+                }
+
+            }else{
+
+                if (0 != NewStealthKeyFromAccount(&wdb, idDefaultAccount, sLabel, akStealthOut, 0, nullptr, false)) {
+                    wdb.TxnAbort();
+                    return wserrorN(false, sError, __func__, "NewStealthKeyFromAccount failed.");
+                }
+            }
+
+            CStealthAddress sxAddr;
+            akStealthOut.SetSxAddr(sxAddr);
+            AddressBookChangedNotify(sxAddr, CT_NEW);
+        }
+
+    }
+
+    if( !activeMaster.IsNull() ){
+
+        int rv;
+        if (0 != (rv = ExtKeySetMaster(&wdb, activeMaster)) && rv != 11) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetMaster failed, %s.", ExtKeyGetString(rv)));
+        }
+    }
+
+    if( !activeAccount.IsNull() ){
+
+        int rv;
+
+        if (0 != (rv = ExtKeySetDefaultAccount(&wdb, activeAccount))) {
+            wdb.TxnAbort();
+            return wserrorN(false, sError, __func__, strprintf("ExtKeySetDefaultAccount failed, %s.", ExtKeyGetString(rv)));
+        }
+
+    }
+
+    if (!wdb.TxnCommit()) {
+        return wserrorN(false, sError, __func__, "TxnCommit failed.");
+    }
 
     return true;
 };
@@ -2277,7 +2520,7 @@ CAmount CHDWallet::GetSpendableBalance() const
     m_have_spendable_balance_cached = true;
 
     return m_spendable_balance_cached;
-};
+}
 
 CAmount CHDWallet::GetUnconfirmedBalance() const
 {
@@ -4702,6 +4945,7 @@ void CHDWallet::ClearCachedBalances()
 {
     // Clear cache when a new txn is added to the wallet or a block is added or removed from the chain.
     m_have_spendable_balance_cached = false;
+    m_have_cached_stakeable_coins = false;
     return;
 }
 
@@ -10253,6 +10497,35 @@ std::set<uint256> CHDWallet::GetConflicts(const uint256 &txid) const
     return CWallet::GetConflicts(txid);
 }
 
+bool CHDWallet::TransactionCanBeAbandoned(const uint256 &hashTx) const
+{
+    LOCK2(cs_main, cs_wallet);
+
+    MapRecords_t::const_iterator mri;
+    MapWallet_t::const_iterator mwi;
+
+    // Can't mark abandoned if confirmed or in mempool
+
+    if ((mri = mapRecords.find(hashTx)) != mapRecords.end())
+    {
+        const CTransactionRecord &rtx = mri->second;
+        if ( rtx.IsAbandoned() || GetDepthInMainChain(rtx.blockHash, rtx.nIndex) > 0 || InMempool(hashTx))
+        {
+            return false;
+        };
+    } else
+    if ((mwi = mapWallet.find(hashTx)) != mapWallet.end())
+    {
+        const CWalletTx &wtx = mwi->second;
+        if (wtx.isAbandoned() || wtx.GetDepthInMainChain() > 0 || InMempool(hashTx))
+        {
+            return false;
+        };
+    }
+
+    return true;
+}
+
 /* Mark a transaction (and it in-wallet descendants) as abandoned so its inputs may be respent. */
 bool CHDWallet::AbandonTransaction(const uint256 &hashTx)
 {
@@ -10270,7 +10543,7 @@ bool CHDWallet::AbandonTransaction(const uint256 &hashTx)
     if ((mri = mapRecords.find(hashTx)) != mapRecords.end())
     {
         CTransactionRecord &rtx = mri->second;
-        if (GetDepthInMainChain(rtx.blockHash, rtx.nIndex) > 0 || InMempool(hashTx))
+        if ( rtx.IsAbandoned() || GetDepthInMainChain(rtx.blockHash, rtx.nIndex) > 0 || InMempool(hashTx))
         {
             return false;
         };
@@ -10278,7 +10551,7 @@ bool CHDWallet::AbandonTransaction(const uint256 &hashTx)
     if ((mwi = mapWallet.find(hashTx)) != mapWallet.end())
     {
         CWalletTx &wtx = mwi->second;
-        if (wtx.GetDepthInMainChain() > 0 || InMempool(hashTx))
+        if (wtx.isAbandoned() || wtx.GetDepthInMainChain() > 0 || InMempool(hashTx))
         {
             return false;
         };
@@ -10764,15 +11037,17 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
 
                 COutPoint kernel(wtxid, i);
 
-//                if (!CheckStakeUnused(kernel)){
-//                    LogPrintf("kernel used %s\n", kernel.ToString());
-//                }
-//                if(IsSpent(wtxid, i) ){
-//                    LogPrintf("kernel spent %s\n", kernel.ToString());
-//                }
-//                if(IsLockedCoin(wtxid, i)) {
-//                    LogPrintf("coins locked %s\n", kernel.ToString());
-//                }
+                if (LogAcceptCategory(BCLog::POS)) {
+                    if (!CheckStakeUnused(kernel)){
+                        WalletLogPrintf("%s: Kernel used %s\n", __func__, kernel.ToString());
+                    }
+                    if(IsSpent(wtxid, i) ){
+                        WalletLogPrintf("%s: Coin spent %s - %d\n", __func__, wtxid.ToString(), i);
+                    }
+                    if(IsLockedCoin(wtxid, i)) {
+                        WalletLogPrintf("%s: Coin is locked %s - %d\n", __func__, wtxid.ToString(), i);
+                    }
+                }
 
                 if (!CheckStakeUnused(kernel)
                      || IsSpent(wtxid, i)
@@ -10786,12 +11061,8 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
                     continue;
                 }
 
-                CBitcoinAddress addr(keyID);
-//                LogPrintf("Address %s, kernel %s\n", addr.ToString(), kernel.ToString());
-
                 isminetype mine = IsMine(keyID);
                 if (!(mine & ISMINE_SPENDABLE)) {
-//                    LogPrintf("Address %s -- not mine \n", addr.ToString());
                     continue;
                 }
 
@@ -10865,10 +11136,19 @@ void CHDWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t n
     return;
 };
 
+
 bool CHDWallet::SelectCoinsForStaking(int64_t nTargetValue, int64_t nTime, int nHeight, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64_t& nValueRet) const
 {
-    std::vector<COutput> vCoins;
-    AvailableCoinsForStaking(vCoins, nTime, nHeight);
+
+    if (m_have_cached_stakeable_coins) {
+        random_shuffle(m_cached_stakeable_coins.begin(), m_cached_stakeable_coins.end(), GetRandInt);
+    } else {
+        m_cached_stakeable_coins.clear();
+        AvailableCoinsForStaking(m_cached_stakeable_coins, nTime, nHeight);
+        m_have_cached_stakeable_coins = true;
+    }
+
+    std::vector<COutput> &vCoins = m_cached_stakeable_coins;
 
     setCoinsRet.clear();
     nValueRet = 0;

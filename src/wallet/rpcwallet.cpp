@@ -380,7 +380,7 @@ static UniValue setlabel(const JSONRPCRequest& request)
         pwallet->DeleteLabel(old_label);
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue getaccount(const JSONRPCRequest& request)
@@ -2957,7 +2957,7 @@ static UniValue abandontransaction(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction not eligible for abandonment");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 
@@ -2992,7 +2992,7 @@ static UniValue backupwallet(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, "Error: Wallet backup failed!");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 
@@ -3038,7 +3038,7 @@ static UniValue keypoolrefill(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, "Error refreshing keypool.");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 
@@ -3146,7 +3146,7 @@ static UniValue walletpassphrase(const JSONRPCRequest& request)
         pwallet->nRelockTime = 0;
     };
     }
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 
@@ -3197,7 +3197,7 @@ static UniValue walletpassphrasechange(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_PASSPHRASE_INCORRECT, "Error: The wallet passphrase entered was incorrect.");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 
@@ -3237,7 +3237,7 @@ static UniValue walletlock(const JSONRPCRequest& request)
     pwallet->Lock();
     pwallet->nRelockTime = 0;
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 
@@ -3301,7 +3301,7 @@ static UniValue encryptwallet(const JSONRPCRequest& request)
     // unencrypted private keys. So:
     StartShutdown();
     //return "wallet encrypted; BitcoinC server stopping, restart to run with encrypted wallet. The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.";
-    return "wallet encrypted; BitcoinC server stopping, restart to run with encrypted wallet. You need to make a new backup.";
+    return "wallet encrypted; Bitcoin Confidential server stopping, restart to run with encrypted wallet. You need to make a new backup.";
 }
 
 static UniValue lockunspent(const JSONRPCRequest& request)
@@ -3886,7 +3886,7 @@ static UniValue unloadwallet(const JSONRPCRequest& request)
     // At this point this method should never fail. The unloading could only
     // fail due to an unexpected error which would cause a process termination.
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue resendwallettransactions(const JSONRPCRequest& request)
@@ -5262,7 +5262,7 @@ UniValue sethdseed(const JSONRPCRequest& request)
     pwallet->SetHDSeed(master_pub_key);
     if (flush_key_pool) pwallet->NewKeyPool();
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 bool ParseHDKeypath(std::string keypath_str, std::vector<uint32_t>& keypath)

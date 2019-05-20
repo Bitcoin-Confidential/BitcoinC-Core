@@ -175,8 +175,8 @@ enum class OptionsCategory {
     COMMANDS,
     REGISTER_COMMANDS,
     SMSG,
-    PART_WALLET,
-    PART_STAKING,
+    BC_WALLET,
+    BC_STAKING,
 
     HIDDEN // Always the last option to avoid printing these in the help
 };

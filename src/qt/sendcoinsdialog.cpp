@@ -224,9 +224,10 @@ void SendCoinsDialog::setModel(WalletModel *_model)
             ui->sendTabHeaderLabel->setText(GUIUtil::GetStakingWaitInfo());
         }else{
             ui->sendTabHeaderLabel->setText(tr("This tab allows manually activating Staking funds for ColdStaking. "
-                                               "This will take longer than the \"Automated ColdStaking activation\"to start staking but wallet does not need to be online for the activation."));
+                                               "This will take longer than the \"Automated ColdStaking activation\" to start staking but wallet does not need to be online for the activation."));
         }
 
+        clear();
     }
 }
 
@@ -572,10 +573,7 @@ void SendCoinsDialog::on_sendButton_clicked()
 
 void SendCoinsDialog::on_addButton_clicked()
 {
-    if( GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_COLD_STAKE)
-        addEntry();
-    else
-        addEntryCS();
+    addEntry();
 }
 
 void SendCoinsDialog::clear()
@@ -609,7 +607,9 @@ void SendCoinsDialog::accept()
 
 SendCoinsEntry *SendCoinsDialog::addEntry()
 {
-    SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_STAKING );
+    SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_STAKING ,
+                                                                    GetCoinControlFlag() == CoinControlDialog::CONVERT_TO_COLD_STAKE,
+                                                                    GetCoinControlFlag() > CoinControlDialog::SPENDING );
     entry->setModel(model);
     ui->entries->addWidget(entry);
     connect(entry, SIGNAL(removeEntry(SendCoinsEntry*)), this, SLOT(removeEntry(SendCoinsEntry*)));
@@ -617,39 +617,20 @@ SendCoinsEntry *SendCoinsDialog::addEntry()
     connect(entry, SIGNAL(payAmountChanged()), this, SLOT(coinControlUpdateLabels()));
     connect(entry, SIGNAL(subtractFeeFromAmountChanged()), this, SLOT(coinControlUpdateLabels()));
 
-    if( GetCoinControlFlag() != CoinControlDialog::SPENDING ){
-        entry->hideMessage();
-    }
     // Focus the field, so that entry can start immediately
     entry->clear();
     entry->setFocus();
-    ui->scrollAreaWidgetContents->resize(ui->scrollAreaWidgetContents->sizeHint());
-    qApp->processEvents();
-    QScrollBar* bar = ui->scrollArea->verticalScrollBar();
-    if(bar)
-        bar->setSliderPosition(bar->maximum());
 
-    updateTabsAndLabels();
-    return entry;
-}
-
-SendCoinsEntry *SendCoinsDialog::addEntryCS()
-{
-    SendCoinsEntry *entry = new SendCoinsEntry(platformStyle, this, false, true);
-    entry->setModel(model);
-    ui->entries->addWidget(entry);
-    connect(entry, SIGNAL(removeEntry(SendCoinsEntry*)), this, SLOT(removeEntry(SendCoinsEntry*)));
-    connect(entry, SIGNAL(useAvailableBalance(SendCoinsEntry*)), this, SLOT(useAvailableBalance(SendCoinsEntry*)));
-    connect(entry, SIGNAL(payAmountChanged()), this, SLOT(coinControlUpdateLabels()));
-    connect(entry, SIGNAL(subtractFeeFromAmountChanged()), this, SLOT(coinControlUpdateLabels()));
-
-    if( GetCoinControlFlag() != CoinControlDialog::SPENDING ){
-        entry->hideMessage();
+    if( GetCoinControlFlag() == CoinControlDialog::CONVERT_TO_COLD_STAKE ){
+        UniValue rv;
+        if (model->wallet().getBitcoinCWallet()->GetSetting("changeaddress", rv)) {
+            if (rv.isObject()
+                && rv["coldstakingaddress"].isStr()) {
+                entry->setStakeAddress(QString::fromStdString(rv["coldstakingaddress"].get_str()));
+            }
+        }
     }
 
-    // Focus the field, so that entry can start immediately
-    entry->clear();
-    entry->setFocus();
     ui->scrollAreaWidgetContents->resize(ui->scrollAreaWidgetContents->sizeHint());
     qApp->processEvents();
     QScrollBar* bar = ui->scrollArea->verticalScrollBar();
@@ -672,10 +653,7 @@ void SendCoinsDialog::removeEntry(SendCoinsEntry* entry)
 
     // If the last entry is about to be removed add an empty one
     if (ui->entries->count() == 1){
-        if( GetCoinControlFlag() < CoinControlDialog::CONVERT_TO_COLD_STAKE)
-            addEntry();
-        else
-            addEntryCS();
+        addEntry();
     }
 
     entry->deleteLater();
@@ -1015,7 +993,7 @@ void SendCoinsDialog::setMode(CoinControlDialog::ControlModes nNewMode)
         setBalance(balances);
     }
 
-    clear();
+
 }
 
 // Coin Control: copy label "Quantity" to clipboard

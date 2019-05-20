@@ -315,7 +315,7 @@ static UniValue setmocktime(const JSONRPCRequest& request)
     else
         SetMockTime(request.params[0].get_int64());
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue RPCLockedMemoryInfo()

@@ -126,9 +126,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -150,9 +147,6 @@
            </property>
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
-           </property>
-           <property name="toolTip">
-            <string>Unconfirmed transactions to watch-only addresses</string>
            </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
@@ -176,9 +170,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Mined balance that has not yet matured</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -200,9 +191,6 @@
            </property>
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
-           </property>
-           <property name="toolTip">
-            <string>Mined balance in watch-only addresses that has not yet matured</string>
            </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
@@ -249,9 +237,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Your current spendable balance</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -289,9 +274,6 @@
            </property>
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
-           </property>
-           <property name="toolTip">
-            <string>Your current staked balance</string>
            </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
@@ -338,9 +320,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Your current spendable  balance</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -379,9 +358,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Your current total balance</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -404,9 +380,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Unconfirmed transactions to watch-only addresses</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -428,9 +401,6 @@
            </property>
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
-           </property>
-           <property name="toolTip">
-            <string>Your current watch-only staked balance</string>
            </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
@@ -464,9 +434,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Your current balance in watch-only addresses</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -488,9 +455,6 @@
            </property>
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
-           </property>
-           <property name="toolTip">
-            <string>Mined balance in watch-only addresses that has not yet matured</string>
            </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
@@ -550,9 +514,6 @@
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="toolTip">
-            <string>Current total balance in watch-only addresses</string>
-           </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>
            </property>
@@ -574,9 +535,6 @@
            </property>
            <property name="cursor">
             <cursorShape>IBeamCursor</cursorShape>
-           </property>
-           <property name="toolTip">
-            <string>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</string>
            </property>
            <property name="text">
             <string notr="true">0.000 000 00 BC</string>

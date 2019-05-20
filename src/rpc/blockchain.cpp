@@ -336,7 +336,7 @@ static UniValue syncwithvalidationinterfacequeue(const JSONRPCRequest& request)
         );
     }
     SyncWithValidationInterfaceQueue();
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue getdifficulty(const JSONRPCRequest& request)
@@ -1490,7 +1490,7 @@ static UniValue preciousblock(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_DATABASE_ERROR, FormatStateMessage(state));
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue invalidateblock(const JSONRPCRequest& request)
@@ -1529,7 +1529,7 @@ static UniValue invalidateblock(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_DATABASE_ERROR, FormatStateMessage(state));
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue reconsiderblock(const JSONRPCRequest& request)
@@ -1567,7 +1567,7 @@ static UniValue reconsiderblock(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_DATABASE_ERROR, FormatStateMessage(state));
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 static UniValue getchaintxstats(const JSONRPCRequest& request)
@@ -2006,7 +2006,7 @@ static UniValue savemempool(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_MISC_ERROR, "Unable to dump mempool to disk");
     }
 
-    return NullUniValue;
+    return SuccessUniValue;
 }
 
 //! Search for a given set of pubkey scripts

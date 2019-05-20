@@ -86,6 +86,8 @@ public:
         FormattedAmountRoleB,
         /** Transaction status (TransactionRecord::Status) */
         StatusRole,
+        /** Transaction output type */
+        TxOutTypeRole,
         /** Unprocessed icon */
         RawDecorationRole,
     };

@@ -352,7 +352,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1510704000; // November 15th, 2017.
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000003dac25df0da5c7d783e");
 
         // By default assume that the signatures in ancestors of this block are valid.
   //      consensus.defaultAssumeValid = uint256S("0x5dacfb4e040ed98031f8586ce1516b6813990b53d677fb45a49099e8ceecb6fa"); //250000
@@ -370,7 +370,7 @@ public:
         pchMessageStart[2] = 0xc0;
         pchMessageStart[3] = 0x01;
         nDefaultPort = 9789;
-        nBIP44ID = 0x8000002C;
+        nBIP44ID = 0x800001aa;
 
         nModifierInterval = 10 * 60;    // 10 minutes
         nStakeMinConfirmations = 225;   // 225 * 2 minutes
@@ -466,10 +466,20 @@ public:
 
         checkpointData = {
             {
-  //              { 0,     uint256S("0x004ec413e6e46a81882ca363fe14832b872d594c9d543122b557fcfb7b433b95")}
-  //              { 15000,    uint256S("0xafc73ac299f2e6dd309077d230fccef547b9fc24379c1bf324dd3683b13c61c3")},
+                { 100,      uint256S("0x22a5ac04890be59a30f1f1bc889d61776c292e025b9b007a0a98beccbe72a36e")},
+                { 13000,    uint256S("0x285e3f098b34a48b2c392e47a3e1de32a2786a0b2f6d971fc081491284f08377")},
+                { 18000,    uint256S("0x1899ed79986933311067e2de226ed8280a39e23688fc6ee2db1c5e1648cc33c3")},
+                { 33800,    uint256S("0x1a5423fba2d995d5fefba81f4c49fc00b34ee363a209f678f7cf0ed4cbaccedf")}
             }
         };
+
+        chainTxData = ChainTxData{
+            // Data from rpc: getchaintxstats 4096 58267bdf935a2e0716cb910d055b8cdaa019089a5f71c3db90765dc7101dc5dc
+            /* nTime    */ 1558381184,
+            /* nTxCount */ 37560,
+            /* dTxRate  */ 0.01794552086842025
+        };
+
 
         /* disable fallback fee on mainnet */
         m_fallback_fee_enabled = false;

@@ -14,17 +14,18 @@
 #include <QApplication>
 #include <QClipboard>
 
-SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *parent, bool fSpending, bool coldstake) :
+SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *parent, bool fSpending, bool fColdstake, bool fConvert) :
     QStackedWidget(parent),
     ui(new Ui::SendCoinsEntry),
     model(0),
     platformStyle(_platformStyle),
-    m_coldstake(coldstake),
-    fSpending(fSpending)
+    fSpending(fSpending),
+    fConvert(fConvert),
+    fColdstake(fColdstake)
 {
     ui->setupUi(this);
 
-    if (m_coldstake) {
+    if (fColdstake) {
         ui->addressBookButton_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
         ui->pasteButton_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/editpaste"));
         ui->addressBookButton2_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
@@ -32,6 +33,10 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
         ui->deleteButton_cs->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
 
         setCurrentWidget(ui->SendCoins_cs);
+        removeWidget(ui->SendCoins);
+        removeWidget(ui->SendCoins_AuthenticatedPaymentRequest);
+        removeWidget(ui->SendCoins_UnauthenticatedPaymentRequest);
+        removeWidget(ui->SendCoins_convert);
 
         // normal bitcoin address field
         GUIUtil::setupStakeAddressWidget(ui->stakeAddr, this, false, true);
@@ -43,36 +48,57 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *_platformStyle, QWidget *par
         connect(ui->deleteButton_cs, SIGNAL(clicked()), this, SLOT(deleteClicked()));
         connect(ui->useAvailableBalanceButton_cs, SIGNAL(clicked()), this, SLOT(useAvailableBalanceClicked()));
 
-        return;
-    }
+    }else if( fConvert ){
+        ui->addressBookButton_convert->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
+        ui->pasteButton_convert->setIcon(platformStyle->BitcoinCColorIcon(":/icons/editpaste"));
+        ui->deleteButton_convert->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
 
-    ui->addressBookButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
-    ui->pasteButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/editpaste"));
-    ui->deleteButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
-    ui->deleteButton_is->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
-    ui->deleteButton_s->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
+        setCurrentWidget(ui->SendCoins_convert);
+        removeWidget(ui->SendCoins);
+        removeWidget(ui->SendCoins_AuthenticatedPaymentRequest);
+        removeWidget(ui->SendCoins_UnauthenticatedPaymentRequest);
+        removeWidget(ui->SendCoins_cs);
 
-    setCurrentWidget(ui->SendCoins);
+        // normal bitcoin address field
+        if( fSpending ){
+            GUIUtil::setupAddressWidget(ui->payTo_convert, this);
+        }else{
+            GUIUtil::setupStakeAddressWidget(ui->payTo_convert, this);
+        }
 
-//    if (platformStyle->getUseExtraSpacing())
-//        ui->payToLayout->setSpacing(4);
-    ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
+        // Connect signals
+        connect(ui->payAmount_convert, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
+        connect(ui->checkboxSubtractFeeFromAmount_convert, SIGNAL(toggled(bool)), this, SIGNAL(subtractFeeFromAmountChanged()));
+        connect(ui->deleteButton_convert, SIGNAL(clicked()), this, SLOT(deleteClicked()));
+        connect(ui->useAvailableBalanceButton_convert, SIGNAL(clicked()), this, SLOT(useAvailableBalanceClicked()));
 
-    // normal bitcoin address field
-
-    if( fSpending ){
-        GUIUtil::setupAddressWidget(ui->payTo, this);
     }else{
-        GUIUtil::setupStakeAddressWidget(ui->payTo, this);
-    }
 
-    // Connect signals
-    connect(ui->payAmount, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
-    connect(ui->checkboxSubtractFeeFromAmount, SIGNAL(toggled(bool)), this, SIGNAL(subtractFeeFromAmountChanged()));
-    connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
-    connect(ui->deleteButton_is, SIGNAL(clicked()), this, SLOT(deleteClicked()));
-    connect(ui->deleteButton_s, SIGNAL(clicked()), this, SLOT(deleteClicked()));
-    connect(ui->useAvailableBalanceButton, SIGNAL(clicked()), this, SLOT(useAvailableBalanceClicked()));
+        ui->addressBookButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/address-book"));
+        ui->pasteButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/editpaste"));
+        ui->deleteButton->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
+        ui->deleteButton_is->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
+        ui->deleteButton_s->setIcon(platformStyle->BitcoinCColorIcon(":/icons/remove"));
+
+        setCurrentWidget(ui->SendCoins);
+        removeWidget(ui->SendCoins_cs);
+        removeWidget(ui->SendCoins_AuthenticatedPaymentRequest);
+        removeWidget(ui->SendCoins_UnauthenticatedPaymentRequest);
+        removeWidget(ui->SendCoins_convert);
+
+        ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
+        // normal bitcoin address field
+
+        GUIUtil::setupAddressWidget(ui->payTo, this);
+
+        // Connect signals
+        connect(ui->payAmount, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
+        connect(ui->checkboxSubtractFeeFromAmount, SIGNAL(toggled(bool)), this, SIGNAL(subtractFeeFromAmountChanged()));
+        connect(ui->deleteButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
+        connect(ui->deleteButton_is, SIGNAL(clicked()), this, SLOT(deleteClicked()));
+        connect(ui->deleteButton_s, SIGNAL(clicked()), this, SLOT(deleteClicked()));
+        connect(ui->useAvailableBalanceButton, SIGNAL(clicked()), this, SLOT(useAvailableBalanceClicked()));
+    }
 }
 
 SendCoinsEntry::~SendCoinsEntry()
@@ -86,10 +112,22 @@ void SendCoinsEntry::hideMessage()
     ui->edtNarration->hide();
 }
 
+void SendCoinsEntry::hideAddLabel()
+{
+    ui->addAsLabel->hide();
+    ui->labellLabel->hide();
+}
+
 void SendCoinsEntry::on_pasteButton_clicked()
 {
     // Paste text from clipboard into recipient field
     ui->payTo->setText(QApplication::clipboard()->text());
+}
+
+void SendCoinsEntry::on_pasteButton_convert_clicked()
+{
+    // Paste text from clipboard into recipient field
+    ui->payTo_convert->setText(QApplication::clipboard()->text());
 }
 
 void SendCoinsEntry::on_addressBookButton_clicked()
@@ -105,6 +143,22 @@ void SendCoinsEntry::on_addressBookButton_clicked()
     {
         ui->payTo->setText(dlg.getReturnValue());
         ui->payAmount->setFocus();
+    }
+}
+
+void SendCoinsEntry::on_addressBookButton_convert_clicked()
+{
+    if(!model)
+        return;
+    AddressBookPage dlg(platformStyle,
+                        AddressBookPage::ForSelection,
+                        fSpending ? AddressBookPage::SendingTab : AddressBookPage::StakingTab,
+                        this);
+    dlg.setModel(fSpending ? model->getAddressTableModel() : model->getStakingAddressTableModel());
+    if(dlg.exec())
+    {
+        ui->payTo_convert->setText(dlg.getReturnValue());
+        ui->payAmount_convert->setFocus();
     }
 }
 
@@ -195,7 +249,13 @@ void SendCoinsEntry::clear()
 
 void SendCoinsEntry::checkSubtractFeeFromAmount()
 {
-    ui->checkboxSubtractFeeFromAmount->setChecked(true);
+    if ( fColdstake ) {
+        ui->checkboxSubtractFeeFromAmount_cs->setChecked(true);
+    }else if( fConvert ){
+        ui->checkboxSubtractFeeFromAmount_convert->setChecked(true);
+    }else{
+        ui->checkboxSubtractFeeFromAmount->setChecked(true);
+    }
 }
 
 void SendCoinsEntry::deleteClicked()
@@ -220,12 +280,12 @@ bool SendCoinsEntry::validate(interfaces::Node& node)
     if (recipient.paymentRequest.IsInitialized())
         return retval;
 
-    if (m_coldstake) {
+    if (fColdstake) {
         if (!model->validateAddress(ui->stakeAddr->text(), true)) {
             ui->stakeAddr->setValid(false);
             retval = false;
         }
-        if (!model->validateAddress(ui->spendAddr->text())) {
+        if (!model->validateColdStakeAddress(ui->spendAddr->text())) {
             ui->spendAddr->setValid(false);
             retval = false;
         }
@@ -247,31 +307,58 @@ bool SendCoinsEntry::validate(interfaces::Node& node)
             retval = false;
         }
 
-        return retval;
-    }
+    }else if( fConvert ){
 
-    if (!model->validateAddress(ui->payTo->text()))
-    {
-        ui->payTo->setValid(false);
-        retval = false;
-    }
+        if (!model->validateAddress(ui->payTo_convert->text()))
+        {
+            ui->payTo_convert->setValid(false);
+            retval = false;
+        }
 
-    if (!ui->payAmount->validate())
-    {
-        retval = false;
-    }
+        if (!ui->payAmount_convert->validate())
+        {
+            retval = false;
+        }
 
-    // Sending a zero amount is invalid
-    if (ui->payAmount->value(0) <= 0)
-    {
-        ui->payAmount->setValid(false);
-        retval = false;
-    }
+        // Sending a zero amount is invalid
+        if (ui->payAmount_convert->value(0) <= 0)
+        {
+            ui->payAmount_convert->setValid(false);
+            retval = false;
+        }
 
-    // Reject dust outputs:
-    if (retval && GUIUtil::isDust(node, ui->payTo->text(), ui->payAmount->value())) {
-        ui->payAmount->setValid(false);
-        retval = false;
+        // Reject dust outputs:
+        if (retval && GUIUtil::isDust(node, ui->payTo_convert->text(), ui->payAmount_convert->value())) {
+            ui->payAmount_convert->setValid(false);
+            retval = false;
+        }
+
+    }else{
+
+        if (!model->validateAddress(ui->payTo->text()))
+        {
+            ui->payTo->setValid(false);
+            retval = false;
+        }
+
+        if (!ui->payAmount->validate())
+        {
+            retval = false;
+        }
+
+        // Sending a zero amount is invalid
+        if (ui->payAmount->value(0) <= 0)
+        {
+            ui->payAmount->setValid(false);
+            retval = false;
+        }
+
+        // Reject dust outputs:
+        if (retval && GUIUtil::isDust(node, ui->payTo->text(), ui->payAmount->value())) {
+            ui->payAmount->setValid(false);
+            retval = false;
+        }
+
     }
 
     return retval;
@@ -283,37 +370,60 @@ SendCoinsRecipient SendCoinsEntry::getValue()
     if (recipient.paymentRequest.IsInitialized())
         return recipient;
 
-    recipient.m_coldstake = m_coldstake;
-    if (m_coldstake) {
+    recipient.m_coldstake = fColdstake;
+    if (fColdstake) {
         recipient.stake_address = ui->stakeAddr->text();
         recipient.spend_address = ui->spendAddr->text();
         recipient.amount = ui->payAmount_cs->value();
         recipient.narration = "";
         recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount_cs->checkState() == Qt::Checked);
-
-        return recipient;
+    }else if( fConvert ){
+        // Convert payment
+        recipient.address = ui->payTo_convert->text();
+        recipient.label = "";
+        recipient.amount = ui->payAmount_convert->value();
+        recipient.narration = "";
+        recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount_convert->checkState() == Qt::Checked);
+    }else{
+        // Normal payment
+        recipient.address = ui->payTo->text();
+        recipient.label = ui->addAsLabel->text();
+        recipient.amount = ui->payAmount->value();
+        recipient.narration = ui->edtNarration->text();
+        recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount->checkState() == Qt::Checked);
     }
-
-    // Normal payment
-    recipient.address = ui->payTo->text();
-    recipient.label = ui->addAsLabel->text();
-    recipient.amount = ui->payAmount->value();
-    recipient.narration = ui->edtNarration->text();
-    recipient.fSubtractFeeFromAmount = (ui->checkboxSubtractFeeFromAmount->checkState() == Qt::Checked);
 
     return recipient;
 }
 
 QWidget *SendCoinsEntry::setupTabChain(QWidget *prev)
 {
-    QWidget::setTabOrder(prev, ui->payTo);
-    QWidget::setTabOrder(ui->payTo, ui->addAsLabel);
-    QWidget *w = ui->payAmount->setupTabChain(ui->addAsLabel);
-    QWidget::setTabOrder(w, ui->checkboxSubtractFeeFromAmount);
-    QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
-    QWidget::setTabOrder(ui->addressBookButton, ui->pasteButton);
-    QWidget::setTabOrder(ui->pasteButton, ui->deleteButton);
-    return ui->deleteButton;
+    QWidget *last;
+    if( fColdstake ){
+        QWidget::setTabOrder(prev, ui->stakeAddr);
+        QWidget::setTabOrder(ui->stakeAddr, ui->spendAddr);
+        QWidget *w = ui->payAmount_cs->setupTabChain(ui->spendAddr);
+        QWidget::setTabOrder(w, ui->checkboxSubtractFeeFromAmount_cs);
+        QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount_cs, ui->addressBookButton_cs);
+        QWidget::setTabOrder(ui->addressBookButton_cs, ui->pasteButton_cs);
+        QWidget::setTabOrder(ui->pasteButton_cs, ui->deleteButton_cs);
+        last = ui->deleteButton_cs;
+    }else if( fConvert ){
+        QWidget::setTabOrder(prev, ui->payTo_convert);
+        QWidget *w = ui->payAmount->setupTabChain(ui->payAmount_convert);
+        last = w;
+    }else{
+        QWidget::setTabOrder(prev, ui->payTo);
+        QWidget::setTabOrder(ui->payTo, ui->addAsLabel);
+        QWidget *w = ui->payAmount->setupTabChain(ui->addAsLabel);
+        QWidget::setTabOrder(w, ui->edtNarration);
+        QWidget::setTabOrder(ui->edtNarration, ui->checkboxSubtractFeeFromAmount);
+        QWidget::setTabOrder(ui->checkboxSubtractFeeFromAmount, ui->addressBookButton);
+        QWidget::setTabOrder(ui->addressBookButton, ui->pasteButton);
+        QWidget::setTabOrder(ui->pasteButton, ui->deleteButton);
+        last = ui->deleteButton;
+    }
+    return last;
 }
 
 void SendCoinsEntry::setValue(const SendCoinsRecipient &value)
@@ -358,21 +468,39 @@ void SendCoinsEntry::setAddress(const QString &address)
 
 void SendCoinsEntry::setAmount(const CAmount &amount)
 {
-    if (m_coldstake) {
+    if (fColdstake) {
         ui->payAmount_cs->setValue(amount);
-        return;
+    }else if( fConvert ){
+        ui->payAmount_convert->setValue(amount);
+    }else{
+        ui->payAmount->setValue(amount);
     }
-    ui->payAmount->setValue(amount);
+}
+
+void SendCoinsEntry::setStakeAddress(const QString &address)
+{
+    ui->stakeAddr->setText(address);
+    ui->spendAddr->setFocus();
 }
 
 bool SendCoinsEntry::isClear()
 {
-    return ui->payTo->text().isEmpty() && ui->payTo_is->text().isEmpty() && ui->payTo_s->text().isEmpty();
+    return ui->payTo->text().isEmpty() &&
+           ui->stakeAddr->text().isEmpty() &&
+           ui->payTo_convert->text().isEmpty() &&
+           ui->payTo_is->text().isEmpty() &&
+           ui->payTo_s->text().isEmpty();
 }
 
 void SendCoinsEntry::setFocus()
 {
-    ui->payTo->setFocus();
+    if( fColdstake ){
+        ui->stakeAddr->setFocus();
+    }else if( fConvert ){
+        ui->payTo_convert->setFocus();
+    }else{
+        ui->payTo->setFocus();
+    }
 }
 
 void SendCoinsEntry::hideDeleteButton()
@@ -390,6 +518,7 @@ void SendCoinsEntry::updateDisplayUnit()
         ui->payAmount_is->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
         ui->payAmount_s->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
         ui->payAmount_cs->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
+        ui->payAmount_convert->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
     }
 }
 

@@ -1072,6 +1072,7 @@ bool CConnman::AttemptToEvictConnection()
     LOCK(cs_vNodes);
     for (CNode* pnode : vNodes) {
         if (pnode->GetId() == evicted) {
+            LogPrint(BCLog::NET, "peer=%d evicted; disconnecting\n", pnode->GetId());
             pnode->fDisconnect = true;
             return true;
         }
@@ -2040,7 +2041,7 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
 
 void CConnman::ThreadMessageHandler()
 {
-    const int64_t nTimeDecBanThreshold = 60; // TODO: make option
+    const int64_t nTimeDecBanThreshold = gArgs.GetArg("-decmisbehavinginterval", 30);
     int64_t nTimeNextBanReduced = GetTime() + nTimeDecBanThreshold;
 
     while (!flagInterruptMsgProc)

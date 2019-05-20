@@ -316,6 +316,12 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
     status.depth = wtx.depth_in_main_chain;
     status.cur_num_blocks = numBlocks;
 
+    int nConfirmations = RecommendedNumConfirmations;
+
+    if( typeOut == "BC" ){
+        nConfirmations = Params().GetConsensus().nMinRCTOutputDepth;
+    }
+
     if (!wtx.is_final)
     {
         if (wtx.lock_time < LOCKTIME_THRESHOLD)
@@ -365,7 +371,7 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, int 
             if (wtx.is_abandoned)
                 status.status = TransactionStatus::Abandoned;
         }
-        else if (status.depth < RecommendedNumConfirmations)
+        else if (status.depth < nConfirmations)
         {
             status.status = TransactionStatus::Confirming;
         }

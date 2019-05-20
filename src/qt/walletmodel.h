@@ -158,7 +158,7 @@ public:
 
     // Check address for validity
     bool validateAddress(const QString &address, bool allow_stakeonly=false);
-
+    bool validateColdStakeAddress(const QString &address);
     // Return status record for SendCoins, contains error id + information
     struct SendCoinsReturn
     {

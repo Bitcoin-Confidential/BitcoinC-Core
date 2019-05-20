@@ -47,11 +47,10 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     hlayout->setContentsMargins(0,0,0,0);
 
     hlayout->setSpacing(5);
-    hlayout->addSpacing(26);
 
     watchOnlyWidget = new QComboBox(this);
-    watchOnlyWidget->setFixedWidth(24);
-    watchOnlyWidget->addItem("", TransactionFilterProxy::WatchOnlyFilter_All);
+    watchOnlyWidget->setFixedWidth(40);
+    watchOnlyWidget->addItem(tr("All"), TransactionFilterProxy::WatchOnlyFilter_All);
     watchOnlyWidget->addItem(platformStyle->BitcoinCColorIcon(":/icons/eye_plus"), "", TransactionFilterProxy::WatchOnlyFilter_Yes);
     watchOnlyWidget->addItem(platformStyle->BitcoinCColorIcon(":/icons/eye_minus"), "", TransactionFilterProxy::WatchOnlyFilter_No);
     hlayout->addWidget(watchOnlyWidget);
@@ -131,13 +130,7 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     vlayout->addWidget(spacer);
     vlayout->addWidget(view);
     vlayout->setSpacing(0);
-    int width = view->verticalScrollBar()->sizeHint().width();
-    // Cover scroll bar width with spacing
-    if (platformStyle->getUseExtraSpacing()) {
-        hlayout->addSpacing(width+2);
-    } else {
-        hlayout->addSpacing(width);
-    }
+
     // Always show scroll bar
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     view->setTabKeyNavigation(false);
@@ -173,12 +166,16 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, bool fStaki
     contextMenu->addAction(copyLabelAction);
     contextMenu->addAction(copyAmountAction);
     contextMenu->addAction(copyTxIDAction);
-    contextMenu->addAction(copyTxHexAction);
-    contextMenu->addAction(copyTxPlainText);
+    if( !fStaking ){
+//        contextMenu->addAction(copyTxHexAction); // Disable for now, requires reworks, does not work with mapRecord txes
+        contextMenu->addAction(copyTxPlainText);
+    }
     contextMenu->addAction(showDetailsAction);
     contextMenu->addSeparator();
-    contextMenu->addAction(bumpFeeAction);
-    contextMenu->addAction(abandonAction);
+    if( !fStaking ){
+        contextMenu->addAction(bumpFeeAction);
+        contextMenu->addAction(abandonAction);
+    }
     contextMenu->addAction(editLabelAction);
 
     mapperThirdPartyTxUrls = new QSignalMapper(this);
@@ -464,13 +461,6 @@ void TransactionView::abandonTx()
 
     // Abandon the wallet transaction over the walletModel
     model->wallet().abandonTransaction(hash);
-
-    // Update the table
-    if( fStaking ){
-        model->getStakingTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, false);
-    }else{
-        model->getTransactionTableModel()->updateTransaction(hashQStr, CT_UPDATED, false);
-    }
 }
 
 void TransactionView::bumpFee()
@@ -760,8 +750,15 @@ void TransactionView::computeTotalSum()
 
     for ( int nRow = 0; nRow < txModel->rowCount(QModelIndex()); ++nRow ){
         QModelIndex index = txModel->index(nRow, nColumn);
+
+        // Don't count orphans
+        if( fStaking && txModel->index(nRow, 0).data(TransactionTableModel::StatusRole).toInt() == TransactionStatus::Abandoned  ){
+            continue;
+        }
+
         nAmount += index.data(TransactionTableModel::AmountRole).toLongLong();
         QModelIndex indexFiltered = transactionProxyModel->mapFromSource(index);
+
         if( !indexFiltered.isValid() ){
             continue;
         }
