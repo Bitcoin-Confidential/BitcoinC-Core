@@ -40,7 +40,7 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
 
     setWindowTitle(QString("HD Wallet Setup - %1").arg(QString::fromStdString(wm->wallet().getWalletName())));
 //    ui->edtPath->setPlaceholderText(tr("Path to derive account from, if not using default. (optional, default=%1)").arg(QString::fromStdString(GetDefaultAccountPath())));
-    ui->edtPassword->setPlaceholderText(tr("Enter a passphrase to protect your Recovery Phrase. (optional)"));
+    ui->edtPassword->setPlaceholderText(tr("Enter an optional passphrase to protect your Recovery Phrase. (This is not a wallet password.)"));
 #if QT_VERSION >= 0x050200
     ui->tbxMnemonic->setPlaceholderText(tr("Enter your BIP39 compliant Recovery Phrase/Mnemonic."));
 #endif
@@ -52,10 +52,9 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
 
     if (!wm->wallet().isDefaultAccountSet()) {
         ui->lblHelp->setText(QString(
-            "Wallet %1 has no HD account loaded.\n"
-            "An account must first be loaded in order to generate receiving addresses.\n"
-            "Importing a recovery phrase will load a new master key and account.\n"
-            "You can generate a new recovery phrase from the 'Create' page below.\n").arg(QString::fromStdString(wm->wallet().getWalletName())));
+            "Wallet %1 needs a mnemonic(recovery phrase) created in order to receive funds.\n"
+            "Create a new recovery phrase with the 'Create' tab, Generate, copy, and paste in the 'Import' tab.\n"
+            "If you are recovering a backup, enter your recovery phrase in the 'Import' tab.\n").arg(QString::fromStdString(wm->wallet().getWalletName())));
     } else {
         ui->lblHelp->setText(QString(
             "Wallet %1 already has an HD account loaded.\n"
