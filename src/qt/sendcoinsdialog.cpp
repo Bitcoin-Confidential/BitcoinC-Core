@@ -547,7 +547,7 @@ void SendCoinsDialog::on_sendButton_clicked()
 
     // Update Addressbook
     for (const auto &rcp : currentTransaction.getRecipients()) {
-        if (rcp.m_coldstake) {
+        if (rcp.m_coldstake || rcp.label.isEmpty() ) {
             continue;
         }
         sCommand = "manageaddressbook newsend ";
