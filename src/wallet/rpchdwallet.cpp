@@ -5408,7 +5408,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw std::runtime_error(
+        throw std::runtime_error(strprintf(
             "walletsettings \"setting\" {...}\n"
             "\nManage wallet settings.\n"
             "Each settings group is set as a block, unspecified options will be set to the default value.\n"
@@ -5422,9 +5422,8 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             "}\n"
             "\"stakingoptions\" {\n"
             "  \"enabled\"                   (bool, optional, default=true) Toggle staking enabled on this wallet.\n"
-            "  \"stakecombinethreshold\"     (amount, optional, default=1000) Join outputs below this value.\n"
-            "  \"stakesplitthreshold\"       (amount, optional, default=2000) Split outputs above this value.\n"
-//            "  \"foundationdonationpercent\" (int, optional, default=0) Set the percentage of each block reward to donate to the foundation.\n"
+            "  \"stakecombinethreshold\"     (amount, optional, default=%d) Join outputs below this value.\n"
+            "  \"stakesplitthreshold\"       (amount, optional, default=%d) Split outputs above this value.\n"
             "  \"rewardaddress\"             (string, optional, default=none) An address which the user portion of the block reward gets sent to.\n"
             "}\n"
             "\"stakelimit\" {\n"
@@ -5436,8 +5435,8 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             "Set coldstaking changeaddress extended public key:\n"
             + HelpExampleCli("walletsettings", "changeaddress \"{\\\"coldstakingaddress\\\":\\\"extpubkey\\\"}\"") + "\n"
             "Clear changeaddress settings\n"
-            + HelpExampleCli("walletsettings", "changeaddress \"{}\"") + "\n"
-        );
+            + HelpExampleCli("walletsettings", "changeaddress \"{}\"") + "\n",
+        pwallet->nStakeCombineThresholdDefault, pwallet->nStakeSplitThresholdDefault));
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
