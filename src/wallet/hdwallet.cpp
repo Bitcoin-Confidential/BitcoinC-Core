@@ -348,7 +348,7 @@ bool CHDWallet::ProcessStakingSettings(std::string &sError)
     }
 
     if (nStakeSplitThreshold < nStakeCombineThreshold * 2 || nStakeSplitThreshold > nStakeSplitThresholdDefault * 2 * COIN) {
-        AppendError(sError, strprintf("\"stakesplitthreshold\" must be >= 2x \"stakecombinethreshold\" and <= %d.", nStakeSplitThresholdDefault));
+        AppendError(sError, strprintf("\"stakesplitthreshold\" must be >= 2x \"stakecombinethreshold\" and <= %d.", nStakeSplitThresholdDefault * 2));
         nStakeSplitThreshold = nStakeCombineThreshold * 2;
     }
 
