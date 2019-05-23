@@ -54,7 +54,7 @@
        <item>
         <widget class="QLabel" name="mnemonicCreateHelp">
          <property name="text">
-          <string>Write down the Recovery Phrase/Mnemonic below or generate a new one with the desired settings by clicking &quot;NEW MNEMONIC&quot;. Make sure to store it in a safe place, then click the &quot;NEXT&quot; button to continue with the wallet creation.</string>
+          <string>Write down the Recovery Phrase/Mnemonic below or generate a new one with the desired settings by clicking &quot;NEW MNEMONIC&quot;. Store this phrase in a safe place. The clipboard will be cleared to ensure you have it recorded.  If you are recovering a backup, enter the Recovery Phrase/Mnemonic on the next screen.  Click the &quot;NEXT&quot; button to continue with the wallet creation.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
