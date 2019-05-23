@@ -135,7 +135,7 @@ void MnemonicDialog::on_btnImport_clicked()
     sCommand += " \"" + ui->tbxMnemonic->toPlainText() + "\"";
 
     QString sPassword = ui->edtPassword->text();
-    sCommand += " \"" + sPassword + "\" false \"Master Key\" \"Default Account\" -1";
+    sCommand += " \"" + sPassword + "\" false \"Master Key\" \"Default Account\" 0";
 
     UniValue rv;
     if (walletModel->tryCallRpc(sCommand, rv)) {
