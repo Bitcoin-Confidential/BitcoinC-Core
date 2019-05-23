@@ -118,7 +118,7 @@ void MnemonicDialog::on_btnCancel_clicked()
     if( fInitialSetup ){
         // confirmation dialog
         QMessageBox::StandardButton btnRetVal = QMessageBox::question(this, tr("Confirm wallet creation cancel"),
-            tr("Really cancel the wallet creation?") + "<br><br>" + tr("This is only recommended for advanced users to import with custom settings in the debug console or with the RPC interface."),
+            tr("Are you sure you want to cancel the wallet creation?") + "<br><br>" + tr("This is only recommended for advanced users to import with custom settings in the debug console or with the RPC interface."),
             QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
 
         if(btnRetVal != QMessageBox::Yes)
