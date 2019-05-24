@@ -263,36 +263,37 @@ void StartThreadStakeMiner()
 
     fStopMinerProc = false;
 
-    if (!gArgs.GetBoolArg("-staking", true)) {
-        LogPrintf("Staking disabled\n");
-    } else {
-        auto vpwallets = GetWallets();
-        size_t nWallets = vpwallets.size();
+    auto vpwallets = GetWallets();
+    size_t nWallets = vpwallets.size();
 
-        if (nWallets < 1) {
-            return;
-        }
+    if (nWallets < 1) {
+        return;
+    }
 
-        UniValue rv(UniValue::VOBJ);
+    UniValue rv(UniValue::VOBJ);
 
-        size_t nThreads = std::min(nWallets, (size_t)gArgs.GetArg("-stakingthreads", 1));
-        size_t nPerThread = nWallets / nThreads;
+    size_t nThreads = std::min(nWallets, (size_t)gArgs.GetArg("-stakingthreads", 1));
+    size_t nPerThread = nWallets / nThreads;
 
-        for (size_t i = 0; i < nThreads; ++i) {
-            size_t nStart = nPerThread * i;
-            size_t nEnd = (i == nThreads-1) ? nWallets : nPerThread * (i+1);
+    for (size_t i = 0; i < nThreads; ++i) {
+        size_t nStart = nPerThread * i;
+        size_t nEnd = (i == nThreads-1) ? nWallets : nPerThread * (i+1);
 
-            CHDWallet *pwallet = GetBitcoinCWallet(vpwallets[i].get());
-            if( pwallet->GetSetting("stakingstatus", rv) && rv.isObject() && rv.exists("enabled") && rv["enabled"].getBool()){
-                StakeThread *t = new StakeThread();
-                vStakeThreads.push_back(t);
-                pwallet->nStakeThread = i;
-                t->sName = strprintf("miner%d", i);
-                t->thread = std::thread(&TraceThread<std::function<void()> >, t->sName.c_str(), std::function<void()>(std::bind(&ThreadStakeMiner, i, vpwallets, nStart, nEnd)));
-            }
+        CHDWallet *pwallet = GetBitcoinCWallet(vpwallets[i].get());
+        if( pwallet->GetSetting("stakingstatus", rv) && rv.isObject() && rv.exists("enabled") && rv["enabled"].getBool()){
+            StakeThread *t = new StakeThread();
+            pwallet->nIsStaking = CHDWallet::NOT_STAKING_INIT;
+            vStakeThreads.push_back(t);
+            pwallet->nStakeThread = i;
+            t->sName = strprintf("miner%d", i);
+            t->thread = std::thread(&TraceThread<std::function<void()> >, t->sName.c_str(), std::function<void()>(std::bind(&ThreadStakeMiner, i, vpwallets, nStart, nEnd)));
+        }else if(!gArgs.GetBoolArg("-staking", true)){
+            pwallet->nIsStaking = CHDWallet::NOT_STAKING_DISABLED;
+        }else{
+            pwallet->nIsStaking = CHDWallet::NOT_STAKING_STOPPED;
         }
     }
-};
+}
 
 void StopThreadStakeMiner()
 {
@@ -381,13 +382,19 @@ void ThreadStakeMiner(size_t nThreadID, std::vector<std::shared_ptr<CWallet>> &v
             {
                 fIsStaking = false;
                 LogPrint(BCLog::POS, "%s: TryToSync\n", __func__);
-                condWaitFor(nThreadID, 30000);
+                condWaitFor(nThreadID, 2000);
                 continue;
             };
         };
 
         if (g_connman->vNodes.empty() || IsInitialBlockDownload())
         {
+            for (size_t i = nStart; i < nEnd; ++i)
+            {
+                auto pwallet = GetBitcoinCWallet(vpwallets[i].get());
+                pwallet->nIsStaking = CHDWallet::NOT_STAKING_NOT_SYCNED;
+            }
+
             fIsStaking = false;
             fTryToSync = true;
             LogPrint(BCLog::POS, "%s: IsInitialBlockDownload\n", __func__);
@@ -404,6 +411,12 @@ void ThreadStakeMiner(size_t nThreadID, std::vector<std::shared_ptr<CWallet>> &v
 
         if (nBestHeight < GetNumBlocksOfPeers()-1)
         {
+            for (size_t i = nStart; i < nEnd; ++i)
+            {
+                auto pwallet = GetBitcoinCWallet(vpwallets[i].get());
+                pwallet->nIsStaking = CHDWallet::NOT_STAKING_NOT_SYCNED;
+            }
+
             fIsStaking = false;
             LogPrint(BCLog::POS, "%s: nBestHeight < GetNumBlocksOfPeers(), %d, %d\n", __func__, nBestHeight, GetNumBlocksOfPeers());
             condWaitFor(nThreadID, nMinerSleep * 4);
