@@ -476,9 +476,9 @@ public:
 
         chainTxData = ChainTxData{
             // Data from rpc: getchaintxstats 4096 58267bdf935a2e0716cb910d055b8cdaa019089a5f71c3db90765dc7101dc5dc
-            /* nTime    */ 1558381184,
-            /* nTxCount */ 37560,
-            /* dTxRate  */ 0.01794552086842025
+            /* nTime    */ 1558696848,
+            /* nTxCount */ 43430,
+            /* dTxRate  */ 0.01802891809034867
         };
 
 
