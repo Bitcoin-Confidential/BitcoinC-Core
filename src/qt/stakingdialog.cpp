@@ -285,7 +285,7 @@ void StakingDialog::updateStakingUI(bool fForce)
                     strNotStakingReason = tr("Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
                     break;
                 case CHDWallet::NOT_STAKING_DISABLED:
-                    strNotStakingReason = tr("Staking is disabled. Set the config paramter \"-staking=1\" in the bitcoinc.conf to enable it.");
+                    strNotStakingReason = tr("Staking is disabled. Set the config paramter \"staking=1\" in the bitcoinc.conf to enable it.");
                     break;
                 default:
                     break;
