@@ -4034,7 +4034,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
                 objStaking.pushKV("message", "No staking coins with minimum 225 confirmations available.");
                 break;
             case CHDWallet::NOT_STAKING_LOCKED:
-                objStaking.pushKV("message", "Wallet is locked. To start staking unlock wallet for staking only. To unlock wallet click the lock icon in the bottom right hand portion of the window or use the \"walletpassphrase\" RPC/Console command.");
+                objStaking.pushKV("message", "Wallet is locked. To start staking and unlock wallet for staking only use \"walletpassphrase <passphrase> <timeout> [stakingonly]\".");
                 break;
             case CHDWallet::NOT_STAKING_LIMITED:
                 objStaking.pushKV("message", "limited");
