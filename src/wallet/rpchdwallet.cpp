@@ -5702,6 +5702,8 @@ static UniValue walletsettings(const JSONRPCRequest &request)
                 pwallet->nIsStaking = CHDWallet::NOT_STAKING_STOPPED;
             }
 
+            return json;
+
         } else {
             throw JSONRPCError(RPC_INVALID_PARAMETER, _("New state must be bool."));
         }
