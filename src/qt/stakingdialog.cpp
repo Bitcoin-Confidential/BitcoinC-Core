@@ -285,7 +285,7 @@ void StakingDialog::updateStakingUI(bool fForce)
                     strNotStakingReason = tr("Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
                     break;
                 case CHDWallet::NOT_STAKING_DISABLED:
-                    strNotStakingReason = tr("Staking is disabled.");
+                    strNotStakingReason = tr("Staking is disabled. Set the config paramter \"-staking=1\" in the bitcoinc.conf to enable it.");
                     break;
                 default:
                     break;
@@ -306,16 +306,15 @@ void StakingDialog::updateStakingUI(bool fForce)
             ui->lblHotStakingError->setText(strError);
         }
 
-        bool fShowHotStakingElements = fLocked ? false : fHotStakingEnabled || fHotStakingActive;
-        bool fShowStakingWeight = nWeight > 0;
+        bool fShowHotStakingElements = strNotStakingReason.isEmpty();
 
         ui->lblHotStakingAmountLabel->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingWalletWeightLabel->setVisible(fShowStakingWeight);
-        ui->lblHotStakingExpectedTimeLabel->setVisible(fShowStakingWeight);
+        ui->lblHotStakingWalletWeightLabel->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingExpectedTimeLabel->setVisible(fShowHotStakingElements);
 
         ui->lblHotStakingAmount->setVisible(fShowHotStakingElements);
-        ui->lblHotStakingWalletWeight->setVisible(fShowStakingWeight);
-        ui->lblHotStakingExpectedTime->setVisible(fShowStakingWeight);
+        ui->lblHotStakingWalletWeight->setVisible(fShowHotStakingElements);
+        ui->lblHotStakingExpectedTime->setVisible(fShowHotStakingElements);
 
         StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive, fStakingEnabled);
 
