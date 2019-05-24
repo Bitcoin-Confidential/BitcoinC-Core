@@ -268,7 +268,7 @@ void StakingDialog::updateStakingUI(bool fForce)
                     strNotStakingReason = tr("Staking not initialized yet. Wait a moment.");
                     break;
                 case CHDWallet::NOT_STAKING_STOPPED:
-                    strNotStakingReason = tr("Staking is stopped. Press the enable button of the \"STAKING\" section.");
+                    strNotStakingReason = tr("Staking is stopped. Press the start button above to enable staking.");
                     break;
                 case CHDWallet::NOT_STAKING_BALANCE:
                     strNotStakingReason = tr("No stakable funds available. Use the \"Convert to staking\" tab to convert funds for staking.");
