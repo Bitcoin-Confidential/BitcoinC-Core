@@ -280,7 +280,7 @@ void StartThreadStakeMiner()
         size_t nEnd = (i == nThreads-1) ? nWallets : nPerThread * (i+1);
 
         CHDWallet *pwallet = GetBitcoinCWallet(vpwallets[i].get());
-        if( pwallet->GetSetting("stakingstatus", rv) && rv.isObject() && rv.exists("enabled") && rv["enabled"].getBool()){
+        if( gArgs.GetBoolArg("-staking", true) && pwallet->GetSetting("stakingstatus", rv) && rv.isObject() && rv.exists("enabled") && rv["enabled"].getBool()){
             StakeThread *t = new StakeThread();
             pwallet->nIsStaking = CHDWallet::NOT_STAKING_INIT;
             vStakeThreads.push_back(t);
