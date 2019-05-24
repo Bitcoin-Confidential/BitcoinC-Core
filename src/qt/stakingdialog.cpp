@@ -228,8 +228,8 @@ void StakingDialog::updateStakingUI(bool fForce)
             fHotStakingEnabled = rv["enabled"].get_bool();
         }
 
-        if (rv["staking"].isBool()) {
-            fHotStakingActive = rv["staking"].get_bool();
+        if (rv["staking"]["active"].isBool()) {
+            fHotStakingActive = rv["staking"]["active"].get_bool();
         }
 
         if (rv["amount_in_stakeable_script"].isNum()) {
@@ -260,9 +260,9 @@ void StakingDialog::updateStakingUI(bool fForce)
             }
         }
 
-        if( rv.exists("notStaking") ){
+        if( rv["staking"].get_obj().exists("reason") ){
 
-            CHDWallet::eStakingState stakingState = static_cast<CHDWallet::eStakingState>(rv["notStaking"]["error"].get_int64());
+            CHDWallet::eStakingState stakingState = static_cast<CHDWallet::eStakingState>(rv["staking"]["reason"].get_int64());
             switch (stakingState) {
                 case CHDWallet::NOT_STAKING_INIT:
                     strNotStakingReason = tr("Staking not initialized yet. Wait a moment.");

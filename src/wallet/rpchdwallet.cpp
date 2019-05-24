@@ -4011,44 +4011,47 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     uint64_t nExpectedTimeColdStaking = nColdStakingWeight > 0 ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nColdStakingWeight) : 0;
 
     obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && fStakingEnabled); // enabled on node, vs enabled on wallet
-    obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
 
-    UniValue notStaking(UniValue::VOBJ);
+    UniValue objStaking(UniValue::VOBJ);
+
+    objStaking.pushKV("active", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
+
     if( pwallet->nIsStaking != CHDWallet::IS_STAKING ){
 
-        notStaking.pushKV("error", pwallet->nIsStaking );
+        objStaking.pushKV("reason", pwallet->nIsStaking );
 
         switch (pwallet->nIsStaking) {
             case CHDWallet::NOT_STAKING_INIT:
-                notStaking.pushKV("message", "Staking not initialized yet. Wait a moment.");
+                objStaking.pushKV("message", "Staking not initialized yet. Wait a moment.");
                 break;
             case CHDWallet::NOT_STAKING_STOPPED:
-                notStaking.pushKV("message", "Staking is stopped. Enable it with the \"walletsettings stakingstatus true\" RPC/CLI command.");
+                objStaking.pushKV("message", "Staking is stopped. Enable it with the \"walletsettings stakingstatus true\" RPC/CLI command.");
                 break;
             case CHDWallet::NOT_STAKING_BALANCE:
-                notStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the \"Convert to staking\" tab of the \"Staking\" page or use the \"sendtypeto\" RPC/Console command.");
+                objStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the \"Convert to staking\" tab of the \"Staking\" page or use the \"sendtypeto\" RPC/Console command.");
                 break;
             case CHDWallet::NOT_STAKING_DEPTH:
-                notStaking.pushKV("message", "No staking coins with minimum 225 confirmations available.");
+                objStaking.pushKV("message", "No staking coins with minimum 225 confirmations available.");
                 break;
             case CHDWallet::NOT_STAKING_LOCKED:
-                notStaking.pushKV("message", "Wallet is locked. To start staking unlock wallet for staking only. To unlock wallet click the lock icon in the bottom right hand portion of the window or use the \"walletpassphrase\" RPC/Console command.");
+                objStaking.pushKV("message", "Wallet is locked. To start staking unlock wallet for staking only. To unlock wallet click the lock icon in the bottom right hand portion of the window or use the \"walletpassphrase\" RPC/Console command.");
                 break;
             case CHDWallet::NOT_STAKING_LIMITED:
-                notStaking.pushKV("message", "limited");
+                objStaking.pushKV("message", "limited");
                 break;
             case CHDWallet::NOT_STAKING_NOT_SYCNED:
-                notStaking.pushKV("message", "Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
+                objStaking.pushKV("message", "Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
                 break;
             case CHDWallet::NOT_STAKING_DISABLED:
-                notStaking.pushKV("message", "Staking is disabled.");
+                objStaking.pushKV("message", "Staking is disabled.");
                 break;
             default:
                 break;
         }
 
-        obj.pushKV("notStaking", notStaking);
     }
+
+    obj.pushKV("staking", objStaking);
 
     obj.pushKV("errors", GetWarnings("statusbar"));
 
