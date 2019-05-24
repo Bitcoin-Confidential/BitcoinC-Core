@@ -40,9 +40,9 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
 
     setWindowTitle(QString("HD Wallet Setup - %1").arg(QString::fromStdString(wm->wallet().getWalletName())));
 //    ui->edtPath->setPlaceholderText(tr("Path to derive account from, if not using default. (optional, default=%1)").arg(QString::fromStdString(GetDefaultAccountPath())));
-    ui->edtPassword->setPlaceholderText(tr("Enter a passphrase to protect your Recovery Phrase. (optional)"));
+    ui->edtPassword->setPlaceholderText(tr("Optionally enter a passphrase to protect the Recovery Phrase. (This is not a wallet password.)"));
 #if QT_VERSION >= 0x050200
-    ui->tbxMnemonic->setPlaceholderText(tr("Enter your BIP39 compliant Recovery Phrase/Mnemonic."));
+    ui->tbxMnemonic->setPlaceholderText(tr("Enter the Recovery Phrase/Mnemonic."));
 #endif
 
 #if ENABLE_USBDEVICE
@@ -50,29 +50,54 @@ MnemonicDialog::MnemonicDialog(QWidget *parent, WalletModel *wm) :
 //    ui->tabWidget->setTabEnabled(2, false);
 #endif
 
-    if (!wm->wallet().isDefaultAccountSet()) {
-        ui->lblHelp->setText(QString(
-            "Wallet %1 has no HD account loaded.\n"
-            "An account must first be loaded in order to generate receiving addresses.\n"
-            "Importing a recovery phrase will load a new master key and account.\n"
-            "You can generate a new recovery phrase from the 'Create' page below.\n").arg(QString::fromStdString(wm->wallet().getWalletName())));
+    UniValue rv;
+    if (walletModel->tryCallRpc("mnemonic new '' english 32", rv)) {
+        ui->lblMnemonicOut->setText(QString::fromStdString(rv["mnemonic"].get_str()));
+    }
+
+    fInitialSetup = !wm->wallet().isDefaultAccountSet();
+
+    if ( fInitialSetup ) {
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->lblHelp->hide();
+
+        ui->btnTabCreate->setEnabled(false);
+        ui->btnTabImport->setEnabled(false);
+        ui->btnTabCreate->setChecked(true);
+        ui->btnTabImport->setChecked(false);
+
+        ui->btnCancel->hide();
+
+        ui->btnImport->setText(tr("Create wallet"));
+
+//        ui->lblHelp->setText(QString(
+//            "Wallet %1 needs a mnemonic(recovery phrase) created in order to receive funds.\n"
+//            "Create a new recovery phrase with the 'Create' tab, Generate, copy, and paste in the 'Import' tab.\n"
+//            "If you are recovering a backup, enter your recovery phrase in the 'Import' tab.\n").arg(QString::fromStdString(wm->wallet().getWalletName())));
     } else {
-        ui->lblHelp->setText(QString(
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->lblHelp->show();
+        ui->btnNext->hide();
+        ui->btnBack->hide();
+        ui->lblWarning->setText(QString(
             "Wallet %1 already has an HD account loaded.\n"
-            "By importing another recovery phrase a new account will be created and set as the default.\n"
-            "The wallet will receive on addresses from the new and existing account/s.\n"
-            "New addresses will be generated from the new account.\n").arg(QString::fromStdString(wm->wallet().getWalletName())));
+            "By importing another recovery phrase a new account will be created and set as the default. "
+            "The wallet will receive on addresses from the new and existing accounts. "
+            "New addresses will be generated from the new account.").arg(QString::fromStdString(wm->wallet().getWalletName())));
+        ui->mnemonicCreateHelp->setText(tr("Generate a new Recovery Phrase/Mnemonic with the desired settings by clicking \"NEW MNEMONIC\"."));
+
+        tabButtons.addButton(ui->btnTabCreate, 0);
+        tabButtons.addButton(ui->btnTabImport, 1);
+
+        ui->btnTabImport->setText(tr("Import a mnemonic"));
+
+        connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
     }
 
     ui->cbxLanguage->clear();
     for (int l = 1; l < WLL_MAX; ++l) {
         ui->cbxLanguage->addItem(mnLanguagesDesc[l], QString(mnLanguagesTag[l]));
     }
-
-    tabButtons.addButton(ui->btnTabImport, 0);
-    tabButtons.addButton(ui->btnTabCreate, 1);
-
-    connect(&tabButtons, SIGNAL(buttonClicked(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)));
 
     ui->importChainLabel->hide();
     ui->chkImportChain->hide();
@@ -90,9 +115,18 @@ MnemonicDialog::~MnemonicDialog()
 
 void MnemonicDialog::on_btnCancel_clicked()
 {
+    if( fInitialSetup ){
+        // confirmation dialog
+        QMessageBox::StandardButton btnRetVal = QMessageBox::question(this, tr("Confirm wallet creation cancel"),
+            tr("Are you sure you want to cancel the wallet creation?") + "<br><br>" + tr("This is only recommended for advanced users to import with custom settings in the debug console or with the RPC interface."),
+            QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
+
+        if(btnRetVal != QMessageBox::Yes)
+            return;
+    }
+
     close();
-    return;
-};
+}
 
 void MnemonicDialog::on_btnImport_clicked()
 {
@@ -101,7 +135,7 @@ void MnemonicDialog::on_btnImport_clicked()
     sCommand += " \"" + ui->tbxMnemonic->toPlainText() + "\"";
 
     QString sPassword = ui->edtPassword->text();
-    sCommand += " \"" + sPassword + "\" false \"Master Key\" \"Default Account\" -1";
+    sCommand += " \"" + sPassword + "\" false \"Master Key\" \"Default Account\" 0";
 
     UniValue rv;
     if (walletModel->tryCallRpc(sCommand, rv)) {
@@ -126,10 +160,29 @@ void MnemonicDialog::on_btnGenerate_clicked()
 
     UniValue rv;
     if (walletModel->tryCallRpc(sCommand, rv)) {
-        ui->tbxMnemonicOut->setText(QString::fromStdString(rv["mnemonic"].get_str()));
+        ui->lblMnemonicOut->setText(QString::fromStdString(rv["mnemonic"].get_str()));
     }
 
-    return;
+    ui->btnNext->setEnabled(true);
+}
+
+void MnemonicDialog::on_btnNext_clicked()
+{
+    // Clear the mnemonic from the clipboard to force the user to at least copy it somewhere else before
+    GUIUtil::setClipboard("");
+    // Show the import tab
+    ui->stackedWidget->setCurrentIndex(1);
+
+    ui->btnTabCreate->setChecked(false);
+    ui->btnTabImport->setChecked(true);
+}
+
+void MnemonicDialog::on_btnBack_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+
+    ui->btnTabCreate->setChecked(true);
+    ui->btnTabImport->setChecked(false);
 }
 
 //void MnemonicDialog::on_btnImportFromHwd_clicked()

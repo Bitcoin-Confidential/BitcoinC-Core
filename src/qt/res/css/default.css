@@ -399,7 +399,6 @@ QLineEdit:selected{
 	border:3px solid #BC9427;
 }
 
-
 QValidatedLineEdit:disabled,
 QComboBox:disabled,
 QLineEdit:disabled,
@@ -427,6 +426,11 @@ QPushButton {
 	font-weight: bold;
     border-radius: 10px;
 	text-transform: uppercase;
+}
+QPushButton:disabled {
+	/* Global Button Style */
+    background-color: #BC9427;
+    color: #DCDCDC;
 }
 QPushButton:hover {
     background-color: #BC9427;
@@ -826,6 +830,64 @@ QDialog#SignVerifyMessageDialog QPushButton#clearButton_VM:hover {
 QDialog#SignVerifyMessageDialog QPushButton#clearButton_VM:pressed {
 	border: 1px solid #9e9e9e;
 }
+
+/**************************** MNEMONIC DIALOG *******************************/
+
+QWidget#MnemonicDialog QPushButton#btnCancel,
+QWidget#MnemonicDialog QPushButton#btnCancel2,
+QWidget#MnemonicDialog QPushButton#btnBack {
+	background-color: transparent;
+	border: 2px solid #707780;
+	color: #707780;
+}
+
+QWidget#MnemonicDialog QPushButton#btnCancel:hover,
+QWidget#MnemonicDialog QPushButton#btnCancel2:hover,
+QWidget#MnemonicDialog QPushButton#btnBack:hover {
+    background-color: #707780;
+    color: #232323;
+}
+
+QWidget#MnemonicDialog QPlainTextEdit#tbxMnemonic,
+QWidget#MnemonicDialog QLabel#lblMnemonicOut {
+    background-color: #cecece;
+    min-height: 120px;
+    padding: 10px 20px 10px 20px;
+    margin: 20px 0px 40px 0px;
+    border: 1px solid #9e9e9e;
+    border-radius: 20px;
+    font-family: "Lato";
+    font-weight: bold;
+    font-size: 20px;
+    color: #8c6d1a;
+}
+
+QWidget#MnemonicDialog QLineEdit#edtPassword{
+    min-width: 560px;
+}
+
+QWidget#MnemonicDialog QLabel#lblHelp,
+QWidget#MnemonicDialog QLabel#mnemonicCreateHelp{
+    font-size: 16px;
+}
+
+QWidget#MnemonicDialog QLabel#lblPasswordLabel,
+QWidget#MnemonicDialog QLabel#lblWarningLabel,
+QWidget#MnemonicDialog QLabel#lblEntropyLabel,
+QWidget#MnemonicDialog QLabel#lblLanguageLabel{
+    font-family: "Lato";
+    font-weight: bold;
+    text-transform: uppercase;
+    min-height: 40px;
+}
+
+QWidget#MnemonicDialog QLabel#lblWarning{
+    text-transform: uppercase;
+    min-height: 40px;
+    color: #E1755A;
+}
+
+
 /**************************** SEND AND RECEIVE DIALOG ***********************************/
 
 QWidget#AddressBookPage {
@@ -1623,8 +1685,8 @@ QAbstractScrollArea::corner {
 #btnSignMessage:hover:checked,
 #btnVerifyMessage:hover:checked,
 /* Mnemonic dialog buttons */
-#btnTabImport:hover:checked,
-#btnTabCreate:hover:checked{
+#btnTabImport:hover:checked:!disabled,
+#btnTabCreate:hover:checked:!disabled{
     border: none;
     color: #DCDCDC;
     border-radius: 0px;
@@ -1653,8 +1715,8 @@ QAbstractScrollArea::corner {
 #btnSignMessage:hover:!checked,
 #btnVerifyMessage:hover:!checked,
 /* Mnemonic dialog buttons */
-#btnTabImport:hover:!checked,
-#btnTabCreate:hover:!checked{
+#btnTabImport:hover:!checked:!disabled,
+#btnTabCreate:hover:!checked:!disabled{
     border: none;
     color: #DCDCDC;
     border-radius: 0px;
@@ -1713,8 +1775,8 @@ QAbstractScrollArea::corner {
 #btnSignMessage:hover:pressed,
 #btnVerifyMessage:hover:pressed,
 /* Mnemonic dialog buttons */
-#btnTabImport:hover:pressed,
-#btnTabCreate:hover:pressed{
+#btnTabImport:hover:pressed:!disabled,
+#btnTabCreate:hover:pressed:!disabled{
     border: none;
     border-radius: 0px;
     border-bottom: 3px solid #FEC60D;

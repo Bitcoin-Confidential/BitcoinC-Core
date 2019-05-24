@@ -40,6 +40,8 @@ private:
     RPCThread *m_thread = nullptr;
     UniValue m_rv;
 
+    bool fInitialSetup;
+
 public:
     explicit MnemonicDialog(QWidget *parent, WalletModel *wm);
     ~MnemonicDialog();
@@ -55,6 +57,8 @@ private Q_SLOTS:
     void on_btnCancel_clicked();
     void on_btnImport_clicked();
     void on_btnGenerate_clicked();
+    void on_btnNext_clicked();
+    void on_btnBack_clicked();
 //    void on_btnImportFromHwd_clicked();
 
 private:
@@ -62,5 +66,6 @@ private:
 
     QButtonGroup tabButtons;
 };
+
 
 #endif // BITCOINC_QT_MNEMONICDIALOG_H

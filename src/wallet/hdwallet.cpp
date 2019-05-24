@@ -307,8 +307,8 @@ bool CHDWallet::ProcessStakingSettings(std::string &sError)
 
     // Set defaults
     fStakingEnabled = true;
-    nStakeCombineThreshold = 100000 * COIN;
-    nStakeSplitThreshold = 200000 * COIN;
+    nStakeCombineThreshold = nStakeCombineThresholdDefault * COIN;
+    nStakeSplitThreshold = nStakeSplitThresholdDefault * COIN;
     nMaxStakeCombine = 3;
 
     UniValue json;
@@ -342,13 +342,13 @@ bool CHDWallet::ProcessStakingSettings(std::string &sError)
         }
     }
 
-    if (nStakeCombineThreshold < 100000 * COIN || nStakeCombineThreshold > 200000 * COIN) {
-        AppendError(sError, "\"stakecombinethreshold\" must be >= 10000 and <= 200000.");
-        nStakeCombineThreshold = 100000 * COIN;
+    if (nStakeCombineThreshold < nStakeCombineThresholdDefault * COIN || nStakeCombineThreshold > nStakeCombineThresholdDefault * 2 * COIN) {
+        AppendError(sError, strprintf("\"stakecombinethreshold\" must be >= %d and <= %d.", nStakeCombineThresholdDefault, nStakeCombineThresholdDefault*2));
+        nStakeCombineThreshold = nStakeCombineThresholdDefault * COIN;
     }
 
-    if (nStakeSplitThreshold < nStakeCombineThreshold * 2 || nStakeSplitThreshold > 400000 * COIN) {
-        AppendError(sError, "\"stakesplitthreshold\" must be >= 2x \"stakecombinethreshold\" and <= 400000.");
+    if (nStakeSplitThreshold < nStakeCombineThreshold * 2 || nStakeSplitThreshold > nStakeSplitThresholdDefault * 2 * COIN) {
+        AppendError(sError, strprintf("\"stakesplitthreshold\" must be >= 2x \"stakecombinethreshold\" and <= %d.", nStakeSplitThresholdDefault * 2));
         nStakeSplitThreshold = nStakeCombineThreshold * 2;
     }
 

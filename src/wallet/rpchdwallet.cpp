@@ -3894,6 +3894,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             + HelpExampleCli("getstakinginfo", "")
             + HelpExampleRpc("getstakinginfo", ""));
 
+
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
@@ -4010,26 +4011,47 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
     uint64_t nExpectedTimeColdStaking = nColdStakingWeight > 0 ? std::max<uint64_t>(Params().GetTargetSpacing(), Params().GetTargetSpacing() * static_cast<double>(nNetworkWeight) / nColdStakingWeight) : 0;
 
     obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && fStakingEnabled); // enabled on node, vs enabled on wallet
-    obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
-    switch (pwallet->nIsStaking) {
-        case CHDWallet::NOT_STAKING_BALANCE:
-            obj.pushKV("cause", "low_balance");
-            break;
-        case CHDWallet::NOT_STAKING_DEPTH:
-            obj.pushKV("cause", "low_depth");
-            break;
-        case CHDWallet::NOT_STAKING_LOCKED:
-            obj.pushKV("cause", "locked");
-            break;
-        case CHDWallet::NOT_STAKING_LIMITED:
-            obj.pushKV("cause", "limited");
-            break;
-        case CHDWallet::NOT_STAKING_DISABLED:
-            obj.pushKV("cause", "disabled");
-            break;
-        default:
-            break;
+
+    UniValue objStaking(UniValue::VOBJ);
+
+    objStaking.pushKV("active", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
+
+    if( pwallet->nIsStaking != CHDWallet::IS_STAKING ){
+
+        objStaking.pushKV("reason", pwallet->nIsStaking );
+
+        switch (pwallet->nIsStaking) {
+            case CHDWallet::NOT_STAKING_INIT:
+                objStaking.pushKV("message", "Staking not initialized yet. Wait a moment.");
+                break;
+            case CHDWallet::NOT_STAKING_STOPPED:
+                objStaking.pushKV("message", "Staking is stopped. Enable it with the \"walletsettings stakingstatus true\" RPC/CLI command.");
+                break;
+            case CHDWallet::NOT_STAKING_BALANCE:
+                objStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the \"converttostaking\" command.");
+                break;
+            case CHDWallet::NOT_STAKING_DEPTH:
+                objStaking.pushKV("message", "No staking coins with minimum 225 confirmations available.");
+                break;
+            case CHDWallet::NOT_STAKING_LOCKED:
+                objStaking.pushKV("message", "Wallet is locked. To start staking and unlock wallet for staking only use \"walletpassphrase <passphrase> <timeout> [stakingonly]\".");
+                break;
+            case CHDWallet::NOT_STAKING_LIMITED:
+                objStaking.pushKV("message", "limited");
+                break;
+            case CHDWallet::NOT_STAKING_NOT_SYCNED:
+                objStaking.pushKV("message", "Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
+                break;
+            case CHDWallet::NOT_STAKING_DISABLED:
+                objStaking.pushKV("message", "Staking is disabled. Set the config paramter \"-staking=1\" in the bitcoinc.conf to enable it.");
+                break;
+            default:
+                break;
+        }
+
     }
+
+    obj.pushKV("staking", objStaking);
 
     obj.pushKV("errors", GetWarnings("statusbar"));
 
@@ -5408,7 +5430,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
         return NullUniValue;
 
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
-        throw std::runtime_error(
+        throw std::runtime_error(strprintf(
             "walletsettings \"setting\" {...}\n"
             "\nManage wallet settings.\n"
             "Each settings group is set as a block, unspecified options will be set to the default value.\n"
@@ -5422,9 +5444,8 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             "}\n"
             "\"stakingoptions\" {\n"
             "  \"enabled\"                   (bool, optional, default=true) Toggle staking enabled on this wallet.\n"
-            "  \"stakecombinethreshold\"     (amount, optional, default=1000) Join outputs below this value.\n"
-            "  \"stakesplitthreshold\"       (amount, optional, default=2000) Split outputs above this value.\n"
-//            "  \"foundationdonationpercent\" (int, optional, default=0) Set the percentage of each block reward to donate to the foundation.\n"
+            "  \"stakecombinethreshold\"     (amount, optional, default=%d) Join outputs below this value.\n"
+            "  \"stakesplitthreshold\"       (amount, optional, default=%d) Split outputs above this value.\n"
             "  \"rewardaddress\"             (string, optional, default=none) An address which the user portion of the block reward gets sent to.\n"
             "}\n"
             "\"stakelimit\" {\n"
@@ -5436,8 +5457,8 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             "Set coldstaking changeaddress extended public key:\n"
             + HelpExampleCli("walletsettings", "changeaddress \"{\\\"coldstakingaddress\\\":\\\"extpubkey\\\"}\"") + "\n"
             "Clear changeaddress settings\n"
-            + HelpExampleCli("walletsettings", "changeaddress \"{}\"") + "\n"
-        );
+            + HelpExampleCli("walletsettings", "changeaddress \"{}\"") + "\n",
+        pwallet->nStakeCombineThresholdDefault, pwallet->nStakeSplitThresholdDefault));
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -5677,10 +5698,14 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             pwallet->SetSetting(sSetting, json);
 
             if( !fIsEnabled && fEnable ){
+                pwallet->nIsStaking = CHDWallet::NOT_STAKING_INIT;
                 StartThreadStakeMiner();
             }else if( fIsEnabled && !fEnable ){
                 StopThreadStakeMiner();
+                pwallet->nIsStaking = CHDWallet::NOT_STAKING_STOPPED;
             }
+
+            return json;
 
         } else {
             throw JSONRPCError(RPC_INVALID_PARAMETER, _("New state must be bool."));

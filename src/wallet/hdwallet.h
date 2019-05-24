@@ -732,14 +732,16 @@ public:
     mutable std::vector<COutput> m_cached_stakeable_coins;
 
     enum eStakingState {
-        NOT_STAKING = 0,
-        IS_STAKING = 1,
-        NOT_STAKING_BALANCE = -1,
-        NOT_STAKING_DEPTH = -2,
-        NOT_STAKING_LOCKED = -3,
-        NOT_STAKING_LIMITED = -4,
-        NOT_STAKING_DISABLED = -5,
-    } nIsStaking = NOT_STAKING;
+        IS_STAKING,
+        NOT_STAKING_INIT,
+        NOT_STAKING_STOPPED,
+        NOT_STAKING_BALANCE,
+        NOT_STAKING_DEPTH,
+        NOT_STAKING_LOCKED,
+        NOT_STAKING_LIMITED,
+        NOT_STAKING_NOT_SYCNED,
+        NOT_STAKING_DISABLED,
+    } nIsStaking = NOT_STAKING_INIT;
 
     std::set<CStealthAddress> stealthAddresses;
 
@@ -758,6 +760,8 @@ public:
     bool fStakingEnabled;
     CAmount nStakeCombineThreshold;
     CAmount nStakeSplitThreshold;
+    const CAmount nStakeCombineThresholdDefault = 100000;
+    const CAmount nStakeSplitThresholdDefault = 200000;
     size_t nMaxStakeCombine = 3;
     int nWalletDevFundCedePercent;
     CBitcoinAddress rewardAddress;

@@ -874,7 +874,7 @@ UniValue importwallet(const JSONRPCRequest& request)
     LOCK2(cs_main, pwallet->cs_wallet);
 
     uiInterface.ShowProgress("", 100, false); // hide progress dialog in GUI
-    RescanWallet(*pwallet, reserver, nTimeBegin, false /* update */);
+    RescanWallet(*pwallet, reserver, 0, false /* update */);
     pwallet->MarkDirty();
 
     if( vecAirdrops.size() ){
