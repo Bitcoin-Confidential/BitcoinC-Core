@@ -221,7 +221,7 @@ void StakingDialog::updateStakingUI(bool fForce)
         // Local info
 
         bool fHotStakingEnabled = false, fHotStakingActive = false;
-        CAmount nWeight;
+        CAmount nWeight = 0;
         CAmount nAmountInStakableScript = 0;
 
         if (rv["enabled"].isBool()) {
@@ -248,26 +248,62 @@ void StakingDialog::updateStakingUI(bool fForce)
             ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()));
         }
 
-        if ( fStakingEnabled && ( (rv["errors"].isStr() && rv["errors"].get_str() != "") || (!fHotStakingActive && !nWeight) || fLocked ) ) {
+        ui->lblHotStakingError->hide();
 
+        QString strNotStakingReason;
+
+        if( !fHotStakingActive && !nWeight ){
+            if( fHotStakingEnabled && !nAmountInStakableScript ){
+                strNotStakingReason = tr("No stakable funds available. Use the \"Convert to staking\" tab to convert funds for staking.");
+            }else{
+                strNotStakingReason = tr("No eligible staking outputs available. Staking funds need to have 225 confirmations to be eligible.");
+            }
+        }
+
+        if( rv.exists("notStaking") ){
+
+            CHDWallet::eStakingState stakingState = static_cast<CHDWallet::eStakingState>(rv["notStaking"]["error"].get_int64());
+            switch (stakingState) {
+                case CHDWallet::NOT_STAKING_INIT:
+                    strNotStakingReason = tr("Staking not initialized yet. Wait a moment.");
+                    break;
+                case CHDWallet::NOT_STAKING_STOPPED:
+                    strNotStakingReason = tr("Staking is stopped. Press the enable button of the \"STAKING\" section.");
+                    break;
+                case CHDWallet::NOT_STAKING_BALANCE:
+                    strNotStakingReason = tr("No stakable funds available. Use the \"Convert to staking\" tab to convert funds for staking.");
+                    break;
+                case CHDWallet::NOT_STAKING_DEPTH:
+                    strNotStakingReason = tr("No eligible staking outputs available. Staking funds need to have 225 confirmations to be eligible.");
+                    break;
+                case CHDWallet::NOT_STAKING_LOCKED:
+                    if( fLocked ){
+                        strNotStakingReason = tr("Wallet is locked. To start staking unlock the wallet for staking only. To unlock click the lock icon in the bottom right hand portion of the window.");
+                    }
+                    break;
+                case CHDWallet::NOT_STAKING_NOT_SYCNED:
+                    strNotStakingReason = tr("Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
+                    break;
+                case CHDWallet::NOT_STAKING_DISABLED:
+                    strNotStakingReason = tr("Staking is disabled.");
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        if( !strNotStakingReason.isEmpty() ){
             ui->lblHotStakingError->show();
+            ui->lblHotStakingError->setText(strNotStakingReason);
+        }
+
+        if ( rv["errors"].isStr() && rv["errors"].get_str() != "" )  {
 
             QString strError = QString::fromStdString(rv["errors"].get_str());
 
-            if( fLocked ){
-                strError = tr("Your wallet is locked. To start staking unlock the wallet for staking only. To do the unlock you can click on the lock icon in the bottom bar.");
-            }else if( strError == "" ){
-
-                if( !nAmountInStakableScript ){
-                    strError = tr("No stakable funds available. Use the \"Convert to staking\" tab to convert your funds for staking.");
-                }else{
-                    strError = tr("No eligible staking outputs available. Your staking funds need to have 225 confirmations to be eligible.");
-                }
-            }
-
+            ui->lblHotStakingError->show();
             ui->lblHotStakingError->setText(strError);
-        }else{
-            ui->lblHotStakingError->hide();
         }
 
         bool fShowHotStakingElements = fLocked ? false : fHotStakingEnabled || fHotStakingActive;
@@ -280,7 +316,6 @@ void StakingDialog::updateStakingUI(bool fForce)
         ui->lblHotStakingAmount->setVisible(fShowHotStakingElements);
         ui->lblHotStakingWalletWeight->setVisible(fShowStakingWeight);
         ui->lblHotStakingExpectedTime->setVisible(fShowStakingWeight);
-
 
         StakingStatusUpdate(ui->lblHotStakingEnabled, fHotStakingEnabled, fHotStakingActive, fStakingEnabled);
 

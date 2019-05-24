@@ -3894,6 +3894,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
             + HelpExampleCli("getstakinginfo", "")
             + HelpExampleRpc("getstakinginfo", ""));
 
+
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
@@ -4011,24 +4012,42 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
 
     obj.pushKV("enabled", gArgs.GetBoolArg("-staking", true) && fStakingEnabled); // enabled on node, vs enabled on wallet
     obj.pushKV("staking", fStaking && pwallet->nIsStaking == CHDWallet::IS_STAKING);
-    switch (pwallet->nIsStaking) {
-        case CHDWallet::NOT_STAKING_BALANCE:
-            obj.pushKV("cause", "low_balance");
-            break;
-        case CHDWallet::NOT_STAKING_DEPTH:
-            obj.pushKV("cause", "low_depth");
-            break;
-        case CHDWallet::NOT_STAKING_LOCKED:
-            obj.pushKV("cause", "locked");
-            break;
-        case CHDWallet::NOT_STAKING_LIMITED:
-            obj.pushKV("cause", "limited");
-            break;
-        case CHDWallet::NOT_STAKING_DISABLED:
-            obj.pushKV("cause", "disabled");
-            break;
-        default:
-            break;
+
+    UniValue notStaking(UniValue::VOBJ);
+    if( pwallet->nIsStaking != CHDWallet::IS_STAKING ){
+
+        notStaking.pushKV("error", pwallet->nIsStaking );
+
+        switch (pwallet->nIsStaking) {
+            case CHDWallet::NOT_STAKING_INIT:
+                notStaking.pushKV("message", "Staking not initialized yet. Wait a moment.");
+                break;
+            case CHDWallet::NOT_STAKING_STOPPED:
+                notStaking.pushKV("message", "Staking is stopped. Enable it with the \"walletsettings stakingstatus true\" RPC/CLI command.");
+                break;
+            case CHDWallet::NOT_STAKING_BALANCE:
+                notStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the \"Convert to staking\" tab of the \"Staking\" page or use the \"sendtypeto\" RPC/Console command.");
+                break;
+            case CHDWallet::NOT_STAKING_DEPTH:
+                notStaking.pushKV("message", "No staking coins with minimum 225 confirmations available.");
+                break;
+            case CHDWallet::NOT_STAKING_LOCKED:
+                notStaking.pushKV("message", "Wallet is locked. To start staking unlock wallet for staking only. To unlock wallet click the lock icon in the bottom right hand portion of the window or use the \"walletpassphrase\" RPC/Console command.");
+                break;
+            case CHDWallet::NOT_STAKING_LIMITED:
+                notStaking.pushKV("message", "limited");
+                break;
+            case CHDWallet::NOT_STAKING_NOT_SYCNED:
+                notStaking.pushKV("message", "Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
+                break;
+            case CHDWallet::NOT_STAKING_DISABLED:
+                notStaking.pushKV("message", "Staking is disabled.");
+                break;
+            default:
+                break;
+        }
+
+        obj.pushKV("notStaking", notStaking);
     }
 
     obj.pushKV("errors", GetWarnings("statusbar"));
@@ -5676,9 +5695,11 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             pwallet->SetSetting(sSetting, json);
 
             if( !fIsEnabled && fEnable ){
+                pwallet->nIsStaking = CHDWallet::NOT_STAKING_INIT;
                 StartThreadStakeMiner();
             }else if( fIsEnabled && !fEnable ){
                 StopThreadStakeMiner();
+                pwallet->nIsStaking = CHDWallet::NOT_STAKING_STOPPED;
             }
 
         } else {
