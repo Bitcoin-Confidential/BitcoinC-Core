@@ -4028,7 +4028,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
                 objStaking.pushKV("message", "Staking is stopped. Enable it with the \"walletsettings stakingstatus true\" RPC/CLI command.");
                 break;
             case CHDWallet::NOT_STAKING_BALANCE:
-                objStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the \"Convert to staking\" tab of the \"Staking\" page or use the \"sendtypeto\" RPC/Console command.");
+                objStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the \"converttostaking\" command.");
                 break;
             case CHDWallet::NOT_STAKING_DEPTH:
                 objStaking.pushKV("message", "No staking coins with minimum 225 confirmations available.");
@@ -4043,7 +4043,7 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
                 objStaking.pushKV("message", "Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.");
                 break;
             case CHDWallet::NOT_STAKING_DISABLED:
-                objStaking.pushKV("message", "Staking is disabled.");
+                objStaking.pushKV("message", "Staking is disabled. Set the config paramter \"-staking=1\" in the bitcoinc.conf to enable it.");
                 break;
             default:
                 break;
