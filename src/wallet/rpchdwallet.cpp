@@ -4025,16 +4025,16 @@ static UniValue getstakinginfo(const JSONRPCRequest &request)
                 objStaking.pushKV("message", "Staking not initialized yet. Wait a moment.");
                 break;
             case CHDWallet::NOT_STAKING_STOPPED:
-                objStaking.pushKV("message", "Staking is stopped. Enable it with the walletsettings stakingstatus true RPC/CLI command.");
+                objStaking.pushKV("message", "Staking is stopped. Enable it with the 'walletsettings stakingstatus true' RPC/CLI command.");
                 break;
             case CHDWallet::NOT_STAKING_BALANCE:
-                objStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the converttostaking command.");
+                objStaking.pushKV("message", "No staking coins available. Convert spending funds to staking funds with the 'converttostaking' command.");
                 break;
             case CHDWallet::NOT_STAKING_DEPTH:
                 objStaking.pushKV("message", "No staking coins with minimum 225 confirmations available.");
                 break;
             case CHDWallet::NOT_STAKING_LOCKED:
-                objStaking.pushKV("message", "Wallet is locked. To start staking and unlock wallet for staking only use walletpassphrase <passphrase> <timeout> stakingonly.");
+                objStaking.pushKV("message", "Wallet is locked. To start staking and unlock wallet for staking only use 'walletpassphrase <passphrase> <timeout> true'.");
                 break;
             case CHDWallet::NOT_STAKING_LIMITED:
                 objStaking.pushKV("message", "limited");
