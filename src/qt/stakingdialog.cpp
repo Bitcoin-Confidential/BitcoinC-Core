@@ -245,7 +245,8 @@ void StakingDialog::updateStakingUI(bool fForce)
         }
 
         if (rv["estimated_rewardfrequency"].isNum()) {
-            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()));
+//            ui->lblHotStakingExpectedTime->setText(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()));
+            ui->lblHotStakingExpectedTime->setText(QString("%1 to %2").arg(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()/3)).arg(GUIUtil::formatNiceTimeOffset(rv["estimated_rewardfrequency"].get_int64()*3)));
         }
 
         ui->lblHotStakingError->hide();
@@ -351,7 +352,8 @@ void StakingDialog::updateStakingUI(bool fForce)
         }
 
         if (objCold["estimated_rewardfrequency"].isNum()) {
-            ui->lblColdStakingFrequency->setText(GUIUtil::formatNiceTimeOffset(objCold["estimated_rewardfrequency"].get_int64()));
+//            ui->lblColdStakingFrequency->setText(GUIUtil::formatNiceTimeOffset(objCold["estimated_rewardfrequency"].get_int64()));
+            ui->lblColdStakingFrequency->setText(QString("%1 to %2").arg(GUIUtil::formatNiceTimeOffset(objCold["estimated_rewardfrequency"].get_int64()/3)).arg(GUIUtil::formatNiceTimeOffset(objCold["estimated_rewardfrequency"].get_int64()*3)));
         }
 
         if ( nAmountInColdStakableScript && !fShowColdStakingWeight ) {
