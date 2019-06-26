@@ -153,7 +153,7 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
             exampleColdStake.Set(CKeyID256(GetRandHash()));
 
             setWindowTitle(tr("Stake and ColdStake addresses"));
-            ui->labelExplanation->setText(tr(“These addresses cannot be used to receive coins from outside the wallet, such as payments or from exchanges.  Use the Receive tab to generate spending addresses.\n\n"
+            ui->labelExplanation->setText(tr("These addresses cannot be used to receive coins from outside the wallet, such as payments or from exchanges.  Use the Receive tab to generate spending addresses.\n\n"
                                              "Stake addresses, starting with \"%1\", are used to convert spending funds into staking funds in the \"Convert to Staking\" tab. Funds in Stake addresses can be either used for hot staking or the activation of ColdStaking.\n\n"
                                              "ColdStake addresses, starting with \"%2\", are used to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses when the automated ColdStaking activation from the Staking Status page is used.")
                                              .arg(exampleStake.ToString()[0]).arg(exampleColdStake.ToString()[0]));
