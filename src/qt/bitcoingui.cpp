@@ -271,7 +271,7 @@ void BitcoinGUI::createActions()
 
     sendCoinsAction = new QToolButton(this);
     sendCoinsAction->setText(tr("Send"));
-    sendCoinsAction->setStatusTip(tr("Send coins to a Bitcoin Confidential address"));
+    sendCoinsAction->setStatusTip(tr("Send coins to a Bitcoin Confidential Spending address"));
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
     sendCoinsAction->setCheckable(true);
     sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
@@ -283,7 +283,7 @@ void BitcoinGUI::createActions()
 
     receiveCoinsAction = new QToolButton(this);
     receiveCoinsAction->setText(tr("Receive"));
-    receiveCoinsAction->setStatusTip(tr("Request payments (generates QR codes and bitcoinc: URIs)"));
+    receiveCoinsAction->setStatusTip(tr("Request payments (generates Spending address QR codes and bitcoinc: URIs)"));
     receiveCoinsAction->setToolTip(receiveCoinsAction->statusTip());
     receiveCoinsAction->setCheckable(true);
     receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
