@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/openuridialog.h>
+#include "openuridialog.h"
 #include <qt/forms/ui_openuridialog.h>
 
 #include <qt/guiutil.h>

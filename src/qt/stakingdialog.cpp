@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/stakingdialog.h>
+#include "stakingdialog.h"
 #include <qt/forms/ui_stakingdialog.h>
 
 #include <qt/addresstablemodel.h>

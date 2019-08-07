@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/modaloverlay.h>
+#include "modaloverlay.h"
 #include <qt/forms/ui_modaloverlay.h>
 
 #include <qt/guiutil.h>

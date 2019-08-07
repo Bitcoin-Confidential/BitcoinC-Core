@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/transactiondesc.h>
+#include "transactiondesc.h"
 
 #include <qt/bitcoinunits.h>
 #include <qt/guiutil.h>
@@ -400,4 +400,3 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     strHTML += "</font></html>";
     return strHTML;
 }
-

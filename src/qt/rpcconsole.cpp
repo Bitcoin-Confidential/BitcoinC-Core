@@ -6,7 +6,7 @@
 #include <config/bitcoin-config.h>
 #endif
 
-#include <qt/rpcconsole.h>
+#include "rpcconsole.h"
 #include <qt/forms/ui_debugwindow.h>
 
 #include <qt/bantablemodel.h>

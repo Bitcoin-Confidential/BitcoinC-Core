@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/transactionview.h>
+#include "transactionview.h"
 
 #include <qt/addresstablemodel.h>
 #include <qt/bitcoinunits.h>
@@ -680,7 +680,7 @@ void TransactionView::focusTransaction(const uint256& txid)
 void TransactionView::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
-    if( fStaking ){ 
+    if( fStaking ){
         columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddressStaking);
     }else{
         columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddress);

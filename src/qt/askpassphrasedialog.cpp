@@ -6,7 +6,7 @@
 #include <config/bitcoin-config.h>
 #endif
 
-#include <qt/askpassphrasedialog.h>
+#include "askpassphrasedialog.h"
 #include <qt/forms/ui_askpassphrasedialog.h>
 
 #include <qt/guiconstants.h>
@@ -113,7 +113,7 @@ void AskPassphraseDialog::accept()
     newpass2.assign(ui->passEdit3->text().toStdString().c_str());
 
     secureClearPassFields();
-    
+
     bool fForStakingOnly = ui->unlockForStakingOnlyCheckBox->isChecked();
 
     switch(mode)

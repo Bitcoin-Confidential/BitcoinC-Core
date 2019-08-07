@@ -3,7 +3,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/mnemonicdialog.h>
+#include "mnemonicdialog.h"
 #include <qt/forms/ui_mnemonicdialog.h>
 
 #include <qt/guiutil.h>

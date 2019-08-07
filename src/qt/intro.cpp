@@ -7,7 +7,7 @@
 #endif
 
 #include <fs.h>
-#include <qt/intro.h>
+#include "intro.h"
 #include <qt/forms/ui_intro.h>
 
 #include <qt/guiutil.h>

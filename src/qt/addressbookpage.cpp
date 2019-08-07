@@ -6,7 +6,7 @@
 #include <config/bitcoin-config.h>
 #endif
 
-#include <qt/addressbookpage.h>
+#include "addressbookpage.h"
 #include <qt/forms/ui_addressbookpage.h>
 
 #include <qt/addresstablemodel.h>

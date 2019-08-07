@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/transactiontablemodel.h>
+#include "transactiontablemodel.h"
 
 #include <qt/addresstablemodel.h>
 #include <qt/guiconstants.h>
