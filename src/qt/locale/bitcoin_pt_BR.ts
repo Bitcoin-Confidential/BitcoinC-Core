@@ -4,12 +4,12 @@
     <message>
         <location filename="../forms/addressbookpage.ui" line="+27"/>
         <source>Enter address or label to search</source>
-        <translation>Insira o endereço ou o rótulo para Pesquisar</translation>
+        <translation>Insira o endereço ou nome para pesquisar</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Right-click to edit address or label</source>
-        <translation>Clique com o botão direito do mouse para editar endereço ou rótulo</translation>
+        <translation>Clique com o botão direito do mouse para editar endereço ou nome</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -21,17 +21,17 @@
     <message>
         <location line="-31"/>
         <source>&amp;New</source>
-        <translation>E novo</translation>
+        <translation>&amp;Novo</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>&amp;New Stake address</source>
-        <translation>&amp; Novo endereço da estaca</translation>
+        <translation>&amp;Novo endereço de stake</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>&amp;New ColdStake address</source>
-        <translation>&amp; Novo endereço ColdStake</translation>
+        <translation>&amp;Novo endereço ColdStake</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -41,7 +41,7 @@
     <message>
         <location line="+3"/>
         <source>&amp;Copy</source>
-        <translation>E copiar</translation>
+        <translation>&amp;Copiar</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -51,7 +51,7 @@
     <message>
         <location line="+3"/>
         <source>&amp;Delete</source>
-        <translation>E excluir</translation>
+        <translation>&amp;Excluir</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -61,64 +61,64 @@
     <message>
         <location line="+3"/>
         <source>&amp;Export</source>
-        <translation>E exportação</translation>
+        <translation>&amp;Exportar</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>C&amp;lose</source>
-        <translation>C&amp;lose</translation>
+        <translation>F&amp;echar</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="+84"/>
         <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Estes são os seus endereços Bitcoin confidencial para o envio de pagamentos. Verifique sempre o valor e o endereço de recebimento antes de enviar moedas.</translation>
+        <translation>Estes são os seus endereços Bitcoin Confidencial para o envio de pagamentos. Verifique sempre o valor e o endereço de recebimento antes de enviar moedas.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Choose the address to send coins to</source>
-        <translation>Escolha o endereço para enviar moedas para</translation>
+        <translation>Escolha o endereço para enviar moedas</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+22"/>
         <location line="+28"/>
         <source>C&amp;hoose</source>
-        <translation>C&amp;Hoose</translation>
+        <translation>E&amp;scolha</translation>
     </message>
     <message>
         <location line="-44"/>
         <source>Sending addresses</source>
-        <translation>Enviando endereços</translation>
+        <translation>Endereços de envio</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Choose the address to receive coins with</source>
-        <translation>Escolha o endereço para receber moedas com</translation>
+        <translation>Escolha o endereço para receber moedas</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Receiving addresses</source>
-        <translation>Receber endereços</translation>
+        <translation>Endereços de recebimento</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Estes são os seus endereços Bitcoin confidencial para receber pagamentos. É recomendável usar um novo endereço de recebimento para cada transação.</translation>
+        <translation>Estes são os seus endereços Bitcoin Confidencial para receber pagamentos. É recomendável usar um novo endereço de recebimento para cada transação.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Choose the Stake or ColdStake address</source>
-        <translation>Escolha o endereço da estaca ou do ColdStake</translation>
+        <translation>Escolha o endereço de stake ou de ColdStake</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>These are your Bitcoin Confidential Stake and ColdStake addresses.</source>
-        <translation>Estes são os seus endereços Bitcoin confidencial stake e ColdStake.</translation>
+        <translation>Estes são os seus endereços Bitcoin Confidencial stake e ColdStake.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stake and ColdStake addresses</source>
-        <translation>Endereços da estaca e da ColdStake</translation>
+        <translation>Endereços de stake e de ColdStake</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -129,24 +129,24 @@ Stake addresses, starting with &quot;%1&quot;, are used to convert spending fund
 ColdStake addresses, starting with &quot;%2&quot;, are used to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses when the automated ColdStaking activation from the Staking Status page is used.</source>
         <translation>Esses endereços não podem ser usados para receber moedas de fora da carteira, como pagamentos ou trocas.  Use a guia receber para gerar endereços de gastos.
 
-Os endereços da estaca, começando com &quot;% 1&quot;, são usados para converter fundos de gastos em fundos de Staking na aba &quot;Convert to Staking&quot;. os fundos em endereços da estaca podem ser usados para o Staking quente ou a ativação de ColdStaking.
+Os endereços de stake, começando com &quot;%1&quot;, são usados para converter fundos de gastos em fundos de Staking na aba &quot;Convert to Staking&quot;. os fundos em endereços de stake podem ser usados para o Staking quente ou a ativação de ColdStaking.
 
-Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ativar manualmente os fundos de Staking para o ColdStaking. Não há necessidade de gerar endereços ColdStake quando a ativação automatizada do ColdStaking da página status de Staking é usada.</translation>
+Os endereços da ColdStake, começando com &quot;%2&quot;, são usados para ativar manualmente os fundos de Staking para o ColdStaking. Não há necessidade de gerar endereços ColdStake quando a ativação automatizada do ColdStaking da página status de Staking é usada.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>&amp;Copy Address</source>
-        <translation>&amp; Copiar endereço</translation>
+        <translation>&amp;Copiar endereço</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy &amp;Label</source>
-        <translation>Copy &amp; Label</translation>
+        <translation>Copiar &amp;Nome</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Edit</source>
-        <translation>E editar</translation>
+        <translation>&amp;Editar</translation>
     </message>
     <message>
         <location line="+186"/>
@@ -161,12 +161,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+13"/>
         <source>Exporting Failed</source>
-        <translation>Exportando falhou</translation>
+        <translation>Exportação falhou</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>There was an error trying to save the address list to %1. Please try again.</source>
-        <translation>Houve um erro ao tentar salvar a lista de endereços como% 1. Por favor, tente novamente.</translation>
+        <translation>Houve um erro ao tentar salvar a lista de endereços como %1. Por favor, tente novamente.</translation>
     </message>
 </context>
 <context>
@@ -174,7 +174,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../addresstablemodel.cpp" line="+188"/>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -184,7 +184,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+36"/>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(sem nome)</translation>
     </message>
 </context>
 <context>
@@ -192,12 +192,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../forms/askpassphrasedialog.ui" line="+26"/>
         <source>Passphrase Dialog</source>
-        <translation>Diálogo de passphrase</translation>
+        <translation>Janela de senha</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Enter passphrase</source>
-        <translation>Digite a frase secreta</translation>
+        <translation>Digite a senha</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -207,12 +207,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+14"/>
         <source>Repeat new passphrase</source>
-        <translation>Repita a nova frase secreta</translation>
+        <translation>Repita a nova senha</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Show password</source>
-        <translation>Mostrar palavra-passe</translation>
+        <translation>Mostrar a senha</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -222,7 +222,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../askpassphrasedialog.cpp" line="+48"/>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Introduza a nova frase de acesso à carteira.&lt;br&gt;Por favor, use uma senha de &lt;b&gt;dez ou mais caracteres aleatórios&lt;/b&gt;, ou &lt;b&gt;oito ou mais palavras&lt;/b&gt;.</translation>
+        <translation>Introduza a nova senha de acesso à carteira.&lt;br&gt;Por favor, use uma senha de &lt;b&gt;dez ou mais caracteres aleatórios&lt;/b&gt;, ou &lt;b&gt;oito ou mais palavras&lt;/b&gt;.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -269,7 +269,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOIN CONFIDENTIAL&lt;/b&gt;!</source>
-        <translation>Aviso: se você criptografar sua carteira e perder sua senha, você &lt;b&gt;perderá todo o seu BITCOIN confidencial&lt;/b&gt;!</translation>
+        <translation>Aviso: se você criptografar sua carteira e perder sua senha, você &lt;b&gt;PERDERÁ TODO O SEU BITCOIN CONFIDENTIAL&lt;/b&gt;!</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -285,7 +285,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-57"/>
         <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Bitcoin Confidential from being stolen by malware infecting your computer.</source>
-        <translation>% 1 fechará agora para finalizar o processo de criptografia. Lembre-se de que criptografar sua carteira não pode proteger totalmente seu Bitcoin Confidential de ser roubado por malware infectando seu computador.</translation>
+        <translation>%1 fechará agora para finalizar o processo de criptografia. Lembre-se de que criptografar sua carteira não irá proteger totalmente seu Bitcoin Confidential de ser roubado por malware infectando seu computador.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -337,7 +337,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+48"/>
         <location line="+33"/>
         <source>Warning: The Caps Lock key is on!</source>
-        <translation>Aviso: a tecla Caps Lock está ligado!</translation>
+        <translation>Aviso: a tecla Caps Lock está ligada!</translation>
     </message>
 </context>
 <context>
@@ -383,7 +383,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Send coins to a Bitcoin Confidential Spending address</source>
-        <translation>Enviar moedas para um endereço de gastos confidenciais Bitcoin</translation>
+        <translation>Enviar moedas para um endereço de gastos Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -408,7 +408,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+7"/>
         <source>Staking</source>
-        <translation>Apostando</translation>
+        <translation>Staking</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -418,7 +418,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+25"/>
         <source>E&amp;xit</source>
-        <translation>E&amp;XIT</translation>
+        <translation>S&amp;air</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -428,12 +428,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>&amp;About %1</source>
-        <translation>&amp; Sobre% 1</translation>
+        <translation>&amp;Sobre %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show information about %1</source>
-        <translation>Mostrar informações sobre% 1</translation>
+        <translation>Mostrar informações sobre %1</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -448,17 +448,17 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+2"/>
         <source>&amp;Options...</source>
-        <translation>E opções...</translation>
+        <translation>&amp;Opções...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Modify configuration options for %1</source>
-        <translation>Modificar opções de configuração para% 1</translation>
+        <translation>Modificar opções de configuração para %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Show / Hide</source>
-        <translation>E mostrar/ocultar</translation>
+        <translation>&amp;Mostrar/Ocultar</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -468,7 +468,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+2"/>
         <source>&amp;Encrypt Wallet...</source>
-        <translation>E criptografar carteira...</translation>
+        <translation>&amp;Criptografar carteira...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -478,17 +478,17 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+2"/>
         <source>&amp;Backup Wallet...</source>
-        <translation>E carteira de backup...</translation>
+        <translation>&amp;Carteira de backup...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Backup wallet to another location</source>
-        <translation>Carteira de backup para outro local</translation>
+        <translation>Backup da carteira para outro local</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Change Passphrase...</source>
-        <translation>E mude a frase secreta...</translation>
+        <translation>&amp;Alterar a senha...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -498,7 +498,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Sign &amp;message...</source>
-        <translation>Sinal &amp; mensagem...</translation>
+        <translation>Assinar &amp; mensagem...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -508,7 +508,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>&amp;Verify message...</source>
-        <translation>E verifique a mensagem...</translation>
+        <translation>&amp;Verificar mensagem...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -518,7 +518,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+2"/>
         <source>&amp;Debug window</source>
-        <translation>E janela de depuração</translation>
+        <translation>&amp;Janela de depuração</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -528,27 +528,27 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+4"/>
         <source>&amp;Sending addresses...</source>
-        <translation>E enviando endereços...</translation>
+        <translation>&amp;Endereços de envio...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show the list of used sending addresses and labels</source>
-        <translation>Mostrar a lista de endereços e rótulos de envio usados</translation>
+        <translation>Mostrar a lista de endereços e nomes de envio usados</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Receiving addresses...</source>
-        <translation>E recebendo endereços...</translation>
+        <translation>&amp;Endereços de recebimento...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show the list of used receiving addresses and labels</source>
-        <translation>Mostrar a lista de endereços e rótulos de recebimento usados</translation>
+        <translation>Mostrar a lista de endereços e nomes de recebimento usados</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open &amp;URI...</source>
-        <translation>Open &amp; URI...</translation>
+        <translation>Abrir &amp;URI...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -558,37 +558,37 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+2"/>
         <source>&amp;Command-line options</source>
-        <translation>E opções de linha de comando</translation>
+        <translation>&amp;Opções de linha de comando</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show the %1 help message to get a list with possible Bitcoin Confidential command-line options</source>
-        <translation>Mostrar a mensagem de ajuda% 1 para obter uma lista com possíveis opções de linha de comando do Bitcoin Confidential</translation>
+        <translation>Mostrar a mensagem de ajuda %1 para obter uma lista com possíveis opções de linha de comando do Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>&amp;HD Wallet...</source>
-        <translation>E carteira HD...</translation>
+        <translation>&amp;Carteira HD...</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>&amp;File</source>
-        <translation>&amp; Arquivo</translation>
+        <translation>&amp;Arquivo</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>&amp;Settings</source>
-        <translation>E configurações</translation>
+        <translation>&amp;Configurações</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>&amp;Help</source>
-        <translation>E ajuda</translation>
+        <translation>&amp;Ajuda</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Tabs toolbar</source>
-        <translation>Barra de ferramentas separadores</translation>
+        <translation>Barra de ferramentas</translation>
     </message>
     <message>
         <location line="+113"/>
@@ -598,12 +598,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+88"/>
         <source>%1 client</source>
-        <translation>% 1 cliente</translation>
+        <translation>%1 cliente</translation>
     </message>
     <message numerus="yes">
         <location line="+189"/>
         <source>%n active connection(s) to Bitcoin Confidential network</source>
-        <translation><numerusform>% n conexão ativa (s) à rede confidencial de Bitcoin</numerusform><numerusform>% n conexão ativa (s) à rede confidencial de Bitcoin</numerusform></translation>
+        <translation><numerusform>% n conexão ativa (s) à rede confidencial de Bitcoin</numerusform><numerusform>% n conexão ativa (s) à rede Bitcoin Confidential</numerusform></translation>
     </message>
     <message>
         <location line="+0"/>
@@ -623,7 +623,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+28"/>
         <source>Syncing Headers (%1%)...</source>
-        <translation>Sincronizando cabeçalhos (% 1%)...</translation>
+        <translation>Sincronizando cabeçalhos (%1%)...</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -663,7 +663,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+19"/>
         <source>%1 behind</source>
-        <translation>% 1 atrás</translation>
+        <translation>%1 atrás</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -673,7 +673,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+19"/>
         <source>Last received block was generated %1 ago.</source>
-        <translation>Último bloco recebido foi gerado% 1 atrás.</translation>
+        <translation>Último bloco recebido foi gerado %1 atrás.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -683,7 +683,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+13"/>
         <source>Bitcoin Confidential</source>
-        <translation>Bitcoin confidencial</translation>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -704,37 +704,43 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+116"/>
         <source>Date: %1
 </source>
-        <translation>Data:% 1</translation>
+        <translation>Data: %1
+</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Amount: %1
 </source>
-        <translation>Quantidade:% 1</translation>
+        <translation>Quantidade: %1
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Wallet: %1
 </source>
-        <translation>Carteira:% 1</translation>
+        <translation>Carteira: %1
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Type: %1
 </source>
-        <translation>Tipo:% 1</translation>
+        <translation>Tipo: %1
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Label: %1
 </source>
-        <translation>Gravadora:% 1</translation>
+        <translation>Nome: %1
+</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Address: %1
 </source>
-        <translation>Endereço:% 1</translation>
+        <translation>Endereço: %1
+</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -769,7 +775,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+8"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt; for staking only</source>
-        <translation>Carteira é &lt;b&gt;criptografada&lt;/b&gt; e atualmente &lt;b&gt;desbloqueado&lt;/b&gt; para Staking apenas</translation>
+        <translation>Carteira é &lt;b&gt;criptografada&lt;/b&gt; e atualmente &lt;b&gt;desbloqueada&lt;/b&gt; para Staking apenas</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -779,22 +785,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+58"/>
         <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
-        <translation>O proxy está &lt;b&gt;habilitado&lt;/b&gt;:% 1</translation>
+        <translation>O proxy está &lt;b&gt;habilitado&lt;/b&gt;: %1</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Tor is &lt;b&gt;enabled&lt;/b&gt;</source>
-        <translation>Tor está &lt;b&gt;activado&lt;/b&gt;</translation>
+        <translation>Tor está ativado</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Tor is &lt;b&gt;enabled&lt;/b&gt;, but its not the only network used. Use only onlynet=onion.</source>
-        <translation>Tor está &lt;b&gt;habilitado&lt;/b&gt;, mas não é a única rede usada. Use apenas onlynet = cebola.</translation>
+        <translation>Tor está &lt;b&gt;habilitado&lt;/b&gt;, mas não é a única rede usada. Use apenas onlynet=onion.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Tor is &lt;b&gt;disabled&lt;/b&gt;. To enhance your privacy setup consider using tor by setting &lt;b&gt;onlynet=onion&lt;/b&gt; in your &lt;b&gt;bitcoinc.conf&lt;/b&gt;.</source>
-        <translation>Tor está &lt;b&gt;desativado&lt;/b&gt;. Para aprimorar sua configuração de privacidade, considere usar o Tor definindo &lt;b&gt;onlynet = Onion&lt;/b&gt; em seu &lt;b&gt;bitcoinc. conf&lt;/b&gt;.</translation>
+        <translation>Tor está &lt;b&gt;desativado&lt;/b&gt;. Para aprimorar sua configuração de privacidade, considere usar o Tor definindo &lt;b&gt;onlynet=onion&lt;/b&gt; em seu &lt;b&gt;bitcoinc.conf&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../bitcoin.cpp" line="+528"/>
@@ -842,7 +848,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+32"/>
         <source>Change:</source>
-        <translation>Mudar:</translation>
+        <translation>Troco:</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -857,12 +863,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+14"/>
         <source>Show all</source>
-        <translation>Mostrar todos os</translation>
+        <translation>Mostrar todos</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>(un)select all</source>
-        <translation>(ONU) Selecione todos os</translation>
+        <translation>(Des) Selecionar todos</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -882,7 +888,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+8"/>
         <source>Received with label</source>
-        <translation>Recebido com etiqueta</translation>
+        <translation>Recebido com nome</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -912,13 +918,13 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Copy label</source>
-        <translation>Copiar etiqueta</translation>
+        <translation>Copiar nome</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+26"/>
         <source>Copy amount</source>
-        <translation>Valor da cópia</translation>
+        <translation>Copiar valor</translation>
     </message>
     <message>
         <location line="-25"/>
@@ -928,27 +934,27 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Lock unspent</source>
-        <translation>Bloqueio não gasto</translation>
+        <translation>Bloquear valores não gasto</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unlock unspent</source>
-        <translation>Desbloquear não gasto</translation>
+        <translation>Desbloquear valores não gasto</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Copy quantity</source>
-        <translation>Quantidade da cópia</translation>
+        <translation>Copiar quantidade</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Copy fee</source>
-        <translation>Taxa de cópia</translation>
+        <translation>Copiar taxa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy after fee</source>
-        <translation>Cópia após a taxa</translation>
+        <translation>Copiar após a taxa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -958,17 +964,17 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Copy dust</source>
-        <translation>Copie a poeira</translation>
+        <translation>Copiar a poeira</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy change</source>
-        <translation>Alterar cópia</translation>
+        <translation>Copiar troco</translation>
     </message>
     <message>
         <location line="+340"/>
         <source>(%1 locked)</source>
-        <translation>(% 1 bloqueado)</translation>
+        <translation>(%1 bloqueado)</translation>
     </message>
     <message>
         <location line="+161"/>
@@ -983,12 +989,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+14"/>
         <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
-        <translation>Este rótulo fica vermelho se qualquer destinatário recebe uma quantidade menor do que o limiar de poeira atual.</translation>
+        <translation>Este nome fica vermelho se qualquer destinatário recebe uma quantidade menor do que o limiar de poeira atual.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>Pode variar +/-% 1 Satoshi (s) por entrada.</translation>
+        <translation>Pode variar +/- %1 satoshi (s) por entrada.</translation>
     </message>
     <message>
         <location line="+47"/>
@@ -1015,23 +1021,23 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+66"/>
         <location line="+11"/>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(sem nome)</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>change from %1 (%2)</source>
-        <translation>alteração de% 1 (% 2)</translation>
+        <translation>alteração de %1 (%2)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+20"/>
         <source>(change)</source>
-        <translation>alterar</translation>
+        <translation>(alterar)</translation>
     </message>
     <message>
         <location line="-17"/>
         <source>spending from %1 (%2)</source>
-        <translation>gastos de% 1 (% 2)</translation>
+        <translation>gastos de %1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -1044,22 +1050,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+11"/>
         <source>&amp;Label</source>
-        <translation>E etiqueta</translation>
+        <translation>&amp;Nome</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>The label associated with this address list entry</source>
-        <translation>O rótulo associado a esta entrada de lista de endereços</translation>
+        <translation>O nome associado a esta entrada de lista de endereços</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Address</source>
-        <translation>E endereço</translation>
+        <translation>&amp;Endereço</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
-        <translation>O endereço associado a esta entrada de lista de endereços. Isso só pode ser modificado para o envio de endereços.</translation>
+        <translation>O endereço associado a esta entrada de lista de endereços. Isso só pode ser modificado para endereços de envio.</translation>
     </message>
     <message>
         <location filename="../editaddressdialog.cpp" line="+29"/>
@@ -1074,12 +1080,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>New Stake address</source>
-        <translation>Novo endereço da estaca</translation>
+        <translation>Novo endereço de stake</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>New ColdStake address</source>
-        <translation>Novo endereço da ColdStake</translation>
+        <translation>Novo endereço de ColdStake</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1094,12 +1100,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+87"/>
         <source>The entered address &quot;%1&quot; is not a valid Bitcoin Confidential address.</source>
-        <translation>O endereço introduzido &quot;% 1&quot; não é um endereço Bitcoin confidencial válido.</translation>
+        <translation>O endereço introduzido &quot;%1&quot; não é um endereço Bitcoin Confidential válido.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Could not unlock wallet.</source>
-        <translation>Não foi possível desbloquear carteira.</translation>
+        <translation>Não foi possível desbloquear a carteira.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1109,12 +1115,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+18"/>
         <source>Address &quot;%1&quot; already exists as a receiving address with label &quot;%2&quot; and so cannot be added as a sending address.</source>
-        <translation>O endereço &quot;% 1&quot; já existe como um endereço de recebimento com o rótulo &quot;% 2&quot; e, portanto, não pode ser adicionado como um endereço de envio.</translation>
+        <translation>O endereço &quot;%1&quot; já existe como um endereço de recebimento com o nome &quot;%2&quot; e, portanto, não pode ser adicionado como um endereço de envio.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>The entered address &quot;%1&quot; is already in the address book with label &quot;%2&quot;.</source>
-        <translation>O endereço digitado &quot;% 1&quot; já está no catálogo de endereços com o rótulo &quot;% 2&quot;.</translation>
+        <translation>O endereço digitado &quot;%1&quot; já está no catálogo de endereços com o nome &quot;%2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1127,12 +1133,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+22"/>
         <source>name</source>
-        <translation>Nome</translation>
+        <translation>nome</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
-        <translation>O diretório já existe. Adicione% 1 se você pretende criar um novo diretório aqui.</translation>
+        <translation>O diretório já existe. Adicione %1 se você pretende criar um novo diretório aqui.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1156,12 +1162,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+5"/>
         <location line="+2"/>
         <source>(%1-bit)</source>
-        <translation>(% 1 bit)</translation>
+        <translation>(%1-bit)</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>About %1</source>
-        <translation>Sobre% 1</translation>
+        <translation>Sobre %1</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1179,32 +1185,32 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+9"/>
         <source>Welcome to %1.</source>
-        <translation>Bem-vindo ao% 1.</translation>
+        <translation>Bem-vindo ao %1.</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
-        <translation>Como esta é a primeira vez que o programa é iniciado, você pode escolher onde% 1 armazenará seus dados.</translation>
+        <translation>Como esta é a primeira vez que o programa é iniciado, você pode escolher onde %1 armazenará seus dados.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Use the default data directory</source>
-        <translation>Use o diretório de dados padrão</translation>
+        <translation>Usar o diretório de dados padrão</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Use a custom data directory:</source>
-        <translation>Use um diretório de dados personalizado:</translation>
+        <translation>Usar um diretório de dados personalizado:</translation>
     </message>
     <message>
         <location line="+140"/>
         <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
-        <translation>Quando você clicar em OK,% 1 começará a baixar e processar a cadeia de blocos% 4 completa (% 2GB) começando com as primeiras transações em% 3 quando% 4 foi iniciado inicialmente.</translation>
+        <translation>Quando você clicar em OK, %1 começará a baixar e processar a cadeia de blocos %4 completa (%2GB) começando com as primeiras transações em %3 quando %4 foi iniciado inicialmente.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
-        <translation>Esta sincronização inicial é muito exigente, e pode expor problemas de hardware com o seu computador que anteriormente tinha ido despercebido. Cada vez que você executar% 1, ele continuará baixando de onde ele saiu.</translation>
+        <translation>Esta sincronização inicial é muito exigente, e pode expor problemas de hardware com o seu computador que anteriormente tinha ido despercebido. Cada vez que você executar %1, ele continuará baixando de onde ele saiu.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1214,22 +1220,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../intro.cpp" line="+20"/>
         <source>Bitcoin Confidential</source>
-        <translation>Bitcoin confidencial</translation>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
-        <translation>Pelo menos% 1 GB de dados serão armazenados neste diretório, e crescerá ao longo do tempo.</translation>
+        <translation>Pelo menos %1 GB de dados serão armazenados neste diretório, e crescerá ao longo do tempo.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Approximately %1 GB of data will be stored in this directory.</source>
-        <translation>Aproximadamente% 1 GB de dados serão armazenados neste diretório.</translation>
+        <translation>Aproximadamente %1 GB de dados serão armazenados neste diretório.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1 will download and store a copy of the Bitcoin Confidential block chain.</source>
-        <translation>% 1 irá baixar e armazenar uma cópia da cadeia de blocos confidencial do Bitcoin.</translation>
+        <translation>%1 irá baixar e armazenar uma cópia da cadeia de blocos Bitcoin Confidential.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1239,7 +1245,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+73"/>
         <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
-        <translation>Erro: o diretório de dados especificado &quot;% 1&quot; não pode ser criado.</translation>
+        <translation>Erro: o diretório de dados especificado &quot;%1&quot; não pode ser criado.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1267,7 +1273,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+11"/>
         <source>Generate a mnemonic</source>
-        <translation>Gerar um mnemônico</translation>
+        <translation>Gerar um conjunto de palavras</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1277,7 +1283,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+22"/>
         <source>Write down the Recovery Phrase/Mnemonic below or generate a new one with the desired settings by clicking &quot;NEW MNEMONIC&quot;. Store this phrase in a safe place. The clipboard will be cleared to ensure you have it recorded.  If you are recovering a backup, enter the Recovery Phrase/Mnemonic on the next screen.  Click the &quot;NEXT&quot; button to continue with the wallet creation.</source>
-        <translation>Anote a frase de recuperação/mnemônico abaixo ou gere um novo com as configurações desejadas clicando em &quot;NEW MNEMONIC&quot;. Guarde esta frase em um lugar seguro. A área de transferência será desmarcada para garantir que você tenha gravado.  Se você estiver recuperando um backup, digite a frase de recuperação/mnemônico na próxima tela.  Clique no botão &quot;NEXT&quot; para continuar com a criação da carteira.</translation>
+        <translation>Anote a frase de recuperação abaixo ou gere um novo com as configurações desejadas clicando em &quot;Novas Palavras&quot;. Guarde esta frase em um lugar seguro. A área de transferência será desmarcada para garantir que você tenha gravado.  Se você estiver recuperando um backup, digite a frase de recuperação na próxima tela.  Clique no botão &quot;Próximo&quot; para continuar com a criação da carteira.</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -1292,7 +1298,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+45"/>
         <source>Entropy is an advanced feature. Your mnemonic may be insecure if this feature is used incorrectly.</source>
-        <translation>Entropia é um recurso avançado. Seu mnemônico pode ser inseguro se esse recurso é usado incorretamente.</translation>
+        <translation>Entropia é um recurso avançado. Suas palavras podem ser inseguras se esse recurso é usado incorretamente.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1332,7 +1338,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+39"/>
         <source>New mnemonic</source>
-        <translation>Novo mnemônico</translation>
+        <translation>Novas palavras</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1348,12 +1354,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-148"/>
         <source>Recovery Passphrase </source>
-        <translation>Passphrase de recuperação</translation>
+        <translation>Senha de recuperação</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Import Chain</source>
-        <translation>Cadeia de importação</translation>
+        <translation>Importar Cadeia</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1373,7 +1379,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+16"/>
         <source>Please ensure you backup your Recovery Phrase and Passphrase - they are not recoverable!</source>
-        <translation>Por favor, certifique-se de backup sua frase de recuperação e passphrase-eles não são recuperáveis!</translation>
+        <translation>Por favor, certifique-se de backup sua frase de recuperação e senha - eles não são recuperáveis!</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1384,7 +1390,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+19"/>
         <location filename="../mnemonicdialog.cpp" line="+145"/>
         <source>Import</source>
-        <translation>Importação</translation>
+        <translation>Importar</translation>
     </message>
     <message>
         <location filename="../mnemonicdialog.cpp" line="-102"/>
@@ -1394,7 +1400,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+2"/>
         <source>Enter the Recovery Phrase/Mnemonic.</source>
-        <translation>Digite a frase de recuperação/mnemônico.</translation>
+        <translation>Digite a frase de recuperação.</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -1404,12 +1410,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+16"/>
         <source>Generate a new Recovery Phrase/Mnemonic with the desired settings by clicking &quot;NEW MNEMONIC&quot;.</source>
-        <translation>Gere uma nova frase de recuperação/mnemônico com as configurações desejadas clicando em &quot;NEW MNEMONIC&quot;.</translation>
+        <translation>Gere uma nova frase de recuperação com as configurações desejadas clicando em &quot;Novas Palavras&quot;.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Import a mnemonic</source>
-        <translation>Importe um mnemônico</translation>
+        <translation>Importar frase de recuperação</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1432,22 +1438,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../forms/modaloverlay.ui" line="+14"/>
         <source>Form</source>
-        <translation>Forma</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location line="+122"/>
         <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Bitcoin Confidential network, as detailed below.</source>
-        <translation>As transações recentes podem ainda não estar visíveis e, portanto, o saldo da sua carteira pode estar incorreto. Esta informação estará correcta quando a sua carteira terminar de sincronizar com a rede Bitcoin Confidential, conforme detalhado abaixo.</translation>
+        <translation>As transações recentes podem ainda não estar visíveis e, portanto, o saldo da sua carteira pode estar incorreto. Esta informação estará correta quando a sua carteira terminar de sincronizar com a rede Bitcoin Confidential, conforme detalhado abaixo.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Attempting to spend coins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>A tentativa de gastar moedas que são afetadas por transações não-ainda-exibidas não será aceito pela rede.</translation>
+        <translation>A tentativa de gastar moedas que são afetadas por transações ainda não exibidas não será aceita pela rede.</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Number of blocks left</source>
-        <translation>Número de blocos deixados</translation>
+        <translation>Número de blocos restantes</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1475,12 +1481,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+7"/>
         <location line="+20"/>
         <source>calculating...</source>
-        <translation>Cálculo...</translation>
+        <translation>Cálculando...</translation>
     </message>
     <message>
         <location line="-7"/>
         <source>Estimated time left until synced</source>
-        <translation>Tempo estimado restante até sincronizado</translation>
+        <translation>Tempo estimado restante até sincronização</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -1490,7 +1496,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../modaloverlay.cpp" line="-1"/>
         <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>Desconhecido. Sincronizando cabeçalhos (% 1)...</translation>
+        <translation>Desconhecido. Sincronizando cabeçalhos (%1)...</translation>
     </message>
 </context>
 <context>
@@ -1508,7 +1514,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+9"/>
         <source>URI:</source>
-        <translation>Uri:</translation>
+        <translation>URI:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1531,37 +1537,37 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+14"/>
         <source>&amp;Main</source>
-        <translation>E principal</translation>
+        <translation>&amp;Principal</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>W&amp;allet</source>
-        <translation>W&amp;allet</translation>
+        <translation>C&amp;arteira</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>&amp;Network</source>
-        <translation>E rede</translation>
+        <translation>&amp;Rede</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>&amp;Window</source>
-        <translation>E janela</translation>
+        <translation>&amp;Janela</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>&amp;Display</source>
-        <translation>E exibir</translation>
+        <translation>&amp;Exibir</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Automatically start %1 after logging in to the system.</source>
-        <translation>Inicie automaticamente% 1 após efetuar login no sistema.</translation>
+        <translation>Inicie automaticamente %1 após efetuar login no sistema.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Start %1 on system login</source>
-        <translation>&amp; Start% 1 no login do sistema</translation>
+        <translation>&amp;Iniciar %1 no login do sistema</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1571,12 +1577,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>Prune &amp;block storage to</source>
-        <translation>Armazenamento de Prune &amp; Block para</translation>
+        <translation>Diminuir armazenamento de &amp;blocos para</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>GB</source>
-        <translation>Gb</translation>
+        <translation>GB</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -1586,22 +1592,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+12"/>
         <source>Size of &amp;database cache</source>
-        <translation>Tamanho de e cache de banco de dados</translation>
+        <translation>Tamanho de &amp;cache de banco de dados</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>MB</source>
-        <translation>Mb</translation>
+        <translation>MB</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Number of script &amp;verification threads</source>
-        <translation>Número de threads de script e verificação</translation>
+        <translation>Número de threads &amp;de script de verificação</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>(0 = auto, &lt;0 = leave that many cores free)</source>
-        <translation>(0 = auto,&lt;0 = leave that many cores free) ==&quot;&quot; leave=&quot;&quot; that=&quot;&quot; many=&quot;&quot; cores=&quot;&quot;&gt;&lt;/0 = leave that many cores free)&gt;</translation>
+        <translation>(0 = auto, &lt;0 = deixe essa quantidade de cores livres)</translation>
     </message>
     <message>
         <location line="+39"/>
@@ -1616,47 +1622,47 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>Enable coin &amp;control features</source>
-        <translation>Ativar recursos Coin &amp; Control</translation>
+        <translation>Ativar recursos &amp;de controle de moedas</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>If you disable the spending of unconfirmed change, the change from a transaction cannot be used until that transaction has at least one confirmation. This also affects how your balance is computed.</source>
-        <translation>Se você desabilitar a despesa de alteração não confirmada, a alteração de uma transação não poderá ser usada até que essa transação tenha pelo menos uma confirmação. Isso também afeta a forma como o saldo é calculado.</translation>
+        <translation>Se você desabilitar a despesa de troco não confirmada, o troco de uma transação não poderá ser usada até que essa transação tenha pelo menos uma confirmação. Isso também afeta a forma como o saldo é calculado.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Spend unconfirmed change</source>
-        <translation>E gaste uma mudança não confirmada</translation>
+        <translation>&amp;Gaste um troco não confirmado</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Display notification dialog for incoming stake transactions.</source>
-        <translation>Exibir a caixa de diálogo de notificação para transações de estaca recebidas.</translation>
+        <translation>Exibir a caixa de diálogo de notificação para transações de stake recebidas.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Show incoming stake notifications</source>
-        <translation>E mostrar notificações de entrada da estaca</translation>
+        <translation>&amp;Mostrar notificações de entrada de stake</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Automatically open the Bitcoin Confidential client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Abra automaticamente a porta do cliente Bitcoin Confidential no roteador. Isto só funciona quando o router suporta UPnP e está activado.</translation>
+        <translation>Abra automaticamente a porta do cliente Bitcoin Confidential no roteador. Isto só funciona quando o router suporta UPnP e está ativado.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Map port using &amp;UPnP</source>
-        <translation>Porta de mapa usando &amp; UPnP</translation>
+        <translation>Mapear porta usando &amp;UPnP</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Accept connections from outside.</source>
-        <translation>Aceitar conexões de fora.</translation>
+        <translation>Aceitar conexões externas.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Allow incomin&amp;g connections</source>
-        <translation>Permitir conexões incomin&amp;g</translation>
+        <translation>Permitir conexões&amp; de entrada</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1666,13 +1672,13 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
-        <translation>&amp; Conecte através do proxy SOCKS5 (proxy padrão):</translation>
+        <translation>&amp;Conecte através do proxy SOCKS5 (proxy padrão):</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+193"/>
         <source>Proxy &amp;IP:</source>
-        <translation>Proxy &amp; IP:</translation>
+        <translation>Proxy &amp;IP:</translation>
     </message>
     <message>
         <location line="-168"/>
@@ -1684,13 +1690,13 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="-183"/>
         <location line="+193"/>
         <source>&amp;Port:</source>
-        <translation>Porta</translation>
+        <translation>&amp;Porta:</translation>
     </message>
     <message>
         <location line="-168"/>
         <location line="+193"/>
         <source>Port of the proxy (e.g. 9050)</source>
-        <translation>Porto do proxy (por exemplo. 9050)</translation>
+        <translation>Porta do proxy (por exemplo: 9050)</translation>
     </message>
     <message>
         <location line="-166"/>
@@ -1727,17 +1733,17 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
-        <translation>Use separado SOCKS &amp; 5 proxy para alcançar pares através de serviços escondidos Tor:</translation>
+        <translation>Use separado SOCKS&amp;5 proxy para alcançar pares através de serviços escondidos Tor:</translation>
     </message>
     <message>
         <location line="+111"/>
         <source>Hide the icon from the system tray.</source>
-        <translation>Oculte o ícone da bandeja do sistema.</translation>
+        <translation>Oculte o ícone das notificações do sistema.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Hide tray icon</source>
-        <translation>E ocultar ícone da bandeja</translation>
+        <translation>&amp;Ocultar ícone das notificações</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1747,7 +1753,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>&amp;Minimize to the tray instead of the taskbar</source>
-        <translation>E minimize para a bandeja em vez da barra de tarefas</translation>
+        <translation>&amp;Minimize para as notificações em vez da barra de tarefas</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1757,22 +1763,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>M&amp;inimize on close</source>
-        <translation>M&amp;inimize no fim</translation>
+        <translation>M&amp;inimize ao fechar</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>User Interface &amp;language:</source>
-        <translation>Interface de usuário e idioma:</translation>
+        <translation>Idioma da interface &amp;do usuário:</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
-        <translation>O idioma da interface do usuário pode ser definido aqui. Essa configuração entrará em vigor depois de reiniciar% 1.</translation>
+        <translation>O idioma da interface do usuário pode ser definido aqui. Essa configuração entrará em vigor depois de reiniciar %1.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>&amp;Unit to show amounts in:</source>
-        <translation>&amp; Unidade para mostrar valores em:</translation>
+        <translation>&amp;Unidade para mostrar valores em:</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1783,12 +1789,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+11"/>
         <location line="+22"/>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>URLs de terceiros (por exemplo, um explorador de blocos) que aparecem na guia transações como itens de menu de contexto. % s na URL é substituída por hash de transação. Várias URLs são separadas por barra vertical |.</translation>
+        <translation>URLs de terceiros (por exemplo, um explorador de blocos) que aparecem na guia transações como itens de menu de contexto. %s na URL é substituída por hash de transação. Várias URLs são separadas por barra vertical |.</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>&amp;Third party transaction URLs</source>
-        <translation>E URLs de transações de terceiros</translation>
+        <translation>&amp;URLs de transações de terceiros</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -1798,7 +1804,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+45"/>
         <source>Open the %1 configuration file from the working directory.</source>
-        <translation>Abra o arquivo de configuração% 1 do diretório de trabalho.</translation>
+        <translation>Abra o arquivo de configuração %1 do diretório de trabalho.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1808,22 +1814,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+10"/>
         <source>Reset all client options to default.</source>
-        <translation>Redefinir todas as opções de cliente para padrão.</translation>
+        <translation>Redefinir todas as opções para padrão.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Reset Options</source>
-        <translation>E redefinir opções</translation>
+        <translation>&amp;Redefinir opções</translation>
     </message>
     <message>
         <location line="+80"/>
         <source>&amp;OK</source>
-        <translation>E OK</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>&amp;Cancel</source>
-        <translation>E cancelar</translation>
+        <translation>&amp;Cancelar</translation>
     </message>
     <message>
         <location filename="../optionsdialog.cpp" line="+109"/>
@@ -1838,7 +1844,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+82"/>
         <source>Confirm options reset</source>
-        <translation>Confirmar opções redefinir</translation>
+        <translation>Confirme a redefinição das opções</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1887,12 +1893,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../forms/overviewpage.ui" line="+14"/>
         <source>Form</source>
-        <translation>Forma</translation>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Bitcoin Confidential Core</source>
-        <translation>Núcleo confidencial de Bitcoin</translation>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -1904,12 +1910,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-308"/>
         <source>Spending</source>
-        <translation>Passar</translation>
+        <translation>Utilizar</translation>
     </message>
     <message>
         <location line="+108"/>
         <source>Watch-only</source>
-        <translation>Somente relógio</translation>
+        <translation>Visualização apenas</translation>
     </message>
     <message>
         <location line="+73"/>
@@ -1920,12 +1926,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-181"/>
         <source>Spendable</source>
-        <translation>Spendable</translation>
+        <translation>Utilizável</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Staking</source>
-        <translation>Apostando</translation>
+        <translation>Staking</translation>
     </message>
     <message>
         <location line="+130"/>
@@ -1976,22 +1982,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-41"/>
         <source>&apos;bitcoin://&apos; is not a valid URI. Use &apos;bitcoin:&apos; instead.</source>
-        <translation>&apos; bitcoin://&apos; não é um URI válido. Use &apos; Bitcoin: &apos; em vez disso.</translation>
+        <translation>&apos; bitcoin://&apos; não é um URI válido. Use &apos;bitcoin:&apos; em vez disso.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Payment request fetch URL is invalid: %1</source>
-        <translation>URL de busca de solicitação de pagamento é inválido:% 1</translation>
+        <translation>URL de busca de solicitação de pagamento é inválido: %1</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Invalid payment address %1</source>
-        <translation>Endereço de pagamento inválido% 1</translation>
+        <translation>Endereço de pagamento inválido %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>URI cannot be parsed! This can be caused by an invalid Bitcoin Confidential address or malformed URI parameters.</source>
-        <translation>URI não pode ser analisado! Isso pode ser causado por um endereço Bitcoin confidencial inválido ou parâmetros de URI malformados.</translation>
+        <translation>URI não pode ser analisado! Isso pode ser causado por um endereço Bitcoin Confidential inválido ou parâmetros de URI malformados.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2042,22 +2048,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-10"/>
         <source>Requested payment amount of %1 is too small (considered dust).</source>
-        <translation>O valor de pagamento solicitado de% 1 é muito pequeno (considerado poeira).</translation>
+        <translation>O valor de pagamento solicitado de %1 é muito pequeno (considerado poeira).</translation>
     </message>
     <message>
         <location line="+65"/>
         <source>Refund from %1</source>
-        <translation>Reembolso de% 1</translation>
+        <translation>Reembolso de %1</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
-        <translation>A solicitação de pagamento% 1 é muito grande (% 2 bytes, permitido% 3 bytes).</translation>
+        <translation>A solicitação de pagamento %1 é muito grande (%2 bytes, permitido %3 bytes).</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Error communicating with %1: %2</source>
-        <translation>Erro de comunicação com% 1:% 2</translation>
+        <translation>Erro de comunicação com %1: %2</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2067,7 +2073,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+13"/>
         <source>Bad response from server %1</source>
-        <translation>Resposta incorreta do servidor% 1</translation>
+        <translation>Resposta incorreta do servidor %1</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -2085,7 +2091,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../peertablemodel.cpp" line="+109"/>
         <source>NodeId</source>
-        <translation>Nodeid</translation>
+        <translation>Id</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2128,38 +2134,38 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+12"/>
         <source>Enter ColdStake address</source>
-        <translation>Insira o endereço do ColdStake</translation>
+        <translation>Insira o endereço de ColdStake</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter Stake address of remote node</source>
-        <translation>Insira o endereço da estaca do nó remoto</translation>
+        <translation>Insira o endereço de stake do nó remoto</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter Stake address</source>
-        <translation>Insira o endereço da estaca</translation>
+        <translation>Insira o endereço de stake</translation>
     </message>
     <message>
         <location line="+687"/>
         <source>%1 d</source>
-        <translation>% 1 d</translation>
+        <translation>%1 d</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 h</source>
-        <translation>% 1 h</translation>
+        <translation>%1 h</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 m</source>
-        <translation>% 1 m</translation>
+        <translation>%1 m</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+53"/>
         <source>%1 s</source>
-        <translation>% 1 s</translation>
+        <translation>%1 s</translation>
     </message>
     <message>
         <location line="-10"/>
@@ -2174,73 +2180,73 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+0"/>
         <source>%1 ms</source>
-        <translation>% 1 MS</translation>
+        <translation>%1 ms</translation>
     </message>
     <message numerus="yes">
         <location line="+18"/>
         <source>%n second(s)</source>
-        <translation><numerusform>% n segundo (s)</numerusform><numerusform>% n segundo (s)</numerusform></translation>
+        <translation><numerusform>% n segundo (s)</numerusform><numerusform>%n segundo(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>% n minuto (s)</numerusform><numerusform>% n minuto (s)</numerusform></translation>
+        <translation><numerusform>% n minuto (s)</numerusform><numerusform>%n minuto(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>% n hora (s)</numerusform><numerusform>% n hora (s)</numerusform></translation>
+        <translation><numerusform>% n hora (s)</numerusform><numerusform>%n hora(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation><numerusform>% n dia (s)</numerusform><numerusform>% n dia (s)</numerusform></translation>
+        <translation><numerusform>% n dia (s)</numerusform><numerusform>%n dia(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <location line="+6"/>
         <source>%n week(s)</source>
-        <translation><numerusform>% n semana (s)</numerusform><numerusform>% n semana (s)</numerusform></translation>
+        <translation><numerusform>% n semana (s)</numerusform><numerusform>%n semana(s)</numerusform></translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 and %2</source>
-        <translation>% 1 e% 2</translation>
+        <translation>%1 e %2</translation>
     </message>
     <message numerus="yes">
         <location line="+0"/>
         <source>%n year(s)</source>
-        <translation><numerusform>% n ano (s)</numerusform><numerusform>% n ano (s)</numerusform></translation>
+        <translation><numerusform>% n ano (s)</numerusform><numerusform>%n ano(s)</numerusform></translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1 B</source>
-        <translation>% 1 B</translation>
+        <translation>%1 B</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 KB</source>
-        <translation>% 1 KB</translation>
+        <translation>%1 KB</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 MB</source>
-        <translation>% 1 MB</translation>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 GB</source>
-        <translation>% 1 GB</translation>
+        <translation>%1 GB</translation>
     </message>
     <message>
         <location line="+71"/>
         <source>All spending funds are sent and received anonymously. Only the sender and receiver have details of their side of the transaction. Staking funds need to be converted to spending before sending out of wallet. Funds require %1 confirmations (%2 minutes) before sending.</source>
-        <translation>Todos os fundos de gastos são enviados e recebidos anonimamente. Somente o remetente e o receptor têm detalhes de seu lado da transação. Os fundos de Staking precisam de ser convertidos aos gastos antes de emitir fora da carteira. Os fundos exigem confirmações% 1 (% 2 minutos) antes do envio.</translation>
+        <translation>Todos os fundos de gastos são enviados e recebidos anonimamente. Somente o remetente e o receptor têm detalhes de seu lado da transação. Os fundos de Staking precisam ser convertidos aos gastos antes de utilizar fora da carteira. Os fundos exigem %1 confirmações (%2 minutos) antes do envio.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Staking funds cannot be sent out of your wallet without converting to spending. After converting to spending, %1 confirmations (%2 minutes) are required before sending.</source>
-        <translation>Os fundos de Staking não podem ser emitidos fora de sua carteira sem converter aos gastos. Após a conversão para gastos,% 1 confirmações (% 2 minutos) são necessários antes de enviar.</translation>
+        <translation>Os fundos de Staking não podem ser utilizados fora de sua carteira sem converter aos gastos. Após a conversão para gastos, %1 confirmações (%2 minutos) são necessários antes de enviar.</translation>
     </message>
     <message>
         <location filename="../modaloverlay.cpp" line="-29"/>
@@ -2250,7 +2256,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../bitcoin.cpp" line="+186"/>
         <source>%1 didn&apos;t yet exit safely...</source>
-        <translation>% 1 ainda não sair com segurança...</translation>
+        <translation>%1 ainda não saiu com segurança...</translation>
     </message>
 </context>
 <context>
@@ -2258,22 +2264,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-117"/>
         <source>Error parsing command line arguments: %1.</source>
-        <translation>Erro ao analisar argumentos de linha de comando:% 1.</translation>
+        <translation>Erro ao analisar argumentos de linha de comando: %1.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Error: Specified data directory &quot;%1&quot; does not exist.</source>
-        <translation>Erro: o diretório de dados especificado &quot;% 1&quot; não existe.</translation>
+        <translation>Erro: o diretório de dados especificado &quot;%1&quot; não existe.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error: Cannot parse configuration file: %1.</source>
-        <translation>Erro: não é possível analisar o arquivo de configuração:% 1.</translation>
+        <translation>Erro: não é possível analisar o arquivo de configuração: %1.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Error: %1</source>
-        <translation>Erro:% 1</translation>
+        <translation>Erro: %1</translation>
     </message>
 </context>
 <context>
@@ -2281,12 +2287,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../receiverequestdialog.cpp" line="+32"/>
         <source>&amp;Save Image...</source>
-        <translation>E salvar imagem...</translation>
+        <translation>&amp;Salvar imagem...</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Copy Image</source>
-        <translation>E copiar imagem</translation>
+        <translation>&amp;Copiar imagem</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -2296,7 +2302,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+0"/>
         <source>PNG Image (*.png)</source>
-        <translation>Imagem PNG (*. png)</translation>
+        <translation>Imagem PNG (*.png)</translation>
     </message>
 </context>
 <context>
@@ -2365,7 +2371,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+7"/>
         <source>Number of connections</source>
-        <translation>Número de ligações</translation>
+        <translation>Número de conexões</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2390,7 +2396,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+10"/>
         <source>Datadir</source>
-        <translation>Datadir</translation>
+        <translation>Diretório de dados</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2443,12 +2449,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+7"/>
         <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Abra o arquivo de log de depuração% 1 do diretório de dados atual. Isso pode levar alguns segundos para arquivos de log grandes.</translation>
+        <translation>Abra o arquivo de log de depuração %1 do diretório de dados atual. Isso pode levar alguns segundos para arquivos de log grandes.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Open</source>
-        <translation>E abrir</translation>
+        <translation>&amp;Abrir</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -2458,7 +2464,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+8"/>
         <source>(none)</source>
-        <translation>nenhum</translation>
+        <translation>(nenhum)</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2473,12 +2479,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+32"/>
         <source>Clear console</source>
-        <translation>Limpar consola</translation>
+        <translation>Limpar console</translation>
     </message>
     <message>
         <location line="+111"/>
         <source>&amp;Reset</source>
-        <translation>E redefinir</translation>
+        <translation>&amp;Redefinir</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2500,14 +2506,14 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-361"/>
         <source>Banned peers</source>
-        <translation>Colegas proibidos</translation>
+        <translation>Pares banidos</translation>
     </message>
     <message>
         <location line="+60"/>
         <location filename="../rpcconsole.cpp" line="+510"/>
         <location line="+760"/>
         <source>Select a peer to view detailed information.</source>
-        <translation>Selecione um ponto para visualizar informações detalhadas.</translation>
+        <translation>Selecione um par para visualizar informações detalhadas.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -2532,7 +2538,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+23"/>
         <source>Starting Block</source>
-        <translation>Bloco de partida</translation>
+        <translation>Bloco inicial</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -2577,7 +2583,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>Ping Wait</source>
-        <translation>Espera do sibilo</translation>
+        <translation>Espera de ping</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -2592,7 +2598,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../rpcconsole.cpp" line="-667"/>
         <source>&amp;Disconnect</source>
-        <translation>E desconectar</translation>
+        <translation>&amp;Desconectar</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2600,32 +2606,32 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+1"/>
         <location line="+1"/>
         <source>Ban for</source>
-        <translation>Proibição de</translation>
+        <translation>Banir por</translation>
     </message>
     <message>
         <location line="-3"/>
         <source>1 &amp;hour</source>
-        <translation>1 &amp; hora</translation>
+        <translation>1 &amp;hora</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>1 &amp;day</source>
-        <translation>1 &amp; dia</translation>
+        <translation>1 &amp;dia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>1 &amp;week</source>
-        <translation>1 &amp; semana</translation>
+        <translation>1 &amp;semana</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>1 &amp;year</source>
-        <translation>1 &amp; ano</translation>
+        <translation>1 &amp;ano</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>&amp;Unban</source>
-        <translation>E unban</translation>
+        <translation>&amp;Desbanir</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -2635,37 +2641,37 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+110"/>
         <source>Welcome to the %1 RPC console.</source>
-        <translation>Bem-vindo ao console% 1 RPC.</translation>
+        <translation>Bem-vindo ao console %1 RPC.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
-        <translation>Use as setas para cima e para baixo para navegar no histórico e% 1 para limpar a tela.</translation>
+        <translation>Use as setas para cima e para baixo para navegar no histórico e %1 para limpar a tela.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Type %1 for an overview of available commands.</source>
-        <translation>Digite% 1 para obter uma visão geral dos comandos disponíveis.</translation>
+        <translation>Digite %1 para obter uma visão geral dos comandos disponíveis.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>For more information on using this console type %1.</source>
-        <translation>Para obter mais informações sobre como usar esse tipo de console% 1.</translation>
+        <translation>Para obter mais informações sobre como usar esse tipo de console %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
-        <translation>Aviso: scammers foram ativos, dizendo aos usuários para digitar comandos aqui, roubando o conteúdo da carteira. Não use este console sem compreender completamente as ramificações de um comando.</translation>
+        <translation>Aviso: pessoas suspeitas estão em atividade, dizendo aos usuários para digitar comandos aqui, roubando as moedas da carteira. Não use este console sem compreender completamente utilização de um comando.</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>In:</source>
-        <translation>Em:</translation>
+        <translation>Entrada:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Out:</source>
-        <translation>Fora</translation>
+        <translation>Saída:</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2675,28 +2681,28 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+68"/>
         <source>Executing command without any wallet</source>
-        <translation>Comando de execução sem carteira</translation>
+        <translation>Executando comando sem carteira</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Executing command using &quot;%1&quot; wallet</source>
-        <translation>Executando o comando usando a carteira &quot;% 1&quot;</translation>
+        <translation>Executando o comando usando a carteira &quot;%1&quot;</translation>
     </message>
     <message>
         <location line="+190"/>
         <source>(node id: %1)</source>
-        <translation>(ID do nó:% 1)</translation>
+        <translation>(ID do nó: %1)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>via %1</source>
-        <translation>via% 1</translation>
+        <translation>via %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <location line="+1"/>
         <source>never</source>
-        <translation>Nunca</translation>
+        <translation>nunca</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2730,17 +2736,17 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location filename="../forms/receivecoinsdialog.ui" line="+59"/>
         <source>Stake</source>
-        <translation>Jogo</translation>
+        <translation>Stake</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>ColdStake</source>
-        <translation>O ColdStake</translation>
+        <translation>ColdStake</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>&amp;Request payment</source>
-        <translation>E solicitar pagamento</translation>
+        <translation>&amp;Solicitar pagamento</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2750,7 +2756,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>Clear</source>
-        <translation>Claro</translation>
+        <translation>Limpar</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -2772,12 +2778,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="+22"/>
         <location line="+55"/>
         <source>An optional label to associate with the new receiving address.</source>
-        <translation>Um rótulo opcional para associar o novo endereço de recebimento.</translation>
+        <translation>Um nome opcional para associar o novo endereço de recebimento.</translation>
     </message>
     <message>
         <location line="-52"/>
         <source>&amp;Label:</source>
-        <translation>Rótulo</translation>
+        <translation>&amp;Nome:</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2788,12 +2794,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="-50"/>
         <source>&amp;Message:</source>
-        <translation>Mensagem</translation>
+        <translation>&amp;Mensagem:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>&amp;Amount:</source>
-        <translation>Seu</translation>
+        <translation>&amp;Quantidade:</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2813,7 +2819,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>Show</source>
-        <translation>programa</translation>
+        <translation>Exibir</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2833,7 +2839,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Copy label</source>
-        <translation>Copiar etiqueta</translation>
+        <translation>Copiar nome</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2843,7 +2849,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>Copy amount</source>
-        <translation>Valor da cópia</translation>
+        <translation>Copiar valor</translation>
     </message>
 </context>
 <context>
@@ -2856,22 +2862,22 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+46"/>
         <source>Copy &amp;URI</source>
-        <translation>Copy &amp; URI</translation>
+        <translation>Copy &amp;URI</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Copy &amp;Address</source>
-        <translation>Copiar e endereçar</translation>
+        <translation>Copiar &amp;Endereço</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>&amp;Save Image...</source>
-        <translation>E salvar imagem...</translation>
+        <translation>&amp;Salvar imagem...</translation>
     </message>
     <message>
         <location filename="../receiverequestdialog.cpp" line="+65"/>
         <source>Request payment to %1</source>
-        <translation>Solicitar pagamento para% 1</translation>
+        <translation>Solicitar pagamento para %1</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2881,7 +2887,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+1"/>
         <source>URI</source>
-        <translation>Uri</translation>
+        <translation>URI</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2891,12 +2897,12 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+2"/>
         <source>Amount</source>
-        <translation>Quantidade</translation>
+        <translation>Valor</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2911,7 +2917,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+11"/>
         <source>Resulting URI too long, try to reduce the text for label / message.</source>
-        <translation>URI resultante muito longo, tente reduzir o texto para rótulo/mensagem.</translation>
+        <translation>URI resultante muito longo, tente reduzir o texto do nome ou mensagem.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2931,7 +2937,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
         <location line="-4"/>
         <location line="+4"/>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2941,7 +2947,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+42"/>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(sem nome)</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2951,7 +2957,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+8"/>
         <source>(no amount requested)</source>
-        <translation>(sem quantidade solicitada)</translation>
+        <translation>(sem valor solicitada)</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -2995,7 +3001,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+48"/>
         <source>Amount:</source>
-        <translation>Quantidade:</translation>
+        <translation>Valor:</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -3015,7 +3021,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+32"/>
         <source>Change:</source>
-        <translation>Mudar:</translation>
+        <translation>Troco:</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -3025,7 +3031,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+3"/>
         <source>Custom change address</source>
-        <translation>Endereço de alteração personalizado</translation>
+        <translation>Endereço de troco personalizado</translation>
     </message>
     <message>
         <location line="+256"/>
@@ -3050,7 +3056,7 @@ Os endereços da ColdStake, começando com &quot;% 2&quot;, são usados para ati
     <message>
         <location line="+26"/>
         <source>collapse fee-settings</source>
-        <translation>taxa de colapso-configurações</translation>
+        <translation>diminuir configurações de taxa</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3075,12 +3081,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+27"/>
         <location line="+13"/>
         <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for Bitcoin Confidential transactions than the network can process.</source>
-        <translation>Pagando apenas a taxa mínima é apenas multa, desde que haja menos volume de transação do que o espaço nos blocos. Mas esteja ciente de que isso pode acabar em uma transação nunca confirmando uma vez que há mais demanda por transações confidenciais de Bitcoin do que a rede pode processar.</translation>
+        <translation>Pagando apenas a taxa mínima é ok, desde que haja menos volume de transação do que o espaço nos blocos. Mas esteja ciente de que isso pode acabar em uma transação nunca confirmando uma vez que há mais demanda por transações do que a rede pode processar.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>(read the tooltip)</source>
-        <translation>(leia a dica de ferramenta)</translation>
+        <translation>(leia a anotação)</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -3100,12 +3106,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+29"/>
         <source>Confirmation time target:</source>
-        <translation>Alvo do tempo da confirmação:</translation>
+        <translation>Alvo do tempo de confirmação:</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>With Replace-By-Fee (BIP-125) you can increase a transaction&apos;s fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
-        <translation>Com a substituição por taxa (BIP-125), você pode aumentar a taxa de uma transação depois que ela for enviada. Sem isso, uma taxa mais alta pode ser recomendada para compensar o aumento do risco de atraso de transação.</translation>
+        <translation>Com a substituição de taxa (BIP-125), você pode aumentar a taxa de uma transação depois que ela for enviada. Sem isso, uma taxa mais alta pode ser recomendada para compensar o aumento do risco de atraso de transação.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3120,7 +3126,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>S&amp;end</source>
-        <translation>S&amp;End</translation>
+        <translation>E&amp;nviar</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -3130,7 +3136,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Clear &amp;All</source>
-        <translation>Claro e tudo</translation>
+        <translation>Limpar &amp;Tudo</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3140,12 +3146,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Add &amp;Recipient</source>
-        <translation>Adicionar &amp; destinatário</translation>
+        <translation>Adicionar &amp;Destinatário</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Balance:</source>
-        <translation>Equilíbrio:</translation>
+        <translation>Saldo:</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="-730"/>
@@ -3160,22 +3166,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+14"/>
         <source>Copy quantity</source>
-        <translation>Quantidade da cópia</translation>
+        <translation>Copiar quantidade</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy amount</source>
-        <translation>Valor da cópia</translation>
+        <translation>Copiar valor</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy fee</source>
-        <translation>Taxa de cópia</translation>
+        <translation>Copiar taxa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy after fee</source>
-        <translation>Cópia após a taxa</translation>
+        <translation>Copiar após a taxa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3185,37 +3191,37 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Copy dust</source>
-        <translation>Copie a poeira</translation>
+        <translation>Copiar poeira</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy change</source>
-        <translation>Alterar cópia</translation>
+        <translation>Copiar troco</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>%1 (%2 blocks)</source>
-        <translation>% 1 (% 2 blocos)</translation>
+        <translation>%1 (%2 blocos)</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>This tab allows manually activating Staking funds for ColdStaking. This will take longer than the &quot;Automated ColdStaking activation&quot; to start staking but wallet does not need to be online for the activation.</source>
-        <translation>Esta guia permite ativar manualmente os fundos de Staking para o ColdStaking. Isso levará mais tempo do que o &quot;Automated ColdStaking ativação&quot; para iniciar Staking mas carteira não precisa estar on-line para a ativação.</translation>
+        <translation>Esta guia permite ativar manualmente os fundos de Staking para o ColdStaking. Isso levará mais tempo do que a &quot;ativação automática de ColdStaking&quot; para iniciar o Staking mas carteira não precisa estar on-line para a ativação.</translation>
     </message>
     <message>
         <location line="+103"/>
         <source>Error Remote Staking Address</source>
-        <translation>Endereço de Staking remoto de erro</translation>
+        <translation>Erro - endereço de Staking remoto</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>The remote stake address can&apos;t be part of this wallet.</source>
-        <translation>O endereço da estaca remota não pode fazer parte desta carteira.</translation>
+        <translation>O endereço de staking remoto não pode fazer parte desta carteira.</translation>
     </message>
     <message>
         <location line="+96"/>
         <source>from wallet %1</source>
-        <translation>da carteira% 1</translation>
+        <translation>da carteira %1</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -3223,7 +3229,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+5"/>
         <location line="+4"/>
         <source>%1 to %2</source>
-        <translation>% 1 a% 2</translation>
+        <translation>%1 a %2</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3233,7 +3239,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>Please, review your transaction.</source>
-        <translation>Por favor, reveja a sua transacção.</translation>
+        <translation>Por favor, reveja a sua transação.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -3248,17 +3254,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>added as transaction fee</source>
-        <translation>adicionada como taxa de transação</translation>
+        <translation>adicionado como taxa de transação</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You can increase the fee later (signals Replace-By-Fee, BIP-125).</source>
-        <translation>Você pode aumentar a taxa mais tarde (sinais substituir por taxa, BIP-125).</translation>
+        <translation>Você pode aumentar a taxa mais tarde (substituir por taxa, BIP-125).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Not signalling Replace-By-Fee, BIP-125.</source>
-        <translation>Não sinalização substituir por taxa, BIP-125.</translation>
+        <translation>Não sinalizar substituir por taxa, BIP-125.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3293,7 +3299,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>The total exceeds your balance when the %1 transaction fee is included.</source>
-        <translation>O total excede o saldo quando a taxa de transação% 1 é incluída.</translation>
+        <translation>O total excede o saldo quando a taxa de transação %1 é incluída.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3303,17 +3309,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Transaction creation failed!</source>
-        <translation>Falha na criação de transações!</translation>
+        <translation>Falha na criação da transação!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The transaction was rejected with the following reason: %1</source>
-        <translation>A transação foi rejeitada com o seguinte motivo:% 1</translation>
+        <translation>A transação foi rejeitada com o seguinte motivo: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>A fee higher than %1 is considered an absurdly high fee.</source>
-        <translation>Uma taxa superior A% 1 é considerada uma taxa absurdamente elevada.</translation>
+        <translation>Uma taxa superior a %1 é considerada uma taxa absurdamente elevada.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3323,32 +3329,32 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+96"/>
         <source>Pay only the required fee of %1</source>
-        <translation>Pague apenas a taxa exigida de% 1</translation>
+        <translation>Pague apenas a taxa exigida de %1</translation>
     </message>
     <message numerus="yes">
         <location line="+76"/>
         <source>Estimated to begin confirmation within %n block(s).</source>
-        <translation><numerusform>Estimado para começar a confirmação dentro de% n bloco (s).</numerusform><numerusform>Estimado para começar a confirmação dentro de% n bloco (s).</numerusform></translation>
+        <translation><numerusform>Estimado para começar a confirmação dentro de %n bloco(s).</numerusform><numerusform>Estimado para começar a confirmação dentro de %n bloco(s).</numerusform></translation>
     </message>
     <message>
         <location line="+130"/>
         <source>Warning: Invalid Bitcoin Confidential address</source>
-        <translation>Aviso: endereço confidencial de Bitcoin inválido</translation>
+        <translation>Aviso: endereço Bitcoin Confidential inválido</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Error custom change address</source>
-        <translation>Endereço de alteração personalizado de erro</translation>
+        <translation>Erro - Endereço de troco personalizado</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>The address you selected for change is not part of this wallet.</source>
-        <translation>O endereço que seleccionou para alteração não faz parte desta carteira.</translation>
+        <translation>O endereço que seleccionou para troco não faz parte desta carteira.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(sem nome)</translation>
     </message>
 </context>
 <context>
@@ -3363,7 +3369,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+463"/>
         <location line="+130"/>
         <source>Subtract fee from amount</source>
-        <translation>Subtrair taxa de valor</translation>
+        <translation>Subtrair taxa do valor</translation>
     </message>
     <message>
         <location line="-580"/>
@@ -3381,7 +3387,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+24"/>
         <location line="+261"/>
         <source>The Bitcoin Confidential address to send the payment to</source>
-        <translation>O endereço Bitcoin Confidential para enviar o pagamento para</translation>
+        <translation>O endereço Bitcoin Confidential para enviar o pagamento</translation>
     </message>
     <message>
         <location line="-254"/>
@@ -3397,7 +3403,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+297"/>
         <location line="+104"/>
         <source>Alt+A</source>
-        <translation>ALT + A</translation>
+        <translation>Alt+A</translation>
     </message>
     <message>
         <location line="-655"/>
@@ -3413,7 +3419,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+297"/>
         <location line="+104"/>
         <source>Alt+P</source>
-        <translation>ALT + P</translation>
+        <translation>Alt+P</translation>
     </message>
     <message>
         <location line="-655"/>
@@ -3435,17 +3441,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+242"/>
         <location line="+277"/>
         <source>Amount</source>
-        <translation>Quantidade</translation>
+        <translation>Valor</translation>
     </message>
     <message>
         <location line="-495"/>
         <source>Enter a label for this address to add it to the list of used addresses</source>
-        <translation>Insira um rótulo para este endereço para adicioná-lo à lista de endereços usados</translation>
+        <translation>Insira um nome para este endereço para adicioná-lo à lista de endereços usados</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -3470,22 +3476,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+36"/>
         <source>ColdStake address used by your remote staking node to stake your funds.</source>
-        <translation>O endereço ColdStake utilizado pelo seu nó de estacar remoto para apostar os seus fundos.</translation>
+        <translation>O endereço ColdStake utilizado pelo seu nó de staking remoto para juntar os seus fundos.</translation>
     </message>
     <message>
         <location line="+80"/>
         <source>ColdStake </source>
-        <translation>O ColdStake</translation>
+        <translation>ColdStake </translation>
     </message>
     <message>
         <location line="+24"/>
         <source>The stake address on the remote node (cannot be in this wallet)</source>
-        <translation>O endereço da estaca no nó remoto (não pode estar nesta carteira)</translation>
+        <translation>O endereço de staking do nó remoto (não pode estar nesta carteira)</translation>
     </message>
     <message>
         <location line="+81"/>
         <source> Stake </source>
-        <translation>Jogo</translation>
+        <translation> Stake </translation>
     </message>
     <message>
         <location line="+434"/>
@@ -3508,7 +3514,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="-560"/>
         <location line="+547"/>
         <source>A&amp;mount:</source>
-        <translation>A&amp;Mount:</translation>
+        <translation>V&amp;alor:</translation>
     </message>
     <message>
         <location line="-78"/>
@@ -3518,7 +3524,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../sendcoinsentry.cpp" line="+89"/>
         <source>Enter a label for this address to add it to your address book</source>
-        <translation>Insira um rótulo para esse endereço para adicioná-lo ao seu catálogo de endereços</translation>
+        <translation>Insira um nome para esse endereço para adicioná-lo ao seu catálogo de endereços</translation>
     </message>
 </context>
 <context>
@@ -3535,12 +3541,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../utilitydialog.cpp" line="+83"/>
         <source>%1 is shutting down...</source>
-        <translation>% 1 está fechando...</translation>
+        <translation>%1 está fechando...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do not shut down the computer until this window disappears.</source>
-        <translation>Não desligue o computador até que esta janela desaparece.</translation>
+        <translation>Não desligue o computador até que esta janela desapareça.</translation>
     </message>
 </context>
 <context>
@@ -3548,17 +3554,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../forms/signverifymessagedialog.ui" line="+14"/>
         <source>Signatures - Sign / Verify a Message</source>
-        <translation>Assinaturas-assinar/verificar uma mensagem</translation>
+        <translation>Assinaturas - Assinar / Verificar uma mensagem</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>&amp;Sign Message</source>
-        <translation>&amp; Mensagem de sinal</translation>
+        <translation>&amp;Assinar mensagem</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>&amp;Verify Message</source>
-        <translation>E verifique a mensagem</translation>
+        <translation>&amp;Verificar mensagem</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3568,7 +3574,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+18"/>
         <source>The Bitcoin Confidential address to sign the message with</source>
-        <translation>O endereço Bitcoin Confidential para assinar a mensagem com</translation>
+        <translation>O endereço Bitcoin Confidential para assinar a mensagem</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3580,7 +3586,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="-203"/>
         <location line="+213"/>
         <source>Alt+A</source>
-        <translation>ALT + A</translation>
+        <translation>Alt+A</translation>
     </message>
     <message>
         <location line="-203"/>
@@ -3590,7 +3596,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+10"/>
         <source>Alt+P</source>
-        <translation>ALT + P</translation>
+        <translation>Alt+P</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3615,48 +3621,48 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Sign &amp;Message</source>
-        <translation>Sinal &amp; mensagem</translation>
+        <translation>Assinar &amp;Mensagem</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Reset all sign message fields</source>
-        <translation>Redefinir todos os campos de mensagem de sinal</translation>
+        <translation>Redefinir todos os campos de assinatura</translation>
     </message>
     <message>
         <location line="+3"/>
         <location line="+153"/>
         <source>Clear &amp;All</source>
-        <translation>Claro e tudo</translation>
+        <translation>Limpar &amp;Tudo</translation>
     </message>
     <message>
         <location line="-85"/>
         <source>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
-        <translation>Digite o endereço do destinatário, mensagem (certifique-se de copiar quebras de linha, espaços, guias, etc. exatamente) e assinatura abaixo para verificar a mensagem. Tenha cuidado para não ler mais na assinatura do que o que está na mensagem assinada em si, para evitar ser enganado por um ataque homem-no-meio. Note que isso só prova que a festa de assinatura recebe com o endereço, ele não pode provar sendership de qualquer transação!</translation>
+        <translation>Digite o endereço do destinatário, mensagem (certifique-se de copiar quebras de linha, espaços, guias, etc. exatamente) e assinatura abaixo para verificar a mensagem. Tenha cuidado para não ler mais na assinatura do que o que está na mensagem assinada em si, para evitar ser enganado por um ataque homem-no-meio. Note que isso só prova que o lado que assinou recebe com o endereço, ele não pode provar a possibilidade de envio de qualquer transação!</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>The Bitcoin Confidential address the message was signed with</source>
-        <translation>O endereço de Bitcoin confidencial a mensagem foi assinada com</translation>
+        <translation>O endereço de Bitcoin Confidential que a mensagem foi assinada</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Verify the message to ensure it was signed with the specified Bitcoin Confidential address</source>
-        <translation>Verifique a mensagem para garantir que ele foi assinado com o endereço de Bitcoin confidencial especificado</translation>
+        <translation>Verifique a mensagem para garantir que ele foi assinado com o endereço de Bitcoin Confidential especificado</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Verify &amp;Message</source>
-        <translation>Verificar &amp; mensagem</translation>
+        <translation>Verificar &amp;Mensagem</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Reset all verify message fields</source>
-        <translation>Redefinir todos os campos de mensagem de verificação</translation>
+        <translation>Redefinir todos os campos de verificação de mensagem</translation>
     </message>
     <message>
         <location filename="../signverifymessagedialog.cpp" line="+39"/>
         <source>Click &quot;Sign Message&quot; to generate signature</source>
-        <translation>Clique em &quot;assinar mensagem&quot; para gerar assinatura</translation>
+        <translation>Clique em &quot;Assinar Mensagem&quot; para gerar assinatura</translation>
     </message>
     <message>
         <location line="+78"/>
@@ -3730,7 +3736,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../networkstyle.cpp" line="+19"/>
         <source>[testnet]</source>
-        <translation>TESTNET</translation>
+        <translation>[testnet]</translation>
     </message>
 </context>
 <context>
@@ -3738,7 +3744,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../forms/stakingdialog.ui" line="+14"/>
         <source>Send Coins</source>
-        <translation>Enviar moedas</translation>
+        <translation>Enviar Moedas</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -3773,7 +3779,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+79"/>
         <source>Total supply</source>
-        <translation>Fornecimento total</translation>
+        <translation>Total de moedas</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -3783,7 +3789,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+26"/>
         <source>Current block height</source>
-        <translation>Altura atual do bloco</translation>
+        <translation>Número do bloco atual</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3818,7 +3824,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+80"/>
         <source>Staking</source>
-        <translation>Apostando</translation>
+        <translation>Staking</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -3840,22 +3846,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="-412"/>
         <source>Stakable Funds</source>
-        <translation>Fundos stakable</translation>
+        <translation>Fundos para stake</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Wallet staking weight</source>
-        <translation>Carteira que Staking o peso</translation>
+        <translation>Peso de staking da carteira</translation>
     </message>
     <message>
         <location line="+103"/>
         <source>Cold Staking</source>
-        <translation>Staking frio</translation>
+        <translation>Cold Staking</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Remote Stake address</source>
-        <translation>Endereço de estaca remoto</translation>
+        <translation>Endereço de stake remoto</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -3865,12 +3871,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+25"/>
         <source>Enable </source>
-        <translation>Permitir</translation>
+        <translation>Ativo</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>Enable Hot Staking with the STAKING ENABLE button and leaving wallet open.  Enable automated ColdStake with COLDSTAKING ENABLE button and setting a remote stake address. On remote node enable staking with &quot;bitcoinc-cli walletsettings stakingstatus true&quot; and create a &quot;Stake&quot; address on your remote node with &quot;bitcoinc-cli getnewstakeaddress&quot;, or get a &quot;Stake&quot; address from a ColdStaking pool. Funds gradually transition over from hot staking to cold staking while your wallet is open. The time required for the activation depends on the wallet&apos;s staking weight and can take several days with a low weight. Once the activation bar shows complete, wallet can be closed.  Alternatively, use the Activate Coldstaking tab to send an activation transaction.  This will take longer to start staking but wallet does not need to be online.</source>
-        <translation>Ative o Hot Staking com o botão STAKING ENABLE e deixando a carteira aberta.  Ative o ColdStake automatizado com o botão ENABLE COLDSTAKING e definindo um endereço de estaca remoto. No nó remoto habilitar Staking com &quot;bitcoinc-CLI walletsettings stakingstatus true&quot; e criar um &quot;stake&quot; endereço em seu nó remoto com &quot;bitcoinc-CLI getnewtopoendereço&quot;, ou obter um &quot;stake&quot; endereço de um pool ColdStaking. Os fundos transitar gradualmente sobre do Staking quente ao Staking frio quando sua carteira for aberta. O tempo exigido para a ativação depende do peso de Staking da carteira e pode tomar diversos dias com um baixo peso. Uma vez que a barra de ativação mostra completa, a carteira pode ser fechada.  Alternativamente, use a guia ativar Coldstaking para enviar uma transação de ativação.  Isso levará mais tempo para começar a Staking, mas a carteira não precisa estar online.</translation>
+        <translation>Ative o Hot Staking com o botão ATIVAR STAKING e deixando a carteira aberta.  Ative o ColdStake automatizado com o botão ATIVAR COLDSTAKING e definindo um endereço de staking remoto. No nó remoto habilitar Staking com &quot;bitcoinc-cli walletsettings stakingstatus true&quot; e criar um endereço de &quot;stake&quot; em seu nó remoto com o comando &quot;bitcoinc-cli getnewstakeaddress&quot;, ou obter um endereço de &quot;stake&quot; de uma pool ColdStaking. Os fundos irão transitar gradualmente do Hot Staking para o ColdStake quando sua carteira for aberta. O tempo exigido para a ativação depende do peso de Staking da carteira e pode tomar diversos dias com um baixo peso. Uma vez que a barra de ativação ficar completa, a carteira pode ser fechada.  Alternativamente, use a guia ativar Coldstaking para enviar uma transação de ativação.  Isso levará mais tempo para começar a Staking, mas a carteira não precisa estar online.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3880,7 +3886,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+77"/>
         <source>Amount activated for ColdStaking</source>
-        <translation>Quantidade ativada para ColdStaking</translation>
+        <translation>Valor ativado para ColdStaking</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -3890,7 +3896,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+106"/>
         <source>Filtered</source>
-        <translation>Filtrada</translation>
+        <translation>Filtrado</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3925,7 +3931,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location filename="../stakingdialog.cpp" line="+258"/>
         <location line="+17"/>
         <source>No stakable funds available. Use the &quot;Convert to staking&quot; tab to convert funds for staking.</source>
-        <translation>Não há fundos disponíveis. Use o &quot;Convert to Staking&quot; guia para converter fundos para Staking.</translation>
+        <translation>Não há fundos disponíveis. Use a guia &quot;Convert para Staking&quot; para converter fundos para Staking.</translation>
     </message>
     <message>
         <location line="-15"/>
@@ -3951,12 +3957,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+4"/>
         <source>Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.</source>
-        <translation>A carteira não está totalmente sincronizada. Para começar Staking certifique-se que a carteira tem conexões à rede e espere até que catched acima com os blocos os mais atrasados.</translation>
+        <translation>A carteira não está totalmente sincronizada. Para começar Staking certifique-se que a carteira tem conexões com a rede e espere até que todos os blocos estejam sincronizados.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Staking is disabled. Set the config paramter &quot;staking=1&quot; in the bitcoinc.conf to enable it.</source>
-        <translation>Staking está desativado. Defina o paramter config &quot;Staking = 1&quot; no bitcoinc. conf para habilitá-lo.</translation>
+        <translation>Staking está desativado. Defina o paramter config &quot;staking = 1&quot; no bitcoinc.conf para habilitá-lo.</translation>
     </message>
     <message>
         <location line="+72"/>
@@ -3987,22 +3993,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message numerus="yes">
         <location filename="../transactiondesc.cpp" line="+39"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Abrir para% n mais bloco (s)</numerusform><numerusform>Abrir para% n mais bloco (s)</numerusform></translation>
+        <translation><numerusform>Abrir para% n mais bloco (s)</numerusform><numerusform>Abrir para %n mais bloco(s)</numerusform></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open until %1</source>
-        <translation>Aberto até% 1</translation>
+        <translation>Aberto até %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>conflicted with a transaction with %1 confirmations</source>
-        <translation>em conflito com uma transação com% 1 confirmações</translation>
+        <translation>em conflito com uma transação com %1 confirmações</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>0/unconfirmed, %1</source>
-        <translation>0/não confirmado,% 1</translation>
+        <translation>0/não confirmado, %1</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -4012,22 +4018,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+0"/>
         <source>not in memory pool</source>
-        <translation>Não no pool de memória</translation>
+        <translation>Não está no pool de memória</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>abandoned</source>
-        <translation>Abandonado</translation>
+        <translation>Abandonada</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1/unconfirmed</source>
-        <translation>% 1/não confirmado</translation>
+        <translation>%1/não confirmado</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 confirmations</source>
-        <translation>% 1 confirmações</translation>
+        <translation>%1 confirmações</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -4069,7 +4075,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Block time</source>
-        <translation>Tempo do bloco</translation>
+        <translation>Horário do bloco</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -4091,7 +4097,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="-72"/>
         <source>unknown</source>
-        <translation>Desconhecido</translation>
+        <translation>desconhecido</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4109,12 +4115,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+0"/>
         <location line="+69"/>
         <source>watch-only</source>
-        <translation>somente relógio</translation>
+        <translation>visualização apenas</translation>
     </message>
     <message>
         <location line="-67"/>
         <source>label</source>
-        <translation>Rótulo</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -4128,12 +4134,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message numerus="yes">
         <location line="-171"/>
         <source>matures in %n more block(s)</source>
-        <translation><numerusform>amadurece em% n mais bloco (s)</numerusform><numerusform>amadurece em% n mais bloco (s)</numerusform></translation>
+        <translation><numerusform>amadurece em% n mais bloco (s)</numerusform><numerusform>disponível em mais %n bloco(s)</numerusform></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>not accepted</source>
-        <translation>Não aceito</translation>
+        <translation>não aceito</translation>
     </message>
     <message>
         <location line="+64"/>
@@ -4196,7 +4202,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+7"/>
         <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>Moedas geradas devem amadurecer% 1 blocos antes que eles podem ser gastos. Quando você gerou esse bloco, ele foi transmitido para a rede a ser adicionado à cadeia de blocos. Se ele não conseguir entrar na cadeia, seu estado vai mudar para &quot;não aceito&quot; e não será spendable. Isso pode acontecer ocasionalmente se outro nó gera um bloco dentro de alguns segundos de seu.</translation>
+        <translation>Moedas geradas devem ficar disponíveis %1 blocos antes que eles podem ser gastos. Quando você gerou esse bloco, ele foi transmitido para a rede a ser adicionado à cadeia de blocos. Se ele não conseguir entrar na cadeia, seu estado vai mudar para &quot;não aceito&quot; e não estará disponível. Isso pode acontecer ocasionalmente se outro nó gera um bloco alguns segundos antes do seu.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4216,19 +4222,19 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+21"/>
         <source>Amount</source>
-        <translation>Quantidade</translation>
+        <translation>Valor</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>true</source>
-        <translation>Verdade</translation>
+        <translation>verdadeiro</translation>
     </message>
     <message>
         <location line="-1"/>
         <location line="+1"/>
         <source>false</source>
-        <translation>False</translation>
+        <translation>falso</translation>
     </message>
 </context>
 <context>
@@ -4241,7 +4247,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../transactiondescdialog.cpp" line="+17"/>
         <source>Details for %1</source>
-        <translation>Detalhes para% 1</translation>
+        <translation>Detalhes para %1</translation>
     </message>
 </context>
 <context>
@@ -4259,32 +4265,32 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>In</source>
-        <translation>Em</translation>
+        <translation>Entrada</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Out</source>
-        <translation>Fora</translation>
+        <translation>Saída</translation>
     </message>
     <message numerus="yes">
         <location line="+73"/>
         <source>Open for %n more block(s)</source>
-        <translation><numerusform>Abrir para% n mais bloco (s)</numerusform><numerusform>Abrir para% n mais bloco (s)</numerusform></translation>
+        <translation><numerusform>Abrir para% n mais bloco (s)</numerusform><numerusform>Abrir para mais %n bloco(s)</numerusform></translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Open until %1</source>
-        <translation>Aberto até% 1</translation>
+        <translation>Aberto até %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unconfirmed</source>
-        <translation>Confirmado</translation>
+        <translation>Não confirmado</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4299,12 +4305,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+22"/>
         <source>Confirming (%1 of %2 recommended confirmations)</source>
-        <translation>Confirmando (% 1 de% 2 confirmações recomendadas)</translation>
+        <translation>Confirmando (%1 de %2 confirmações recomendadas)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Confirmed (%1 confirmations)</source>
-        <translation>Confirmado (% 1 confirmações)</translation>
+        <translation>Confirmado (%1 confirmações)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4314,7 +4320,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Immature (%1 confirmations, will be available after %2)</source>
-        <translation>Imaturo (% 1 confirmações, estará disponível após% 2)</translation>
+        <translation>Imaturo (%1 confirmações, estará disponível após %2)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4349,12 +4355,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>Staked</source>
-        <translation>Apostou</translation>
+        <translation>Staked</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>watch-only</source>
-        <translation>somente relógio</translation>
+        <translation>visualização apenas</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4369,7 +4375,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+111"/>
         <source>(no label)</source>
-        <translation>(sem rótulo)</translation>
+        <translation>(sem nome)</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -4386,7 +4392,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+2"/>
         <location line="+16"/>
         <source>Whether or not a watch-only address is involved in this transaction.</source>
-        <translation>Se um endereço somente de relógio está envolvido nesta transação.</translation>
+        <translation>Se um endereço apenas de visualização está envolvido nesta transação.</translation>
     </message>
     <message>
         <location line="-14"/>
@@ -4426,7 +4432,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>Amount removed from or added to balance.</source>
-        <translation>Quantidade removida ou adicionada ao saldo.</translation>
+        <translation>Valor removido ou adicionado ao saldo.</translation>
     </message>
 </context>
 <context>
@@ -4436,7 +4442,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+11"/>
         <location line="+18"/>
         <source>All</source>
-        <translation>Todos</translation>
+        <translation>Todas</translation>
     </message>
     <message>
         <location line="-17"/>
@@ -4466,7 +4472,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Range...</source>
-        <translation>Gama...</translation>
+        <translation>Intervalo...</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4496,7 +4502,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+5"/>
         <source>Enter address, transaction id, or label to search</source>
-        <translation>Insira o endereço, a ID da transação ou o rótulo para Pesquisar</translation>
+        <translation>Insira o endereço, o ID da transação ou o nome para pesquisar</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4521,12 +4527,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Copy label</source>
-        <translation>Copiar etiqueta</translation>
+        <translation>Copiar nome</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy amount</source>
-        <translation>Valor da cópia</translation>
+        <translation>Copiar valor</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4546,7 +4552,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Edit label</source>
-        <translation>Editar etiqueta</translation>
+        <translation>Editar nome</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4561,17 +4567,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Comma separated file (*.csv)</source>
-        <translation>Arquivo separado por vírgula (*. csv)</translation>
+        <translation>Arquivo separado por vírgula (*.csv)</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Confirmed</source>
-        <translation>Confirmou</translation>
+        <translation>Confirmado</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Watch-only</source>
-        <translation>Somente relógio</translation>
+        <translation>Visualização apenas</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4586,7 +4592,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>Label</source>
-        <translation>Rótulo</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4596,32 +4602,32 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>ID</source>
-        <translation>Id</translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Exporting Failed</source>
-        <translation>Exportando falhou</translation>
+        <translation>Exportação falhou</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>There was an error trying to save the transaction history to %1.</source>
-        <translation>Houve um erro ao tentar salvar o histórico de transações em% 1.</translation>
+        <translation>Houve um erro ao tentar salvar o histórico de transações em %1.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Exporting Successful</source>
-        <translation>Exportando com êxito</translation>
+        <translation>Exportação com sucesso</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>The transaction history was successfully saved to %1.</source>
-        <translation>O histórico de transações foi salvo com êxito em% 1.</translation>
+        <translation>O histórico de transações foi salvo com sucesso em %1.</translation>
     </message>
     <message>
         <location line="+169"/>
         <source>Range:</source>
-        <translation>Gama:</translation>
+        <translation>Intervalo:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4642,7 +4648,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../bitcoingui.cpp" line="+122"/>
         <source>Unit to show amounts in. Click to select another unit.</source>
-        <translation>Unidade para mostrar os montantes em. Clique para selecionar outra unidade.</translation>
+        <translation>Unidade para mostrar os valores. Clique para selecionar outra unidade.</translation>
     </message>
 </context>
 <context>
@@ -4667,17 +4673,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+39"/>
         <location line="+6"/>
         <source>Fee bump error</source>
-        <translation>Erro de colisão de taxa</translation>
+        <translation>Erro de aumento de taxa</translation>
     </message>
     <message>
         <location line="-45"/>
         <source>Increasing transaction fee failed</source>
-        <translation>A taxa de transação crescente falhou</translation>
+        <translation>O aumento da taxa de transação falhou</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Do you want to increase the fee?</source>
-        <translation>Você quer aumentar a taxa?</translation>
+        <translation>Você quer aumentar a taxa de transação?</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4697,7 +4703,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+4"/>
         <source>Confirm fee bump</source>
-        <translation>Confirmar taxa de colisão</translation>
+        <translation>Confirmar aumento de taxa</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -4716,18 +4722,18 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location filename="../walletview.cpp" line="+46"/>
         <location line="+1"/>
         <source>&amp;Export</source>
-        <translation>E exportação</translation>
+        <translation>&amp;Exportar</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+29"/>
         <source>Export the data in the current tab to a file</source>
-        <translation>Exporte os dados na guia atual para um arquivo</translation>
+        <translation>Exportar os dados da guia atual para um arquivo</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>Selected amount</source>
-        <translation>Quantidade selecionada</translation>
+        <translation>Valor selecionado</translation>
     </message>
     <message>
         <location line="+290"/>
@@ -4737,7 +4743,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Wallet Data (*.dat)</source>
-        <translation>Dados da carteira (*. dat)</translation>
+        <translation>Dados da carteira (*.dat)</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -4747,7 +4753,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+0"/>
         <source>There was an error trying to save the wallet data to %1.</source>
-        <translation>Houve um erro ao tentar salvar os dados da carteira em% 1.</translation>
+        <translation>Houve um erro ao tentar salvar os dados da carteira em %1.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4757,7 +4763,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+0"/>
         <source>The wallet data was successfully saved to %1.</source>
-        <translation>Os dados da carteira foram salvos com êxito em% 1.</translation>
+        <translation>Os dados da carteira foram salvos com sucesso em %1.</translation>
     </message>
     <message>
         <location line="+63"/>
@@ -4770,117 +4776,117 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location filename="../bitcoinstrings.cpp" line="+12"/>
         <source>Bitcoin Confidential Core</source>
-        <translation>Núcleo confidencial de Bitcoin</translation>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The %s developers</source>
-        <translation>Os desenvolvedores% s</translation>
+        <translation>Os desenvolvedores %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source> is spendable from this wallet.</source>
-        <translation>é spendable desta carteira.</translation>
+        <translation>está disponível nessa carteira.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation>-maxtxfee é definido muito alto! As taxas deste grande podem ser pagas em uma única transação.</translation>
+        <translation>-maxtxfee definido muito alto! As taxas altas podem ser pagas em uma única transação.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Can&apos;t generate a change-address key. Private keys are disabled for this wallet.</source>
-        <translation>Não é possível gerar uma chave de endereço de alteração. As chaves privadas estão desativadas para esta carteira.</translation>
+        <translation>Não é possível gerar uma chave de endereço de troco. As chaves privadas estão desativadas para esta carteira.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
-        <translation>Não é possível obter um bloqueio no diretório de dados% s.% s provavelmente já está em execução.</translation>
+        <translation>Não é possível obter um bloqueio no diretório de dados %s. %s provavelmente já está em execução.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
-        <translation>Não é possível fornecer conexões específicas e ter addrman encontrar conexões de saída no mesmo.</translation>
+        <translation>Não é possível fornecer conexões específicas e encontrar conexões de saída no mesmo tempo.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=169900 or -upgradewallet with no version specified.</source>
-        <translation>Não é possível atualizar uma carteira de divisão não HD sem Atualizar para oferecer suporte a pool de chaves pré-divididas. Por favor, use-upgradewallet = 169900 ou-upgradewallet sem versão especificada.</translation>
+        <translation>Não é possível atualizar uma carteira não HD sem atualizar para oferecer suporte a pool de chaves pré-divididas. Por favor, use -upgradewallet=169900 ou -upgradewallet sem versão especificada.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
-        <translation>Distribuído a licença de software MIT, consulte o arquivo de acompanhamento% s ou% s</translation>
+        <translation>Distribuído sob a licença de software MIT, consulte o arquivo de acompanhamento %s ou %s</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Error loading %s: You can&apos;t enable HD on an already existing non-HD wallet</source>
-        <translation>Erro ao carregar% s: não é possível ativar o HD em uma carteira não-HD já existente</translation>
+        <translation>Erro ao carregar %s: não é possível ativar HD em uma carteira não-HD já existente</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
-        <translation>Erro ao ler% s! Todas as chaves lidas corretamente, mas os dados de transação ou entradas do catálogo de endereços podem estar ausentes ou incorretos.</translation>
+        <translation>Erro ao ler %s! Todas as chaves lidas corretamente, mas os dados de transação ou entradas do catálogo de endereços podem estar ausentes ou incorretos.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
-        <translation>Erro: escuta para conexões de entrada falhou (escutar retornou o erro% s)</translation>
+        <translation>Erro: escuta para conexões de entrada falhou (escutar retornou o erro %s)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
-        <translation>A estimativa da taxa falhou. Fallbackfee está desativado. Aguarde alguns blocos ou ativar-fallbackfee.</translation>
+        <translation>A estimativa da taxa falhou. Fallbackfee está desativado. Aguarde alguns blocos ou ative -fallbackfee.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Generate a random master key and main account if no master key exists. (default: %s)</source>
-        <translation>Gere uma chave mestra aleatória e uma conta principal se nenhuma chave mestra existir. (padrão:% s)</translation>
+        <translation>Gere uma chave mestra aleatória e uma conta principal se nenhuma chave mestra existir. (padrão: %s)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Group outputs by address, selecting all or none, instead of selecting on a per-output basis. Privacy is improved as an address is only used once (unless someone sends to it after spending from it), but may result in slightly higher fees as suboptimal coin selection may result due to the added limitation (default: %u)</source>
-        <translation>Agrupar saídas por endereço, selecionando tudo ou nenhum, em vez de selecionar em uma base por saída. A privacidade é melhorada porque um endereço é usado somente uma vez (a menos que alguém lhe enviar após a despesa dele), mas pode conduzir a umas taxas ligeiramente mais elevadas porque a seleção suboptimal da moeda pode resultar devido à limitação adicionada (defeito:% u)</translation>
+        <translation>Agrupar saídas por endereço, selecionando tudo ou nenhum, em vez de selecionar em uma base por saída. A privacidade é melhorada porque um endereço é usado somente uma vez (a menos que alguém lhe enviar após a despesa dele), mas pode conduzir a umas taxas ligeiramente mais elevadas porque a seleção suboptimal da moeda pode resultar devido à limitação adicionada (padrão: %u)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
-        <translation>Valor inválido para-maxtxfee =&lt;amount&gt;: &apos;% s&apos; (deve ser pelo menos a taxa de minrelay de% s para evitar transações presas)&lt;/amount&gt;</translation>
+        <translation>Valor inválido para -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (deve ser pelo menos a taxa de minrelay de %s para evitar transações presas)&lt;/amount&gt;</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Milliseconds between stake attempts. Lowering this param will not result in more stakes. (default: 500)</source>
-        <translation>Milissegundos entre as tentativas de estaca. Baixando este parâmetro não resultará em mais estacas. (padrão: 500)</translation>
+        <translation>Milissegundos entre as tentativas de staking. Baixando este parâmetro não resultará em mais stakes. (padrão: 500)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Not enough spending outputs available in the blockchain for privacy mixing. There are currently %d. For this transaction required: %d</source>
-        <translation>Não há saídas de gastos suficientes disponíveis no blockchain para a mistura de privacidade. Existem atualmente% d. Para esta transação necessária:% d</translation>
+        <translation>Não há saídas de gastos suficientes disponíveis no blockchain para a mistura de privacidade. Existem atualmente %d. Para esta transação necessária: %d</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Number of threads to start for staking, max 1 per active wallet, will divide wallets evenly between threads (default: 1)</source>
-        <translation>Número de threads para iniciar para Staking, Max 1 por carteira ativa, dividirá carteiras uniformemente entre threads (padrão: 1)</translation>
+        <translation>Número de threads para iniciar Staking, máximo de 1 por carteira ativa, dividirá as carteiras de maneira uniforme entre as threads (padrão: 1)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>On saving a key from the lookahead pool, save all unsaved keys leading up to it too. (default: %s)</source>
-        <translation>Ao salvar uma chave do pool lookahead, salve todas as chaves não salvas que levam até ele também. (padrão:% s)</translation>
+        <translation>Ao salvar uma chave do pool lookahead, salve todas as chaves não salvas que levam até ele também. (padrão: %s)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong, %s will not work properly.</source>
-        <translation>Verifique se a data e a hora do seu computador estão corretas! Se o seu relógio estiver errado,% s não funcionará corretamente.</translation>
+        <translation>Verifique se a data e a hora do seu computador estão corretas! Se o seu relógio estiver errado, %s não funcionará corretamente.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
-        <translation>Por favor, contribua se você encontrar% s útil. Visite% s para obter mais informações sobre o software.</translation>
+        <translation>Por favor, contribua se você encontrar %s útil. Visite %s para obter mais informações sobre o software.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
-        <translation>Prune configurado abaixo do mínimo de% d MiB.  Por favor, use um número maior.</translation>
+        <translation>Prune configurado abaixo do mínimo de %d MiB.  Por favor, use um número maior.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4890,12 +4896,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
-        <translation>Os rescans não são possíveis no modo podado. Você vai precisar usar-REINDEX que irá baixar todo o blockchain novamente.</translation>
+        <translation>Os rescans não são possíveis no modo podado. Você vai precisar usar -reindex que irá baixar todo o blockchain novamente.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>The block database contains a block which appears to be from the future. This may be due to your computer&apos;s date and time being set incorrectly. Only rebuild the block database if you are sure that your computer&apos;s date and time are correct</source>
-        <translation>O banco de dados de bloco contém um bloco que parece ser do futuro. Isto pode ser devido à data e hora do computador que está a ser definido incorrectamente. Apenas reconstruir a base de dados de bloco se tiver a certeza de que a data e hora do computador estão correctas</translation>
+        <translation>O banco de dados de bloco contém um bloco que parece ser do futuro. Isto pode ser devido à data e hora do computador incorreta. Apenas reconstruir a base de dados de bloco se tiver a certeza de que a data e hora do computador estão corretas</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4905,7 +4911,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation>Este é um teste de pré-lançamento Build-use em seu próprio risco-não use para aplicações de mineração ou comerciante</translation>
+        <translation>Este é um teste de pré-lançamento - use em seu próprio risco - não use para aplicações de mineração ou comerciante</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4920,17 +4926,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+2"/>
         <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
-        <translation>Este produto inclui software desenvolvido pelo OpenSSL Project para uso no OpenSSL Toolkit% s e software criptográfico escrito por Eric Young e software UPnP escrito por Thomas Bernard.</translation>
+        <translation>Este produto inclui software desenvolvido pelo OpenSSL Project para uso no OpenSSL Toolkit %s e software criptográfico escrito por Eric Young e software UPnP escrito por Thomas Bernard.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
-        <translation>Comprimento total da cadeia de caracteres de versão de rede (% i) excede o comprimento máximo (% i). Reduza o número ou o tamanho de uacomments.</translation>
+        <translation>Comprimento total da cadeia de caracteres de versão de rede (%i) excede o comprimento máximo (%i). Reduza o número ou o tamanho de uacomments.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
-        <translation>Não é possível reproduzir blocos. Será necessário recriar o banco de dados usando-REINDEX-chainstate.</translation>
+        <translation>Não é possível reproduzir os blocos. Será necessário recriar o banco de dados usando -reindex-chainstate.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4940,22 +4946,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Unsupported argument -socks found. Setting SOCKS version isn&apos;t possible anymore, only SOCKS5 proxies are supported.</source>
-        <translation>Argumento-peúgas não suportadas encontradas. Configuração SOCKS versão não é possível mais, apenas SOCKS5 proxies são suportados.</translation>
+        <translation>Argumento -socks não suportado encontrado. Configuração de SOCKS não é mais possível, apenas proxies SOCKS5 são suportados.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
-        <translation>Argumento sem suporte-whitelistalwaysrelay ignorado, use-whitelistrelay e/ou-whitelistforcerelay.</translation>
+        <translation>Argumento sem suporte -whitelistalwaysrelay ignorado, use -whitelistrelay e/ou -whitelistforcerelay.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Warning: Private keys detected in wallet {%s} with disabled private keys</source>
-        <translation>Aviso: chaves privadas detectadas na carteira {% s} com chaves privadas desativadas</translation>
+        <translation>Aviso: chaves privadas detectadas na carteira {%s} com chaves privadas desativadas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
-        <translation>Aviso: a rede não parece concordar plenamente! Alguns mineiros parecem estar enfrentando problemas.</translation>
+        <translation>Aviso: a rede não parece concordar plenamente! Alguns mineradores parecem estar enfrentando problemas.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4965,42 +4971,42 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+3"/>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
-        <translation>Aviso: arquivo de carteira corrompido, dados salvaged! % S original salvos como% s em% s; Se o saldo ou as transacções estiverem incorrectas, deve restaurar a partir de uma cópia de segurança.</translation>
+        <translation>Aviso: arquivo de carteira corrompido, dados corrompidos! Original %s salvos como %s em %s; Se o saldo ou as transações estiverem incorretas, deve restaurar a partir de uma cópia de segurança.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
-        <translation>Aviso: nós não parecemos concordar plenamente com os nossos pares! Talvez seja necessário atualizar ou outros nós talvez precisem atualizar.</translation>
+        <translation>Aviso: nós não parecemos concordar plenamente com os nossos pares! Talvez seja necessário atualizar a versão da carteira ou os outros nós talvez precisem atualizar.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You need to rebuild the database using -reindex to change -timestampindex</source>
-        <translation>Você precisa reconstruir o banco de dados usando-REINDEX para Change-timestampindex</translation>
+        <translation>Você precisa reconstruir o banco de dados usando -reindex para mudar o argumento -timestampindex</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
-        <translation>Você precisa recriar o banco de dados usando-REINDEX para voltar ao modo unpruned.  Isso rebaixará todo o blockchain</translation>
+        <translation>Você precisa recriar o banco de dados usando -reindex para voltar ao modo unpruned.  Isso baixará todo o blockchain novamente</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%d of last 100 blocks have unexpected version</source>
-        <translation>% d dos últimos 100 blocos têm versão inesperada</translation>
+        <translation>%d dos últimos 100 blocos têm versão inesperada</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%s corrupt, salvage failed</source>
-        <translation>% s corrompido, salvamento falhou</translation>
+        <translation>%s corrompido, salvamento falhou</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%s is set very high!</source>
-        <translation>% s é definido muito alto!</translation>
+        <translation>%s é definido muito alto!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>-maxmempool must be at least %d MB</source>
-        <translation>-maxmempool deve ser pelo menos% d MB</translation>
+        <translation>-maxmempool deve ser pelo menos %d MB</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5010,37 +5016,37 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Address &apos;%s&apos; is not in the address book.</source>
-        <translation>O endereço &apos;% s&apos; não está no catálogo de endereços.</translation>
+        <translation>O endereço &apos;%s&apos; não está no catálogo de endereços.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Address &apos;%s&apos; is recorded in the address book.</source>
-        <translation>O endereço &apos;% s&apos; é gravado no catálogo de endereços.</translation>
+        <translation>O endereço &apos;%s&apos; está gravado no catálogo de endereços.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anon output not found in db, %d</source>
-        <translation>Anon saída não encontrado em dB,% d</translation>
+        <translation>Saída Anon não encontrada no banco de dados, %d</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anon pubkey not found in db, %s</source>
-        <translation>Anon pubkey não encontrado em dB,% s</translation>
+        <translation>Pubkey Anon não encontrado no banco de dados, %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cannot downgrade wallet</source>
-        <translation>Não é possível downgrade carteira</translation>
+        <translation>Não é possível downgrade da carteira</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cannot resolve -%s address: &apos;%s&apos;</source>
-        <translation>Não é possível resolver-% s endereço: &apos;% s&apos;</translation>
+        <translation>Não é possível resolver -%s endereço: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cannot write to data directory &apos;%s&apos;; check permissions.</source>
-        <translation>Não é possível gravar no diretório de dados &apos;% s&apos;; permissões de verificação.</translation>
+        <translation>Não é possível gravar no diretório de dados &apos;%s&apos;; verifique as permissões.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5065,32 +5071,32 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Could not convert prefix to number.</source>
-        <translation>Não foi possível converter o prefixo para Number.</translation>
+        <translation>Não foi possível converter o prefixo para número.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Could not decode scan secret as wif, hex or base58.</source>
-        <translation>Não foi possível decodificar Scan secreto como WIF, Hex ou base58.</translation>
+        <translation>Não foi possível decodificar o segredo como WIF, Hex ou base58.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Could not decode spend secret as hex or base58.</source>
-        <translation>Não foi possível decodificar gastar segredo como hex ou base58.</translation>
+        <translation>Não foi possível decodificar segredo como hex ou base58.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Could not get confidential chain from account.</source>
-        <translation>Não foi possível obter cadeia confidencial de conta.</translation>
+        <translation>Não foi possível obter cadeia confidencial da conta.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Could not get scan public key.</source>
-        <translation>Não foi possível obter a chave pública de digitalização.</translation>
+        <translation>Não foi possível obter a chave pública.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Could not get spend public key.</source>
-        <translation>Não conseguiu gastar chave pública.</translation>
+        <translation>Não foi possível achar a chave pública.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5105,7 +5111,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Do you want to rebuild the block database now?</source>
-        <translation>Você deseja recriar o banco de dados de bloco agora?</translation>
+        <translation>Você deseja recriar o banco de dados de blocos agora?</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5115,7 +5121,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Duplicate index found, %d</source>
-        <translation>Índice duplicado encontrado,% d</translation>
+        <translation>Índice duplicado encontrado, %d</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5125,7 +5131,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Ensure available balance remains above reservebalance. (default: 0)</source>
-        <translation>Certifique-se de saldo disponível permanece acima reservebalance. (padrão: 0)</translation>
+        <translation>Certifique-se de saldo disponível permanece acima do saldo reservado. (padrão: 0)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5135,57 +5141,57 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Error creating %s: You can&apos;t create non-HD wallets with this version.</source>
-        <translation>Erro ao criar% s: não é possível criar carteiras não-HD com esta versão.</translation>
+        <translation>Erro ao criar %s: não é possível criar carteiras não-HD com esta versão.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error initializing block database</source>
-        <translation>Erro ao inicializar o banco de dados de bloco</translation>
+        <translation>Erro ao inicializar o banco de dados de blocos</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error initializing wallet database environment %s!</source>
-        <translation>Erro ao inicializar o ambiente de banco de dados carteira% s!</translation>
+        <translation>Erro ao inicializar o ambiente de banco de dados da carteira %s!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading %s</source>
-        <translation>Erro ao carregar% s</translation>
+        <translation>Erro ao carregar %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading %s: Private keys can only be disabled during creation</source>
-        <translation>Erro ao carregar% s: as chaves privadas só podem ser desativadas durante a criação</translation>
+        <translation>Erro ao carregar %s: as chaves privadas só podem ser desativadas durante a criação</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading %s: Wallet corrupted</source>
-        <translation>Erro ao carregar% s: carteira corrompida</translation>
+        <translation>Erro ao carregar %s: carteira corrompida</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading %s: Wallet requires newer version of %s</source>
-        <translation>Erro ao carregar% s: a carteira requer uma versão mais recente do% s</translation>
+        <translation>Erro ao carregar %s: a carteira requer uma versão mais recente do %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading %s: You can&apos;t disable HD on an already existing HD wallet</source>
-        <translation>Erro ao carregar% s: não é possível desativar o HD em uma carteira HD já existente</translation>
+        <translation>Erro ao carregar %s: não é possível desativar o HD em uma carteira HD já existente</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading block database</source>
-        <translation>Erro ao carregar o banco de dados do bloco</translation>
+        <translation>Erro ao carregar o banco de dados dos blocos</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading wallet %s. Duplicate -wallet filename specified.</source>
-        <translation>Erro ao carregar a carteira% s. Duplicar-nome do arquivo da carteira especificado.</translation>
+        <translation>Erro ao carregar a carteira %s. Duplicar utilizando -wallet nome do arquivo especificado.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error opening block database</source>
-        <translation>Erro ao abrir banco de dados de blocos</translation>
+        <translation>Erro ao abrir o banco de dados dos blocos</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5205,7 +5211,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Error: A fatal internal error occurred, see debug.log for details</source>
-        <translation>Erro: ocorreu um erro interno fatal, consulte Debug. log para obter detalhes</translation>
+        <translation>Erro: ocorreu um erro interno fatal, consulte o arquivo debug. log para obter detalhes</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5225,7 +5231,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
-        <translation>Falha ao escutar em qualquer porta. Use-Listen = 0 se você quiser isso.</translation>
+        <translation>Falha ao escutar em qualquer porta. Use -listen=0 se você quiser isso.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5235,32 +5241,32 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Failed to rescan the wallet during initialization</source>
-        <translation>Falha ao Rescan a carteira durante a inicialização</translation>
+        <translation>Falha de rescan da carteira durante a inicialização</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hit nMaxTries limit, %d, %d</source>
-        <translation>Acertar nMaxTries limite,% d,% d</translation>
+        <translation>Acertar nMaxTries limite, %d, %d</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Import failed - AddKeyPubKey failed.</source>
-        <translation>Falha na importação-AddKeyPubKey falhou.</translation>
+        <translation>Falha na importação - AddKeyPubKey falhou.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Import failed - stealth address exists.</source>
-        <translation>Importação falhou-endereço Stealth existe.</translation>
+        <translation>Importação falhou - endereço Stealth existe.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Importing...</source>
-        <translation>Importação...</translation>
+        <translation>Importando...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
-        <translation>Incorreto ou nenhum bloco de gênese encontrado. Datadir errado para a rede?</translation>
+        <translation>Incorreto ou nenhum bloco de gênese encontrado. Diretório de dados &quot;datadir&quot; errado para a rede?</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5270,7 +5276,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Initialization sanity check failed. %s is shutting down.</source>
-        <translation>Falha na verificação de sanidade de inicialização. % s está sendo desligado.</translation>
+        <translation>Falha na verificação de sanidade de inicialização. %s está sendo desligado.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5285,12 +5291,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Invalid -onion address or hostname: &apos;%s&apos;</source>
-        <translation>Inválido-endereço de cebola ou HostName: &apos;% s&apos;</translation>
+        <translation>Endereço ou hostname -onion inválido: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid -proxy address or hostname: &apos;%s&apos;</source>
-        <translation>Inválido-endereço de proxy ou HostName: &apos;% s&apos;</translation>
+        <translation>Endereço ou hostname -proxy inválido: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5300,27 +5306,27 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Invalid amount for -%s=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation>Valor inválido para-% s =&lt;amount&gt;: &apos;% s&apos;&lt;/amount&gt;</translation>
+        <translation>Valor inválido para -%s=&lt;amount&gt;: &apos;%s&apos;&lt;/amount&gt;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid amount for -discardfee=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation>Valor inválido para-discardfee =&lt;amount&gt;: &apos;% s&apos;&lt;/amount&gt;</translation>
+        <translation>Valor inválido para -discardfee=&lt;amount&gt;: &apos;%s&apos;&lt;/amount&gt;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid amount for -fallbackfee=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation>Valor inválido para-fallbackfee =&lt;amount&gt;: &apos;% s&apos;&lt;/amount&gt;</translation>
+        <translation>Valor inválido para -fallbackfee=&lt;amount&gt;: &apos;%s&apos;&lt;/amount&gt;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
-        <translation>Valor inválido para-paytxfee =&lt;amount&gt;: &apos;% s&apos; (deve ser pelo menos% s)&lt;/amount&gt;</translation>
+        <translation>Valor inválido para -paytxfee =&lt;amount&gt;: &apos;%s&apos; (deve ser pelo menos %s)&lt;/amount&gt;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid amount for -reservebalance=&lt;amount&gt;</source>
-        <translation>Valor inválido para-reservebalance =&lt;amount&gt;&lt;/amount&gt;</translation>
+        <translation>Valor inválido para -reservebalance=&lt;amount&gt;</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5340,7 +5346,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
-        <translation>Máscara de rede inválida especificada em whitelist: &apos;% s&apos;</translation>
+        <translation>Máscara de rede inválida especificada na whitelist: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5350,7 +5356,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Keypool ran out, please call keypoolrefill first</source>
-        <translation>Keypool correu para fora, por favor ligue keypoolrefil primeiro</translation>
+        <translation>O pool de chaves esgotou, por favor utilize o comando keypoolrefil primeiro</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5361,7 +5367,8 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
         <location line="+1"/>
         <source>Loading address book for %s.
 </source>
-        <translation>Carregando o catálogo de endereços para% s.</translation>
+        <translation>Carregando o catálogo de endereços para %s.
+</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5371,13 +5378,14 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Loading block index...</source>
-        <translation>Carregando o índice do bloco...</translation>
+        <translation>Carregando o índice dos blocos...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Loading transaction records for %s.
 </source>
-        <translation>Carregando registros de transação para% s.</translation>
+        <translation>Carregando registros de transação para %s.
+</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5387,7 +5395,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Minimum time in seconds between successful stakes (default: 0)</source>
-        <translation>Tempo mínimo em segundos entre estacas bem-sucedidas (padrão: 0)</translation>
+        <translation>Tempo mínimo em segundos entre stakes bem-sucedidas (padrão: 0)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5412,17 +5420,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
-        <translation>Necessidade de especificar uma porta com-whitebind: &apos;% s&apos;</translation>
+        <translation>Necessidade de especificar uma porta com -whitebind: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New state must be bool.</source>
-        <translation>Novo Estado deve ser bool.</translation>
+        <translation>Novo estado deve ser bool.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>NewExtKeyFromAccount failed, %s.</source>
-        <translation>NewExtKeyFromAccount falhou,% s.</translation>
+        <translation>NewExtKeyFromAccount falhou, %s.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5442,12 +5450,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>No key for anonoutput, %s</source>
-        <translation>Nenhuma chave para anonoutput,% s</translation>
+        <translation>Nenhuma chave para anonoutput, %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Not anon output %s %d</source>
-        <translation>Não anon saída% s% d</translation>
+        <translation>Saída não anon %s %d</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5457,12 +5465,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Num inputs per signature out of range</source>
-        <translation>Num entradas por assinatura fora do intervalo</translation>
+        <translation>Número de entradas por assinatura fora do intervalo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Number of keys to load into the lookahead pool per chain. (default: %u)</source>
-        <translation>Número de chaves para carregar no pool de lookahead por cadeia. (padrão:% u)</translation>
+        <translation>Número de chaves para carregar no pool de lookahead por cadeia. (padrão: %u)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5482,12 +5490,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>PrepareTransaction for device failed: %s</source>
-        <translation>PrepareTransaction para o dispositivo falhou:% s</translation>
+        <translation>PrepareTransaction para o dispositivo falhou: %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>ProduceSignature from device failed: %s</source>
-        <translation>Produtosignature do dispositivo falhou:% s</translation>
+        <translation>ProduceSignature do dispositivo falhou: %s</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5497,22 +5505,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Prune mode is incompatible with -txindex.</source>
-        <translation>O modo de Prune é incompatível com-txindex.</translation>
+        <translation>O modo de Prune é incompatível com -txindex.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Pruning blockstore...</source>
-        <translation>Poda blockstore...</translation>
+        <translation>Podando os arquivos dos blocos...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>ReadStoredTx failed for %s</source>
-        <translation>ReadStoredTx falhou para% s</translation>
+        <translation>ReadStoredTx falhou para %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
-        <translation>Reduzindo-MaxConnections de% d para% d, devido às limitações do sistema.</translation>
+        <translation>Reduzindo -maxconnections de %d para %d, devido às limitações do sistema.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5522,22 +5530,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Rescanning...</source>
-        <translation>Rescanning...</translation>
+        <translation>Rescaneando...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Rewinding blocks...</source>
-        <translation>Blocos de rebobinamento...</translation>
+        <translation>Rebobinando os blocos...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ring size out of range [%d, %d]</source>
-        <translation>Tamanho do anel fora do intervalo [% d,% d]</translation>
+        <translation>Tamanho do anel fora do intervalo [%d, %d]</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ring size out of range</source>
-        <translation>Tamanho do anel fora da escala</translation>
+        <translation>Tamanho do anel fora do intervalo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5557,37 +5565,37 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Specified -walletdir &quot;%s&quot; does not exist</source>
-        <translation>Especificado-walletdir &quot;% s&quot; não existe</translation>
+        <translation>-walletdir especificado &quot;%s&quot; não existe</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Specified -walletdir &quot;%s&quot; is a relative path</source>
-        <translation>Especificado-walletdir &quot;% s&quot; é um caminho relativo</translation>
+        <translation>-walletdir especificado &quot;%s&quot; é um caminho relativo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Specified -walletdir &quot;%s&quot; is not a directory</source>
-        <translation>Especificado-walletdir &quot;% s&quot; não é um diretório</translation>
+        <translation>-walletdir especificado &quot;%s&quot; não é um diretório</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Specified blocks directory &quot;%s&quot; does not exist.</source>
-        <translation>O diretório de blocos especificado &quot;% s&quot; não existe.</translation>
+        <translation>O diretório de blocos especificado &quot;%s&quot; não existe.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Spend secret is not 32 bytes.</source>
-        <translation>Gastar segredo não é 32 bytes.</translation>
+        <translation>Segredo do endereço não é 32 bytes.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Spend secret must be different to scan secret.</source>
-        <translation>Gastar segredo deve ser diferente para digitalizar segredo.</translation>
+        <translation>Segredo deve ser diferente para scanear segredo.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Stake your coins to support network and gain reward (default: true)</source>
-        <translation>Estaca suas moedas para apoiar a rede e ganhar recompensa (padrão: true)</translation>
+        <translation>Stake ativo para apoiar a rede e ganhar recompensa (padrão: true)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5602,7 +5610,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>The source code is available from %s.</source>
-        <translation>O código-fonte está disponível a partir de% s.</translation>
+        <translation>O código-fonte está disponível em %s.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5612,7 +5620,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>The wallet will avoid paying less than the minimum relay fee.</source>
-        <translation>A carteira evitará pagar menos do que a taxa mínima do relé.</translation>
+        <translation>A carteira evitará pagar menos do que a taxa mínima de transmissão.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5637,27 +5645,27 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Transaction amounts must not be negative</source>
-        <translation>Os montantes das transacções não devem ser negativos</translation>
+        <translation>Os valores das transações não devem ser negativos</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transaction amounts must not be negative.</source>
-        <translation>Os valores de transação não devem ser negativos.</translation>
+        <translation>Os valores das transações não devem ser negativos</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transaction fee and change calculation failed</source>
-        <translation>Falha na taxa de transação e no cálculo de alterações</translation>
+        <translation>Falha na taxa de transação e no cálculo do troco</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transaction fee and change calculation failed.</source>
-        <translation>Falha na taxa de transação e no cálculo de alterações.</translation>
+        <translation>Falha na taxa de transação e no cálculo do troco.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Transaction has too long of a mempool chain</source>
-        <translation>Transação tem muito tempo de uma cadeia de mempool</translation>
+        <translation>Transação tem muito tempo de mempool</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5692,12 +5700,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Unable to bind to %s on this computer (bind returned error %s)</source>
-        <translation>Não é possível vincular a% s neste computador (bind retornou o erro% s)</translation>
+        <translation>Não é possível vincular a %s neste computador (bind retornou o erro %s)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unable to bind to %s on this computer. %s is probably already running.</source>
-        <translation>Não é possível vincular a% s neste computador. % s provavelmente já está em execução.</translation>
+        <translation>Não é possível vincular a %s neste computador. %s provavelmente já está em execução.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5722,17 +5730,17 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Unknown action, must be one of &apos;add/edit/del&apos;.</source>
-        <translation>Ação desconhecida, deve ser um dos &apos; Adicionar/editar/del &apos;.</translation>
+        <translation>Ação desconhecida, deve ser uma das opções: &apos;add/edit/del &apos;.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unknown argument for 256bithash: %s.</source>
-        <translation>Argumento desconhecido para 256bithash:% s.</translation>
+        <translation>Argumento desconhecido para 256bithash: %s.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unknown argument for add_to_addressbook: %s.</source>
-        <translation>Argumento desconhecido para add_to_addressbook:% s.</translation>
+        <translation>Argumento desconhecido para add_to_addressbook: %s.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5747,7 +5755,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
-        <translation>Rede desconhecida especificada em-onlynet: &apos;% s&apos;</translation>
+        <translation>Rede desconhecida especificada em -onlynet: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5757,27 +5765,27 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
-        <translation>Argumento não suportado-benchmark ignorado, use-Debug = Bench.</translation>
+        <translation>Argumento não suportado -benchmark ignorado, use -debug=bench.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
-        <translation>Argumento não suportado-debugnet ignorado, use-Debug = net.</translation>
+        <translation>Argumento não suportado -debugnet ignorado, use -debug=net.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unsupported argument -debugnet ignored, use -debug=smsg.</source>
-        <translation>Argumento não suportado-debugnet ignorado, use-Debug = SMSG.</translation>
+        <translation>Argumento não suportado -debugnet ignorado, use -debug=smsg.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>Argumento-Tor não suportado encontrado, use-Onion.</translation>
+        <translation>Argumento -tor não suportado encontrado, use -onion.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unsupported logging category %s=%s.</source>
-        <translation>Categoria de registro sem suporte% s =% s.</translation>
+        <translation>Categoria de registro sem suporte %s=%s.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5787,7 +5795,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>User Agent comment (%s) contains unsafe characters.</source>
-        <translation>Comentário do agente do usuário (% s) contém caracteres não seguros.</translation>
+        <translation>Comentário do agente do usuário (%s) contém caracteres não seguros.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5797,12 +5805,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Verifying wallet(s)...</source>
-        <translation>Verificando carteira (s)...</translation>
+        <translation>Verificando carteira(s)...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wallet %s resides outside wallet directory %s</source>
-        <translation>Carteira% s reside fora diretório carteira% s</translation>
+        <translation>Carteira %s está fora do diretório da carteira %s</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5822,7 +5830,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Wallet needed to be rewritten: restart %s to complete</source>
-        <translation>Carteira necessária para ser reescrito: reinicie% s para completar</translation>
+        <translation>Carteira necessária para ser reescrito: reinicie %s para completar</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5832,22 +5840,22 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>Warning: unknown new rules activated (versionbit %i)</source>
-        <translation>Aviso: novas regras desconhecidas ativadas (versionbit% i)</translation>
+        <translation>Aviso: novas regras desconhecidas ativadas (versionbit %i)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to rebuild the database using -reindex to change -addressindex</source>
-        <translation>Você precisa recriar o banco de dados usando-REINDEX para Change-addressindex</translation>
+        <translation>Você precisa recriar o banco de dados usando -reindex para mudar o parâmetro -addressindex</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to rebuild the database using -reindex to change -spentindex</source>
-        <translation>Você precisa recriar o banco de dados usando-REINDEX para Change-spentindex</translation>
+        <translation>Você precisa recriar o banco de dados usando -reindex para mudar o parâmetro -spentindex</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Zapping all transactions from wallet...</source>
-        <translation>Zapping todas as transações da carteira...</translation>
+        <translation>Recalculando todas as transações da carteira...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5857,7 +5865,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>accounts must be an array.</source>
-        <translation>as contas devem ser uma matriz.</translation>
+        <translation>as contas devem ser um array.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5872,12 +5880,12 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>bad childNo.</source>
-        <translation>childNo ruim.</translation>
+        <translation>childNo inválido.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>bech32 encode failed.</source>
-        <translation>bech32 codificar falhou.</translation>
+        <translation>codificação bech32 falhou.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5892,7 +5900,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>extkey must have private key to derive hardened keys.</source>
-        <translation>extkey deve ter chave privada para derivar chaves endurecidas.</translation>
+        <translation>extkey deve ter chave privada para derivar chaves hardened.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5912,7 +5920,7 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>loose_extkeys must be an array.</source>
-        <translation>loose_extkeys deve ser uma matriz.</translation>
+        <translation>loose_extkeys deve ser um array.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5932,32 +5940,32 @@ Nota: uma vez que a taxa é calculada em uma base por byte, uma taxa de &quot;10
     <message>
         <location line="+1"/>
         <source>num_prefix_bits must be &lt;= 32.</source>
-        <translation>num_prefix_bits deve ser&lt;= 32.&gt;&lt;/= 32.&gt;</translation>
+        <translation>num_prefix_bits deve ser &lt;= 32.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>rewardaddress must be a string.</source>
-        <translation>recompendaddress deve ser uma seqüência de caracteres.</translation>
+        <translation>rewardaddress deve ser uma seqüência de caracteres.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>secp256k1_generate_mlsag failed %d</source>
-        <translation>secp256k1_generate_mlsag falhou% d</translation>
+        <translation>secp256k1_generate_mlsag falhou %d</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>secp256k1_get_keyimage failed %d</source>
-        <translation>secp256k1_get_keyimage falhou% d</translation>
+        <translation>secp256k1_get_keyimage falhou %d</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>secp256k1_prepare_mlsag failed %d</source>
-        <translation>secp256k1_prepare_mlsag falhou% d</translation>
+        <translation>secp256k1_prepare_mlsag falhou %d</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>stakecombinethreshold can&apos;t be negative.</source>
-        <translation>vigilância não pode ser negativa.</translation>
+        <translation>stakecombinethreshold não pode ser negativo.</translation>
     </message>
     <message>
         <location line="+1"/>
