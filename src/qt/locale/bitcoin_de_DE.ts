@@ -1,22 +1,22 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+﻿<?xml version="1.0" ?><!DOCTYPE TS><TS language="de_DE" version="2.1">
 <context>
     <name>AddressBookPage</name>
     <message>
         <location filename="../forms/addressbookpage.ui" line="+27"/>
         <source>Enter address or label to search</source>
-        <translation>Geben Sie Adresse oder Bezeichnung ein, um zu suchen</translation>
+        <translation>Zu suchende Adresse oder Bezeichnung eingeben</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Right-click to edit address or label</source>
-        <translation>Rechtsklick zum Bearbeiten von Adresse oder Bezeichnung</translation>
+        <translation>Rechtsklick zum Bearbeiten der Adresse oder der Bezeichnung</translation>
     </message>
     <message>
         <location line="+30"/>
         <location line="+17"/>
         <location line="+17"/>
         <source>Create a new address</source>
-        <translation>Erstellen einer neuen Adresse</translation>
+        <translation>Neue Adresse erstellen</translation>
     </message>
     <message>
         <location line="-31"/>
@@ -26,7 +26,7 @@
     <message>
         <location line="+17"/>
         <source>&amp;New Stake address</source>
-        <translation>&amp;Neue Pfahladresse</translation>
+        <translation>&amp;Neue Stake-Adresse</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -41,7 +41,7 @@
     <message>
         <location line="+3"/>
         <source>&amp;Copy</source>
-        <translation>&amp;Kopie</translation>
+        <translation>&amp;Kopieren</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -66,59 +66,59 @@
     <message>
         <location line="+20"/>
         <source>C&amp;lose</source>
-        <translation>C&amp;lose</translation>
+        <translation>Sch&amp;ließen</translation>
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="+84"/>
         <source>These are your Bitcoin Confidential addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Dies sind Ihre Bitcoin Vertraulichen Adressen für den Versand von Zahlungen. Überprüfen Sie immer den Betrag und die Empfangsadresse, bevor Sie Münzen senden.</translation>
+        <translation>Dies sind Ihre Bitcoin Confidential Adressen zum Tätigen von Überweisungen. Überprüfen Sie immer den Betrag und die Empfangsadresse, bevor Sie Bitcoin Confidential überweisen.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Choose the address to send coins to</source>
-        <translation>Wählen Sie die Adresse aus, an die Münzen gesendet werden sollen.</translation>
+        <translation>Wählen Sie die Adresse aus, an die Sie Bitcoin Confidential senden möchten</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+22"/>
         <location line="+28"/>
         <source>C&amp;hoose</source>
-        <translation>C&amp;hoose</translation>
+        <translation>Auswä&amp;hlen</translation>
     </message>
     <message>
         <location line="-44"/>
         <source>Sending addresses</source>
-        <translation>Senden von Adressen</translation>
+        <translation>Adressen Senden</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Choose the address to receive coins with</source>
-        <translation>Wählen Sie die Adresse, um Münzen mit</translation>
+        <translation>Wählen Sie die Adresse aus, mit der Sie Bitcoin Confidential empfangen wollen</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Receiving addresses</source>
-        <translation>Empfangen von Adressen</translation>
+        <translation>Adressen Empfangen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>These are your Bitcoin Confidential addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Dies sind Ihre Bitcoin Vertraulichen Adressen für den Empfang von Zahlungen. Es wird empfohlen, für jede Transaktion eine neue Empfangsadresse zu verwenden.</translation>
+        <translation>Dies sind Ihre Bitcoin Confidential-Adressen zum Empfangen von Zahlungen. Es wird empfohlen, für jede Transaktion eine neue Empfangsadresse zu verwenden.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Choose the Stake or ColdStake address</source>
-        <translation>Wählen Sie die Pfahl- oder ColdStake-Adresse</translation>
+        <translation>Wählen Sie die Stake- oder ColdStake-Adresse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>These are your Bitcoin Confidential Stake and ColdStake addresses.</source>
-        <translation>Dies sind Ihre Bitcoin Confidential Stake und ColdStake Adressen.</translation>
+        <translation>Dies sind Ihre Bitcoin Confidential Stake- und ColdStake-Adressen.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stake and ColdStake addresses</source>
-        <translation>Pfahl- und ColdStake-Adressen</translation>
+        <translation>Stake- und ColdStake-Adressen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -127,21 +127,21 @@
 Stake addresses, starting with &quot;%1&quot;, are used to convert spending funds into staking funds in the &quot;Convert to Staking&quot; tab. Funds in Stake addresses can be either used for hot staking or the activation of ColdStaking.
 
 ColdStake addresses, starting with &quot;%2&quot;, are used to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses when the automated ColdStaking activation from the Staking Status page is used.</source>
-        <translation>Diese Adressen können nicht verwendet werden, um Münzen von außerhalb des Portemonnaies zu erhalten, wie Zahlungen oder von Börsen.  Verwenden Sie die Registerkarte Empfangen, um Ausgabenadressen zu generieren.
+        <translation>Diese Adressen können nicht verwendet werden, um Bitcoin Confidential von außerhalb dieser Brieftasche zu empfangen. Verwenden Sie die Ansicht &quot;Empfangen&quot;, um normale Bitcoin Confidential Adressen zu generieren.
 
-Pfahladressen, beginnend mit &quot;%1&quot;, werden verwendet, um Ausgabengelder in Staking-Mittel auf der Registerkarte &quot;Konvertieren in Staking&quot; umzuwandeln. Gelder in Pfahladressen können entweder für Hot-Staking oder die Aktivierung von ColdStaking verwendet werden.
+Stake-Adressen, beginnend mit &quot;%1&quot;, werden verwendet, um normale Bitcoin Confidential in &quot;Staking Bitcoin Confidential&quot; umzuwandeln. Dies ist in der Ansicht &quot;Konvertieren zu Staking&quot; möglich. Bitcoin Confidential in Stake-Adressen können entweder für Hot-Staking oder die Aktivierung von ColdStaking verwendet werden.
 
-ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemittel für ColdStaking manuell zu aktivieren. Es ist nicht erforderlich, ColdStake-Adressen zu generieren, wenn die automatisierte ColdStaking-Aktivierung von der Seite Staking Status verwendet wird.</translation>
+ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um ColdStaking manuell zu aktivieren. Es ist nicht erforderlich, ColdStake-Adressen zu generieren, wenn die automatische ColdStaking-Aktivierung in der Ansicht &quot;Staking Status&quot; verwendet wird.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>&amp;Copy Address</source>
-        <translation>&amp;Kopieradresse</translation>
+        <translation>Adresse kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy &amp;Label</source>
-        <translation>Kopieren &amp;Label</translation>
+        <translation>Label kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -151,7 +151,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+186"/>
         <source>Export Address List</source>
-        <translation>Exportadressliste</translation>
+        <translation>Adressliste exportieren</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -179,7 +179,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+0"/>
         <source>Address</source>
-        <translation>adressieren</translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -192,22 +192,22 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../forms/askpassphrasedialog.ui" line="+26"/>
         <source>Passphrase Dialog</source>
-        <translation>Passphrase-Dialog</translation>
+        <translation>Passwort-Dialog</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Enter passphrase</source>
-        <translation>Passphrase eingeben</translation>
+        <translation>Passwort eingeben</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>New passphrase</source>
-        <translation>Neue Passphrase</translation>
+        <translation>Neues Passwort</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Repeat new passphrase</source>
-        <translation>Neue Passphrase wiederholen</translation>
+        <translation>Neues Passwort wiederholen</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -222,54 +222,54 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../askpassphrasedialog.cpp" line="+48"/>
         <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Geben Sie die neue Passphrase in die Brieftasche ein.&lt;br&gt;Verwenden Sie eine Passphrase mit &lt;b&gt;zehn oder mehr zufälligen Zeichen&lt;/b&gt;oder acht oder mehr &lt;b&gt;Wörtern&lt;/b&gt;.</translation>
+        <translation>Geben Sie das neue Passwort für die Brieftasche ein.&lt;br&gt;Verwenden Sie ein Passwort mit &lt;b&gt;zehn oder mehr zufälligen Zeichen&lt;/b&gt;oder acht oder mehr &lt;b&gt;Wörtern&lt;/b&gt;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Encrypt wallet</source>
-        <translation>Verschlüsseln Sie Brieftasche</translation>
+        <translation>Brieftasche verschlüsseln</translation>
     </message>
     <message>
         <location line="+3"/>
         <location line="+8"/>
         <source>This operation needs your wallet passphrase to unlock the wallet.</source>
-        <translation>Dieser Vorgang benötigt Ihre Wallet Passphrase, um die Brieftasche zu entsperren.</translation>
+        <translation>Dieser Vorgang erfordert das Entsperren der Brieftasche.</translation>
     </message>
     <message>
         <location line="-3"/>
         <location line="+9"/>
         <source>Unlock wallet</source>
-        <translation>Entsperren Brieftasche</translation>
+        <translation>Brieftasche Entsperren</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This operation needs your wallet passphrase to decrypt the wallet.</source>
-        <translation>Dieser Vorgang benötigt Ihre Wallet Passphrase, um die Brieftasche zu entschlüsseln.</translation>
+        <translation>Dieser Vorgang erfordert das Entsperren der Brieftasche.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Decrypt wallet</source>
-        <translation>Entschlüsseln Sie Brieftasche</translation>
+        <translation>Brieftasche Entschlüsseln</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Change passphrase</source>
-        <translation>Passphrase ändern</translation>
+        <translation>Passwort ändern</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter the old passphrase and new passphrase to the wallet.</source>
-        <translation>Geben Sie die alte Passphrase und die neue Passphrase in die Brieftasche ein.</translation>
+        <translation>Geben Sie das alte Passwort und das neue Passwort ein.</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Confirm wallet encryption</source>
-        <translation>Bestätigen der Wallet-Verschlüsselung</translation>
+        <translation>Bestätigen der Brieftaschen-Verschlüsselung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOIN CONFIDENTIAL&lt;/b&gt;!</source>
-        <translation>Warnung: Wenn Sie Ihre Brieftasche verschlüsseln und Ihre Passphrase verlieren, werden Sie &lt;b&gt;ALLE IHRER BITCOIN CONFIDENTIAL LOSE&lt;/b&gt;!</translation>
+        <translation>Warnung: Wenn Sie Ihre Brieftasche verschlüsseln und das Passwort verlieren, werden Sie &lt;b&gt;ALLE IHRER BITCOIN CONFIDENTIAL VERLIEREN&lt;/b&gt;!</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -280,17 +280,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
         <location line="+9"/>
         <location line="+59"/>
         <source>Wallet encrypted</source>
-        <translation>Wallet verschlüsselt</translation>
+        <translation>Brieftasche verschlüsselt</translation>
     </message>
     <message>
         <location line="-57"/>
         <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your Bitcoin Confidential from being stolen by malware infecting your computer.</source>
-        <translation>%1 wird jetzt geschlossen, um den Verschlüsselungsprozess abzuschließen. Denken Sie daran, dass die Verschlüsselung Ihrer Brieftasche Nicht vollständig schützen Können Sie Ihre Bitcoin Confidential vor gestohlen durch Malware infizieren Ihren Computer.</translation>
+        <translation>%1 wird jetzt geschlossen, um den Verschlüsselungsprozess abzuschließen. Denken Sie daran, dass die Verschlüsselung Ihrer Brieftasche Sie nicht vollständig davor schützt ihre Bitcoin Confidential z.B. durch  einen durch Malware infizierte Computer zu verlieren.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>WICHTIG: Alle vorherigen Backups, die Sie von Ihrer Wallet-Datei gemacht haben, sollten durch die neu generierte, verschlüsselte Wallet-Datei ersetzt werden. Aus Sicherheitsgründen werden frühere Sicherungen der unverschlüsselten Wallet-Datei nutzlos, sobald Sie mit der neuen, verschlüsselten Brieftasche beginnen.</translation>
+        <translation>WICHTIG: Alle vorherigen Backups, die Sie von Ihrer Brieftaschen-Datei gemacht haben, sollten durch die neu generierte, verschlüsselte Brieftaschen-Datei ersetzt werden. Aus Sicherheitsgründen werden frühere Sicherungen der unverschlüsselten Brieftaschen-Datei nutzlos, sobald Sie mit der neuen, verschlüsselten Brieftasche fortfahren.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -298,46 +298,46 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
         <location line="+43"/>
         <location line="+6"/>
         <source>Wallet encryption failed</source>
-        <translation>Wallet-Verschlüsselung fehlgeschlagen</translation>
+        <translation>Verschlüsseln der Brieftasche fehlgeschlagen</translation>
     </message>
     <message>
         <location line="-55"/>
         <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
-        <translation>Die Wallet-Verschlüsselung ist aufgrund eines internen Fehlers fehlgeschlagen. Ihre Brieftasche wurde nicht verschlüsselt.</translation>
+        <translation>Die Brieftaschen-Verschlüsselung ist aufgrund eines internen Fehlers fehlgeschlagen. Ihre Brieftasche wurde nicht verschlüsselt.</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+49"/>
         <source>The supplied passphrases do not match.</source>
-        <translation>Die mitgelieferten Passphrasen stimmen nicht überein.</translation>
+        <translation>Die eingegebenen Passwörter stimmen nicht überein.</translation>
     </message>
     <message>
         <location line="-37"/>
         <source>Wallet unlock failed</source>
-        <translation>Wallet-Entsperrung fehlgeschlagen</translation>
+        <translation>Entsperren der Brieftasche fehlgeschlagen</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+11"/>
         <location line="+19"/>
         <source>The passphrase entered for the wallet decryption was incorrect.</source>
-        <translation>Die passphrase eingegeben für die Brieftasche Entschlüsselung war falsch.</translation>
+        <translation>Das eingegebene Passwort ist falsch.</translation>
     </message>
     <message>
         <location line="-20"/>
         <source>Wallet decryption failed</source>
-        <translation>Wallet-Entschlüsselung fehlgeschlagen</translation>
+        <translation>Entschlüsseln der Brieftasche fehlgeschlagen</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Wallet passphrase was successfully changed.</source>
-        <translation>Wallet Passphrase wurde erfolgreich geändert.</translation>
+        <translation>Das Brieftaschen Passwort wurde erfolgreich geändert.</translation>
     </message>
     <message>
         <location line="+48"/>
         <location line="+33"/>
         <source>Warning: The Caps Lock key is on!</source>
-        <translation>Warnung: Die Caps Lock-Taste ist eingeschaltet!</translation>
+        <translation>Warnung: Die Feststell-Taste ist aktiviert!</translation>
     </message>
 </context>
 <context>
@@ -350,7 +350,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+0"/>
         <source>Banned Until</source>
-        <translation>Verboten bis</translation>
+        <translation>Verbannt bis</translation>
     </message>
 </context>
 <context>
@@ -358,22 +358,22 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../bitcoingui.cpp" line="+94"/>
         <source>Wallet</source>
-        <translation>brieftasche</translation>
+        <translation>Brieftasche</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Node</source>
-        <translation>knoten</translation>
+        <translation>Knoten</translation>
     </message>
     <message>
         <location line="+169"/>
         <source>Overview</source>
-        <translation>überblick</translation>
+        <translation>Überblick</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show general overview of wallet</source>
-        <translation>Allgemeine Übersicht über Wallet anzeigen</translation>
+        <translation>Allgemeine Übersicht über die Brieftasche anzeigen</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -383,17 +383,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+1"/>
         <source>Send coins to a Bitcoin Confidential Spending address</source>
-        <translation>Senden von Münzen an eine vertrauliche Bitcoin-Ausgabenadresse</translation>
+        <translation>Senden von Bitcoin Confidential an eine vertrauliche Bitcoin Confidential Adresse</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Receive</source>
-        <translation>erhalten</translation>
+        <translation>Empfangen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Request payments (generates Spending address QR codes and bitcoinc: URIs)</source>
-        <translation>Zahlungsanforderung (generiert Ausgabeadresse QR-Codes und Bitcoinc: URIs)</translation>
+        <translation>Zahlungsanforderung (generiert Empfangsadresse QR-Codes und BitcoinConfidential: URIs)</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -408,17 +408,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+7"/>
         <source>Staking</source>
-        <translation>Abstecken</translation>
+        <translation>Staking</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Setup staking</source>
-        <translation>Setup-Staking</translation>
+        <translation>Staking einrichten</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>E&amp;xit</source>
-        <translation>E&amp;xit</translation>
+        <translation>Beenden</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -468,7 +468,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+2"/>
         <source>&amp;Encrypt Wallet...</source>
-        <translation>&amp;Verschlüsseln Brieftasche...</translation>
+        <translation>&amp;Brieftasche verschlüsseln...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -483,27 +483,27 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+1"/>
         <source>Backup wallet to another location</source>
-        <translation>Wallet an einen anderen Ort sichern</translation>
+        <translation>Brieftasche an einen anderen Ort sichern</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Change Passphrase...</source>
-        <translation>&amp;Passphrase ändern...</translation>
+        <translation>&amp;Passwort ändern...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Change the passphrase used for wallet encryption</source>
-        <translation>Ändern der Passphrase für die Wallet-Verschlüsselung</translation>
+        <translation>Ändern des Passwortes für die Brieftaschen-Verschlüsselung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sign &amp;message...</source>
-        <translation>Signieren &amp;Nachricht...</translation>
+        <translation>Nachricht signieren...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sign messages with your Bitcoin Confidential addresses to prove you own them</source>
-        <translation>Signieren Sie Nachrichten mit Ihren vertraulichen Bitcoin-Adressen, um zu beweisen, dass Sie sie besitzen</translation>
+        <translation>Signieren Sie Nachrichten mit Ihren Bitcoin Confidential Adressen, um zu beweisen, dass Sie sie besitzen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -513,7 +513,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+1"/>
         <source>Verify messages to ensure they were signed with specified Bitcoin Confidential addresses</source>
-        <translation>Überprüfen Sie Nachrichten, um sicherzustellen, dass sie mit bestimmten vertraulichen Bitcoin-Adressen signiert wurden</translation>
+        <translation>Überprüfen Sie Nachrichten, um sicherzustellen, dass sie mit bestimmten Bitcoin Confidential Adressen signiert wurden</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -528,17 +528,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+4"/>
         <source>&amp;Sending addresses...</source>
-        <translation>&amp;Adressen senden...</translation>
+        <translation>&amp;Adressen zum senden...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show the list of used sending addresses and labels</source>
-        <translation>Liste der verwendeten Sendeadressen und -etiketten anzeigen</translation>
+        <translation>Liste der verwendeten Sendeadressen und -Beschriftungen anzeigen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Receiving addresses...</source>
-        <translation>&amp;Empfangen von Adressen...</translation>
+        <translation>&amp;Adressen zum Empfangen...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -593,7 +593,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+113"/>
         <source>default wallet</source>
-        <translation>Standard-Wallet</translation>
+        <translation>Standard-Brieftasche</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -603,7 +603,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message numerus="yes">
         <location line="+189"/>
         <source>%n active connection(s) to Bitcoin Confidential network</source>
-        <translation><numerusform>%n aktive Verbindung(en) zum vertraulichen Bitcoin-Netzwerk</numerusform><numerusform>%n aktive Verbindung(en) zum vertraulichen Bitcoin-Netzwerk</numerusform></translation>
+        <translation><numerusform>%n aktive Verbindung(en) zum vertraulichen Bitcoin-Netzwerk</numerusform><numerusform>%n aktive Verbindung(en) zum Bitcoin Confidential-Netzwerk</numerusform></translation>
     </message>
     <message>
         <location line="+0"/>
@@ -648,7 +648,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+6"/>
         <source>Connecting to peers...</source>
-        <translation>Eine Verbindung mit Peers wird hergestellt...</translation>
+        <translation>Verbinde zum Netzwerk...</translation>
     </message>
     <message numerus="yes">
         <location line="+9"/>
@@ -683,7 +683,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+13"/>
         <source>Bitcoin Confidential</source>
-        <translation>Bitcoin vertraulich</translation>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -693,12 +693,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Warning</source>
-        <translation>warnung</translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Information</source>
-        <translation>information</translation>
+        <translation>Informationen</translation>
     </message>
     <message>
         <location line="+116"/>
@@ -759,22 +759,22 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+13"/>
         <source>Wallet is &lt;b&gt;not encrypted&lt;/b&gt;. Click the opened lock to encrypt it.</source>
-        <translation>Wallet ist &lt;b&gt;nicht verschlüsselt&lt;/b&gt;. Klicken Sie auf die geöffnete Sperre, um sie zu verschlüsseln.</translation>
+        <translation>Brieftasche ist &lt;b&gt;nicht verschlüsselt&lt;/b&gt;. Klicken Sie auf das geöffnete Schloss, um sie zu verschlüsseln.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
-        <translation>Wallet ist &lt;b&gt;verschlüsselt&lt;/b&gt; und derzeit &lt;b&gt;entsperrt&lt;/b&gt;</translation>
+        <translation>Brieftasche ist &lt;b&gt;verschlüsselt&lt;/b&gt; und derzeit &lt;b&gt;entsperrt&lt;/b&gt;</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt; for staking only</source>
-        <translation>Wallet ist &lt;b&gt;verschlüsselt&lt;/b&gt; und derzeit nur für die Einnahme &lt;b&gt;entsperrt&lt;/b&gt;</translation>
+        <translation>Brieftasche ist &lt;b&gt;verschlüsselt&lt;/b&gt; und derzeit nur für Staking &lt;b&gt;entsperrt&lt;/b&gt;</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
-        <translation>Wallet ist &lt;b&gt;verschlüsselt&lt;/b&gt; und derzeit &lt;b&gt;gesperrt&lt;/b&gt;</translation>
+        <translation>Brieftasche ist &lt;b&gt;verschlüsselt&lt;/b&gt; und derzeit &lt;b&gt;gesperrt&lt;/b&gt;</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -789,7 +789,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Tor is &lt;b&gt;enabled&lt;/b&gt;, but its not the only network used. Use only onlynet=onion.</source>
-        <translation>Tor ist &lt;b&gt;aktiviert&lt;/b&gt;, aber es ist nicht das einzige Netzwerk, das verwendet wird. Verwenden Sie nurnet=zwiebel.</translation>
+        <translation>Tor ist &lt;b&gt;aktiviert&lt;/b&gt;, aber es ist nicht das einzige Netzwerk, das verwendet wird. Verwenden Sie onlynet=onion.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -812,27 +812,27 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+34"/>
         <source>Quantity:</source>
-        <translation>menge:</translation>
+        <translation>Anzahl:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Bytes:</source>
-        <translation>Bytes:</translation>
+        <translation>Byte:</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Amount:</source>
-        <translation>betrag:</translation>
+        <translation>Betrag:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Dust:</source>
-        <translation>staub:</translation>
+        <translation>Dust:</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Fee:</source>
-        <translation>gebühr:</translation>
+        <translation>Gebühr:</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -842,17 +842,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+32"/>
         <source>Change:</source>
-        <translation>Veränderung:</translation>
+        <translation>Wechselgeld:</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>Standard</source>
-        <translation>norm</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Anon</source>
-        <translation>Anon</translation>
+        <translation>Anonym</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -862,37 +862,37 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+13"/>
         <source>(un)select all</source>
-        <translation>(un)wählen Sie alle</translation>
+        <translation>Alles (de)selektieren</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Tree mode</source>
-        <translation>Baummodus</translation>
+        <translation>Baumansicht</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>List mode</source>
-        <translation>Listenmodus</translation>
+        <translation>Listenansicht</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>Amount</source>
-        <translation>betrag</translation>
+        <translation>Betrag</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Received with label</source>
-        <translation>Mit Etikett empfangen</translation>
+        <translation>Empfangen über Bezeichnung</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Received with address</source>
-        <translation>Empfangen mit Adresse</translation>
+        <translation>Empfangen über Adresse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Date</source>
-        <translation>datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -902,23 +902,23 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Confirmed</source>
-        <translation>hartnäckig</translation>
+        <translation>Bestätigt</translation>
     </message>
     <message>
         <location filename="../coincontroldialog.cpp" line="+73"/>
         <source>Copy address</source>
-        <translation>Kopieradresse</translation>
+        <translation>Adresse kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy label</source>
-        <translation>Kopieretikett</translation>
+        <translation>Bezeichnung kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+26"/>
         <source>Copy amount</source>
-        <translation>Kopierbetrag</translation>
+        <translation>Betrag kopieren</translation>
     </message>
     <message>
         <location line="-25"/>
@@ -928,42 +928,42 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+1"/>
         <source>Lock unspent</source>
-        <translation>Sperre nicht ausgegeben</translation>
+        <translation>Nicht ausgegebenen Betrag sperren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Unlock unspent</source>
-        <translation>Entsperren nicht ausgegeben</translation>
+        <translation>Nicht ausgegebenen Betrag entsperren</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Copy quantity</source>
-        <translation>Kopiermenge</translation>
+        <translation>Anzahl kopieren</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Copy fee</source>
-        <translation>Kopiergebühr</translation>
+        <translation>Gebühr kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy after fee</source>
-        <translation>Kopie nach Gebühr</translation>
+        <translation>Abzüglich Gebühr kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy bytes</source>
-        <translation>Kopieren von Bytes</translation>
+        <translation>Byte kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy dust</source>
-        <translation>Kopieren von Staub</translation>
+        <translation>Dust kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy change</source>
-        <translation>Kopieränderung</translation>
+        <translation>Wechselgeld kopieren</translation>
     </message>
     <message>
         <location line="+340"/>
@@ -983,7 +983,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+14"/>
         <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
-        <translation>Dieses Etikett wird rot, wenn ein Empfänger einen Betrag erhält, der kleiner als der aktuelle Staubschwellenwert ist.</translation>
+        <translation>Diese Bezeichnung wird rot, wenn irgendein Empfänger einen Betrag kleiner als die derzeitige &quot;Staubgrenze&quot; erhält.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -993,22 +993,22 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+47"/>
         <source>Hide immature</source>
-        <translation>Verstecken unreif</translation>
+        <translation>Unreife ausblenden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Hide locked</source>
-        <translation>Ausblenden gesperrt</translation>
+        <translation>Gesperrte ausblenden</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Show immature</source>
-        <translation>Unreif zeigen</translation>
+        <translation>Unreife zeigen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show locked</source>
-        <translation>Show gesperrt</translation>
+        <translation>Gesperrte zeigen</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -1020,13 +1020,13 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="-19"/>
         <source>change from %1 (%2)</source>
-        <translation>Veränderung von %1 (%2)</translation>
+        <translation>Wechselgeld von %1 (%2)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+20"/>
         <source>(change)</source>
-        <translation>(Änderung)</translation>
+        <translation>(Wechselgeld)</translation>
     </message>
     <message>
         <location line="-17"/>
@@ -1044,7 +1044,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+11"/>
         <source>&amp;Label</source>
-        <translation>&amp;Label</translation>
+        <translation>&amp;Bezeichnung</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1074,7 +1074,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>New Stake address</source>
-        <translation>Neue Pfahladresse</translation>
+        <translation>Neue Stake-Adresse</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1089,12 +1089,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+4"/>
         <source>Edit sending address</source>
-        <translation>Senden der Adresse bearbeiten</translation>
+        <translation>Sendeadresse bearbeiten</translation>
     </message>
     <message>
         <location line="+87"/>
         <source>The entered address &quot;%1&quot; is not a valid Bitcoin Confidential address.</source>
-        <translation>Die eingegebene Adresse &quot;%1&quot; ist keine gültige vertrauliche Bitcoin-Adresse.</translation>
+        <translation>Die eingegebene Adresse &quot;%1&quot; ist keine gültige Bitcoin Confidential Adresse.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1114,7 +1114,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+5"/>
         <source>The entered address &quot;%1&quot; is already in the address book with label &quot;%2&quot;.</source>
-        <translation>Die eingegebene Adresse &quot;%1&quot; befindet sich bereits im Adressbuch mit dem Etikett &quot;%2&quot;.</translation>
+        <translation>Die eingegebene Adresse &quot;%1&quot; befindet sich bereits im Adressbuch mit der Bezeichnung &quot;%2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1174,7 +1174,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../forms/intro.ui" line="+14"/>
         <source>Welcome</source>
-        <translation>willkommen</translation>
+        <translation>Willkommen</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1214,7 +1214,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../intro.cpp" line="+20"/>
         <source>Bitcoin Confidential</source>
-        <translation>Bitcoin vertraulich</translation>
+        <translation>Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1267,7 +1267,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+11"/>
         <source>Generate a mnemonic</source>
-        <translation>Generieren eines mnmonischen</translation>
+        <translation>Generieren eines mnemonic</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1287,7 +1287,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+7"/>
         <source>Language</source>
-        <translation>sprache</translation>
+        <translation>Sprache</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -1337,7 +1337,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+19"/>
         <source>Next</source>
-        <translation>nächster</translation>
+        <translation>Weiter</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1348,22 +1348,22 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="-148"/>
         <source>Recovery Passphrase </source>
-        <translation>Recovery Passphrase</translation>
+        <translation>Wiederherstellungscode</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Import Chain</source>
-        <translation>Importkette</translation>
+        <translation>Import </translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Warning</source>
-        <translation>warnung</translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Enter a passphrase to protect your Recovery Phrase (optional)</source>
-        <translation>Geben Sie eine Passphrase ein, um Ihre Wiederherstellungsphrase zu schützen (optional)</translation>
+        <translation>Geben Sie ein Passwort ein, um Ihren Wiederherstellungscode zu schützen (optional)</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1373,7 +1373,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+16"/>
         <source>Please ensure you backup your Recovery Phrase and Passphrase - they are not recoverable!</source>
-        <translation>Bitte stellen Sie sicher, dass Sie Ihre Recovery Phrase und Passphrase sichern - sie sind nicht wiederherstellbar!</translation>
+        <translation>Bitte stellen Sie sicher, dass Sie Ihr Wiederherstellungscode und das Passwort sichern - sie sind nicht wiederherstellbar!</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1384,17 +1384,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
         <location line="+19"/>
         <location filename="../mnemonicdialog.cpp" line="+145"/>
         <source>Import</source>
-        <translation>importieren</translation>
+        <translation>Importieren</translation>
     </message>
     <message>
         <location filename="../mnemonicdialog.cpp" line="-102"/>
         <source>Optionally enter a passphrase to protect the Recovery Phrase. (This is not a wallet password.)</source>
-        <translation>Geben Sie optional eine Passphrase ein, um die Wiederherstellungsphrase zu schützen. (Dies ist kein Wallet-Passwort.)</translation>
+        <translation>Geben Sie optional ein Passwort ein, um den Wiederherstellungscode zu schützen. (Dies ist kein Brieftaschen-Passwort.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter the Recovery Phrase/Mnemonic.</source>
-        <translation>Geben Sie die Wiederherstellungsphrase/Mnemonic ein.</translation>
+        <translation>Geben Sie die Wiederherstellungscode/Mnemonic ein.</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -1432,7 +1432,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../forms/modaloverlay.ui" line="+14"/>
         <source>Form</source>
-        <translation>form</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+122"/>
@@ -1447,14 +1447,14 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+63"/>
         <source>Number of blocks left</source>
-        <translation>Anzahl der restgelassenen Blöcke</translation>
+        <translation>Anzahl der verbleibenden Blöcke</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+26"/>
         <location filename="../modaloverlay.cpp" line="+140"/>
         <source>Unknown...</source>
-        <translation>unbekannt...</translation>
+        <translation>Unbekannt...</translation>
     </message>
     <message>
         <location line="-13"/>
@@ -1485,12 +1485,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+40"/>
         <source>Hide</source>
-        <translation>haut</translation>
+        <translation>Ausblenden</translation>
     </message>
     <message>
         <location filename="../modaloverlay.cpp" line="-1"/>
         <source>Unknown. Syncing Headers (%1)...</source>
-        <translation>unbekannt. Header synchronisieren (%1)...</translation>
+        <translation>Unbekannt. Header synchronisieren (%1)...</translation>
     </message>
 </context>
 <context>
@@ -1498,7 +1498,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../forms/openuridialog.ui" line="+14"/>
         <source>Open URI</source>
-        <translation>Offener URI</translation>
+        <translation>URI öffnen</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1508,17 +1508,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+9"/>
         <source>URI:</source>
-        <translation>Uri:</translation>
+        <translation>URI:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Select payment request file</source>
-        <translation>Auswählen der Zahlungsanforderungsdatei</translation>
+        <translation>Zahlungsanforderungsdatei auswählen</translation>
     </message>
     <message>
         <location filename="../openuridialog.cpp" line="+45"/>
         <source>Select payment request file to open</source>
-        <translation>Auswählen der Zahlungsanforderungsdatei zum Öffnen</translation>
+        <translation>Zahlungsanforderungsdatei zum Öffnen auswählen</translation>
     </message>
 </context>
 <context>
@@ -1531,12 +1531,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+14"/>
         <source>&amp;Main</source>
-        <translation>&amp;Main</translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>W&amp;allet</source>
-        <translation>W&amp;allet</translation>
+        <translation>Brieftasche</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1606,7 +1606,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+39"/>
         <source>Expert</source>
-        <translation>erfahren</translation>
+        <translation>Experte</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1646,7 +1646,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Map port using &amp;UPnP</source>
-        <translation>Kartenport mit &amp;UPnP</translation>
+        <translation>Ports über UPnP verwalten</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1656,7 +1656,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Allow incomin&amp;g connections</source>
-        <translation>Incomin&amp;g-Verbindungen zulassen</translation>
+        <translation>Eingehende Verbindungen zulassen</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1666,7 +1666,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
-        <translation>&amp;Connect über SOCKS5-Proxy (Standardproxy):</translation>
+        <translation>&amp;Verbinden über SOCKS5-Proxy (Standardproxy):</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1737,12 +1737,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>&amp;Hide tray icon</source>
-        <translation>&amp;Ausblenden Fachsymbol</translation>
+        <translation>Taskleistensymbol ausblenden</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Show only a tray icon after minimizing the window.</source>
-        <translation>Zeigen Sie nach dem Minimieren des Fensters nur ein Fachsymbol an.</translation>
+        <translation>Nach dem Minimieren des Fensters nur das Taskleistensymbol anzeigen. </translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1757,7 +1757,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>M&amp;inimize on close</source>
-        <translation>M&amp;inimize auf schließen</translation>
+        <translation>Minimieren statt schließen</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -1772,7 +1772,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+11"/>
         <source>&amp;Unit to show amounts in:</source>
-        <translation>&amp;Unit zum Anzeigen der Beträge in:</translation>
+        <translation>Einheit zum Anzeigen der Beträge in:</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1813,7 +1813,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>&amp;Reset Options</source>
-        <translation>&amp;Reset-Optionen</translation>
+        <translation>Optionen zurücksetzten</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -1828,7 +1828,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../optionsdialog.cpp" line="+109"/>
         <source>default</source>
-        <translation>default</translation>
+        <translation>standard</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -1887,35 +1887,35 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../forms/overviewpage.ui" line="+14"/>
         <source>Form</source>
-        <translation>form</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Bitcoin Confidential Core</source>
-        <translation>Bitcoin Vertraulicher Kern</translation>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <location line="+38"/>
         <location line="+114"/>
         <location line="+210"/>
         <source>Pending</source>
-        <translation>anstehend</translation>
+        <translation>Ausstehend</translation>
     </message>
     <message>
         <location line="-308"/>
         <source>Spending</source>
-        <translation>ausgaben</translation>
+        <translation>Normal</translation>
     </message>
     <message>
         <location line="+108"/>
         <source>Watch-only</source>
-        <translation>Nur auf passender Uhr</translation>
+        <translation>Beobachten</translation>
     </message>
     <message>
         <location line="+73"/>
         <location line="+191"/>
         <source>Available</source>
-        <translation>verfügbar</translation>
+        <translation>Verfügbar</translation>
     </message>
     <message>
         <location line="-181"/>
@@ -1925,17 +1925,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+41"/>
         <source>Staking</source>
-        <translation>Abstecken</translation>
+        <translation>Staking</translation>
     </message>
     <message>
         <location line="+130"/>
         <source>Immature</source>
-        <translation>unreif</translation>
+        <translation>Unreif</translation>
     </message>
     <message>
         <location line="+86"/>
         <source>Total</source>
-        <translation>gesamt</translation>
+        <translation>Gesamt</translation>
     </message>
     <message>
         <location line="+90"/>
@@ -1976,7 +1976,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="-41"/>
         <source>&apos;bitcoin://&apos; is not a valid URI. Use &apos;bitcoin:&apos; instead.</source>
-        <translation>&apos;bitcoin://&apos; ist kein gültiger URI. Verwenden Sie stattdessen &apos;bitcoin:&apos;.</translation>
+        <translation>&apos;bitcoinc://&apos; ist kein gültiger URI. Verwenden Sie stattdessen &apos;bitcoinc:&apos;.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -2095,17 +2095,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+0"/>
         <source>Ping</source>
-        <translation>klirren</translation>
+        <translation>Ping</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Sent</source>
-        <translation>gesandt</translation>
+        <translation>Gesendet</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Received</source>
-        <translation>Erhalten</translation>
+        <translation>Empfangen</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2118,12 +2118,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../bitcoinunits.cpp" line="+196"/>
         <source>Amount</source>
-        <translation>betrag</translation>
+        <translation>Betrag</translation>
     </message>
     <message>
         <location filename="../guiutil.cpp" line="+96"/>
         <source>Enter Spending address</source>
-        <translation>Geben Sie Ausgabenadresse ein</translation>
+        <translation>Bitcoin Confidential Adresse eingeben</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2138,7 +2138,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+2"/>
         <source>Enter Stake address</source>
-        <translation>Eingeben der Pfahladresse</translation>
+        <translation>Stake-Adresse eingeben</translation>
     </message>
     <message>
         <location line="+687"/>
@@ -2184,12 +2184,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message numerus="yes">
         <location line="+4"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n Minute(s)</numerusform><numerusform>%n Minute(s)</numerusform></translation>
+        <translation><numerusform>%n Minute(s)</numerusform><numerusform>%n Minute(n)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n Stunden(n)</numerusform><numerusform>%n Stunden(n)</numerusform></translation>
+        <translation><numerusform>%n Stunden(n)</numerusform><numerusform>%n Stunde(n)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location line="+4"/>
@@ -2200,7 +2200,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
         <location line="+4"/>
         <location line="+6"/>
         <source>%n week(s)</source>
-        <translation><numerusform>%n Wochen(e)</numerusform><numerusform>%n Wochen(e)</numerusform></translation>
+        <translation><numerusform>%n Wochen(e)</numerusform><numerusform>%n Woche(n)</numerusform></translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2235,12 +2235,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+71"/>
         <source>All spending funds are sent and received anonymously. Only the sender and receiver have details of their side of the transaction. Staking funds need to be converted to spending before sending out of wallet. Funds require %1 confirmations (%2 minutes) before sending.</source>
-        <translation>Alle Ausgabemittel werden anonym gesendet und empfangen. Nur der Absender und der Empfänger haben Details über ihre Seite der Transaktion. Staking-Fonds müssen in Ausgaben umgewandelt werden, bevor sie aus dem Portemonnaie aussenden. Fonds benötigen %1 Bestätigungen (%2 Minuten) vor dem Senden.</translation>
+        <translation>Alle Bitcoin Confidential werden anonym gesendet und empfangen. Nur der Absender und der Empfänger haben Details über ihre Seite der Transaktion. &quot;Staking Bitcoin Confidential&quot; müssen in normale Bitcoin Confidential umgewandelt werden, bevor sie aus der Brieftasche versendet werden können. Bitcoin Confidential benötigen %1 Bestätigungen (%2 Minuten) nach dem Empfangen bevor sie weiter versendet werden können.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Staking funds cannot be sent out of your wallet without converting to spending. After converting to spending, %1 confirmations (%2 minutes) are required before sending.</source>
-        <translation>Staking-Mittel können nicht aus Ihrem Portemonnaie gesendet werden, ohne sich in Ausgaben umzuwandeln. Nach der Konvertierung in Ausgaben sind vor dem Senden %1 Bestätigungen (%2 Minuten) erforderlich.</translation>
+        <translation>&quot;Staking Bitcoin Confidential&quot; können nicht aus Ihrer Brieftasche gesendet werden, ohne sie in normale Bitcoin Confidential umzuwandeln. Nach der Konvertierung in normale Bitcoin Confidential sind vor dem weiteren versenden %1 Bestätigungen (%2 Minuten) erforderlich.</translation>
     </message>
     <message>
         <location filename="../modaloverlay.cpp" line="-29"/>
@@ -2324,7 +2324,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+10"/>
         <source>Peers</source>
-        <translation>Gleichaltrige</translation>
+        <translation>Gegenstellen</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2345,7 +2345,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+13"/>
         <source>General</source>
-        <translation>allgemein</translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2360,7 +2360,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+13"/>
         <source>Network</source>
-        <translation>netz</translation>
+        <translation>Netz</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2375,7 +2375,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+7"/>
         <source>Name</source>
-        <translation>name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2448,12 +2448,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>&amp;Open</source>
-        <translation>&amp;Offen</translation>
+        <translation>Öffnen</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Wallet: </source>
-        <translation>brieftasche:</translation>
+        <translation>Brieftasche:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2473,17 +2473,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+32"/>
         <source>Clear console</source>
-        <translation>Klare Konsole</translation>
+        <translation>Konsole leeren</translation>
     </message>
     <message>
         <location line="+111"/>
         <source>&amp;Reset</source>
-        <translation>&amp;Reset</translation>
+        <translation>Zurücksetzten</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Totals</source>
-        <translation>Summen</translation>
+        <translation>Summe</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -2495,29 +2495,29 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
         <location line="-475"/>
         <location line="+452"/>
         <source>Sent</source>
-        <translation>gesandt</translation>
+        <translation>Versendet</translation>
     </message>
     <message>
         <location line="-361"/>
         <source>Banned peers</source>
-        <translation>Verbotene Peers</translation>
+        <translation>Blockierte Gegenstellen</translation>
     </message>
     <message>
         <location line="+60"/>
         <location filename="../rpcconsole.cpp" line="+510"/>
         <location line="+760"/>
         <source>Select a peer to view detailed information.</source>
-        <translation>Wählen Sie einen Peer aus, um detaillierte Informationen anzuzeigen.</translation>
+        <translation>Wählen Sie eine Gegenstelle aus, um detaillierte Informationen anzuzeigen.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Whitelisted</source>
-        <translation>Whitelist</translation>
+        <translation>Whitelisted</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Direction</source>
-        <translation>richtung</translation>
+        <translation>Richtung</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -2557,12 +2557,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+23"/>
         <source>Last Send</source>
-        <translation>Letzter Sende-</translation>
+        <translation>Letztes Senden</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Last Receive</source>
-        <translation>Letzter Empfang</translation>
+        <translation>Letztes Empfangen</translation>
     </message>
     <message>
         <location line="+69"/>
@@ -2592,7 +2592,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../rpcconsole.cpp" line="-667"/>
         <source>&amp;Disconnect</source>
-        <translation>&amp;Trennung</translation>
+        <translation>Trennen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2600,7 +2600,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
         <location line="+1"/>
         <location line="+1"/>
         <source>Ban for</source>
-        <translation>Verbot für</translation>
+        <translation>Blockiert für</translation>
     </message>
     <message>
         <location line="-3"/>
@@ -2610,7 +2610,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+1"/>
         <source>1 &amp;day</source>
-        <translation>1 &amp;tag</translation>
+        <translation>1 &amp;Tag</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2625,17 +2625,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+48"/>
         <source>&amp;Unban</source>
-        <translation>&amp;Unban</translation>
+        <translation>&amp;Freigeben</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>default wallet</source>
-        <translation>Standard-Wallet</translation>
+        <translation>Standard-Brieftasche</translation>
     </message>
     <message>
         <location line="+110"/>
         <source>Welcome to the %1 RPC console.</source>
-        <translation>Willkommen auf der %1 RPC-Konsole.</translation>
+        <translation>Willkommen in der %1 RPC-Konsole.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2660,12 +2660,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+32"/>
         <source>In:</source>
-        <translation>in:</translation>
+        <translation>Eingehend:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Out:</source>
-        <translation>außen:</translation>
+        <translation>Ausgehend:</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2675,12 +2675,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+68"/>
         <source>Executing command without any wallet</source>
-        <translation>Ausführen des Befehls ohne Wallet</translation>
+        <translation>Ausführen des Befehls ohne Brieftasche</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Executing command using &quot;%1&quot; wallet</source>
-        <translation>Ausführen des Befehls mit der Wallet &quot;%1&quot;</translation>
+        <translation>Ausführen des Befehls mit der Brieftasche &quot;%1&quot;</translation>
     </message>
     <message>
         <location line="+190"/>
@@ -2706,12 +2706,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+0"/>
         <source>Outbound</source>
-        <translation>auslaufend</translation>
+        <translation>Ausgehende</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Yes</source>
-        <translation>ja</translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2730,7 +2730,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location filename="../forms/receivecoinsdialog.ui" line="+59"/>
         <source>Stake</source>
-        <translation>Anteil</translation>
+        <translation>Stake</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2750,18 +2750,18 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Clear</source>
-        <translation>klar</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location line="+56"/>
         <location line="+79"/>
         <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
-        <translation>Ein optionaler Betrag, der anzufordern ist. Lassen Sie diese leer oder Null, um keinen bestimmten Betrag anzufordern.</translation>
+        <translation>Anzufordernder Betrag (optional). Lassen Sie dieses Feld leer oder setzen Sie es auf Null, um keinen bestimmten Betrag anzufordern.</translation>
     </message>
     <message>
         <location line="-57"/>
         <source>Use bech32 encoding.</source>
-        <translation>Verwenden Sie bech32-Codierung.</translation>
+        <translation>Verwende bech32-Codierung.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2777,23 +2777,23 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="-52"/>
         <source>&amp;Label:</source>
-        <translation>&amp;Label:</translation>
+        <translation>Bezeichnung:</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+53"/>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin Confidential network.</source>
-        <translation>Eine optionale Nachricht, die an die Zahlungsanforderung angefügt werden soll, die angezeigt wird, wenn die Anforderung geöffnet wird. Hinweis: Die Nachricht wird nicht mit der Zahlung über das Bitcoin Confidential Netzwerk gesendet.</translation>
+        <translation>Eine optionale Nachricht, die an die Zahlungsanforderung angehängt werden kann. Hinweis: Die Nachricht wird nicht mit der Zahlung über das Bitcoin Confidential Netzwerk gesendet.</translation>
     </message>
     <message>
         <location line="-50"/>
         <source>&amp;Message:</source>
-        <translation>&amp;Nachricht:</translation>
+        <translation>Nachricht:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>&amp;Amount:</source>
-        <translation>&amp;Betrag:</translation>
+        <translation>Betrag:</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2803,7 +2803,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+63"/>
         <source>Requested payments history</source>
-        <translation>Gewünschte Zahlungshistorie</translation>
+        <translation>Verlauf der Zahlungsaufforderungen</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2813,7 +2813,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Show</source>
-        <translation>zeigen</translation>
+        <translation>Zeigen</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2823,17 +2823,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Remove</source>
-        <translation>entfernen</translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <location filename="../receivecoinsdialog.cpp" line="+40"/>
         <source>Copy URI</source>
-        <translation>Kopier-URI</translation>
+        <translation>URI kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy label</source>
-        <translation>Kopieretikett</translation>
+        <translation>Bezeichnung kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2843,7 +2843,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+1"/>
         <source>Copy amount</source>
-        <translation>Kopierbetrag</translation>
+        <translation>Betrag kopieren</translation>
     </message>
 </context>
 <context>
@@ -2856,12 +2856,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+46"/>
         <source>Copy &amp;URI</source>
-        <translation>Kopieren &amp;URI</translation>
+        <translation>URI kopieren</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Copy &amp;Address</source>
-        <translation>Kopieren &amp;Adresse</translation>
+        <translation>Adresse kopieren</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2881,22 +2881,22 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+1"/>
         <source>URI</source>
-        <translation>Uri</translation>
+        <translation>URI</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Address</source>
-        <translation>adressieren</translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Amount</source>
-        <translation>betrag</translation>
+        <translation>Betrag</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Label</source>
-        <translation>Etikett</translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2906,7 +2906,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+2"/>
         <source>Wallet</source>
-        <translation>brieftasche</translation>
+        <translation>Brieftasche</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2925,13 +2925,13 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
         <location filename="../recentrequeststablemodel.cpp" line="+25"/>
         <location line="+4"/>
         <source>Date</source>
-        <translation>datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location line="-4"/>
         <location line="+4"/>
         <source>Label</source>
-        <translation>Etikett</translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2941,7 +2941,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+42"/>
         <source>(no label)</source>
-        <translation>(kein Etikett)</translation>
+        <translation>(keine Bezeichnung)</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2956,7 +2956,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+45"/>
         <source>Requested</source>
-        <translation>Angeforderte</translation>
+        <translation>Angefordert</translation>
     </message>
 </context>
 <context>
@@ -2985,7 +2985,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+89"/>
         <source>Quantity:</source>
-        <translation>menge:</translation>
+        <translation>Menge:</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -2995,17 +2995,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+48"/>
         <source>Amount:</source>
-        <translation>betrag:</translation>
+        <translation>Betrag:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Dust:</source>
-        <translation>staub:</translation>
+        <translation>Dust:</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Fee:</source>
-        <translation>gebühr:</translation>
+        <translation>Gebühr:</translation>
     </message>
     <message>
         <location line="+51"/>
@@ -3015,17 +3015,17 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+32"/>
         <source>Change:</source>
-        <translation>Veränderung:</translation>
+        <translation>Wechselgeld:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
-        <translation>Wenn dies aktiviert ist, die Änderungsadresse jedoch leer oder ungültig ist, wird die Änderung an eine neu generierte Adresse gesendet.</translation>
+        <translation>Wenn dies aktiviert ist, die Wechselgeldadresse jedoch leer oder ungültig ist, wird das Wechselgeld an eine neu generierte Adresse gesendet.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Custom change address</source>
-        <translation>Benutzerdefinierte Änderungsadresse</translation>
+        <translation>Benutzerdefinierte Wechselgeldadresse</translation>
     </message>
     <message>
         <location line="+256"/>
@@ -3035,12 +3035,12 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+14"/>
         <source>Choose...</source>
-        <translation>wählen...</translation>
+        <translation>Auswählen...</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Using the fallbackfee can result in sending a transaction that will take several hours or days (or never) to confirm. Consider choosing your fee manually or wait until you have validated the complete chain.</source>
-        <translation>Die Verwendung der Fallbackfee kann zum Senden einer Transaktion führen, deren Bestätigung mehrere Stunden oder Tage (oder nie) in Anspruch nehmen wird. Wählen Sie Ihre Gebühr manuell oder warten Sie, bis Sie die gesamte Kette validiert haben.</translation>
+        <translation>Die Verwendung der Fallback-Gebühr kann zum Senden einer Transaktion führen, deren Bestätigung mehrere Stunden oder Tage (oder nie) dauern wird. Wählen Sie Ihre Gebühr manuell oder warten Sie, bis Sie die gesamte Blockchain validiert haben.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3055,7 +3055,7 @@ ColdStake-Adressen, beginnend mit &quot;%2&quot;, werden verwendet, um Abnahmemi
     <message>
         <location line="+3"/>
         <source>Hide</source>
-        <translation>haut</translation>
+        <translation>Ausblenden</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -3090,7 +3090,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+30"/>
         <source>Custom:</source>
-        <translation>brauch:</translation>
+        <translation>Manuell:</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -3120,7 +3120,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>S&amp;end</source>
-        <translation>S&amp;end</translation>
+        <translation>Senden</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -3130,7 +3130,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>Clear &amp;All</source>
-        <translation>Klar &amp;alle</translation>
+        <translation>Alle löschen</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3140,17 +3140,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>Add &amp;Recipient</source>
-        <translation>Hinzufügen &amp;Empfänger</translation>
+        <translation>Empfänger hinzufügen</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Balance:</source>
-        <translation>Gleichgewicht:</translation>
+        <translation>Kontostand:</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="-730"/>
         <source>Add Output</source>
-        <translation>Hinzufügen der Ausgabe</translation>
+        <translation>Empfänger hinzufügen</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3160,37 +3160,37 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+14"/>
         <source>Copy quantity</source>
-        <translation>Kopiermenge</translation>
+        <translation>Menge kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy amount</source>
-        <translation>Kopierbetrag</translation>
+        <translation>Betrag kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy fee</source>
-        <translation>Kopiergebühr</translation>
+        <translation>Gebühr kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy after fee</source>
-        <translation>Kopie nach Gebühr</translation>
+        <translation>Nach Gebühr kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy bytes</source>
-        <translation>Kopieren von Bytes</translation>
+        <translation>Bytes kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy dust</source>
-        <translation>Kopieren von Staub</translation>
+        <translation>Dust kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy change</source>
-        <translation>Kopieränderung</translation>
+        <translation>Wechselgeld kopieren</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -3200,7 +3200,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+39"/>
         <source>This tab allows manually activating Staking funds for ColdStaking. This will take longer than the &quot;Automated ColdStaking activation&quot; to start staking but wallet does not need to be online for the activation.</source>
-        <translation>Diese Registerkarte ermöglicht die manuelle Aktivierung von Staking-Mitteln für ColdStaking. Dies dauert länger als die &quot;Automatisierte ColdStaking-Aktivierung&quot;, um mit dem Abnehmen zu beginnen, aber die Brieftasche muss für die Aktivierung nicht online sein.</translation>
+        <translation>Diese Registerkarte ermöglicht die manuelle Aktivierung von &quot;Staking Bitcoin Confidential&quot; für ColdStaking. Im Vergleich zu der &quot;Automatisierten ColdStaking-Aktivierung&quot; dauert es mit der manuellen Aktivierung länger bis mit dem Staking begonnen wird, aber die Brieftasche muss für die Aktivierung nicht online sein.</translation>
     </message>
     <message>
         <location line="+103"/>
@@ -3210,7 +3210,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+0"/>
         <source>The remote stake address can&apos;t be part of this wallet.</source>
-        <translation>Die Remote-Einsatzadresse kann nicht Teil dieser Brieftasche sein.</translation>
+        <translation>Die Remote-Staking-Adresse kann nicht Teil dieser Brieftasche sein.</translation>
     </message>
     <message>
         <location line="+96"/>
@@ -3228,7 +3228,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+6"/>
         <source>Are you sure you want to send?</source>
-        <translation>Möchten Sie wirklich senden?</translation>
+        <translation>Transaktion wirklich senden?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3268,12 +3268,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+6"/>
         <source>Your hardware device must be connected to sign this txn.</source>
-        <translation>Ihr Hardwaregerät muss angeschlossen sein, um dieses txn signieren zu können.</translation>
+        <translation>Ihr Hardwaregerät muss angeschlossen sein, um dieses Transaktion signieren zu können.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Confirm send coins</source>
-        <translation>Bestätigen Sie Münzen senden</translation>
+        <translation>Bestätigen des Sendens</translation>
     </message>
     <message>
         <location line="+248"/>
@@ -3288,12 +3288,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>The amount exceeds your balance.</source>
-        <translation>Der Betrag übersteigt Ihren Saldo.</translation>
+        <translation>Der Betrag übersteigt Ihren Kontostand.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>The total exceeds your balance when the %1 transaction fee is included.</source>
-        <translation>Der Gesamtbetrag übersteigt Ihren Saldo, wenn die Buchungsgebühr %1 enthalten ist.</translation>
+        <translation>Der Gesamtbetrag übersteigt Ihren Kontostand, wenn die Buchungsgebühr %1 enthalten ist.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3333,22 +3333,22 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+130"/>
         <source>Warning: Invalid Bitcoin Confidential address</source>
-        <translation>Warnung: Ungültige vertrauliche Adresse von Bitcoin</translation>
+        <translation>Warnung: Ungültige Bitcoin Confidential Adresse</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Error custom change address</source>
-        <translation>Fehler benutzerdefinierte Änderungsadresse</translation>
+        <translation>Fehler benutzerdefinierte Wechselgeld-Adresse</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>The address you selected for change is not part of this wallet.</source>
-        <translation>Die Adresse, die Sie für die Änderung ausgewählt haben, ist nicht Teil dieser Brieftasche.</translation>
+        <translation>Die Adresse, die Sie für das Wechselgeld ausgewählt haben, ist nicht Teil dieser Brieftasche.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>(no label)</source>
-        <translation>(kein Etikett)</translation>
+        <translation>(keine Bezeichnung)</translation>
     </message>
 </context>
 <context>
@@ -3370,7 +3370,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+463"/>
         <location line="+130"/>
         <source>Use available balance</source>
-        <translation>Verfügbare Waage verwenden</translation>
+        <translation>Verfügbaren Kontostand verwenden</translation>
     </message>
     <message>
         <location line="-562"/>
@@ -3381,7 +3381,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+24"/>
         <location line="+261"/>
         <source>The Bitcoin Confidential address to send the payment to</source>
-        <translation>Die vertrauliche Bitcoin-Adresse, an die die Zahlung gesendet werden soll</translation>
+        <translation>Die Bitcoin Confidential Adresse, an die die Zahlung gesendet werden soll</translation>
     </message>
     <message>
         <location line="-254"/>
@@ -3389,7 +3389,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+297"/>
         <location line="+104"/>
         <source>Choose previously used address</source>
-        <translation>Wählen Sie zuvor verwendete Adresse</translation>
+        <translation>Wählen Sie aus zuvor verwendeten Adressen</translation>
     </message>
     <message>
         <location line="-646"/>
@@ -3405,7 +3405,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+297"/>
         <location line="+104"/>
         <source>Paste address from clipboard</source>
-        <translation>Adresse aus zwischenderkstelle einfügen</translation>
+        <translation>Adresse aus Zwischenablage einfügen</translation>
     </message>
     <message>
         <location line="-646"/>
@@ -3428,14 +3428,14 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="-1718"/>
         <location line="+277"/>
         <source>Pay To</source>
-        <translation>Pay To</translation>
+        <translation>Bezahlen an</translation>
     </message>
     <message>
         <location line="-258"/>
         <location line="+242"/>
         <location line="+277"/>
         <source>Amount</source>
-        <translation>betrag</translation>
+        <translation>Betrag</translation>
     </message>
     <message>
         <location line="-495"/>
@@ -3445,12 +3445,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+15"/>
         <source>Label</source>
-        <translation>Etikett</translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>A short message sent over the Bitcoin Confidential network.</source>
-        <translation>Eine kurze Nachricht, die über das Bitcoin Confidential Netzwerk gesendet wurde.</translation>
+        <translation>Eine kurze Nachricht, die über das Bitcoin Confidential Netzwerk versendet wird.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3470,7 +3470,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+36"/>
         <source>ColdStake address used by your remote staking node to stake your funds.</source>
-        <translation>ColdStake-Adresse, die von Ihrem entfernten Einserknoten verwendet wird, um Ihr Geld zu setzen.</translation>
+        <translation>ColdStake-Adresse, die von Ihrer Remote Staking Node für das Staking verwendet wird.</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -3480,12 +3480,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+24"/>
         <source>The stake address on the remote node (cannot be in this wallet)</source>
-        <translation>Die Einsatzadresse auf dem Remoteknoten (kann sich nicht in dieser Brieftasche befinden)</translation>
+        <translation>Die Stake-Adresse der Remote-Staking-Node (kann nicht aus dieser Brieftasche sein)</translation>
     </message>
     <message>
         <location line="+81"/>
         <source> Stake </source>
-        <translation>Anteil</translation>
+        <translation>Stake</translation>
     </message>
     <message>
         <location line="+434"/>
@@ -3496,19 +3496,19 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+40"/>
         <location line="+560"/>
         <source>Pay To:</source>
-        <translation>Bezahlen An:</translation>
+        <translation>Bezahlen an:</translation>
     </message>
     <message>
         <location line="-526"/>
         <location line="+577"/>
         <source>Memo:</source>
-        <translation>memo:</translation>
+        <translation>Memo:</translation>
     </message>
     <message>
         <location line="-560"/>
         <location line="+547"/>
         <source>A&amp;mount:</source>
-        <translation>A&amp;mount:</translation>
+        <translation>Betrag:</translation>
     </message>
     <message>
         <location line="-78"/>
@@ -3527,7 +3527,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location filename="../sendcoinsdialog.cpp" line="+85"/>
         <location line="+5"/>
         <source>Yes</source>
-        <translation>ja</translation>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -3553,12 +3553,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+14"/>
         <source>&amp;Sign Message</source>
-        <translation>&amp;Sign-Nachricht</translation>
+        <translation>Nachricht signieren</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>&amp;Verify Message</source>
-        <translation>&amp;Überprüfen Nachricht</translation>
+        <translation>Nachricht überprüfen</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3568,7 +3568,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+18"/>
         <source>The Bitcoin Confidential address to sign the message with</source>
-        <translation>Die vertrauliche Bitcoin-Adresse zum Signieren der Nachricht mit</translation>
+        <translation>Die Bitcoin Confidential Adresse zum Signieren der Nachricht</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3585,7 +3585,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="-203"/>
         <source>Paste address from clipboard</source>
-        <translation>Adresse aus zwischenderkstelle einfügen</translation>
+        <translation>Adresse aus Zwischenablage einfügen</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3595,12 +3595,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+12"/>
         <source>Enter the message you want to sign here</source>
-        <translation>Geben Sie die Nachricht ein, die Sie hier signieren möchten.</translation>
+        <translation>Geben Sie die Nachricht ein, die Sie signieren möchten.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Signature</source>
-        <translation>unterschrift</translation>
+        <translation>Signatur</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3610,48 +3610,48 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+21"/>
         <source>Sign the message to prove you own this Bitcoin Confidential address</source>
-        <translation>Signieren Sie die Nachricht, um zu beweisen, dass Sie diese vertrauliche Bitcoin-Adresse besitzen</translation>
+        <translation>Signieren Sie die Nachricht, um zu beweisen, dass Sie diese Bitcoin Confidential Adresse besitzen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sign &amp;Message</source>
-        <translation>Sign &amp;Message</translation>
+        <translation>Nachricht signieren</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Reset all sign message fields</source>
-        <translation>Zurücksetzen aller Zeichenmeldungsfelder</translation>
+        <translation>Zurücksetzen aller Felder</translation>
     </message>
     <message>
         <location line="+3"/>
         <location line="+153"/>
         <source>Clear &amp;All</source>
-        <translation>Klar &amp;alle</translation>
+        <translation>Alles löschen</translation>
     </message>
     <message>
         <location line="-85"/>
         <source>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
-        <translation>Geben Sie die Adresse des Empfängers, die Nachricht (stellen Sie sicher, dass Sie Zeilenumbrüche, Leerzeichen, Registerkarten usw. genau kopieren) und die Signatur unten ein, um die Nachricht zu überprüfen. Achten Sie darauf, nicht mehr in die Signatur zu lesen, als das, was in der signierten Nachricht selbst ist, um zu vermeiden, von einem Man-in-the-Middle-Angriff ausgetrickst zu werden. Beachten Sie, dass dies nur beweist, dass die unterzeichnende Partei mit der Adresse empfängt, kann es nicht den Absender von einer Transaktion beweisen!</translation>
+        <translation>Geben Sie die Adresse des Empfängers, die Nachricht (stellen Sie sicher, dass Sie Zeilenumbrüche, Leerzeichen, Registerkarten usw. genau kopieren) und die Signatur unten ein, um die Nachricht zu überprüfen. Achten Sie darauf, nicht mehr in die Signatur zu lesen, als das, was in der signierten Nachricht selbst ist, um zu vermeiden, von einem Man-in-the-Middle-Angriff ausgetrickst zu werden. Beachten Sie, dass dies nur beweist, dass die unterzeichnende Partei mit der Adresse empfängt. Es kann nicht den Absender von einer Transaktion beweisen!</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>The Bitcoin Confidential address the message was signed with</source>
-        <translation>Die vertrauliche Bitcoin-Adresse, mit der die Nachricht unterzeichnet wurde</translation>
+        <translation>Die Bitcoin Confidential Adresse, mit der die Nachricht signiert wurde</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Verify the message to ensure it was signed with the specified Bitcoin Confidential address</source>
-        <translation>Überprüfen Sie die Nachricht, um sicherzustellen, dass sie mit der angegebenen vertraulichen Bitcoin-Adresse signiert wurde.</translation>
+        <translation>Überprüfen Sie die Nachricht, um sicherzustellen, dass sie mit der angegebenen Bitcoin Confidential Adresse signiert wurde.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Verify &amp;Message</source>
-        <translation>Überprüfen &amp;Nachricht</translation>
+        <translation>Nachricht überprüfen</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Reset all verify message fields</source>
-        <translation>Zurücksetzen aller Überprüfungsmeldungsfelder</translation>
+        <translation>Zurücksetzen aller Felder</translation>
     </message>
     <message>
         <location filename="../signverifymessagedialog.cpp" line="+39"/>
@@ -3691,7 +3691,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+12"/>
         <source>Message signing failed.</source>
-        <translation>Fehler beim Signieren von Nachrichten.</translation>
+        <translation>Fehler beim Signieren der Nachricht.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3730,7 +3730,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location filename="../networkstyle.cpp" line="+19"/>
         <source>[testnet]</source>
-        <translation>[Testnet]</translation>
+        <translation>[Testnetz]</translation>
     </message>
 </context>
 <context>
@@ -3738,12 +3738,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location filename="../forms/stakingdialog.ui" line="+14"/>
         <source>Send Coins</source>
-        <translation>Senden Von Münzen</translation>
+        <translation>Senden von Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Status</source>
-        <translation>status</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3758,12 +3758,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+16"/>
         <source>Convert to Spending</source>
-        <translation>Konvertieren in Ausgaben</translation>
+        <translation>Konvertieren zu Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Convert to Staking</source>
-        <translation>Konvertieren nach Staking</translation>
+        <translation>Konvertieren zu Staking</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3773,7 +3773,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+79"/>
         <source>Total supply</source>
-        <translation>Gesamtangebot</translation>
+        <translation>Gesamtanzahl</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -3788,7 +3788,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+20"/>
         <source>Network difficulty</source>
-        <translation>Netzwerkschwierigkeiten</translation>
+        <translation>Netzwerkschwierigkeit</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -3818,18 +3818,18 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+80"/>
         <source>Staking</source>
-        <translation>Abstecken</translation>
+        <translation>Staking</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+233"/>
         <source>ENABLED</source>
-        <translation>Aktiviert</translation>
+        <translation>AKTIVIERT</translation>
     </message>
     <message>
         <location line="-210"/>
         <source>Pause</source>
-        <translation>pause</translation>
+        <translation>Pause</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -3840,17 +3840,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="-412"/>
         <source>Stakable Funds</source>
-        <translation>Stakable Funds</translation>
+        <translation>Verfügbar für Staking</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Wallet staking weight</source>
-        <translation>Wallet-Staking-Gewicht</translation>
+        <translation>Brieftasche-Staking-Gewicht</translation>
     </message>
     <message>
         <location line="+103"/>
         <source>Cold Staking</source>
-        <translation>Cold Staking</translation>
+        <translation>ColdStaking</translation>
     </message>
     <message>
         <location line="+55"/>
@@ -3865,17 +3865,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+25"/>
         <source>Enable </source>
-        <translation>ermöglichen</translation>
+        <translation>Aktivieren</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>Enable Hot Staking with the STAKING ENABLE button and leaving wallet open.  Enable automated ColdStake with COLDSTAKING ENABLE button and setting a remote stake address. On remote node enable staking with &quot;bitcoinc-cli walletsettings stakingstatus true&quot; and create a &quot;Stake&quot; address on your remote node with &quot;bitcoinc-cli getnewstakeaddress&quot;, or get a &quot;Stake&quot; address from a ColdStaking pool. Funds gradually transition over from hot staking to cold staking while your wallet is open. The time required for the activation depends on the wallet&apos;s staking weight and can take several days with a low weight. Once the activation bar shows complete, wallet can be closed.  Alternatively, use the Activate Coldstaking tab to send an activation transaction.  This will take longer to start staking but wallet does not need to be online.</source>
-        <translation>Aktivieren Sie Hot Staking mit der Taste STAKING ENABLE und lassen Sie die Brieftasche geöffnet.  Aktivieren Sie automatisiertes ColdStake mit coldSTAKING ENABLE-Taste und festlegen einer Remote-Einsatzadresse. Auf dem Remote-Knoten aktivieren Sie die Aufnahme mit &quot;bitcoinc-cli walletsettings stakingstatus true&quot; und erstellen Sie eine &quot;Stake&quot;-Adresse auf Ihrem Remote-Knoten mit &quot;bitcoinc-cli getnewstakeaddress&quot;, oder erhalten Sie eine &quot;Stake&quot;-Adresse aus einem ColdStaking-Pool. Die Mittel übersteigen allmählich von heißer Einnahme zu kalter Einnahme, während Ihr Portemonnaie offen ist. Die für die Aktivierung benötigte Zeit hängt vom Gewicht der Brieftasche ab und kann bei geringem Gewicht mehrere Tage dauern. Sobald die Aktivierungsleiste abgeschlossen ist, kann die Brieftasche geschlossen werden.  Alternativ können Sie die Registerkarte Coldstaking aktivieren verwenden, um eine Aktivierungstransaktion zu senden.  Dies wird länger dauern, um zu beginnen, aber Brieftasche muss nicht online sein.</translation>
+        <translation>Durch das Aktivieren der &quot;Automatisierten ColdStaking-Aktivierung&quot; können die vorhandenen Staking Bitcoin Confidential über einen längeren Zeitraum automatisch zu ColdStaking Bitcoin Confidential konvertiert (aktiviert) werden. Beim Aktivieren muss eine &quot;Remote Staking Adresse&quot; bereitgestellt werden. Diese kann auf der Remote Node mit &quot;bitcoinc-cli getnewstakeaddress&quot; generiert werden. Für die automatisierte Aktivierung muss HotStaking aktiviert, die Brieftasche geöffnet und für HotStaking entsperrt bleiben bleiben, bis der Aktivierungs-Fortschritt 100% erreicht hat.  Alternativ können über die &quot;Aktivieren von ColdStaking&quot;  Ansicht auch direkt alle Staking Bitcoin Confidential für ColdStaking aktiviert werden. Es dauert hierdurch unter umständen länger, bis das ColdStaking beginnt, jedoch muss die Brieftasche nach der Aktivierung nicht geöffnet bleiben. In beiden Fällen muss auf der Remote Node zusätzlich &quot;bitcoinc-cli walletsettings stakingstatus true&quot; ausgeführt werden um das ColdStaking zu starten. </translation>
     </message>
     <message>
         <location line="+20"/>
         <source>ColdStake activation progress</source>
-        <translation>ColdStake-Aktivierungsfortschritt</translation>
+        <translation>ColdStaking-Aktivierungsfortschritt</translation>
     </message>
     <message>
         <location line="+77"/>
@@ -3914,24 +3914,24 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="-48"/>
         <location line="+41"/>
         <source>100000BC</source>
-        <translation>100000V</translation>
+        <translation>100000BC</translation>
     </message>
     <message>
         <location line="-22"/>
         <source>Total</source>
-        <translation>gesamt</translation>
+        <translation>Gesamt</translation>
     </message>
     <message>
         <location filename="../stakingdialog.cpp" line="+258"/>
         <location line="+17"/>
         <source>No stakable funds available. Use the &quot;Convert to staking&quot; tab to convert funds for staking.</source>
-        <translation>Keine stakable Mittel zur Verfügung. Verwenden Sie die Registerkarte &quot;Konvertieren in Staking&quot;, um Mittel für die Einnahme umzuwandeln.</translation>
+        <translation>Keine Staking Bitcoin Confidential vorhanden. Verwenden Sie die Registerkarte &quot;Konvertieren zu Staking&quot;, um Bitcoin Confidential zu Staking Bitcoin Confidential umzuwandeln.</translation>
     </message>
     <message>
         <location line="-15"/>
         <location line="+18"/>
         <source>No eligible staking outputs available. Staking funds need to have 225 confirmations to be eligible.</source>
-        <translation>Es sind keine förderfähigen Absabnahmen verfügbar. Die Mittel müssen über 225 Bestätigungen verfügen, um förderfähig zu sein.</translation>
+        <translation>Es sind keine Stakingfähigen Transaktions-Outputs verfügbar. Die Staking Bitcoin Confidential müssen über 225 Bestätigungen verfügen, um Stakingfähig zu sein.</translation>
     </message>
     <message>
         <location line="-9"/>
@@ -3941,17 +3941,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>Staking is stopped. Press the start button above to enable staking.</source>
-        <translation>Die Einnahme wird gestoppt. Drücken Sie die Starttaste oben, um das Abfangen zu aktivieren.</translation>
+        <translation>Staking ist gestoppt. Drücke &quot;Start&quot; um das Staking zu starten.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Wallet is locked. To start staking unlock the wallet for staking only. To unlock click the lock icon in the bottom right hand portion of the window.</source>
-        <translation>Wallet ist gesperrt. Um zu beginnen, entsperren Sie die Brieftasche nur für die Einnahme. Um zu entsperren, klicken Sie auf das Schlosssymbol im unteren rechten Bereich des Fensters.</translation>
+        <translation>Brieftasche ist gesperrt. Um mit dem Staking zu beginnen, entsperren Sie die Brieftasche nur für Staking. Um zu entsperren, klicken Sie auf das Schlosssymbol im unteren rechten Bereich des Fensters.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Wallet is not fully synced. To start staking make sure the wallet has connections to the network and wait until it catched up with the latest blocks.</source>
-        <translation>Wallet ist nicht vollständig synchronisiert. Um mit dem Abstecken zu beginnen, stellen Sie sicher, dass die Brieftasche Verbindungen zum Netzwerk hat, und warten Sie, bis sie die neuesten Blöcke eingeholt hat.</translation>
+        <translation>Brieftasche ist nicht vollständig synchronisiert. Um mit dem Staking zu beginnen, stellen Sie sicher, dass die Brieftasche Verbindungen zum Netzwerk hat, und warten Sie, bis sie die neuesten Blöcke synchronisiert hat.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3961,17 +3961,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+72"/>
         <source>No eligible coldstaking outputs available. Your coldstaking funds need to have 225 confirmations to be eligible.</source>
-        <translation>Es sind keine förderfähigen Kaltaufnahmeausgänge verfügbar. Ihre Coldstaking-Fonds müssen 225 Bestätigungen haben, um förderfähig zu sein.</translation>
+        <translation>Es sind keine ColdStaking fähigen Bitcoin Confidential verfügbar. Ihre ColdStaking Bitcoin Confidential müssen 225 Bestätigungen haben, um staking fähig zu sein.</translation>
     </message>
     <message>
         <location line="+160"/>
         <source>Set Remote Staking Address</source>
-        <translation>Festlegen der Remote-Aufnahmeadresse</translation>
+        <translation>Festlegen der Remote Staking Adresse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter the remote staking address:</source>
-        <translation>Geben Sie die Remote-Einseradresse ein:</translation>
+        <translation>Geben Sie die Remote Staking Adresse ein:</translation>
     </message>
 </context>
 <context>
@@ -4017,7 +4017,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+0"/>
         <source>abandoned</source>
-        <translation>verlassen</translation>
+        <translation>Zurückgezogen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4032,12 +4032,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+29"/>
         <source>Status</source>
-        <translation>status</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Date</source>
-        <translation>datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4109,12 +4109,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+0"/>
         <location line="+69"/>
         <source>watch-only</source>
-        <translation>nur für Uhren</translation>
+        <translation>Beobachten</translation>
     </message>
     <message>
         <location line="-67"/>
         <source>label</source>
-        <translation>Etikett</translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -4123,7 +4123,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+37"/>
         <location line="+66"/>
         <source>Credit</source>
-        <translation>kredit</translation>
+        <translation>Gutschrift</translation>
     </message>
     <message numerus="yes">
         <location line="-171"/>
@@ -4140,7 +4140,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+26"/>
         <location line="+71"/>
         <source>Debit</source>
-        <translation>debet</translation>
+        <translation>Belastung</translation>
     </message>
     <message>
         <location line="-87"/>
@@ -4150,7 +4150,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Total credit</source>
-        <translation>Gesamtkredit</translation>
+        <translation>Gesamte Gutschrift</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4171,7 +4171,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="-10"/>
         <source>Comment</source>
-        <translation>bemerkung</translation>
+        <translation>Bemerkung</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4186,17 +4186,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+10"/>
         <source>Narration</source>
-        <translation>erzählung</translation>
+        <translation>Nachricht</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Merchant</source>
-        <translation>kaufmann</translation>
+        <translation>Verkäufer</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>Generierte Münzen müssen %1 Blöcke reifen, bevor sie ausgegeben werden können. Beim Generieren dieses Blocks wurde er an das Netzwerk übertragen, das der Blockkette hinzugefügt werden soll. Wenn es nicht in die Kette gelangt, ändert sich sein Zustand in &quot;nicht akzeptiert&quot; und es wird nicht ausgegeben werden können. Dies kann gelegentlich passieren, wenn ein anderer Knoten innerhalb weniger Sekunden einen Block generiert.</translation>
+        <translation>Generierte Bitcoin Confidential müssen %1 Blöcke reifen, bevor sie ausgegeben werden können. Beim Generieren dieses Blocks wurde er an das Netzwerk übertragen, das er der Blockkette hinzugefügt werden soll. Wenn der Block nicht in die Kette gelangt, ändert sich der Zustand der Transaktion in &quot;nicht akzeptiert&quot; und die Bitcoin Confidential können nicht ausgegeben werden. Dies kann gelegentlich passieren, wenn ein anderer Knoten innerhalb weniger Sekunden einen Block generiert.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4206,7 +4206,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+13"/>
         <source>Transaction</source>
-        <translation>transaktion</translation>
+        <translation>Transaktion</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4216,19 +4216,19 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+21"/>
         <source>Amount</source>
-        <translation>betrag</translation>
+        <translation>Betrag</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>true</source>
-        <translation>STIMMT</translation>
+        <translation>true</translation>
     </message>
     <message>
         <location line="-1"/>
         <location line="+1"/>
         <source>false</source>
-        <translation>FALSE</translation>
+        <translation>false</translation>
     </message>
 </context>
 <context>
@@ -4249,27 +4249,27 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location filename="../transactiontablemodel.cpp" line="+257"/>
         <source>Date</source>
-        <translation>datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Type</source>
-        <translation>drucktype</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Label</source>
-        <translation>Etikett</translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>In</source>
-        <translation>in</translation>
+        <translation>Eingang</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Out</source>
-        <translation>außen</translation>
+        <translation>Ausgang</translation>
     </message>
     <message numerus="yes">
         <location line="+73"/>
@@ -4284,17 +4284,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>Unconfirmed</source>
-        <translation>unbestätigt</translation>
+        <translation>Unbestätigt</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Orphaned</source>
-        <translation>Verwaiste</translation>
+        <translation>Verwaist</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Abandoned</source>
-        <translation>verlassen</translation>
+        <translation>Zurückgezogen</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -4349,12 +4349,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+2"/>
         <source>Staked</source>
-        <translation>Abgesteckt</translation>
+        <translation>Staking</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>watch-only</source>
-        <translation>nur für Uhren</translation>
+        <translation>Beobachten</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4369,7 +4369,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+111"/>
         <source>(no label)</source>
-        <translation>(kein Etikett)</translation>
+        <translation>(keine Bezeichnung)</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -4380,13 +4380,13 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="-12"/>
         <source>Date and time that the reward was received.</source>
-        <translation>Datum und Uhrzeit, zu der die Belohnung erhalten wurde.</translation>
+        <translation>Datum und Uhrzeit, zu der die Staking Belohnung erhalten wurde.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+16"/>
         <source>Whether or not a watch-only address is involved in this transaction.</source>
-        <translation>Gibt an, ob eine reine Watch-Adresse an dieser Transaktion beteiligt ist.</translation>
+        <translation>Gibt an, ob eine reine Beobachten-Adresse an dieser Transaktion beteiligt ist.</translation>
     </message>
     <message>
         <location line="-14"/>
@@ -4401,7 +4401,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+8"/>
         <source>Date and time that the transaction was received.</source>
-        <translation>Datum und Uhrzeit des Empfangens der Buchung.</translation>
+        <translation>Datum und Uhrzeit des Empfangens der Transaktion.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4416,17 +4416,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+2"/>
         <source>Type of input coin.</source>
-        <translation>Art der Eingangsmünze.</translation>
+        <translation>Art der Eingangs Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Type of output coin.</source>
-        <translation>Art der Ausgabemünze.</translation>
+        <translation>Art der Ausgangs Bitcoin Confidential.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Amount removed from or added to balance.</source>
-        <translation>Betrag, der aus dem Saldo entfernt oder dem Saldo hinzugefügt wurde.</translation>
+        <translation>Betrag, der von dem Kontostand entfernt oder dem Kontostand hinzugefügt wurde.</translation>
     </message>
 </context>
 <context>
@@ -4436,12 +4436,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+11"/>
         <location line="+18"/>
         <source>All</source>
-        <translation>ganz</translation>
+        <translation>Alle</translation>
     </message>
     <message>
         <location line="-17"/>
         <source>Today</source>
-        <translation>heute</translation>
+        <translation>Heute</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4466,7 +4466,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Range...</source>
-        <translation>bandbreite...</translation>
+        <translation>Zeitraum...</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4481,12 +4481,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+2"/>
         <source>To yourself</source>
-        <translation>Für sich selbst</translation>
+        <translation>Eigenüberweisung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Other</source>
-        <translation>andere</translation>
+        <translation>Andere</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4506,7 +4506,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+52"/>
         <source>Abandon transaction</source>
-        <translation>Transaktion abstehen</translation>
+        <translation>Transaktion zurückziehen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4516,17 +4516,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+2"/>
         <source>Copy address</source>
-        <translation>Kopieradresse</translation>
+        <translation>Adresse kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy label</source>
-        <translation>Kopieretikett</translation>
+        <translation>Bezeichnung kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy amount</source>
-        <translation>Kopierbetrag</translation>
+        <translation>Betrag kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4536,7 +4536,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Copy raw transaction</source>
-        <translation>Kopieren der Rohtransaktion</translation>
+        <translation>Rohe Transaktionsdaten kopieren</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4546,7 +4546,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Edit label</source>
-        <translation>Beschrifte</translation>
+        <translation>Bezeichnung bearbeiten</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4566,37 +4566,37 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+9"/>
         <source>Confirmed</source>
-        <translation>hartnäckig</translation>
+        <translation>Bestätigt</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Watch-only</source>
-        <translation>Nur auf passender Uhr</translation>
+        <translation>Beobachten</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Date</source>
-        <translation>datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Type</source>
-        <translation>drucktype</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Label</source>
-        <translation>Etikett</translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Address</source>
-        <translation>adressieren</translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ID</source>
-        <translation>Id</translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4621,7 +4621,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+169"/>
         <source>Range:</source>
-        <translation>bandbreite:</translation>
+        <translation>Zeitraum:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4650,7 +4650,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location filename="../walletframe.cpp" line="+29"/>
         <source>No wallet has been loaded.</source>
-        <translation>Es wurde kein Portemonnaie geladen.</translation>
+        <translation>Es wurde keine Brieftasche geladen.</translation>
     </message>
 </context>
 <context>
@@ -4660,54 +4660,54 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location line="+4"/>
         <location line="+11"/>
         <source>Wallet Model</source>
-        <translation>Wallet-Modell</translation>
+        <translation>Brieftaschen-Modell</translation>
     </message>
     <message>
         <location line="+65"/>
         <location line="+39"/>
         <location line="+6"/>
         <source>Fee bump error</source>
-        <translation>Gebühren-Bump-Fehler</translation>
+        <translation>Fehler beim Erhöhen der Gebühr</translation>
     </message>
     <message>
         <location line="-45"/>
         <source>Increasing transaction fee failed</source>
-        <translation>Steigende Transaktionsgebühr fehlgeschlagen</translation>
+        <translation>Erhöhen der Transaktionsgebühr fehlgeschlagen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Do you want to increase the fee?</source>
-        <translation>Möchten Sie die Gebühr erhöhen?</translation>
+        <translation>Möchten Sie die Transaktionsgebühr erhöhen?</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Current fee:</source>
-        <translation>Aktuelle Gebühr:</translation>
+        <translation>Aktuelle Transaktionsgebühr:</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Increase:</source>
-        <translation>zunehmen:</translation>
+        <translation>Erhöhen um:</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>New fee:</source>
-        <translation>Neue Gebühr:</translation>
+        <translation>Neue Transaktionsgebühr:</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Confirm fee bump</source>
-        <translation>Bestätigen Sie die Gebührenbeule</translation>
+        <translation>Bestätigen Sie die Gebührenerhöhung</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Can&apos;t sign transaction.</source>
-        <translation>Transaktion kann nicht signieren.</translation>
+        <translation>Transaktion konnte nicht signiert werden.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Could not commit transaction</source>
-        <translation>Transaktion konnte nicht festübertragen werden</translation>
+        <translation>Transaktion konnte nicht ins Netzwerk übertragen werden</translation>
     </message>
 </context>
 <context>
@@ -4716,7 +4716,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
         <location filename="../walletview.cpp" line="+46"/>
         <location line="+1"/>
         <source>&amp;Export</source>
-        <translation>&amp;Export</translation>
+        <translation>&amp;Exportieren</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -4732,22 +4732,22 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+290"/>
         <source>Backup Wallet</source>
-        <translation>Backup Wallet</translation>
+        <translation>Backup der Brieftasche</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wallet Data (*.dat)</source>
-        <translation>Wallet-Daten (*.dat)</translation>
+        <translation>Brieftaschen-Datei (*.dat)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Backup Failed</source>
-        <translation>Backup fehlgeschlagen</translation>
+        <translation>Erstellen des Backups fehlgeschlagen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>There was an error trying to save the wallet data to %1.</source>
-        <translation>Beim Versuch, die Brieftaschendaten in %1 zu speichern, ist ein Fehler aufgetreten.</translation>
+        <translation>Beim Versuch, die Brieftasche in %1 zu speichern, ist ein Fehler aufgetreten.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4757,7 +4757,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+0"/>
         <source>The wallet data was successfully saved to %1.</source>
-        <translation>Die Wallet-Daten wurden erfolgreich in %1 gespeichert.</translation>
+        <translation>Die Brieftaschen-Datei wurden erfolgreich in %1 gespeichert.</translation>
     </message>
     <message>
         <location line="+63"/>
@@ -4770,7 +4770,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location filename="../bitcoinstrings.cpp" line="+12"/>
         <source>Bitcoin Confidential Core</source>
-        <translation>Bitcoin Vertraulicher Kern</translation>
+        <translation>Bitcoin Confidential Core</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4780,7 +4780,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source> is spendable from this wallet.</source>
-        <translation>ist aus dieser Brieftasche ausgedien.</translation>
+        <translation>kann mit dieser Brieftasche verschickt werden</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4790,12 +4790,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>Can&apos;t generate a change-address key. Private keys are disabled for this wallet.</source>
-        <translation>Es kann kein Änderungsadressenschlüssel generiert werden. Private Schlüssel sind für diese Brieftasche deaktiviert.</translation>
+        <translation>Es kann keine Wechselgeldadresse generiert werden. Private Schlüssel sind für diese Brieftasche deaktiviert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
-        <translation>Eine Sperre für das Datenverzeichnis %s kann nicht erreicht werden. %s wird wahrscheinlich bereits ausgeführt.</translation>
+        <translation>Eine Sperre für das Datenverzeichnis %s kann nicht gesetzt werden. %s wird wahrscheinlich bereits ausgeführt.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4850,17 +4850,17 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+3"/>
         <source>Milliseconds between stake attempts. Lowering this param will not result in more stakes. (default: 500)</source>
-        <translation>Millisekunden zwischen Pfahlversuchen. Die Senkung dieses Params wird nicht zu mehr Einsätzen führen. (Standard: 500)</translation>
+        <translation>Millisekunden zwischen Staking Versuchen. Die Senkung dieses Parameters wird nicht zu mehr Belohnungen führen. (Standard: 500)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Not enough spending outputs available in the blockchain for privacy mixing. There are currently %d. For this transaction required: %d</source>
-        <translation>Nicht genügend Ausgaben-Outputs in der Blockchain für die Privatsphäre-Mischung zur Verfügung. Derzeit sind %d vorhanden. Für diese Transaktion erforderlich: %d</translation>
+        <translation>Nicht genügend normale Bitcoin Confidential-Outputs in der Blockchain für die Privatsphäre-Mischung zur Verfügung. Derzeit sind %d vorhanden. Für diese Transaktion erforderlich: %d</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Number of threads to start for staking, max 1 per active wallet, will divide wallets evenly between threads (default: 1)</source>
-        <translation>Anzahl der Threads, die für die Abnahme gestartet werden sollen, max. 1 pro aktiver Brieftasche, teilt Brieftaschen gleichmäßig zwischen Threads auf (Standard: 1)</translation>
+        <translation>Anzahl der Threads, die für das Staking gestartet werden sollen, max. 1 pro aktiver Brieftasche, teilt Brieftaschen gleichmäßig zwischen Threads auf (Standard: 1)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4885,12 +4885,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+2"/>
         <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
-        <translation>Prune: Die letzte Wallet-Synchronisation geht über beliefen Daten hinaus. Sie müssen -reindex (Laden Sie die gesamte Blockchain erneut im Falle eines belaufenen Knotens)</translation>
+        <translation>Prune: Die letzte Brieftaschen-Synchronisation geht über die gekürzten Daten hinaus. Sie müssen erneut mit -reindex starten. (Laden Sie die gesamte Blockchain erneut im Falle eines gekürzten Knotens)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
-        <translation>Rescans sind im beschnittten Modus nicht möglich. Sie müssen -reindex verwenden, das die gesamte Blockchain erneut herunterlädt.</translation>
+        <translation>Rescans sind im gekürzten Modus nicht möglich. Sie müssen -reindex verwenden, das die gesamte Blockchain erneut herunterlädt.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4905,12 +4905,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+2"/>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation>Dies ist ein Vorabversionstestbuild - auf eigene Gefahr verwenden - nicht für Mining- oder Händleranwendungen verwenden</translation>
+        <translation>Dies ist ein Vorabversionstestbuild - auf eigene Gefahr verwenden - nicht für Staking- oder Händleranwendungen verwenden</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
-        <translation>Dies ist die Transaktionsgebühr, die Sie verwerfen können, wenn die Änderung kleiner ist als Staub auf dieser Ebene.</translation>
+        <translation>Dies ist die Transaktionsgebühr, die Sie verwerfen können, wenn die Änderung kleiner ist als Dust auf dieser Ebene.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5030,7 +5030,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Cannot downgrade wallet</source>
-        <translation>Wallet nicht herabgestuft</translation>
+        <translation>Brieftasche nicht herabgestuft</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5055,7 +5055,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Copyright (C)</source>
-        <translation>Urheberrecht (C)</translation>
+        <translation>Copyright (C)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5110,7 +5110,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Done loading</source>
-        <translation>Fertiges Laden</translation>
+        <translation>Fertig geladen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5145,7 +5145,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Error initializing wallet database environment %s!</source>
-        <translation>Fehler beim Initialisieren der Wallet-Datenbankumgebung %s!</translation>
+        <translation>Fehler beim Initialisieren der Brieftaschen-Datenbankumgebung %s!</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5160,12 +5160,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Error loading %s: Wallet corrupted</source>
-        <translation>Fehler beim Laden von %s: Wallet beschädigt</translation>
+        <translation>Fehler beim Laden von %s: Brieftasche beschädigt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Error loading %s: Wallet requires newer version of %s</source>
-        <translation>Fehler beim Laden von %s: Wallet erfordert eine neuere Version von %s</translation>
+        <translation>Fehler beim Laden von %s: Brieftasche erfordert eine neuere Version von %s</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5295,7 +5295,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Invalid BitcoinC address.</source>
-        <translation>Ungültige BitcoinC-Adresse.</translation>
+        <translation>Ungültige Bitcoin Confidential Adresse.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5325,7 +5325,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Invalid coldstakingaddress.</source>
-        <translation>Ungültige Kälteanschrift.</translation>
+        <translation>Ungültige ColdStaking Adresse.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5402,12 +5402,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Must input a stealthaddress.</source>
-        <translation>Muss eine Stealthaddress eingeben.</translation>
+        <translation>Es muss eine normale Bitcoin Confidential Adresse eingegeben werden.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Need a parameter to change.</source>
-        <translation>Benötigen Sie einen Parameter, um sich zu ändern.</translation>
+        <translation>Benötigt einen Parameter um geändert zu werden.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5802,32 +5802,32 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Wallet %s resides outside wallet directory %s</source>
-        <translation>Wallet %s befindet sich außerhalb des Wallet-Verzeichnisses %s</translation>
+        <translation>Brieftasche %s befindet sich außerhalb des Brieftaschen-Verzeichnisses %s</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wallet has no active master key.</source>
-        <translation>Wallet hat keinen aktiven Hauptschlüssel.</translation>
+        <translation>Brieftasche hat keinen aktiven Hauptschlüssel.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wallet must be unlocked.</source>
-        <translation>Wallet muss entsperrt werden.</translation>
+        <translation>Brieftasche muss entsperrt werden.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wallet must have a default account set.</source>
-        <translation>Wallet muss über ein Standardkonto festgelegt sein.</translation>
+        <translation>Brieftasche muss über ein Standardkonto festgelegt sein.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wallet needed to be rewritten: restart %s to complete</source>
-        <translation>Wallet musste neu geschrieben werden: starten Sie %s neu, um sie abzuschließen</translation>
+        <translation>Brieftasche musste neu geschrieben werden: starten Sie %s neu, um sie abzuschließen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Warning</source>
-        <translation>warnung</translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5847,7 +5847,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>Zapping all transactions from wallet...</source>
-        <translation>Alle Transaktionen aus dem Portemonnaie zappen...</translation>
+        <translation>Alle Transaktionen aus der Brieftasche zappen...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5872,7 +5872,7 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>bad childNo.</source>
-        <translation>schlechtes KindNein.</translation>
+        <translation>schlechte childNo..</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5882,12 +5882,12 @@ Anmerkung: Da die Gebühr pro Byte berechnet wird, würde eine Gebühr von &quot
     <message>
         <location line="+1"/>
         <source>coldstakingaddress can&apos;t be a stealthaddress.</source>
-        <translation>Coldstakingaddress kann keine Stealthaddress sein.</translation>
+        <translation>ColdStaking Adresse kann keine normale Bitcoin Confidential Adresse sein.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>coldstakingaddress must be a string.</source>
-        <translation>Coldstakingaddress muss eine Schnur sein.</translation>
+        <translation>ColdStaking Adresse muss eine Zeichenkette sein.</translation>
     </message>
     <message>
         <location line="+1"/>

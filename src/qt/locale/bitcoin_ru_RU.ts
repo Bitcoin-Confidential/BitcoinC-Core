@@ -129,7 +129,7 @@ Stake addresses, starting with &quot;%1&quot;, are used to convert spending fund
 ColdStake addresses, starting with &quot;%2&quot;, are used to manually activate staking funds for ColdStaking. There is no need to generate ColdStake addresses when the automated ColdStaking activation from the Staking Status page is used.</source>
         <translation>Эти адреса не могут быть использованы для получения монет из-за пределов кошелька, такие как переводы от пользователей или бирж.  Используйте вкладку Receive (Получить) для генерации адресов для трат.
 
-Stake адреса, начиная с &quot;%1&quot;, используются для конвертации средств для трат в средства для стекинга во вкладке &quot;Convert to Staking&quot; (Конвертировать для Staking). Средства на Stake адресе могут использоваться либо для Hot Staking, либо для активации ColdStaking.
+Stake адреса, начиная с &quot;%1&quot;, используются для конвертации расходных средств в средства для стекинга во вкладке &quot;Convert to Staking&quot; (Конвертировать для Staking). Средства на Stake адресе могут использоваться либо для Hot Staking, либо для активации ColdStaking.
 
 ColdStake адреса, начиная с &quot;%2&quot;, используются для ручной активации средств для стекинга при ColdStaking. Нет необходимости создавать ColdStake адреса при использовании автоматической активации ColdStaking со страницы Staking Status (Staking Статус).</translation>
     </message>
@@ -383,7 +383,7 @@ ColdStake адреса, начиная с &quot;%2&quot;, используютс
     <message>
         <location line="+1"/>
         <source>Send coins to a Bitcoin Confidential Spending address</source>
-        <translation>Отправить монеты на адрес для трат Bitcoin Confidential</translation>
+        <translation>Отправить монеты на адрес для расходных средств Bitcoin Confidential</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1904,7 +1904,7 @@ ColdStake адреса, начиная с &quot;%2&quot;, используютс
     <message>
         <location line="-308"/>
         <source>Spending</source>
-        <translation>Расходы</translation>
+        <translation>Расходные средства</translation>
     </message>
     <message>
         <location line="+108"/>
@@ -1920,7 +1920,7 @@ ColdStake адреса, начиная с &quot;%2&quot;, используютс
     <message>
         <location line="-181"/>
         <source>Spendable</source>
-        <translation>Доступные для трат</translation>
+        <translation>Доступные для расходов</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -2123,7 +2123,7 @@ ColdStake адреса, начиная с &quot;%2&quot;, используютс
     <message>
         <location filename="../guiutil.cpp" line="+96"/>
         <source>Enter Spending address</source>
-        <translation>Введите адрес для трат</translation>
+        <translation>Введите адрес для расходных средств</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2235,12 +2235,12 @@ ColdStake адреса, начиная с &quot;%2&quot;, используютс
     <message>
         <location line="+71"/>
         <source>All spending funds are sent and received anonymously. Only the sender and receiver have details of their side of the transaction. Staking funds need to be converted to spending before sending out of wallet. Funds require %1 confirmations (%2 minutes) before sending.</source>
-        <translation>Все средства для трат отправляются и принимаются анонимно. Только отправитель и получатель имеют подробную информацию о своей стороне транзакции. Staking средства должны быть конвертированы в средства для трат перед отправкой из кошелька. Средствам требуется %1 подтверждений (%2 минут) перед отправкой.</translation>
+        <translation>Все средства для трат отправляются и принимаются анонимно. Только отправитель и получатель имеют подробную информацию о своей стороне транзакции. Staking средства должны быть конвертированы в расходные средства перед отправкой из кошелька. Средствам требуется %1 подтверждений (%2 минут) перед отправкой.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Staking funds cannot be sent out of your wallet without converting to spending. After converting to spending, %1 confirmations (%2 minutes) are required before sending.</source>
-        <translation>Staking средства не могут быть отправлены с кошелька без конвертации в тип &quot;для трат&quot;. После конвертации, требуется %1 подтверждений (%2 минут) перед отправкой. </translation>
+        <translation>Staking средства не могут быть отправлены с кошелька без конвертации в тип &quot;расходные средства&quot;. После конвертации, требуется %1 подтверждений (%2 минут) перед отправкой. </translation>
     </message>
     <message>
         <location filename="../modaloverlay.cpp" line="-29"/>
@@ -3536,7 +3536,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     <message>
         <location filename="../utilitydialog.cpp" line="+83"/>
         <source>%1 is shutting down...</source>
-        <translation>1% закрывается....</translation>
+        <translation>Приложение закрывается....</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3632,7 +3632,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     <message>
         <location line="-85"/>
         <source>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
-        <translation>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</translation>
+        <translation>Введите адрес получателя, сообщение (скопируйте переносы строк, пробелы, закладки и т.д.) и подпишитесь ниже для верификации сообщения. Будьте осторожны и не вдавайтесь в детали  при подписи более подробно, чем в самом отправленном сообщение, чтобы не быть атакованным посредником. Обратите внимание, что это доказывает лишь то, что подписывающая сторона получила адрес, она не может доказать отправление любой транзакции!</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -3759,7 +3759,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     <message>
         <location line="+16"/>
         <source>Convert to Spending</source>
-        <translation>Конвертировать для трат</translation>
+        <translation>Конвертировать в расходные средства</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4781,7 +4781,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     <message>
         <location line="+1"/>
         <source> is spendable from this wallet.</source>
-        <translation>доступно для трат с этого кошелька.</translation>
+        <translation>доступно для расходования с этого кошелька.</translation>
     </message>
     <message>
         <location line="+1"/>
