@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/sendcoinsentry.h>
+#include "sendcoinsentry.h"
 #include <qt/forms/ui_sendcoinsentry.h>
 
 #include <qt/addressbookpage.h>

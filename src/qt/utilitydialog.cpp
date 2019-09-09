@@ -6,7 +6,7 @@
 #include <config/bitcoin-config.h>
 #endif
 
-#include <qt/utilitydialog.h>
+#include "utilitydialog.h"
 
 #include <qt/forms/ui_helpmessagedialog.h>
 

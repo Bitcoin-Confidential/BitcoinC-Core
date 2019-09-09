@@ -975,8 +975,9 @@ QString loadStyleSheet()
 
 QString GetSpendingWaitInfo()
 {
-    QString strSpending = QObject::tr("All spending funds are sent anonymously. "
+    QString strSpending = QObject::tr("All spending funds are sent and received anonymously. "
                           "Only the sender and receiver have details of their side of the transaction. "
+                          "Staking funds need to be converted to spending before sending out of wallet. "
                           "Funds require %1 confirmations (%2 minutes) before sending.");
 
     int nMinConfirmations = Params().GetConsensus().nMinRCTOutputDepth;

@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <interfaces/node.h>
-#include <qt/trafficgraphwidget.h>
+#include "trafficgraphwidget.h"
 #include <qt/clientmodel.h>
 
 #include <QPainter>
