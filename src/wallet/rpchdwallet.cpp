@@ -5457,7 +5457,7 @@ static UniValue walletsettings(const JSONRPCRequest &request)
             "Pass an empty json object to clear the settings group.\n"
             "\nExamples\n"
             "Enable Staking\n"
-            + HelpExampleCli("walletsettings", "stakingstatus", "true") + "\n"
+            + HelpExampleCli("walletsettings", "stakingstatus" "true") + "\n"
             "Set coldstaking changeaddress extended public key:\n"
             + HelpExampleCli("walletsettings", "changeaddress \"{\\\"coldstakingaddress\\\":\\\"extpubkey\\\"}\"") + "\n"
             "Clear changeaddress settings\n"
