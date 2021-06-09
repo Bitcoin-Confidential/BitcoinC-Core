@@ -13,7 +13,7 @@ stages:
   - test
 env:
   global:
-    - MAKEJOBS=-j3
+    - MAKEJOBS="-j $(nproc)"
     - RUN_TESTS=false
     - TEST_ZMQ=0
     - RUN_UNIT_TESTS=false
