@@ -82,6 +82,9 @@
 
 #include <insight/insight.h>
 
+#include <boost/bind/bind.hpp>
+using namespace boost::placeholders;
+
 bool fFeeEstimatesInitialized = false;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
